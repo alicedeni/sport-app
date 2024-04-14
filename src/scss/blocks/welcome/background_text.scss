@@ -1,0 +1,21 @@
+.welcome {
+    .full-width-text {
+      width: 100%;
+      text-align: center;
+      color: rgba(0, 0, 139, 0.25);
+      margin: 35px 0;
+      font-size: 36px;
+      font-weight: lighter;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+  }
+
+@media (min-height: 820px) {
+    .welcome {
+        .full-width-text {
+          margin: 100px 0;
+        }
+      }
+    
+  }

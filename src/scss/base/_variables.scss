@@ -1,0 +1,41 @@
+// Main
+
+// Header background, accents, icons
+$gradient: linear-gradient(to right, #9D9DE6, #567FE3, #9664C8);
+
+$white: #F5F7FA; // Background
+$white2: #fff; // Cards, text, text in buttons, text on dark bcg
+$blue: #51B8FF; // Buttons, headers, progressbars
+$black: #000; // Text
+$grey1: #BDBDBD; // Text descriptors
+
+// Secondary
+$grey2: #E0E0E0; // Dividers, disabled buttons/icons
+$grey3: #F2F2F2; // Form for adding image
+$blue-20p: rgba(81, 184, 255, 0.2); // Text bubbles, interactive elements
+$red: #FF3D75; // Error text, buttons
+$green: #05E875; // Comment text, activity type tags
+
+// Activity type Text color
+$grey4: #808080;
+$purple1: #BAABFF;
+$pink: #FF3D75;
+$yellow: #FFCC38;
+$dark-blue: #0078D4;
+$purple2: #9393FF;
+$turquoise: #00EDD9;
+
+// Activity type Background color
+$green-20p: rgba(5, 232, 117, 0.2);
+$grey4-20p: rgba(128, 128, 128, 0.2);
+$purple1-20p: rgba(186, 171, 255, 0.2);
+$pink-20p: rgba(255, 61, 117, 0.2);
+$yellow-20p: rgba(255, 204, 56, 0.2);
+$dark-blue-20p: rgba(0, 120, 212, 0.2);
+$purple2-20p: rgba(147, 147, 255, 0.2);
+$turquoise-20p: rgba(0, 237, 217, 0.2);
+
+// League Background color
+$pink-60p: rgba(255, 61, 117, 0.6);
+$yellow-70p: rgba(255, 204, 56, 0.7);
+$dark-blue-60p: rgba(0, 120, 212, 0.6);
