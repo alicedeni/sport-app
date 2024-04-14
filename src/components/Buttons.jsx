@@ -46,3 +46,13 @@ export function ButtonProfile({src, onClick, textContent}){
     </a>
   )
 }
+
+export function ButtonActivity({src, onClick, textContent}){
+  return(
+    <a className="welcome-block__profile" href="#" onClick={onClick}>
+        <button className={`button button-profile`}>
+        <span className="button_text">{textContent}</span>
+      </button>
+    </a>
+  )
+}

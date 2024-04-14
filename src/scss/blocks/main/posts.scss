@@ -136,14 +136,13 @@
         margin-top: 5px;
         font-size: 14px;
       }
-    }
-
-    &::after {
-      content: "";
-      display: block;
-      height: 1px;
-      width: 100%;
-      background-color: #000;
-      margin-top: 20px;
+      &::after {
+        content: "";
+        display: block;
+        height: 1px;
+        width: 100%;
+        background-color: $grey1;
+        margin-top: 20px;
+      }
     }
   }
