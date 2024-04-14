@@ -1,9 +1,8 @@
 import React from 'react';
 import { ButtonProfile } from "./Buttons";
 
-const Header = () => {
+const Header = ({setPage}) => {
   const [isNotificationOpen, setIsNotificationOpen] = React.useState(true);
-  const [page, setPage] = React.useState('feed');
 
   return (
     <div className="header">

@@ -64,6 +64,7 @@ const RegistrationBlock = () => {
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
             />
             <input
                 className="welcome-block__input"
@@ -71,6 +72,7 @@ const RegistrationBlock = () => {
                 placeholder="Пароль"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
             />
             <input
                 className="welcome-block__input"
@@ -78,6 +80,7 @@ const RegistrationBlock = () => {
                 placeholder="Повторите пароль"
                 value={password_check}
                 onChange={(e) => setPasswordCheck(e.target.value)}
+                required
             />
             {error && <p className="error" style={{ color: "red" }}>{error}</p>}
             <ButtonEnter className="welcome-block__btn" text="Зарегистрироваться" onClick={handleLogin} textContent={"Зарегистрироваться"}></ButtonEnter>
@@ -91,6 +94,7 @@ const RegistrationBlock = () => {
             placeholder="Фамилия"
             value={surname}
             onChange={handleSurnameChange}
+            required
           />
           <input
             className="welcome-block__input"
@@ -98,6 +102,7 @@ const RegistrationBlock = () => {
             placeholder="Имя"
             value={name}
             onChange={handleNameChange}
+            required
           />
           <input
             className="welcome-block__input"
@@ -105,6 +110,7 @@ const RegistrationBlock = () => {
             placeholder="Отчество"
             value={patronymic}
             onChange={handlePatronymicChange}
+            required
           />
           <ButtonNext className="welcome-block__btn" text="Далее" onClick={handleFormChange} textContent={"Далее"} disabled={!isButtonEnabled}></ButtonNext>
         </>

@@ -5,7 +5,8 @@ import Challenges from '../components/Challenges';
 import Ratings from '../components/Ratings';
 import Activity from '../components/Activity';
 
-const Main = ({ page }) => {
+const Main = () => {
+  const [page, setPage] = React.useState('feed');
   const posts = [
     {
       id: 1,
@@ -58,7 +59,7 @@ const Main = ({ page }) => {
 
   return (
     <div className="container">
-      <Header />
+      <Header setPage={setPage}/>
       <div className="main">{content}</div>
     </div>
   );
