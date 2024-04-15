@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonProfile } from "./Buttons";
+import { ButtonProfile } from "../Buttons";
 
 const Header = ({setPage}) => {
   const [isNotificationOpen, setIsNotificationOpen] = React.useState(true);

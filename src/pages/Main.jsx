@@ -1,9 +1,9 @@
 import React from 'react';
-import Header from '../components/Header';
-import Posts from '../components/Posts';
-import Challenges from '../components/Challenges';
-import Ratings from '../components/Ratings';
-import Activity from '../components/Activity';
+import Header from '../components/main/Header';
+import Posts from '../components/main/Posts';
+import Challenges from '../components/main/Challenges';
+import Ratings from '../components/main/Ratings';
+import Activity from '../components/main/Activity';
 
 const Main = () => {
   const [page, setPage] = React.useState('feed');

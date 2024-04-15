@@ -4,10 +4,10 @@ import { Favorite, FavoriteBorder, Comment } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import ReactDOM from 'react-dom';
-import CommentDefaultIcon from '../assets/icons/commentDefault.svg';
-import HeartDefaultIcon from '../assets/icons/heartDefault.svg';
-import CommentFilledIcon from '../assets/icons/commentFilled.svg';
-import HeartFilledIcon from '../assets/icons/heartFilled.svg';
+import CommentDefaultIcon from '../../assets/icons/commentDefault.svg';
+import HeartDefaultIcon from '../../assets/icons/heartDefault.svg';
+import CommentFilledIcon from '../../assets/icons/commentFilled.svg';
+import HeartFilledIcon from '../../assets/icons/heartFilled.svg';
 
 ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
