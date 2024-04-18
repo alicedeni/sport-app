@@ -16,6 +16,9 @@ const Activity = () => {
           <div className="select_time-variant" style={{backgroundColor: selectedSide === 'month' ? 'rgba(81, 184, 255, 0.2)' : 'white'}} onClick={() => handleClick('month')}>За месяц</div>
           <div className="select_time-variant" style={{backgroundColor: selectedSide === 'week && month' ? 'rgba(81, 184, 255, 0.2)' : 'white'}} onClick={() => handleClick('week && month')}>За все время</div>
         </div>
+        <div>
+          <div className="activity-btn cardio-bold">КАРДИОТРЕНИРОВКА</div>
+        </div>
     </div>
   );
 };

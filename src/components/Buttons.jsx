@@ -39,7 +39,7 @@ export function ButtonToEnter({src, onClick, textContent}){
 
 export function ButtonProfile({src, onClick, textContent}){
   return(
-    <a className="welcome-block__profile" href="#" onClick={onClick}>
+    <a className="welcome-block__profile" href="/profile" onClick={onClick}>
         <button className={`button button-profile`}>
         <span className="button_text">{textContent}</span>
       </button>

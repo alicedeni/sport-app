@@ -23,6 +23,11 @@ module.exports = ({ mode }) => {
       hot: true,
       port: 3000,
       historyApiFallback: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+      },
     },
     plugins: [
       new MiniCssExtractPlugin({
@@ -65,7 +70,7 @@ module.exports = ({ mode }) => {
       ],
     },
     resolve: {
-      extensions: ['.js', '.jsx',], 
+      extensions: ['.js', '.jsx', '.py',], 
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       alias: {
         '@components': path.resolve(__dirname, 'src/components'),

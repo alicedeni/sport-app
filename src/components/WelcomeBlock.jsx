@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { ButtonEnter, ButtonReg } from "./Buttons";
 
 const WelcomeBlock = () => {
-  const [formState, setFormState] = useState("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault();
     if (email.trim() === "" || password.trim() === "") {
       setError("Пожалуйста, введите email и пароль.");
     } else if (!validateEmail(email)) {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
+      axios.post('http://localhost:5000/login', { email, password })
+        .then(response => {
+          if (response.status === 200) {
+            window.location.href = '/main';
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          setError("Произошла ошибка при входе.");
+        });
     }
   };
 
@@ -21,27 +32,28 @@ const WelcomeBlock = () => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
   };
-
-
+  
   return (
     <div className="welcome-block">
       <h1 className="welcome-block__text">Добро пожаловать!</h1>
-          <input
-            className="welcome-block__input"
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input
-            className="welcome-block__input"
-            type="password"
-            placeholder="Пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {error && <p className="error" style={{ color: "red" }}>{error}</p>}
-          <ButtonEnter className="welcome-block__btn" text="Войти" onClick={handleLogin} textContent={"Войти"}></ButtonEnter>
+      <form onSubmit={handleLogin}>
+        <input
+          className="welcome-block__input"
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className="welcome-block__input"
+          type="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && <p className="error" style={{ color: "red" }}>{error}</p>}
+        <ButtonEnter className="welcome-block__btn" text="Войти" textContent={"Войти"}></ButtonEnter>
+      </form>
       <ButtonReg className="welcome-block__btn" text="Зарегистрироваться" textContent={"Зарегистрироваться"}></ButtonReg>
     </div>
   );

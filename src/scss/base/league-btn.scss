@@ -1,0 +1,112 @@
+.league-btn {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    padding: 0 40px;
+    border-radius: 24px;
+    font-size: 20px;
+  }
+  // light
+  .pool-light {
+    color: $blue;
+    border: 2px solid $blue;
+  }
+  
+  .cardio-light {
+    color: $yellow;
+    border: 2px solid $yellow;
+  }
+  
+  .run-light {
+    color: $green;
+    border: 2px solid $green;
+  }
+  .power-light {
+    color: $pink;
+    border: 2px solid $pink; 
+  }
+  .bike-light {
+    color: $turquoise;
+    border: 2px solid $turquoise;
+  }
+  .game-light {
+    color: $dark-blue;
+    border: 2px solid $dark-blue;
+  }
+  .dance-light {
+    color: $purple2;
+    border: 2px solid $purple2;
+  }
+  .other-light {
+    color: $grey1;
+    border: 2px solid $grey1;
+  }
+
+  // normal
+  .pool-normal {
+    color: $blue;
+    background: $blue-20p;
+    border: 2px solid $blue;
+  }
+  
+  .cardio-normal {
+    color: $yellow;
+    background: $yellow-20p;
+    border: 2px solid $yellow;
+  }
+  
+  .run-normal {
+    color: $green;
+    background: $green-20p;
+    border: 2px solid $green;
+  }
+  .power-normal {
+    color: $pink;
+    background: $pink-20p;
+    border: 2px solid $pink; 
+  }
+  .bike-normal {
+    color: $purple2;
+    background: $purple2-20p;
+    border: 2px solid $purple2;
+  }
+  .game-normal {
+    color: $dark-blue;
+    background: $dark-blue-20p;
+    border: 2px solid $dark-blue;
+  }
+  .dance-normal {
+    color: $purple1;
+    background: $purple1-20p;
+    border: 2px solid $purple1;
+  }
+  .other-normal {
+    color: $grey4;
+    background: $grey4-20p;
+    border: 2px solid $grey4;
+  }
+
+  // filled
+  .all-filled {
+    color: $white;
+    background: $blue;
+    font-weight: bold;
+  }
+  
+  .gold-filled {
+    color: $white;
+    background: $yellow;
+    font-weight: bold;
+  }
+  
+  .silver-filled {
+    color: $white;
+    background: $dark-blue;
+    font-weight: bold;
+  }
+  .power-filled {
+    color: $white;
+    background: $pink;
+    font-weight: bold;
+  }

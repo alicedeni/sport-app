@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Welcome from './pages/Welcome';
 import Main from './pages/Main';
+import Profile from './pages/Profile';
 import Registration from './pages/Registration';
 import ErrorPage404 from './pages/ErrorPage404';
 import { BeatLoader } from "react-spinners";
@@ -34,6 +35,13 @@ const router = createBrowserRouter([
   {
     path: "/registration",
     element: <Registration />,
+    loader: async () => {
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
+    }
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
     loader: async () => {
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
     }
