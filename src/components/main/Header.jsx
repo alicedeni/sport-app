@@ -8,7 +8,7 @@ const Header = ({setPage}) => {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    axios.get('http://localhost:5000/login')
+    axios.get('http://localhost:5000/main')
       .then(response => {
         setUserName(response.data.name);
       })

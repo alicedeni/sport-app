@@ -17,8 +17,11 @@ const WelcomeBlock = () => {
       setError("");
       axios.post('http://localhost:5000/login', { email, password })
         .then(response => {
-          if (response.status === 200) {
+          if (response.data.status === 200) {
             window.location.href = '/main';
+          } else {
+            console.error(error);
+            setError("Произошла ошибка при входе.");
           }
         })
         .catch(error => {

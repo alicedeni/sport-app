@@ -9,7 +9,7 @@ export function ButtonEnter({src, onClick, textContent}) {
 }
 export function ButtonNext({src, onClick, textContent}) {
   return (
-    <a className="welcome-block__link-forward" href="#2" onClick={onClick}>
+    <a className="welcome-block__link-forward" onClick={onClick}>
       <button className={`button button-enter`}>
         <span className="button button-enter_text">{textContent}</span>
       </button>
@@ -19,7 +19,7 @@ export function ButtonNext({src, onClick, textContent}) {
 
 export function ButtonReg({src, onClick, textContent}){
   return(
-    <a className="welcome-block__registration" href="/registration#1" onClick={onClick}>
+    <a className="welcome-block__registration" href="/registration" onClick={onClick}>
         <button className={`button button-reg`}>
         <span className="button_text">{textContent}</span>
       </button>

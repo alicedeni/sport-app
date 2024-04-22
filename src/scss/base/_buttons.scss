@@ -10,8 +10,8 @@ a{
   color:$white2;
   cursor: pointer;
   padding: 15px 15px;
-  margin-left: 40px;
   &-enter {
+    margin: 0 auto;
     background-color: $blue;
     width: 510px;
     height: 60px;
