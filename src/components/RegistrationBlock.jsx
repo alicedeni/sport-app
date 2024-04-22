@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { ButtonEnter, ButtonToEnter, ButtonNext } from "./Buttons";
 
 const RegistrationBlock = () => {
@@ -19,7 +20,7 @@ const RegistrationBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post('http://localhost:5000/registration', { name, surname, patronymic, email, password })
+      axios.post('http://localhost:5000/register', { name, surname, patronymic, email, password })
         .then(response => {
           if (response.data.status === 200) {
             window.location.href = '/main';
