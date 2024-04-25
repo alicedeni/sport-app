@@ -87,6 +87,21 @@ a{
   }
 }
 
+.cbutton-profile {
+  height: 42px;
+  width: 42px;
+  border-radius: 21px;
+  background: $purple1;
+  color: $white;
+  position: absolute;
+  top: 30px; 
+  right: 100px;
+  &_text{
+    font-weight: bold;
+    font-size: 24px;
+  }
+}
+
 @media (max-width: 500px) {
   .button {
     &-enter{

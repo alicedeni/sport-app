@@ -7,7 +7,7 @@ module.exports = ({ mode }) => {
   const isProduction = mode === 'production';
 
   return {
-    mode: 'development',
+    mode: isProduction ? 'production' : 'development',
     target: 'web',
     entry: './src/index.js',
     output: {
@@ -27,6 +27,9 @@ module.exports = ({ mode }) => {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
         "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+      },
+      devMiddleware: {
+        writeToDisk: true,
       },
     },
     plugins: [
@@ -64,6 +67,9 @@ module.exports = ({ mode }) => {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
+              plugins: [
+                isProduction ? null : require.resolve('react-refresh/babel')
+              ].filter(Boolean),
             },
           },
         },

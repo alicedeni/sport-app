@@ -133,4 +133,4 @@ const RegistrationBlock = () => {
   );
 }
 
-export default RegistrationBlock
+export default RegistrationBlock;

@@ -37,29 +37,28 @@ const Main = () => {
       likeCount: 5,
     },
   ];
-
   let content;
 
   switch (page) {
     case 'feed':
-      content = <Posts posts={posts} />;
+      content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />;
       break;
     case 'challenges':
-      content = <Challenges />;
+      content = <Challenges setPage={setPage} isFeedPage={false} />;
       break;
     case 'ratings':
-      content = <Ratings />;
+      content = <Ratings setPage={setPage} isFeedPage={false} />;
       break;
     case 'activity':
-      content = <Activity />;
+      content = <Activity setPage={setPage} isFeedPage={false} />;
       break;
     default:
-      content = <Posts posts={posts} />;
+      content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />;
   }
 
   return (
     <div className="container">
-      <Header setPage={setPage}/>
+      <Header setPage={setPage} isFeedPage={page === 'feed'}/>
       <div className="main">{content}</div>
     </div>
   );

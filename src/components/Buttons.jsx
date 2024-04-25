@@ -56,3 +56,13 @@ export function ButtonActivity({src, onClick, textContent}){
     </a>
   )
 }
+
+export function CButtonProfile({src, onClick, textContent}){
+  return(
+    <a className="cbutton__profile" href="/profile" onClick={onClick}>
+        <button className={`button cbutton-profile`}>
+        <span className="cbutton-profile_text">{textContent}</span>
+      </button>
+    </a>
+  )
+}

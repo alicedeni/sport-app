@@ -8,9 +8,12 @@ import Main from './pages/Main';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';
 import ErrorPage404 from './pages/ErrorPage404';
+import GlobalGoal from './pages/GlobalGoal';
 import { BeatLoader } from "react-spinners";
 
 import "./scss/main.scss";
+
+
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -23,6 +26,13 @@ const router = createBrowserRouter([
     element: <Welcome/>,
     loader: async()=>{
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7}/>;
+    }
+  },
+  {
+    path: "/about",
+    element: <GlobalGoal />,
+    loader: async () => {
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
     }
   },
   {

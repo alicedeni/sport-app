@@ -1,0 +1,58 @@
+.profile-block {
+    margin-left: 400px;
+    margin-right: 100px;
+    margin-top: -100px;
+    margin-bottom: 40px;
+    &-avatar {
+      position:absolute;
+      top: 205px;
+      left: 80px;
+      width: 270px;
+      height: 270px;
+      border-radius: 135px;
+      border: 10px solid $white2; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+    &-name {
+      font-size: 40px;
+      color: $white2;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    &-content{
+      margin-top: 100px;
+      &-data {
+        padding: 30px 50px;
+        background: $white2;
+        width: 100%;
+        border-radius: 10px;
+        
+        &-title {
+          color: black;
+          font-size: 32px;
+          font-weight: bold;
+        }
+        &-item {
+          display: flex;
+          align-items: center;
+          margin-top: 30px;
+        }
+        &-item-oval {
+          width: 240px;
+          height: 40px;
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid $blue;
+          margin-right: 30px;
+        }
+        &-item-oval-text {
+          margin-top: -10px;
+          font-size: 16px;
+          color: $blue;
+          text-align: center;
+        }
+      }
+    }
+  }
