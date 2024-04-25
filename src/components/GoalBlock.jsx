@@ -13,6 +13,11 @@ const GoalBlock = () => {
     setCurrentPage((currentPage + 1) % 5);
   };
 
+  const handleGoToMain = () => {
+    
+    window.location.href = '/main';
+  };
+
   const pages = [
     { title: 'НАША ЦЕЛЬ', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Risus vitae nunc, cursus vitae eget nisl elementum et.' },
     { title: 'ЧЕЛЛЕНДЖИ', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Risus vitae nunc, cursus vitae eget nisl elementum et.' },
@@ -38,7 +43,7 @@ const GoalBlock = () => {
       </div>
       <div className="goal-block__content">
         <p className="goal-block__text">{pages[currentPage].text}</p>
-        {currentPage === 4 && <ButtonEnter className="welcome-block__btn" text="Поехали!" textContent={"Поехали!"}></ButtonEnter>}
+        {currentPage === 4 && <ButtonEnter className="welcome-block__btn" text="Поехали!" textContent={"Поехали!"} onClick={handleGoToMain}></ButtonEnter>}
       </div>
     </div>
   );

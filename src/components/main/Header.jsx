@@ -8,9 +8,15 @@ const Header = ({setPage, isFeedPage}) => {
   const [userName, setUserName] = useState("");
 
   useEffect(() => {
-    axios.get('http://localhost:5000/main')
+    axios.get('http://localhost:5000/main', {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
       .then(response => {
         setUserName(response.data.name);
+        console.log("Response:", response.data);
+        console.log(localStorage.getItem('token'));
       })
       .catch(error => {
         console.error(error);

@@ -20,7 +20,7 @@ module.exports = ({ mode }) => {
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     devServer: {
       static: './dist',
-      hot: true,
+      hot: false,
       port: 3000,
       historyApiFallback: true,
       headers: {
@@ -39,7 +39,7 @@ module.exports = ({ mode }) => {
       new HtmlWebpackPlugin({
         template: './src/index.html',
       }),
-      isProduction ? null : new ReactRefreshWebpackPlugin(),
+      !isProduction && new ReactRefreshWebpackPlugin(),
     ].filter(Boolean),
     module: {
       rules: [
@@ -55,7 +55,7 @@ module.exports = ({ mode }) => {
         },
         {
           test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
-          type:'asset/resource',
+          type: 'asset/resource',
           generator: {
             filename: 'assets/img/[hash][ext][query]'
           }
@@ -68,7 +68,7 @@ module.exports = ({ mode }) => {
             options: {
               cacheDirectory: true,
               plugins: [
-                isProduction ? null : require.resolve('react-refresh/babel')
+                !isProduction && require.resolve('react-refresh/babel')
               ].filter(Boolean),
             },
           },
@@ -76,7 +76,7 @@ module.exports = ({ mode }) => {
       ],
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.py',], 
+      extensions: ['.js', '.jsx'],
       modules: [path.resolve(__dirname, 'src'), 'node_modules'],
       alias: {
         '@components': path.resolve(__dirname, 'src/components'),
@@ -84,7 +84,7 @@ module.exports = ({ mode }) => {
         '@helpers': path.resolve(__dirname, 'src/helpers'),
         '@pages': path.resolve(__dirname, 'src/pages'),
         '@style': path.resolve(__dirname, 'src/scss'),
-    }, 
+      },
     },
   };
 };

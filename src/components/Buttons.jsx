@@ -1,6 +1,6 @@
 export function ButtonEnter({src, onClick, textContent}) {
   return (
-    <a className="welcome-block__link-forward" href="/main" onClick={onClick}>
+    <a className="welcome-block__link-forward" onClick={onClick}>
       <button className={`button button-enter`}>
         <span className="button button-enter_text">{textContent}</span>
       </button>

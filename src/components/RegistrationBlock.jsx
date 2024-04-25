@@ -23,7 +23,7 @@ const RegistrationBlock = () => {
       axios.post('http://localhost:5000/register', { name, surname, patronymic, email, password })
         .then(response => {
           if (response.data.status === 200) {
-            window.location.href = '/main';
+            window.location.href = '/';
           }
         })
         .catch(error => {
