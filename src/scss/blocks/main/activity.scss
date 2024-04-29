@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 50px;
+    margin-top: 50px;
     padding: 0 100px;
     .select_time {
         margin-top: 50px;
@@ -25,4 +25,95 @@
           color: $blue;
         }
       }
+    &-return {
+      font-size: 40px;
+      font-weight: bold;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 30px;
+      &__prev{
+        background-color: transparent;
+        border: none;
+        font-size: 42px;
+        cursor: pointer;
+        transition: color 0.3s;
+        color: $blue;
+      }
+    }
+    &-input {
+      background: $white2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 30px;
+      padding: 50px;
+      border-radius: 15px;
+      &-title{
+        font-size: 24px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        font-weight: bold;
+        align-items: center;
+        gap: 10px;
+        &-number{
+          width: 48px;
+          height: 48px;
+          border-radius: 24px;
+          color: $white2;
+          background: $blue-20p;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+      &-content {
+        margin-left: 60px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+        &-description {
+          border-radius: 10px;
+          border: 2px solid $grey1;
+        }
+        &-image {
+          background: $grey3;
+          width: 210px;
+          height: 210px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
+          cursor: pointer;
+          & label {
+            color: $grey2;
+          }
+          & input {
+            display: none;
+          }
+        }
+        &-description{
+          width: 810px;
+        }
+        &-verification {
+          background: $grey3;
+          width: 400px;
+          height: 210px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
+          cursor: pointer;
+          & label {
+            color: $grey2;
+          }
+          & input {
+            display: none;
+          }
+        }
+      }
+    }
 }
