@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ButtonActivity } from "../Buttons";
+import { ButtonActivity, ButtonEnter } from "../Buttons";
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
@@ -12,6 +12,7 @@ const Activity = () => {
   const [activityVerification, setActivityVerification] = useState(null);
   const [activityImage, setActivityImage] = useState(null);
   const [activityDescription, setActivityDescription] = useState("");
+  const [error, setError] = useState("");
 
 
   const handleClick = (side) => {
@@ -64,6 +65,40 @@ const Activity = () => {
     });
   };
 
+  const handleSaveActivity = (event) => {
+    event.preventDefault();
+    if (!activityType || !activityStartTime || !activityEndTime || !activityCalories) {
+      setError("Пожалуйста, заполните обязательные поля.");
+      return;
+    }
+  
+    const activityData = {
+      type: activityType,
+      startTime: activityStartTime,
+      endTime: activityEndTime,
+      distance: activityDistance,
+      calories: activityCalories,
+      verification: activityVerification,
+      image: activityImage,
+      description: activityDescription,
+    };
+  
+    axios.post('http://localhost:5000/api/activities', activityData)
+      .then(response => {
+        if (response.data.status === 200) {
+          console.log('Активность успешно сохранена');
+          window.location.href = '/';
+        } else {
+          console.error('Ошибка при сохранении активности:', response.data.error);
+          setError("Произошла ошибка при сохранении активности.");
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        setError("Произошла ошибка при сохранении активности.");
+      });
+  };
+
   const isFormAdd = formState === "";
 
   return (
@@ -79,6 +114,7 @@ const Activity = () => {
           </>
         ) : (
           <>
+          <form onSubmit={handleSaveActivity}>
             <div className="activity-return">
               <button className="activity-return__prev" onClick={handleFormChange}>
                 &lt;
@@ -153,35 +189,39 @@ const Activity = () => {
                 <div className="activity-input-title-number">2</div>
                 Введите данные об активности</div>
               <div className="activity-input-content">
-                <div className="activity-details-item">
-                  <label>Время начала</label>
+                <div className="activity-input-content-item">
+                  <label className="activity-input-content-item-name">Время начала</label>
                   <input
+                    className="activity-input-content-item-field"
                     type="time"
                     value={activityStartTime}
                     onChange={(e) => handleActivityStartTimeChange(e.target.value)}
                   />
                 </div>
-                <div className="activity-details-item">
-                  <label>Время окончания</label>
+                <div className="activity-input-content-item">
+                  <label className="activity-input-content-item-name">Время окончания</label>
                   <input
+                    className="activity-input-content-item-field"
                     type="time"
                     value={activityEndTime}
                     onChange={(e) => handleActivityEndTimeChange(e.target.value)}
                   />
                 </div>
                 {['pool', 'run', 'bike'].includes(activityType) && (
-                  <div className="activity-details-item">
-                    <label>Расстояние</label>
+                  <div className="activity-input-content-item">
+                    <label className="activity-input-content-item-name">Расстояние</label>
                     <input
+                      className="activity-input-content-item-field"
                       type="number"
                       value={activityDistance}
                       onChange={(e) => handleActivityDistanceChange(e.target.value)}
                     />
                   </div>
                 )}
-                <div className="activity-details-item">
-                  <label>Калории</label>
+                <div className="activity-input-content-item">
+                  <label className="activity-input-content-item-name">Калории</label>
                   <input
+                    className="activity-input-content-item-field"
                     type="number"
                     value={activityCalories}
                     onChange={(e) => handleActivityCaloriesChange(e.target.value)}
@@ -194,7 +234,7 @@ const Activity = () => {
                 <div className="activity-input-title-number">3</div>
                 Подтверждение</div>
                 <div className="activity-input-content">
-                  <div class="activity-input-content-verification">
+                  <div className="activity-input-content-verification">
                     <label>Загрузить изображение</label>
                     <input
                         type="file" accept=".jpg, .jpeg, .png"
@@ -214,7 +254,7 @@ const Activity = () => {
                         value={activityDescription}
                         onChange={(e) => handleActivityDescriptionChange(e.target.value)}
                     ></textarea>
-                    <div class="activity-input-content-image">
+                    <div className="activity-input-content-image">
                         <label>Добавить фото активности</label>
                         <input
                             type="file" accept=".jpg, .jpeg, .png"
@@ -223,6 +263,8 @@ const Activity = () => {
                     </div>
                 </div>
             </div>
+            <ButtonEnter className="welcome-block__btn" text="Отправить" type="submit" textContent={"Отправить"}></ButtonEnter>
+          </form>
           </>
         )}
     </div>

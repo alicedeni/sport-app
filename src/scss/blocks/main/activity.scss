@@ -78,6 +78,7 @@
         &-description {
           border-radius: 10px;
           border: 2px solid $grey1;
+          width: 810px;
         }
         &-image {
           background: $grey3;
@@ -91,12 +92,6 @@
           & label {
             color: $grey2;
           }
-          & input {
-            display: none;
-          }
-        }
-        &-description{
-          width: 810px;
         }
         &-verification {
           background: $grey3;
@@ -110,10 +105,43 @@
           & label {
             color: $grey2;
           }
-          & input {
-            display: none;
+        }
+        &-item {
+          display: flex;
+          flex-direction: column;
+          &-name {
+            font-size: 16px;
+            color: $grey4;
+          }
+          &-field {
+            width: 200px;
+            height: 40px;
+            border-radius: 20px;
+            border: 2px solid $blue;
+            color: $blue;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
       }
     }
+}
+
+
+.activity-input-content-item-field[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+
+.activity-input-content-item-field[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: textfield; /* другие браузеры */
+}
+
+.activity-input-content-item-field[type="number"]::-webkit-inner-spin-button,
+.activity-input-content-item-field[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

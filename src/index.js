@@ -24,7 +24,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Welcome/>,
-    loader: async()=>{
+    loader: async() => {
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7}/>;
     }
   },
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/main",
-    element: <Main page={"feed"}/>,
+    element: <Main page={""}/>,
     loader: async () => {
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
     }
