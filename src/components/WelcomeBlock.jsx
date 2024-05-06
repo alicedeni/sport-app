@@ -20,7 +20,7 @@ const WelcomeBlock = () => {
         .then(response => {
           if (response.data.status === 200) {
             localStorage.setItem('token', response.data.token);
-            window.location.href = '/about';
+            window.location.href = '/main';
           } else {
             console.error(error);
             setError("Произошла ошибка при входе.");
