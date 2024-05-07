@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/main/Header';
 import Posts from '../components/main/Posts';
 import Challenges from '../components/main/Challenges';
@@ -7,7 +7,7 @@ import Activity from '../components/main/Activity';
 import axios from 'axios';
 
 const Main = () => {
-  const [page, setPage] = React.useState('feed');
+  const [page, setPage] = useState('feed');
   const [posts, setPosts] = useState([]);
 
   const getPostData = () => {
