@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
+import { useNavigate } from 'react-router-dom';
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
@@ -13,6 +14,7 @@ const Activity = () => {
   const [activityImage, setActivityImage] = useState(null);
   const [activityDescription, setActivityDescription] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
 
   const handleClick = (side) => {
@@ -44,11 +46,13 @@ const Activity = () => {
   };
 
   const handleActivityImageChange = (image) => {
-    setActivityImage(image);
+    const imageUrl = URL.createObjectURL(image);
+    setActivityImage(imageUrl);
   };
 
   const handleActivityVerificationChange = (image) => {
-    setActivityVerification(image);
+    const imageUrl = URL.createObjectURL(image);
+    setActivityVerification(imageUrl);
   };
 
   const handleActivityDescriptionChange = (description) => {
@@ -67,10 +71,12 @@ const Activity = () => {
 
   const handleSaveActivity = (event) => {
     event.preventDefault();
+    /*
     if (!activityType || !activityStartTime || !activityEndTime || !activityCalories) {
       setError("Пожалуйста, заполните обязательные поля.");
       return;
     }
+    */
   
     const activityData = {
       type: activityType,
@@ -83,20 +89,7 @@ const Activity = () => {
       description: activityDescription,
     };
   
-    axios.post('http://localhost:5000/api/activities', activityData)
-      .then(response => {
-        if (response.data.status === 200) {
-          console.log('Активность успешно сохранена');
-          window.location.href = '/';
-        } else {
-          console.error('Ошибка при сохранении активности:', response.data.error);
-          setError("Произошла ошибка при сохранении активности.");
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        setError("Произошла ошибка при сохранении активности.");
-      });
+    navigate('/editting', { state: { activityData } });
   };
 
   const isFormAdd = formState === "";
