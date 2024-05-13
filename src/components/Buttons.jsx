@@ -66,3 +66,23 @@ export function CButtonProfile({src, onClick, textContent}){
     </a>
   )
 }
+
+export function ButtonDelete({src, onClick, textContent}){
+  return(
+    <a className="button__delete" href="/" onClick={onClick}>
+        <button className={`button button-delete`}>
+        <span className="button_text">{textContent}</span>
+      </button>
+    </a>
+  )
+}
+
+export function ButtonExit({src, onClick, textContent}){
+  return(
+    <a className="button__delete" href="/" onClick={onClick}>
+        <button className={`button button-exit`}>
+        <span className="button_text">{textContent}</span>
+      </button>
+    </a>
+  )
+}

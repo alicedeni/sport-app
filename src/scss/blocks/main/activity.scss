@@ -75,11 +75,13 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 20px;
+      
         &-description {
           border-radius: 10px;
           border: 2px solid $grey1;
           width: 810px;
         }
+      
         &-image {
           background: $grey3;
           width: 210px;
@@ -89,10 +91,26 @@
           justify-content: center;
           border-radius: 10px;
           cursor: pointer;
+          position: relative;
+          overflow: hidden;
+      
           & label {
             color: $grey2;
+            cursor: pointer;
+            z-index: 1;
+          }
+      
+          & input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
           }
         }
+      
         &-verification {
           background: $grey3;
           width: 400px;
@@ -102,13 +120,29 @@
           justify-content: center;
           border-radius: 10px;
           cursor: pointer;
+          position: relative;
+          overflow: hidden;
+      
           & label {
             color: $grey2;
+            cursor: pointer;
+            z-index: 1;
+          }
+      
+          & input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
           }
         }
         &-item {
           display: flex;
           flex-direction: column;
+          align-items: center;
           &-name {
             font-size: 16px;
             color: $grey4;

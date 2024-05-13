@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ButtonEnter } from "../components/Buttons";
+import Header from '../components/main/Header';
 import axios from 'axios';
 
 const EditingPage = () => {

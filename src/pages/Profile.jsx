@@ -12,6 +12,7 @@ const Profile = () => {
         height: 170,
         weight: 70,
         // progress
+        activity: [{type: 'pool', time: 16, calories: 8500},],
         team: 1,
         league: "gold",
         avatar: "https://i.pinimg.com/736x/19/dd/ac/19ddacef8e14946b73248fe5b20338b0.jpg",
