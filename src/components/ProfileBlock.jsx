@@ -54,7 +54,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-text">Рост</p>
               <div className="profile-block-content-data-item-oval">
                 {editMode ? (
-                  <input type="number" value={tempUser.height} onChange={(event) => handleInputChange(event, 'height')} />
+                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.height} onChange={(event) => handleInputChange(event, 'height')} />
                 ) : (
                   <p className="profile-block-content-data-item-oval-text">{tempUser.height} см</p>
                 )}
@@ -64,7 +64,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-text">Вес</p>
               <div className="profile-block-content-data-item-oval">
                 {editMode ? (
-                  <input type="number" value={tempUser.weight} onChange={(event) => handleInputChange(event, 'weight')} />
+                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.weight} onChange={(event) => handleInputChange(event, 'weight')} />
                 ) : (
                   <p className="profile-block-content-data-item-oval-text">{tempUser.weight} кг</p>
                 )}
@@ -90,9 +90,9 @@ const ProfileBlock = ({ user }) => {
             </div>
           </div>
             {editMode && (
-              <div>
-                <button onClick={handleSaveClick}>Сохранить</button>
-                <button onClick={handleCancelClick}>Отменить</button>
+              <div className="profile-block-content-data-btn">
+                <button onClick={handleCancelClick} className="profile-block-content-data-btn-cancel">Отменить</button>
+                <button onClick={handleSaveClick} className="profile-block-content-data-btn-save">Сохранить</button>
               </div>
             )}
         </div>
@@ -117,9 +117,9 @@ const ProfileBlock = ({ user }) => {
             </div>
           </div>
           {editMode && (
-              <div>
-                <button onClick={handleSaveClick}>Сохранить</button>
-                <button onClick={handleCancelClick}>Отменить</button>
+              <div className="profile-block-content-data-btn">
+              <button onClick={handleCancelClick} className="profile-block-content-data-btn-cancel">Отменить</button>
+                <button onClick={handleSaveClick} className="profile-block-content-data-btn-save">Сохранить</button>
               </div>
             )}
         </div>
@@ -147,7 +147,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-text">Имя</p>
               <div className="profile-block-content-data-item-value">
                 {editMode ? (
-                  <input type="text" value={tempUser.firstName} onChange={(event) => handleInputChange(event, 'lastName')} />
+                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.firstName} onChange={(event) => handleInputChange(event, 'lastName')} />
                 ) : (
                   <p>{tempUser.firstName}</p>
                 )}
@@ -157,7 +157,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-text">Фамилия</p>
               <div className="profile-block-content-data-item-value">
                 {editMode ? (
-                  <input type="text" value={tempUser.lastName} onChange={(event) => handleInputChange(event, 'lastName')} />
+                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.lastName} onChange={(event) => handleInputChange(event, 'lastName')} />
                 ) : (
                   <p>{tempUser.lastName}</p>
                 )}
@@ -169,7 +169,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-text">Электронная почта</p>
               <div className="profile-block-content-data-item-value">
                 {editMode ? (
-                  <input type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
+                  <input className="profile-block-content-data-item-value" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
                 ) : (
                   <p>{tempUser.email}</p>
                 )}
@@ -179,7 +179,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-text">Пароль</p>
               <div className="profile-block-content-data-item-value">
                 {editMode ? (
-                  <input type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
+                  <input className="profile-block-content-data-item-value" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
                 ) : (
                   <p>*******</p>
                 )}
@@ -188,9 +188,9 @@ const ProfileBlock = ({ user }) => {
             </div>
           </div>
           {editMode && (
-            <div>
-              <button onClick={handleSaveClick}>Сохранить</button>
-              <button onClick={handleCancelClick}>Отменить</button>
+            <div className="profile-block-content-data-btn">
+              <button onClick={handleCancelClick} className="profile-block-content-data-btn-cancel">Отменить</button>
+              <button onClick={handleSaveClick} className="profile-block-content-data-btn-save">Сохранить</button>
             </div>
           )}
         </div>
