@@ -10,11 +10,15 @@ const EditingPage = () => {
   const navigate = useNavigate();
 
   const handlePublish = () => {
+    if (!activityData) {
+      console.error('Данные активности отсутствуют');
+      return;
+    }
     axios.post('http://localhost:5000/activities', activityData)
       .then(response => {
         if (response.data.status === 200) {
           console.log('Активность успешно опубликована');
-          navigate('/main');
+          window.location.href = '/main';
         } else {
           console.error('Ошибка при публикации активности:', response.data.error);
         }
@@ -25,7 +29,7 @@ const EditingPage = () => {
   };
 
   const handleBack = () => {
-    navigate(-1);
+    navigate('/main', { state: { page: 'activity' } });
   };
 
   return (

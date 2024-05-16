@@ -20,7 +20,7 @@ const Profile = () => {
     });
 
     const getUserData = () => {
-        return axios.get('http://localhost:5000/user', {})
+        return axios.get('http://localhost:5000/users', {})
             .then(response => {
                 return response.data;
             })

@@ -20,8 +20,6 @@ const Main = () => {
       time: '10', 
       calories: '100', 
       text: 'This is post 1.', 
-      isLiked: false, 
-      likeCount: 10, 
     }, 
     { 
       id: 2, 
@@ -33,9 +31,7 @@ const Main = () => {
       title: 'Post 2', 
       time: '5', 
       calories: '50', 
-      text: 'This is post 2.', 
-      isLiked: true, 
-      likeCount: 5, 
+      text: 'This is post 2.',
     }, 
   ]);
 
@@ -51,7 +47,13 @@ const Main = () => {
   };
 
   useEffect(() => {
-    getPostData().then(data => setPosts(data)).catch(error => console.error(error));
+    getPostData()
+      .then(data => {
+        if (data && data.posts) {
+          setPosts(data.posts);
+        }
+      })
+      .catch(error => console.error(error));
 }, []);
 
   let content;

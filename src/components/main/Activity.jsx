@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
@@ -50,10 +51,22 @@ const Activity = () => {
     setActivityImage(imageUrl);
   };
 
-  const handleActivityVerificationChange = (image) => {
-    const imageUrl = URL.createObjectURL(image);
-    setActivityVerification(imageUrl);
+  const handleActivityVerificationChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+  
+      axios.post('http://localhost:5000/uploads', formData)
+      .then(response => {
+        setActivityVerification(response.data.imageUrl);
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
+    }
   };
+  
 
   const handleActivityDescriptionChange = (description) => {
     setActivityDescription(description);
@@ -71,13 +84,6 @@ const Activity = () => {
 
   const handleSaveActivity = (event) => {
     event.preventDefault();
-    /*
-    if (!activityType || !activityStartTime || !activityEndTime || !activityCalories) {
-      setError("Пожалуйста, заполните обязательные поля.");
-      return;
-    }
-    */
-  
     const activityData = {
       type: activityType,
       startTime: activityStartTime,
@@ -230,10 +236,17 @@ const Activity = () => {
                   <div className="activity-input-content-verification">
                     <label>Загрузить изображение</label>
                     <input
-                        type="file" accept=".jpg, .jpeg, .png"
-                        onChange={(e) => handleActivityVerificationChange(e.target.files[0])}
+                      type="file" accept=".jpg, .jpeg, .png" 
+                      onChange={handleActivityVerificationChange} // Нет e.target.files[0]
                     />
                   </div>
+                  {activityVerification && (
+                    <>
+                        {console.log(activityVerification)}
+                        <img src={`http://localhost:5000${activityVerification}`} alt="Activity Verification" />
+                        {/* <img src={activityVerification} alt="Activity Verification" /> */}
+                    </>
+                  )}
                 </div>
             </div>
             <div className="activity-input">

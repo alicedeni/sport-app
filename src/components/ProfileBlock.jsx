@@ -1,22 +1,103 @@
 import React, { useState } from 'react';
 import { ButtonDelete, ButtonExit } from "./Buttons";
+import axios from 'axios';
 
 const ProfileBlock = ({ user }) => {
   const [editMode, setEditMode] = useState(false);
+  const [editModeProfile, setEditModeProfile] = useState(false);
+  const [editModeProgress, setEditModeProgress] = useState(false);
+  const [editModeAccount, setEditModeAccount] = useState(false);
+
   const [tempUser, setTempUser] = useState(user);
 
-  const handleEditClick = () => {
-    setEditMode(true);
+  const handleEditClickProfile = () => {
+    setEditModeProfile(true);
   };
 
-  const handleCancelClick = () => {
-    setEditMode(false);
+  const handleEditClickProgress = () => {
+    setEditModeProgress(true);
+  };
+
+  const handleEditClickAccount = () => {
+    setEditModeAccount(true);
+  };
+
+  const handleCancelClickProfile = () => {
+    setEditModeProfile(false);
+  };
+
+  const handleCancelClickProgress = () => {
+    setEditModeProgress(false);
+  };
+
+  const handleCancelClickAccount = () => {
+    setEditModeAccount(false);
+  };
+
+  const handleSave = () => {
+    if (!tempUser) {
+        console.error('Данные пользователя отсутствуют');
+        return;
+    }
+    axios.post('http://localhost:5000/userinfo', tempUser)
+        .then(response => {
+            if (response.data.status === 200) {
+                console.log('Данные пользователя успешно отправлены на сервер');
+            } else {
+                console.error('Ошибка при отправке данных на сервер:', response.data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке данных на сервер:', error);
+        });
+  };
+
+  const handleSaveClickProfile = () => {
+    setEditModeProfile(false);
     setTempUser(user);
+    handleSave();
   };
 
-  const handleSaveClick = () => {
-    setEditMode(false);
-    // API call to update the user data
+  const handleSaveClickProgress = () => {
+    setEditModeProgress(false);
+    setTempUser(user);
+    handleSave();
+  };
+
+  const handleSaveClickAccount = () => {
+    setEditModeAccount(false);
+    setTempUser(user);
+    handleSave();
+  };
+
+  const handleExit = () => {
+    axios.post('/logout')
+    .then(response => {
+      if (response.data.status === 200) {
+        window.location.href = '/';
+        console.log('Выход из аккаунта выполнен успешно');
+      } else {
+        console.error('Ошибка при выходе из аккаунта:', response.data.error);
+      }
+    })
+    .catch(error => {
+      console.error('Ошибка при выходе из аккаунта:', error);
+    });
+  };
+
+  const handleDelete = () => {
+    axios.delete(`http://localhost:5000/users`)
+      .then(response => {
+        if (response.data.status === 200) {
+          window.location.href = '/';
+          console.log('Аккаунт успешно удален');
+        } else {
+          console.error('Ошибка при удалении аккаунта:', response.data.error);
+        }
+      })
+      .catch(error => {
+        console.error('Ошибка при удалении аккаунта:', error);
+      });
   };
 
   const handleInputChange = (event, field) => {
@@ -42,7 +123,7 @@ const ProfileBlock = ({ user }) => {
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мои данные</p> 
-            <button onClick={handleEditClick} className="profile-block-content-data-title-pen">
+            <button onClick={handleEditClickProfile} className="profile-block-content-data-title-pen">
               <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z" stroke="#E0E0E0" stroke-width="2" />
               </svg>
@@ -53,7 +134,7 @@ const ProfileBlock = ({ user }) => {
             <div className="profile-block-content-data-item">
               <p className="profile-block-content-data-item-text">Рост</p>
               <div className="profile-block-content-data-item-oval">
-                {editMode ? (
+                {editModeProfile ? (
                   <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.height} onChange={(event) => handleInputChange(event, 'height')} />
                 ) : (
                   <p className="profile-block-content-data-item-oval-text">{tempUser.height} см</p>
@@ -63,7 +144,7 @@ const ProfileBlock = ({ user }) => {
             <div className="profile-block-content-data-item">
               <p className="profile-block-content-data-item-text">Вес</p>
               <div className="profile-block-content-data-item-oval">
-                {editMode ? (
+                {editModeProfile ? (
                   <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.weight} onChange={(event) => handleInputChange(event, 'weight')} />
                 ) : (
                   <p className="profile-block-content-data-item-oval-text">{tempUser.weight} кг</p>
@@ -89,17 +170,17 @@ const ProfileBlock = ({ user }) => {
               </div>
             </div>
           </div>
-            {editMode && (
+            {editModeProfile && (
               <div className="profile-block-content-data-btn">
-                <button onClick={handleCancelClick} className="profile-block-content-data-btn-cancel">Отменить</button>
-                <button onClick={handleSaveClick} className="profile-block-content-data-btn-save">Сохранить</button>
+                <button onClick={handleCancelClickProfile} className="profile-block-content-data-btn-cancel">Отменить</button>
+                <button onClick={handleSaveClickProfile} className="profile-block-content-data-btn-save">Сохранить</button>
               </div>
             )}
         </div>
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой прогресс</p>
-            <button onClick={handleEditClick} className="profile-block-content-data-title-pen">
+            <button onClick={handleEditClickProgress} className="profile-block-content-data-title-pen">
               <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z" stroke="#E0E0E0" stroke-width="2" />
               </svg>
@@ -116,17 +197,17 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-value">Улучшить форму</p>
             </div>
           </div>
-          {editMode && (
+          {editModeProgress && (
               <div className="profile-block-content-data-btn">
-              <button onClick={handleCancelClick} className="profile-block-content-data-btn-cancel">Отменить</button>
-                <button onClick={handleSaveClick} className="profile-block-content-data-btn-save">Сохранить</button>
+              <button onClick={handleCancelClickProgress} className="profile-block-content-data-btn-cancel">Отменить</button>
+                <button onClick={handleSaveClickProgress} className="profile-block-content-data-btn-save">Сохранить</button>
               </div>
             )}
         </div>
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой аккаунт</p>
-            <button onClick={handleEditClick} className="profile-block-content-data-title-pen">
+            <button onClick={handleEditClickAccount} className="profile-block-content-data-title-pen">
               <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z" stroke="#E0E0E0" stroke-width="2" />
               </svg>
@@ -137,7 +218,7 @@ const ProfileBlock = ({ user }) => {
             <div className="profile-block-content-data-item-column">
               <div className="profile-block-content-data-item-value">
                 <img src={editMode ? tempUser.avatar : tempUser.avatar} alt={tempUser.name} className="profile-block-content-data-item-image" />
-                {editMode && (
+                {editModeAccount && (
                   <input type="file" onChange={(event) => handleInputChange(event, 'avatar')} />
                 )}
               </div>
@@ -146,7 +227,7 @@ const ProfileBlock = ({ user }) => {
               <div>
               <p className="profile-block-content-data-item-text">Имя</p>
               <div className="profile-block-content-data-item-value">
-                {editMode ? (
+                {editModeAccount ? (
                   <input className="profile-block-content-data-item-value" type="text" value={tempUser.firstName} onChange={(event) => handleInputChange(event, 'lastName')} />
                 ) : (
                   <p>{tempUser.firstName}</p>
@@ -156,7 +237,7 @@ const ProfileBlock = ({ user }) => {
               <div>
               <p className="profile-block-content-data-item-text">Фамилия</p>
               <div className="profile-block-content-data-item-value">
-                {editMode ? (
+                {editModeAccount ? (
                   <input className="profile-block-content-data-item-value" type="text" value={tempUser.lastName} onChange={(event) => handleInputChange(event, 'lastName')} />
                 ) : (
                   <p>{tempUser.lastName}</p>
@@ -168,7 +249,7 @@ const ProfileBlock = ({ user }) => {
               <div>
               <p className="profile-block-content-data-item-text">Электронная почта</p>
               <div className="profile-block-content-data-item-value">
-                {editMode ? (
+                {editModeAccount ? (
                   <input className="profile-block-content-data-item-value" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
                 ) : (
                   <p>{tempUser.email}</p>
@@ -178,7 +259,7 @@ const ProfileBlock = ({ user }) => {
               <div>
               <p className="profile-block-content-data-item-text">Пароль</p>
               <div className="profile-block-content-data-item-value">
-                {editMode ? (
+                {editModeAccount ? (
                   <input className="profile-block-content-data-item-value" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
                 ) : (
                   <p>*******</p>
@@ -187,17 +268,17 @@ const ProfileBlock = ({ user }) => {
               </div>
             </div>
           </div>
-          {editMode && (
+          {editModeAccount && (
             <div className="profile-block-content-data-btn">
-              <button onClick={handleCancelClick} className="profile-block-content-data-btn-cancel">Отменить</button>
-              <button onClick={handleSaveClick} className="profile-block-content-data-btn-save">Сохранить</button>
+              <button onClick={handleCancelClickAccount} className="profile-block-content-data-btn-cancel">Отменить</button>
+              <button onClick={handleSaveClickAccount} className="profile-block-content-data-btn-save">Сохранить</button>
             </div>
           )}
         </div>
       </div>
       <div className="profile-block-btn">
-        <ButtonExit text="Выйти из аккаунта" textContent={"Выйти из аккаунта"}/>
-        <ButtonDelete text="Удалить аккаунт" textContent={"Удалить аккаунт"}/>
+        <ButtonExit text="Выйти из аккаунта" textContent={"Выйти из аккаунта"} onClick={handleExit}/>
+        <ButtonDelete text="Удалить аккаунт" textContent={"Удалить аккаунт"}  onClick={handleDelete}/>
       </div>
     </div>
   );

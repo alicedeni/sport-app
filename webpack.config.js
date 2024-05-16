@@ -2,6 +2,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const express = require('express');
 
 module.exports = ({ mode }) => {
   const isProduction = mode === 'production';
@@ -30,6 +31,10 @@ module.exports = ({ mode }) => {
       },
       devMiddleware: {
         writeToDisk: true,
+      },
+      setupMiddlewares: (middlewares, devServer) => {
+        devServer.app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
+        return middlewares;
       },
     },
     plugins: [

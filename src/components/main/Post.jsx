@@ -33,7 +33,11 @@ const Post = ({ post }) => {
   return (
     <div className="post">
       <div className="post__header">
-        <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
+        {post.miniAvatar ? ( 
+          <Avatar className="post__mini-avatar" src={`http://localhost:5000/${post.miniAvatar}`} alt="avatar" />
+        ) : (
+          <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
+        )}
         <div className="post__user-info">
           <div className="post__svg-fire-container">
             <div className="post__username">{post.username}</div>
@@ -56,14 +60,28 @@ const Post = ({ post }) => {
       </div>
       <div className="post__content">
         <div className="post__image-container">
-          <img className="post__image" src={post.image} alt="Post image" />
+          {/* <img className="post__image" src={post.image} alt="Post image" /> */}
+          <img className="post__image" src={`http://localhost:5000/${post.image}`} alt="Post image" />
         </div>
         <div className="post__info">
           <div className="post__title">{post.title}</div>
-          <div>
-            <div className="post__time">{post.time} мин</div>
-            <div className="post__calories">{post.calories} ккал</div>
+          <div className="post__time">
+            {post.time && (
+                <div className="formatted-time">
+                    {(() => {
+                        const [hours, minutes] = post.time.split(':').map(Number);
+                        let totalHours = hours + Math.round(minutes / 60 * 2) / 2;
+                        let hour = Math.floor(totalHours);
+                        if (hour !== 0) {
+                          return <span>{totalHours} часа</span>;
+                        } else {
+                          return <span>{minutes} мин</span>;
+                        }
+                    })()}
+                </div>
+            )}
           </div>
+          <div className="post__calories">{post.calories} ккал</div>
           <div className="post__text">{post.text}</div>
         </div>
       </div>
