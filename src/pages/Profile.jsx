@@ -20,7 +20,7 @@ const Profile = () => {
     });
 
     const getUserData = () => {
-        return axios.get('http://localhost:5000/users', {})
+        return axios.get('http://localhost:5000/profile', {})
             .then(response => {
                 return response.data;
             })
@@ -31,9 +31,14 @@ const Profile = () => {
     };
 
     useEffect(() => {
-        getUserData().then(data => setUser(data)).catch(error => console.error(error));
+      getUserData()
+        .then(data => {
+          if (data && data.profile) {
+            setUser(data.profile);
+          }
+        })
+        .catch(error => console.error(error));
     }, []);
-
 
   return (
     <div className="container">

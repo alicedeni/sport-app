@@ -57,14 +57,17 @@ export function ButtonActivity({src, onClick, textContent}){
   )
 }
 
-export function CButtonProfile({src, onClick, textContent}){
-  return(
+export function CButtonProfile({ children, points, onClick }) {
+  return (
     <a className="cbutton__profile" href="/profile" onClick={onClick}>
-        <button className={`button cbutton-profile`}>
-        <span className="cbutton-profile_text">{textContent}</span>
+      <button className="button cbutton-profile">
+        <div className="points">
+          {points}
+        </div>
+        {children}
       </button>
     </a>
-  )
+  );
 }
 
 export function ButtonDelete({src, onClick, textContent}){

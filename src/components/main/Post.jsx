@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Avatar, IconButton } from '@material-ui/core';
 import { Favorite, FavoriteBorder, Comment } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import CommentDefaultIcon from '../../assets/icons/commentDefault.svg';
 import HeartDefaultIcon from '../../assets/icons/heartDefault.svg';
 import CommentFilledIcon from '../../assets/icons/commentFilled.svg';
@@ -16,20 +17,107 @@ const Post = ({ post }) => {
   const [isCommentOpen, setIsCommentOpen] = React.useState(false);
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likeCount, setLikeCount] = useState(post.likeCount);
+  const [commentText, setCommentText] = useState('');
+  const [comments, setComments] = useState(post.comments || []);
+  const [commentCount, setCommentCount] = useState(post.commentCount || 0);
+
+  console.log(post); 
+
+  useEffect(() => {
+    axios.get(`http://localhost:5000/get_comments/${post.feed_id}`)
+      .then(response => {
+        if (response.data.status === 200) {
+          setComments(response.data.comments);
+          setCommentCount(response.data.comments.length);
+        } else {
+          console.error('Error fetching comments:', response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching comments:', error);
+      });
+  }, [post.feed_id]);
 
   const handleLikeClick = () => {
+    const likeData = {
+      post_id: post.feed_id,
+    };
+    
     if (isLiked) {
-      setIsLiked(false);
-      setLikeCount(likeCount - 1);
+      axios.post('http://localhost:5000/unlike', likeData)
+        .then(response => {
+          if (response.data.status === 200) {
+            setIsLiked(false);
+            setLikeCount(likeCount - 1);
+          } else {
+            console.error('Error unliking post:', response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error unliking post:', error);
+        });
     } else {
-      setIsLiked(true);
-      setLikeCount(likeCount + 1);
+      // лайк
+      axios.post('http://localhost:5000/like', likeData)
+        .then(response => {
+          if (response.data.status === 200) {
+            setIsLiked(true);
+            setLikeCount(likeCount + 1);
+          } else {
+            console.error('Error liking post:', response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error liking post:', error);
+        });
     }
   };
+
+  // проверка на авторство комментария
+  // const handleCommentClick = () => {
+  //   setIsCommentOpen(!isCommentOpen);
+  // };
+  
   const handleCommentClick = () => {
+    if (!isCommentOpen) {
+      axios.get(`http://localhost:5000/get_comments/${post.feed_id}`)
+        .then(response => {
+          if (response.data.status === 200) {
+            setComments(response.data.comments);
+          } else {
+            console.error('Error fetching comments:', response.data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching comments:', error);
+        });
+    }
     setIsCommentOpen(!isCommentOpen);
   };
+  
+  const handleCommentChange = (event) => {
+    setCommentText(event.target.value);
+  };
 
+  const handleCommentSubmit = () => {
+    const commentData = {
+      post_id: post.feed_id,
+      comment_text: commentText,
+    };
+    
+    axios.post('http://localhost:5000/comment', commentData)
+      .then(response => {
+        if (response.data.status === 200) {
+          setComments([...comments, { text: commentText, surname: 'Вы' }]);
+          setCommentText('');
+          setCommentCount(commentCount + 1);
+        } else {
+          console.error('Error commenting on post:', response.data.message);
+        }
+      })
+      .catch(error => console.error('Error commenting on post:', error));
+  };
+  
   return (
     <div className="post">
       <div className="post__header">
@@ -88,15 +176,36 @@ const Post = ({ post }) => {
       <div className="post__actions">
         <div className="post__like-container">
           <IconButton onClick={handleLikeClick}>
+            {/* количество лайков */}
             {isLiked ? <Favorite color="secondary" /> : <FavoriteBorder />}
           </IconButton>
-          <div className="post__like-count">{post.likeCount}</div>
+          <div className="post__like-count">{likeCount}</div>
         </div>
         <div className="post__comment-container">
           <IconButton onClick={handleCommentClick}>
             <Comment />
           </IconButton>
-          {isCommentOpen && <input className="post__comment-input" placeholder="Написать комментарий..." />}
+          <div className="post__comment-count">{commentCount}</div>
+          {isCommentOpen && (
+            <div className="post__comment-section">
+              <input
+                className="post__comment-input"
+                placeholder="Написать комментарий..."
+                value={commentText}
+                onChange={handleCommentChange}
+              />
+              <button onClick={handleCommentSubmit}>Отправить</button>
+              {comments.length > 0 && (
+                <div className="post__comments">
+                  {comments.map((comment, index) => (
+                    <div key={index} className="post__comment">
+                      <strong>{comment.surname}{comment.name}</strong>: {comment.text}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -104,3 +213,4 @@ const Post = ({ post }) => {
 };
 
 export default Post;
+

@@ -33,6 +33,7 @@
       align-items: center;
       justify-content: flex-start;
       margin-bottom: 30px;
+      gap: 20px;
       &__prev{
         background-color: transparent;
         border: none;
@@ -41,6 +42,51 @@
         transition: color 0.3s;
         color: $blue;
       }
+    }
+    &-total{
+      margin: 20px 0px;
+      color: $grey1;
+      width: 100%;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    &-list{
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      margin: 40px 0px;
+      width: 100%;
+      flex-wrap: wrap;
+      &-item {
+        padding: 60px 30px;
+        width: 340px;
+        height: 270px;
+        background-color: $white2;
+        border-radius: 15px;
+        &-time {
+          font-size: 32px;
+          font-weight: bold;
+          text-align: center;
+          margin: 20px;
+        }
+        .pool {color: $blue;}
+        .cardio {color: $yellow;}
+        .run {color: $green;}
+        .power {color: $pink;}
+        .bike {color: $purple2;}
+        .game {color: $dark-blue;}
+        .dance {color: $purple1;}
+        .other {color: $grey4;}
+        &-average {
+          font-size: 16px;
+          color: $grey1;
+          text-align: center;
+        }
+      }
+    }
+    &-submit_btn {
+      padding-bottom: 20px;
+      display: flex;
     }
     &-input {
       background: $white2;

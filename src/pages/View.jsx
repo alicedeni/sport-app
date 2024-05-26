@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { ButtonEnter } from "../components/Buttons";
 import Header from '../components/main/Header';
 import axios from 'axios';
 
 const EditingPage = () => {
+  const [page, setPage] = useState('feed');
   const { state } = useLocation();
   const { activityData } = state;
   const navigate = useNavigate();

@@ -1,64 +1,88 @@
 .header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: $gradient;
-    width: 100%;
-    padding: 0px 100px;
-    &-title {
-      font-size: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: $gradient;
+  width: 100%;
+  padding: 0px 100px;
+  // &-title {
+  //   font-size: 32px;
+  //   color: $white2;
+  //   padding: 30px;
+  //   font-weight: lighter;
+  // }
+  &-title {
+    font-size: 32px;
+    color: $white2;
+    padding: 30px;
+    font-weight: lighter;
+    img {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+    }
+    .avatar-placeholder {
+      justify-content: center;
       color: $white2;
-      padding: 30px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 32px;
       font-weight: lighter;
     }
-    &-notification {
-      width: 100%;
-      height: 380px;
-      background: $white2;
-      border-radius: 30px;
-      padding: 60px;
-      position: relative;
-      &-title {
-        font-size: 40px;
-        margin-bottom: 20px;
-      }
-      &-text {
-        font-size: 20px;
-        margin-bottom: 40px;
-      }
-      &-close {
-        position: absolute;
-        top: 25px;
-        right: 25px;
-        border: none;
-        background: none;
-        cursor: pointer;
-      }
+  }
+  .points {
+    margin-right: 10px;
+    font-size: 24px;
+    color: $white2;
+  }
+  &-notification {
+    width: 100%;
+    height: 380px;
+    background: $white2;
+    border-radius: 30px;
+    padding: 60px;
+    position: relative;
+    &-title {
+      font-size: 40px;
+      margin-bottom: 20px;
     }
-    &-nav {
+    &-text {
+      font-size: 20px;
+      margin-bottom: 40px;
+    }
+    &-close {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+  }
+  &-nav {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    &-list {
       display: flex;
-      margin-top: 10px;
-      margin-bottom: 30px;
-      &-list {
-        display: flex;
-        justify-content: space-between;
-        padding: 25px;
-        margin: 0;
-        list-style-type: none;
-  
-        &-item {
-          font-size: 24px;
-          margin: 0 30px;
-          padding: 5px;
-          color: $white2;
-          cursor: pointer;
-          text-decoration: none;
-          &:hover {
-            
-            border-bottom: 2px solid $white; 
-          }
+      justify-content: space-between;
+      padding: 25px;
+      margin: 0;
+      list-style-type: none;
+
+      &-item {
+        font-size: 24px;
+        margin: 0 30px;
+        padding: 5px;
+        color: $white2;
+        cursor: pointer;
+        text-decoration: none;
+        &:hover {
+          
+          border-bottom: 2px solid $white; 
         }
       }
     }
   }
-  
+}

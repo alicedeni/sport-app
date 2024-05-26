@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
+  const [activities, setActivities] = useState([
+    { 
+      id: 1,
+      tag: 'cardio',
+      type: 'КАРДИОТРЕНИРОВКА',
+      color: '$yellow',
+      time: 14,
+      average: 30,
+    },
+    { 
+      id: 2,
+      tag: 'power',
+      type: 'СИЛОВАЯ ТРЕНИРОВКА',
+      color: '$pink',
+      time: 25,
+      average: 51,
+    }
+  ]);
   const [formState, setFormState] = useState("");
+  const [activityTypes, setActivityTypes] = useState([]); 
   const [activityType, setActivityType] = useState("");
   const [activityStartTime, setActivityStartTime] = useState("");
   const [activityEndTime, setActivityEndTime] = useState("");
@@ -17,6 +36,39 @@ const Activity = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // Загружаем список активностей
+    axios.get('http://localhost:5000/list_of_activities')
+      .then(response => {
+        if (response.data.status === 200) {
+          setActivityTypes(response.data.activities);
+        } else {
+          console.error('Error loading activities:', response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading activities:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        let response;
+        if (selectedSide === 'week') {
+          response = await axios.get('http://localhost:5000/activities/week');
+        } else if (selectedSide === 'month') {
+          response = await axios.get('http://localhost:5000/activities/month');
+        } else {
+          response = await axios.get('http://localhost:5000/activities/all');
+        }
+        setActivities(response.data.activities);
+      } catch (error) {
+        console.error('Error fetching activities:', error);
+      }
+    };
+    fetchActivities();
+  }, [selectedSide]);
 
   const handleClick = (side) => {
     setSelectedSide(side);
@@ -74,12 +126,12 @@ const Activity = () => {
 
   const handleActivityTypeChange = (type) => {
     setActivityType(type);
-    const allActivityTypes = ['pool', 'cardio', 'run', 'power', 'bike', 'game', 'dance', 'other'];
-    allActivityTypes.forEach(activity => {
-      if (activity !== type) {
-        document.getElementById(activity).style.display = 'none';
-      }
-    });
+    // const allActivityTypes = ['pool', 'cardio', 'run', 'power', 'bike', 'game', 'dance', 'other'];
+    // allActivityTypes.forEach(activity => {
+    //   if (activity !== type) {
+    //     document.getElementById(activity).style.display = 'none';
+    //   }
+    // });
   };
 
   const handleSaveActivity = (event) => {
@@ -98,6 +150,22 @@ const Activity = () => {
     navigate('/editting', { state: { activityData } });
   };
 
+  const getTotalTime = () => {
+    return activities.reduce((total, activity) => total + activity.time, 0);
+  };
+  const getPeriodText = () => {
+    switch (selectedSide) {
+      case 'week':
+        return 'за неделю';
+      case 'month':
+        return 'за месяц';
+      case 'week && month':
+        return 'за все время';
+      default:
+        return '';
+    }
+  };
+
   const isFormAdd = formState === "";
 
   return (
@@ -110,6 +178,19 @@ const Activity = () => {
             <div className="select_time-variant" style={{backgroundColor: selectedSide === 'month' ? 'rgba(81, 184, 255, 0.2)' : 'white'}} onClick={() => handleClick('month')}>За месяц</div>
             <div className="select_time-variant" style={{backgroundColor: selectedSide === 'week && month' ? 'rgba(81, 184, 255, 0.2)' : 'white'}} onClick={() => handleClick('week && month')}>За все время</div>
           </div>
+          <div className="activity-total">Всего: {getTotalTime()} часов активности {getPeriodText()}</div>
+
+          <div className="activity-list">
+            {activities.map((activity, index) => (
+              <div key={index} className="activity-list-item">
+                <div key={activity.name} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
+                  {activity.type.toUpperCase()}
+                </div>
+                <div className={`activity-list-item-time ${activity.tag}`}>{activity.time} часов</div>
+                <div className="activity-list-item-average">В среднем {activity.average} минуты в день</div>
+              </div>
+            ))}
+          </div>
           </>
         ) : (
           <>
@@ -118,69 +199,23 @@ const Activity = () => {
               <button className="activity-return__prev" onClick={handleFormChange}>
                 &lt;
               </button>
-              Добавление активности
+              <div>Добавление активности</div>
             </div>
             <div className="activity-input">
               <div className="activity-input-title">
               <div className="activity-input-title-number">1</div>
               Выберите вид активности</div>
               <div className="activity-input-content">
-                <div id="pool" className={`activity-btn ${
-                    activityType === 'pool' ? 'pool-bold' : 'pool-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('pool')}
-                >
-                  БАССЕЙН
-                </div>
-                <div id="cardio" className={`activity-btn ${
-                    activityType === 'cardio' ? 'cardio-bold' : 'cardio-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('cardio')}
-                >
-                  КАРДИОТРЕНИРОВКА
-                </div>
-                <div id="run" className={`activity-btn ${
-                    activityType === 'run' ? 'run-bold' : 'run-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('run')}
-                >
-                  БЕГ
-                </div>
-                <div id="power" className={`activity-btn ${
-                    activityType === 'power' ? 'power-bold' : 'power-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('power')}
-                >
-                  СИЛОВАЯ ТРЕНИРОВКА
-                </div>
-                <div id="bike" className={`activity-btn ${
-                    activityType === 'bike' ? 'bike-bold' : 'bike-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('bike')}
-                >
-                  ВЕЛОТРЕНИРОВКА
-                </div>
-                <div id="game" className={`activity-btn ${
-                    activityType === 'game' ? 'game-bold' : 'game-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('game')}
-                >
-                  СПОРТИВНЫЕ ИГРЫ
-                </div>
-                <div id="dance" className={`activity-btn ${
-                    activityType === 'dance' ? 'dance-bold' : 'dance-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('dance')}
-                >
-                  ТАНЦЫ
-                </div>
-                <div id="other" className={`activity-btn ${
-                    activityType === 'other' ? 'other-bold' : 'other-light'
-                  }`}
-                  onClick={() => handleActivityTypeChange('other')}
-                >
-                  ДРУГОЕ
-                </div>
+
+                {activityTypes.map(activity => (
+                  <div key={activity.name} id={activity.tag} className={`activity-btn ${
+                      activityType === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
+                    }`}
+                    onClick={() => handleActivityTypeChange(activity.tag)}
+                  >
+                    {activity.name.toUpperCase()}
+                  </div>
+                ))}
               </div>
             </div>
             <div className="activity-input">
@@ -269,7 +304,9 @@ const Activity = () => {
                     </div>
                 </div>
             </div>
-            <ButtonEnter className="welcome-block__btn" text="Отправить" type="submit" textContent={"Отправить"}></ButtonEnter>
+            <div className="activity-submit_btn">
+            <ButtonEnter className="welcome-block__btn" text="Далее" type="submit" textContent={"Далее"}></ButtonEnter>
+            </div>
           </form>
           </>
         )}

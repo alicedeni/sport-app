@@ -1,0 +1,53 @@
+.challenges{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
+    padding: 0px 100px;   
+}
+
+.select_pt {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .select_pt-variant {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .current-challenges {
+    margin-bottom: 20px;
+  }
+  
+  .completed-challenges table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .completed-challenges th,
+  .completed-challenges td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .completed-challenges tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .challenge-item {
+    margin-bottom: 20px;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    background-color: $white2;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 20px;
+    background-color: $blue;
+  }

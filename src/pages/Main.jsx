@@ -54,7 +54,7 @@ const Main = () => {
         }
       })
       .catch(error => console.error(error));
-}, []);
+  }, []);
 
   let content;
 
