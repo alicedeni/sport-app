@@ -5,8 +5,8 @@ const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left');
   const [participants, setParticipants] = useState([
     { id: 1, firstName: 'Иван', lastName: 'Иванов', team: 'Команда 1', progress: 500 },
-    { id: 2, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 300 },
-    { id: 3, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 400 },
+    { id: 2, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 400 },
+    { id: 3, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 200 },
   ]);
   const [teams, setTeams] = useState([
     { id: 1, name: 'Команда 1', members: 10, totalProgress: 5000 },
@@ -66,26 +66,14 @@ const Ratings = () => {
         </div>
       ) : (
         <div className="ratings-teams-list">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Название</th>
-                <th>Участники</th>
-                <th>Прогресс</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teams.map((team, index) => (
-                <tr key={team.id}>
-                  <td>{index + 1}</td>
-                  <td>{team.name}</td>
-                  <td>{team.members}</td>
-                  <td>{team.totalProgress}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {teams.map((team) => (
+            <div key={team.id} className="ratings-teams-list-team-item">
+              <div className="ratings-teams-list-team-item-team-num">{team.id}</div>
+              <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
+              <div className="ratings-teams-list-team-item-team-members">{team.members} участников</div>
+              <div className="ratings-teams-list-team-item-team-progress">{team.totalProgress}</div>
+            </div>
+          ))}
         </div>
       )}
     </div>

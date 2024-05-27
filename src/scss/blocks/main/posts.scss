@@ -77,34 +77,55 @@
     
       &__info {
         width: 70%;
+        padding: 40px;
       }
     
+      &__points {
+        margin: 20px 0px;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        &__point {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+          color: $grey1;
+          font-size: 16px;
+        }
+      }
+
       &__title {
-        font-weight: bold;
-        margin-bottom: 5px;
-        color: $blue;
-        padding: 10px 20px;
-        border-radius: 20px;
-        background-color: rgba(86, 127, 227, 0.1);
-        font-weight: bold;
-        display: inline-block;
-        margin-top: 20px;;
+        display: flex;
+      }
+      &__line {
+        width: 100%;
+        height: 1px;
+        background-color: $grey1;
+
       }
     
       &__time {
-        font-size: 12px;
+        border: 2px solid $blue;
+        font-size: 24px;
         color: $blue;
-        margin-bottom: 5px;
+        border-radius: 20px;
+        height: 40px;
+        padding: 0px 20px;
       }
     
       &__calories {
-        font-size: 12px;
+        padding: 0px 20px;
+        font-size: 24px;
         color: $blue;
-        margin-bottom: 10px;
+        border: 2px solid $blue;
+        border-radius: 20px;
+        height: 40px;
       }
     
       &__text {
-        font-size: 14px;
+        margin: 20px 0px;
+        font-size: 20px;
       }
     
       &__actions {

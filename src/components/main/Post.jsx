@@ -152,24 +152,36 @@ const Post = ({ post }) => {
           <img className="post__image" src={`http://localhost:5000/${post.image}`} alt="Post image" />
         </div>
         <div className="post__info">
-          <div className="post__title">{post.title}</div>
-          <div className="post__time">
-            {post.time && (
-                <div className="formatted-time">
-                    {(() => {
-                        const [hours, minutes] = post.time.split(':').map(Number);
-                        let totalHours = hours + Math.round(minutes / 60 * 2) / 2;
-                        let hour = Math.floor(totalHours);
-                        if (hour !== 0) {
-                          return <span>{totalHours} часа</span>;
-                        } else {
-                          return <span>{minutes} мин</span>;
-                        }
-                    })()}
+          <div className="post__title">
+          <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
+                  {post.type.toUpperCase()}
                 </div>
-            )}
           </div>
-          <div className="post__calories">{post.calories} ккал</div>
+          <div className="post__points">
+            <div className="post__points__point"> Время
+              <div className="post__time">
+                {post.time && (
+                    <div className="formatted-time">
+                        {(() => {
+                            const [hours, minutes] = post.time.split(':').map(Number);
+                            let totalHours = hours + Math.round(minutes / 60 * 2) / 2;
+                            let hour = Math.floor(totalHours);
+                            if (hour !== 0) {
+                              return <span>{totalHours} часа</span>;
+                            } else {
+                              return <span>{minutes} мин</span>;
+                            }
+                        })()}
+                    </div>
+                )}
+              </div>
+            </div>
+            <div className="post__points__point">
+              Калории
+              <div className="post__calories">{post.calories} ккал</div>
+            </div>
+          </div>
+          <div className="post__line"></div>
           <div className="post__text">{post.text}</div>
         </div>
       </div>
