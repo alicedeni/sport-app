@@ -148,15 +148,24 @@ const Post = ({ post }) => {
       </div>
       <div className="post__content">
         <div className="post__image-container">
-          {/* <img className="post__image" src={post.image} alt="Post image" /> */}
           <img className="post__image" src={`http://localhost:5000/${post.image}`} alt="Post image" />
         </div>
         <div className="post__info">
           <div className="post__title">
+            
           <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
                   {post.type.toUpperCase()}
                 </div>
           </div>
+            {/* {post.tag && post.type ? (
+              <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
+                {post.type.toUpperCase()}
+              </div>
+            ) : (
+              <div className="activity-btn">Unknown Type</div>
+            )}
+          </div> */}
+
           <div className="post__points">
             <div className="post__points__point"> Время
               <div className="post__time">
