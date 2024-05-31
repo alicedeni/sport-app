@@ -3,32 +3,43 @@ import axios from 'axios';
 
 const Challenges = () => {
   const [selectedSide, setSelectedSide] = useState('current');
-  const [currentChallenges, setCurrentChallenges] = useState([
-    { id: 1, name: 'Пробежать 10 км', progress: 75, points: 100 },
-    { id: 2, name: 'Отжаться 100 раз', progress: 50, points: 50 },
-    { id: 3, name: 'Проплыть 1 км', progress: 90, points: 75 },
-  ]);
-  const [completedChallenges, setCompletedChallenges] = useState([
-    { id: 1, name: 'Сделать 1000 шагов',progress: 100, points: 25 },
-    { id: 2, name: 'Поднять 50 кг', progress: 100, points: 75 },
-    { id: 3, name: 'Отжаться 50 раз', progress: 90, points: 50 },
-  ]);
+  const [currentChallenges, setCurrentChallenges] = useState([]);
+  const [completedChallenges, setCompletedChallenges] = useState([]);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchData = async () => {
       try {
+        let response;
         if (selectedSide === 'current') {
-          const response = await axios.get('http://localhost:5000/current-challenges');
-          setCurrentChallenges(response.data);
+          response = await axios.get('http://localhost:5000/current-challenges');
         } else {
-          const response = await axios.get('http://localhost:5000/completed-challenges');
-          setCompletedChallenges(response.data);
+          response = await axios.get('http://localhost:5000/completed-challenges');
+        }
+        if (isMounted) {
+          const data = response.data;
+          if (data.status === 200) {
+            if (selectedSide === 'current') {
+              setCurrentChallenges(data.current_challenges || []);
+            } else {
+              setCompletedChallenges(data.completed_challenges || []);
+            }
+          } else {
+            console.error('Data error:', data.message);
+          }
         }
       } catch (error) {
-        console.error('Error fetching data:', error);
+        if (isMounted) {
+          console.error('Error fetching data:', error);
+        }
       }
     };
     fetchData();
+
+    return () => {
+      isMounted = false;
+    };
   }, [selectedSide]);
 
   const handleClick = (side) => {
@@ -60,33 +71,41 @@ const Challenges = () => {
 
       {selectedSide === 'current' ? (
         <div className="current-challenges">
-          {currentChallenges.map((challenge) => (
-            <div key={challenge.id} className="challenge-item">
-              <h3>{challenge.name}</h3>
-              <div className="progress-bar">
-                <div
-                  className="progress"
-                  style={{ width: `${challenge.progress}%` }}
-                ></div>
+          {currentChallenges.length > 0 ? (
+            currentChallenges.map((challenge) => (
+              <div key={challenge.id} className="challenge-item">
+                <h3>{challenge.name}</h3>
+                <div className="progress-bar">
+                  <div
+                    className="progress"
+                    style={{ width: `${challenge.progress}%` }}
+                  ></div>
+                </div>
+                <div className="points">{challenge.points} баллов</div>
               </div>
-              <div className="points">{challenge.points} баллов</div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div>No current challenges</div>
+          )}
         </div>
       ) : (
         <div className="completed-challenges">
-          {completedChallenges.map((challenge) => (
-            <div key={challenge.id} className="challenge-item">
-              <h3>{challenge.name}</h3>
-              <div className="progress-bar">
-                <div
-                  className="progress"
-                  style={{ width: `${challenge.progress}%` }}
-                ></div>
+          {completedChallenges.length > 0 ? (
+            completedChallenges.map((challenge) => (
+              <div key={challenge.id} className="challenge-item">
+                <h3>{challenge.name}</h3>
+                <div className="progress-bar">
+                  <div
+                    className="progress"
+                    style={{ width: `${challenge.progress}%` }}
+                  ></div>
+                </div>
+                <div className="points">{challenge.points} баллов</div>
               </div>
-              <div className="points">{challenge.points} баллов</div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div>No completed challenges</div>
+          )}
         </div>
       )}
     </div>
