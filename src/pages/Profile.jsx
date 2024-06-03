@@ -14,8 +14,10 @@ const Profile = () => {
         weight: 70,
         // progress
         activity: [{type: 'pool', color: 'blue', time: 16, calories: 8500},],
-        team: 1,
+        team: "Команда №1",
+        teammates: 8,
         league: "gold",
+        place_league: 6,
         avatar: "https://i.pinimg.com/736x/19/dd/ac/19ddacef8e14946b73248fe5b20338b0.jpg",
     });
 
@@ -43,7 +45,7 @@ const Profile = () => {
   return (
     <div className="container">
       <Header setPage={setPage} isFeedPage={false}/>
-      <div className="main"><ProfileBlock user={user}/></div>
+      <div className="main"><ProfileBlock user={user} setUser={setUser}/></div>
     </div>
   );
 };

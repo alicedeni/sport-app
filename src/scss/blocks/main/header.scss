@@ -64,7 +64,9 @@
     display: flex;
     margin-top: 10px;
     margin-bottom: 30px;
+    width: 100%;
     &-list {
+      width: 100%;
       display: flex;
       justify-content: space-between;
       padding: 25px;

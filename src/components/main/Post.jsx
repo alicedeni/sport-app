@@ -157,6 +157,14 @@ const Post = ({ post }) => {
                   {post.type.toUpperCase()}
                 </div>
           </div>
+          {/* {post.tag && post.type ? (
+              <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
+                {post.type.toUpperCase()}
+              </div>
+            ) : (
+              <div className="activity-btn">Unknown Type</div>
+            )}
+          </div> */}
           <div className="post__points">
             <div className="post__points__point"> Время
               <div className="post__time">

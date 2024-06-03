@@ -19,7 +19,7 @@ const WelcomeBlock = () => {
       axios.post('http://localhost:5000/login', { email, password })
         .then(response => {
           if (response.data.status === 200) {
-            window.location.href = '/main';
+            checkHelloStatus();
           } else {
             console.error(error);
             setError("Произошла ошибка при входе.");
@@ -30,6 +30,28 @@ const WelcomeBlock = () => {
           setError("Произошла ошибка при входе.");
         });
     }
+  };
+
+  const checkHelloStatus = () => {
+    axios.get('http://localhost:5000/get_hello_status')
+      .then(response => {
+        if (response.data.f_hello === false) {
+          axios.post('http://localhost:5000/update_f_hello')
+            .then(() => {
+              window.location.href = '/about';
+            })
+            .catch(error => {
+              console.error('Error updating f_hello', error);
+              setError("Произошла ошибка при обновлении статуса.");
+            });
+        } else {
+          window.location.href = '/main';
+        }
+      })
+      .catch(error => {
+        console.error('Error checking hello status', error);
+        setError("Произошла ошибка при проверке статуса.");
+      });
   };
 
   const validateEmail = (email) => {

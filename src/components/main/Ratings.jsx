@@ -18,11 +18,21 @@ const Ratings = () => {
     const fetchData = async () => {
       try {
         if (selectedSide === 'left') {
-          const response = await axios.get('http://localhost:5000/participants');
-          setParticipants(response.data);
+          const response = await axios.get('http://localhost:5000/participants-rating');
+          if (Array.isArray(response.data.leaderboard)) {
+            setParticipants(response.data.leaderboard);
+          } else {
+            console.error('Unexpected data format for participants:', response.data);
+            setParticipants([]);
+          }
         } else {
-          const response = await axios.get('http://localhost:5000/teams');
-          setTeams(response.data);
+          const response = await axios.get('http://localhost:5000/teams-rating');
+          if (Array.isArray(response.data.leaderboard)) {
+            setTeams(response.data.leaderboard);
+          } else {
+            console.error('Unexpected data format for teams:', response.data);
+            setTeams([]);
+          }
         }
       } catch (error) {
         console.error('Error fetching data:', error);

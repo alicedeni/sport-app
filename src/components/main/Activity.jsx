@@ -37,7 +37,6 @@ const Activity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Загружаем список активностей
     axios.get('http://localhost:5000/list_of_activities')
       .then(response => {
         if (response.data.status === 200) {
@@ -98,9 +97,20 @@ const Activity = () => {
     setActivityCalories(calories);
   };
 
-  const handleActivityImageChange = (image) => {
-    const imageUrl = URL.createObjectURL(image);
-    setActivityImage(imageUrl);
+  const handleActivityImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      axios.post('http://localhost:5000/uploads', formData)
+      .then(response => {
+        setActivityImage(response.data.imageUrl);
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
+    }
   };
 
   const handleActivityVerificationChange = (e) => {
@@ -150,9 +160,27 @@ const Activity = () => {
     navigate('/editting', { state: { activityData } });
   };
 
-  const getTotalTime = () => {
-    return activities.reduce((total, activity) => total + activity.time, 0);
+  // const getTotalTime = () => {
+  //   return activities.reduce((total, activity) => total + activity.time, 0);
+  // };
+
+  const parseTimeToMinutes = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
   };
+
+  const formatMinutesToHours = (totalMinutes) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}:${minutes}`;
+  };
+
+  const getTotalTime = () => {
+    // return activities.reduce((total, activity) => total + activity.time, 0);
+    const totalMinutes = activities.reduce((total, activity) => total + parseTimeToMinutes(activity.time), 0);
+    return formatMinutesToHours(totalMinutes);
+  };
+
   const getPeriodText = () => {
     switch (selectedSide) {
       case 'week':
@@ -183,7 +211,7 @@ const Activity = () => {
           <div className="activity-list">
             {activities.map((activity, index) => (
               <div key={index} className="activity-list-item">
-                <div key={activity.name} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
+                <div key={activity.type} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
                   {activity.type.toUpperCase()}
                 </div>
                 <div className={`activity-list-item-time ${activity.tag}`}>{activity.time} часов</div>
@@ -208,12 +236,12 @@ const Activity = () => {
               <div className="activity-input-content">
 
                 {activityTypes.map(activity => (
-                  <div key={activity.name} id={activity.tag} className={`activity-btn ${
+                  <div key={activity.type} id={activity.tag} className={`activity-btn ${
                       activityType === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
                     }`}
                     onClick={() => handleActivityTypeChange(activity.tag)}
                   >
-                    {activity.name.toUpperCase()}
+                    {activity.type.toUpperCase()}
                   </div>
                 ))}
               </div>
@@ -299,8 +327,14 @@ const Activity = () => {
                         <label>Добавить фото активности</label>
                         <input
                             type="file" accept=".jpg, .jpeg, .png"
-                            onChange={(e) => handleActivityImageChange(e.target.files[0])}
+                            onChange={handleActivityImageChange}
                         />
+                        {activityImage && (
+                        <>
+                            {console.log(activityImage)}
+                            <img src={`http://localhost:5000${activityImage}`} alt="Activity Image" />
+                        </>
+                      )}
                     </div>
                 </div>
             </div>
