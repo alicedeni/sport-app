@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ButtonDelete, ButtonExit } from "./Buttons";
 import axios from 'axios';
 
@@ -9,6 +9,10 @@ const ProfileBlock = ({ user }) => {
   const [editModeAccount, setEditModeAccount] = useState(false);
 
   const [tempUser, setTempUser] = useState(user);
+
+  useEffect(() => {
+    setTempUser(user);
+  }, [user]);
 
   const handleEditClickProfile = () => {
     setEditModeProfile(true);
@@ -24,6 +28,7 @@ const ProfileBlock = ({ user }) => {
 
   const handleCancelClickProfile = () => {
     setEditModeProfile(false);
+    setTempUser(user);
   };
 
   const handleCancelClickProgress = () => {
@@ -32,6 +37,7 @@ const ProfileBlock = ({ user }) => {
 
   const handleCancelClickAccount = () => {
     setEditModeAccount(false);
+    setTempUser(user);
   };
 
   const handleSave = () => {
@@ -39,9 +45,11 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post('http://localhost:5000/userinfo', tempUser)
+    axios.post('http://localhost:5000/edit_person_data', tempUser)
         .then(response => {
             if (response.data.status === 200) {
+                setUser(tempUser);
+                setEditModeProfile(false);
                 console.log('Данные пользователя успешно отправлены на сервер');
             } else {
                 console.error('Ошибка при отправке данных на сервер:', response.data.error);
@@ -53,6 +61,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleSaveClickProfile = () => {
+    console.log('user', user);
     setEditModeProfile(false);
     setTempUser(user);
     handleSave();
@@ -71,7 +80,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleExit = () => {
-    axios.post('/logout')
+    axios.post('http://localhost:5000/logout')
     .then(response => {
       if (response.data.status === 200) {
         window.location.href = '/';
@@ -86,7 +95,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:5000/profile`)
+    axios.delete(`http://localhost:5000/delete_account`)
       .then(response => {
         if (response.data.status === 200) {
           window.location.href = '/';
@@ -114,9 +123,13 @@ const ProfileBlock = ({ user }) => {
     else return '#FF0000'; // Ожирение 3-й степени
   };
 
+  if (!tempUser) {
+    return <div>Loading...</div>;
+  }
+  
   return (
     <div className="profile-block">
-      <img src={tempUser.avatar} alt={tempUser.name} className="profile-block-avatar" />
+      <img src={`http://localhost:5000/${tempUser.avatar}`} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
       <span className="profile-block-name">{`${tempUser.lastName} ${tempUser.firstName}`}</span>
       
       <div className="profile-block-content">
@@ -169,14 +182,16 @@ const ProfileBlock = ({ user }) => {
                 })()}
               </div>
             </div>
+              {editModeProfile && (
+                <div className="profile-block-content-data-btn">
+                  <button onClick={handleCancelClickProfile} className="profile-block-content-data-btn-cancel">Отменить</button>
+                  <button onClick={handleSaveClickProfile} className="profile-block-content-data-btn-save">Сохранить</button>
+                </div>
+              )}
           </div>
-            {editModeProfile && (
-              <div className="profile-block-content-data-btn">
-                <button onClick={handleCancelClickProfile} className="profile-block-content-data-btn-cancel">Отменить</button>
-                <button onClick={handleSaveClickProfile} className="profile-block-content-data-btn-save">Сохранить</button>
-              </div>
-            )}
         </div>
+        
+
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой прогресс</p>
@@ -186,24 +201,55 @@ const ProfileBlock = ({ user }) => {
               </svg>
             </button>
           </div>
+
           <div className="profile-block-content-data-line"/>
-          <div className="profile-block-content-data-item">
-            <div className="profile-block-content-data-item-row">
-              <p className="profile-block-content-data-item-label">Бассейн:</p>
-              <p className="profile-block-content-data-item-value">{tempUser.activity[0].time} часов</p>
-            </div>
-            <div className="profile-block-content-data-item-row">
-              <p className="profile-block-content-data-item-label">Моя цель:</p>
-              <p className="profile-block-content-data-item-value">Улучшить форму</p>
-            </div>
-          </div>
-          {editModeProgress && (
-              <div className="profile-block-content-data-btn">
-              <button onClick={handleCancelClickProgress} className="profile-block-content-data-btn-cancel">Отменить</button>
-                <button onClick={handleSaveClickProgress} className="profile-block-content-data-btn-save">Сохранить</button>
+            <div className="profile-block-content-data-item">
+              <p className="profile-block-content-data-item-text">Сбросил вес</p>
+              <div className="profile-block-content-data-item-oval">
+                {editModeProgress ? (
+                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.weightLoss} onChange={(event) => handleInputChange(event, 'weightLoss')} />
+                ) : (
+                  <p className="profile-block-content-data-item-oval-text">{tempUser.weightLoss} кг</p>
+                )}
               </div>
-            )}
+            </div>
+            <div className="profile-block-content-data-item">
+              <p className="profile-block-content-data-item-text">Тренировок</p>
+              <div className="profile-block-content-data-item-oval">
+                {editModeProgress ? (
+                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.trainings} onChange={(event) => handleInputChange(event, 'trainings')} />
+                ) : (
+                  <p className="profile-block-content-data-item-oval-text">{tempUser.trainings}</p>
+                )}
+              </div>
+            </div>
+            <div className="profile-block-content-data-item">
+              <p className="profile-block-content-data-item-text">Потрачено калорий</p>
+              <div className="profile-block-content-data-item-oval">
+                {editModeProgress ? (
+                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.caloriesBurned} onChange={(event) => handleInputChange(event, 'caloriesBurned')} />
+                ) : (
+                  <p className="profile-block-content-data-item-oval-text">{tempUser.caloriesBurned} ккал</p>
+                )}
+              </div>
+            </div>
+
+          <div className="profile-block-content-data-btns">
+            {editModeProgress ? (
+              <div className="profile-block-content-data-btns">
+                <button className="profile-block-content-data-btn profile-block-content-data-btn_cancel" onClick={handleCancelClickProgress}>
+                  Отменить
+                </button>
+                <button className="profile-block-content-data-btn profile-block-content-data-btn_save" onClick={handleSaveClickProgress}>
+                  Сохранить
+                </button>
+              </div>
+            ) : null}
+          </div>
         </div>
+
+
+        
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой аккаунт</p>
@@ -213,67 +259,41 @@ const ProfileBlock = ({ user }) => {
               </svg>
             </button>
           </div>
-          <div className="profile-block-content-data-line"/>
-          <div className="profile-block-content-data-item">
-            <div className="profile-block-content-data-item-column">
-              <div className="profile-block-content-data-item-value">
-                <img src={editMode ? tempUser.avatar : tempUser.avatar} alt={tempUser.name} className="profile-block-content-data-item-image" />
-                {editModeAccount && (
-                  <input type="file" onChange={(event) => handleInputChange(event, 'avatar')} />
+          <div className="profile-block-content-account-line"/>
+          <div className="profile-block-content-account-items">
+            <div className="profile-block-content-account-item">
+              <p className="profile-block-content-account-item-text">Электронная почта</p>
+              <div className="profile-block-content-account-item-oval">
+                {editModeAccount ? (
+                  <input className="profile-block-content-account-item-oval-input" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
+                ) : (
+                  <p className="profile-block-content-account-item-oval-text">{tempUser.email}</p>
                 )}
               </div>
             </div>
-            <div className="profile-block-content-data-item-column">
-              <div>
-              <p className="profile-block-content-data-item-text">Имя</p>
-              <div className="profile-block-content-data-item-value">
+            <div className="profile-block-content-account-item">
+              <p className="profile-block-content-account-item-text">Пароль</p>
+              <div className="profile-block-content-account-item-oval">
                 {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.firstName} onChange={(event) => handleInputChange(event, 'lastName')} />
+                  <input className="profile-block-content-account-item-oval-input" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
                 ) : (
-                  <p>{tempUser.firstName}</p>
+                  <p className="profile-block-content-account-item-oval-text">********</p>
                 )}
-              </div>
-              </div>
-              <div>
-              <p className="profile-block-content-data-item-text">Фамилия</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.lastName} onChange={(event) => handleInputChange(event, 'lastName')} />
-                ) : (
-                  <p>{tempUser.lastName}</p>
-                )}
-              </div>
-              </div>
-            </div>
-            <div className="profile-block-content-data-item-column">
-              <div>
-              <p className="profile-block-content-data-item-text">Электронная почта</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
-                ) : (
-                  <p>{tempUser.email}</p>
-                )}
-              </div>
-              </div>
-              <div>
-              <p className="profile-block-content-data-item-text">Пароль</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
-                ) : (
-                  <p>*******</p>
-                )}
-              </div>
               </div>
             </div>
           </div>
-          {editModeAccount && (
-            <div className="profile-block-content-data-btn">
-              <button onClick={handleCancelClickAccount} className="profile-block-content-data-btn-cancel">Отменить</button>
-              <button onClick={handleSaveClickAccount} className="profile-block-content-data-btn-save">Сохранить</button>
-            </div>
-          )}
+          <div className="profile-block-content-account-btns">
+            {editModeAccount ? (
+              <div className="profile-block-content-account-btns">
+                <button className="profile-block-content-account-btn profile-block-content-account-btn_cancel" onClick={handleCancelClickAccount}>
+                  Отменить
+                </button>
+                <button className="profile-block-content-account-btn profile-block-content-account-btn_save" onClick={handleSaveClickAccount}>
+                  Сохранить
+                </button>
+              </div>
+            ) : null}
+          </div>
         </div>
       </div>
       <div className="profile-block-btn">

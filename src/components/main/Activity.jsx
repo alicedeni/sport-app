@@ -5,24 +5,8 @@ import axios from 'axios';
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
-  const [activities, setActivities] = useState([
-    { 
-      id: 1,
-      tag: 'cardio',
-      type: 'КАРДИОТРЕНИРОВКА',
-      color: '$yellow',
-      time: 14,
-      average: 30,
-    },
-    { 
-      id: 2,
-      tag: 'power',
-      type: 'СИЛОВАЯ ТРЕНИРОВКА',
-      color: '$pink',
-      time: 25,
-      average: 51,
-    }
-  ]);
+  const [activities, setActivities] = useState([]);
+
   const [formState, setFormState] = useState("");
   const [activityTypes, setActivityTypes] = useState([]); 
   const [activityType, setActivityType] = useState("");
@@ -37,7 +21,6 @@ const Activity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Загружаем список активностей
     axios.get('http://localhost:5000/list_of_activities')
       .then(response => {
         if (response.data.status === 200) {
@@ -98,9 +81,20 @@ const Activity = () => {
     setActivityCalories(calories);
   };
 
-  const handleActivityImageChange = (image) => {
-    const imageUrl = URL.createObjectURL(image);
-    setActivityImage(imageUrl);
+  const handleActivityImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+  
+      axios.post('http://localhost:5000/uploads', formData)
+      .then(response => {
+        setActivityImage(response.data.imageUrl);
+      })
+      .catch(error => {
+        console.error('Error uploading image:', error);
+      });
+    }
   };
 
   const handleActivityVerificationChange = (e) => {
@@ -126,12 +120,6 @@ const Activity = () => {
 
   const handleActivityTypeChange = (type) => {
     setActivityType(type);
-    // const allActivityTypes = ['pool', 'cardio', 'run', 'power', 'bike', 'game', 'dance', 'other'];
-    // allActivityTypes.forEach(activity => {
-    //   if (activity !== type) {
-    //     document.getElementById(activity).style.display = 'none';
-    //   }
-    // });
   };
 
   const handleSaveActivity = (event) => {
@@ -150,9 +138,26 @@ const Activity = () => {
     navigate('/editting', { state: { activityData } });
   };
 
-  const getTotalTime = () => {
-    return activities.reduce((total, activity) => total + activity.time, 0);
+  // const getTotalTime = () => {
+  //   return activities.reduce((total, activity) => total + activity.time, 0);
+  // };
+
+  const parseTimeToMinutes = (timeStr) => {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
   };
+
+  const formatMinutesToHours = (totalMinutes) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${hours}:${minutes}`;
+  };
+
+  const getTotalTime = () => {
+    const totalMinutes = activities.reduce((total, activity) => total + parseTimeToMinutes(activity.time), 0);
+    return formatMinutesToHours(totalMinutes);
+  };
+
   const getPeriodText = () => {
     switch (selectedSide) {
       case 'week':
@@ -183,7 +188,7 @@ const Activity = () => {
           <div className="activity-list">
             {activities.map((activity, index) => (
               <div key={index} className="activity-list-item">
-                <div key={activity.name} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
+                <div key={activity.type} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
                   {activity.type.toUpperCase()}
                 </div>
                 <div className={`activity-list-item-time ${activity.tag}`}>{activity.time} часов</div>
@@ -208,12 +213,12 @@ const Activity = () => {
               <div className="activity-input-content">
 
                 {activityTypes.map(activity => (
-                  <div key={activity.name} id={activity.tag} className={`activity-btn ${
+                  <div key={activity.type} id={activity.tag} className={`activity-btn ${
                       activityType === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
                     }`}
                     onClick={() => handleActivityTypeChange(activity.tag)}
                   >
-                    {activity.name.toUpperCase()}
+                    {activity.type.toUpperCase()}
                   </div>
                 ))}
               </div>
@@ -297,12 +302,19 @@ const Activity = () => {
                     ></textarea>
                     <div className="activity-input-content-image">
                         <label>Добавить фото активности</label>
+
                         <input
-                            type="file" accept=".jpg, .jpeg, .png"
-                            onChange={(e) => handleActivityImageChange(e.target.files[0])}
+                          type="file" accept=".jpg, .jpeg, .png" 
+                          onChange={handleActivityImageChange} // Нет e.target.files[0]
                         />
+                      </div>
+                      {activityImage && (
+                        <>
+                            {console.log(activityImage)}
+                            <img src={`http://localhost:5000${activityImage}`} alt="Activity Image" />
+                        </>
+                      )}
                     </div>
-                </div>
             </div>
             <div className="activity-submit_btn">
             <ButtonEnter className="welcome-block__btn" text="Далее" type="submit" textContent={"Далее"}></ButtonEnter>
