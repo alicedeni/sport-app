@@ -34,7 +34,10 @@ const EditingPage = () => {
   };
 
   return (
-    <div className="preview-window">
+    <div className="container">
+      <Header setPage={setPage} isFeedPage={page === 'activity'}/>
+      <div className="main">
+      <div className="preview-window">
       <div className="preview-window__content">
         <div className="preview-window__image-container">
           <img className="preview-window__image" src={activityData.image} alt="Activity Image" />
@@ -64,7 +67,10 @@ const EditingPage = () => {
           />
         </div>
     </div>
+        </div>
+    </div>
   );
+
 };
 
 export default EditingPage;

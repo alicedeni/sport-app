@@ -1,234 +1,219 @@
-.activity-btn {
+.activity-tags {
     text-align: center;
     display: flex;
+    justify-content: center;
     align-items: center;
     height: 48px;
     padding: 0 40px;
     border-radius: 24px;
     font-size: 20px;
   }
-  // light
-  .pool-light {
-    color: $blue;
-    border: 2px solid $blue;
-  }
-  
-  .cardio-light {
-    color: $yellow;
-    border: 2px solid $yellow;
-  }
-  
-  .run-light {
-    color: $green;
-    border: 2px solid $green;
-  }
-  .power-light {
-    color: $pink;
-    border: 2px solid $pink; 
-  }
-  .bike-light {
-    color: $turquoise;
-    border: 2px solid $turquoise;
-  }
-  .game-light {
-    color: $dark-blue;
-    border: 2px solid $dark-blue;
-  }
-  .dance-light {
-    color: $purple2;
-    border: 2px solid $purple2;
-  }
-  .other-light {
-    color: $grey1;
-    border: 2px solid $grey1;
-  }
-
-  // normal
-  .pool-normal {
-    color: $blue;
-    background: $blue-20p;
-    border: 2px solid $blue;
-  }
-  
-  .cardio-normal {
-    color: $yellow;
-    background: $yellow-20p;
-    border: 2px solid $yellow;
-  }
-  
-  .run-normal {
-    color: $green;
-    background: $green-20p;
-    border: 2px solid $green;
-  }
-  .power-normal {
-    color: $pink;
-    background: $pink-20p;
-    border: 2px solid $pink; 
-  }
-  .bike-normal {
-    color: $purple2;
-    background: $purple2-20p;
-    border: 2px solid $purple2;
-  }
-  .game-normal {
-    color: $dark-blue;
-    background: $dark-blue-20p;
-    border: 2px solid $dark-blue;
-  }
-  .dance-normal {
-    color: $purple1;
-    background: $purple1-20p;
-    border: 2px solid $purple1;
-  }
-  .other-normal {
-    color: $grey4;
-    background: $grey4-20p;
-    border: 2px solid $grey4;
-  }
-
-  // bold
-  .pool-bold {
+  // size S
+  .pool-S {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    width: 112px;
+    height: 26px;
     color: $blue;
     background: $blue-20p;
     font-weight: bold;
   }
   
-  .cardio-bold {
+  .cardio-S {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    width: 112px;
+    height: 26px;
     color: $yellow;
     background: $yellow-20p;
     font-weight: bold;
   }
   
-  .run-bold {
+  .run-S {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    width: 112px;
+    height: 26px;
     color: $green;
     background: $green-20p;
-    font-weight: bold;
-  }
-  .power-bold {
-    color: $pink;
-    background: $pink-20p;
-    font-weight: bold;
-  }
-  .bike-bold {
-    color: $purple2;
-    background: $purple2-20p;
-    font-weight: bold;
-  }
-  .game-bold {
-    color: $dark-blue;
-    background: $dark-blue-20p;
-    font-weight: bold;
-  }
-  .dance-bold {
-    color: $purple1;
-    background: $purple1-20p;
-    font-weight: bold;
-  }
-  .other-bold {
-    color: $grey4;
-    background: $grey4-20p;
     font-weight: bold;
   }
 
-  // bold-small
-  .pool-bold-small {
+  .power-S {
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 16px;
-    width:270px;
-    height: 40px;
-    color: $blue;
-    background: $blue-20p;
-    font-weight: bold;
-  }
-  
-  .cardio-bold-small {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    width:270px;
-    height: 40px;
-    color: $yellow;
-    background: $yellow-20p;
-    font-weight: bold;
-  }
-  
-  .run-bold-small {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    width:270px;
-    height: 40px;
-    color: $green;
-    background: $green-20p;
-    font-weight: bold;
-  }
-  .power-bold-small {
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    width:270px;
-    height: 40px;
+    width: 112px;
+    height: 26px;
     color: $pink;
     background: $pink-20p;
     font-weight: bold;
   }
-  .bike-bold-small {
+
+  .bike-S {
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 16px;
-    width:270px;
-    height: 40px;
+    width: 112px;
+    height: 26px;
     color: $purple2;
     background: $purple2-20p;
     font-weight: bold;
   }
-  .game-bold-small {
+
+  .game-S {
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 16px;
-    width:270px;
-    height: 40px;
+    width: 112px;
+    height: 26px;
     color: $dark-blue;
     background: $dark-blue-20p;
     font-weight: bold;
   }
-  .dance-bold-small {
+
+  .dance-S {
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 16px;
-    width:270px;
-    height: 40px;
+    width: 112px;
+    height: 26px;
     color: $purple1;
     background: $purple1-20p;
     font-weight: bold;
   }
-  .other-bold-small {
+
+  .other-S {
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-size: 16px;
-    width:270px;
-    height: 40px;
+    width: 112px;
+    height: 26px;
     color: $grey4;
     background: $grey4-20p;
     font-weight: bold;
   }
 
 
+  // size M
+  .pool-M {
+    color: $blue;
+    background: $blue-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  
+  .cardio-M {
+    color: $yellow;
+    background: $yellow-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  
+  .run-M {
+    color: $green;
+    background: $green-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  .power-M {
+    color: $pink;
+    background: $pink-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  .bike-M {
+    color: $purple2;
+    background: $purple2-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  .game-M {
+    color: $dark-blue;
+    background: $dark-blue-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  .dance-M {
+    color: $purple1;
+    background: $purple1-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+  .other-M {
+    color: $grey4;
+    background: $grey4-20p;
+    width: 276px;
+    height: 44px;
+    font-weight: bold;
+  }
+
+  // size L
+  .pool-L {
+    color: $blue;
+    background: $blue-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  
+  .cardio-L {
+    color: $yellow;
+    background: $yellow-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  
+  .run-L {
+    color: $green;
+    background: $green-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  .power-L {
+    color: $pink;
+    background: $pink-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  .bike-L {
+    color: $purple2;
+    background: $purple2-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  .game-L {
+    color: $dark-blue;
+    background: $dark-blue-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  .dance-L {
+    color: $purple1;
+    background: $purple1-20p;
+    font-weight: bold;
+    height: 50px;
+  }
+  .other-L {
+    color: $grey4;
+    background: $grey4-20p;
+    font-weight: bold;
+    height: 50px;
+  }

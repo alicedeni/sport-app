@@ -126,13 +126,47 @@ const ProfileBlock = ({ user }) => {
   if (!tempUser) {
     return <div>Loading...</div>;
   }
-  
+
+  const getLeagueColor = (league) => {
+    switch (league) {
+      case 'bronze':
+        return 'rgba(255, 61, 117, 0.6)';
+      case 'silver':
+        return 'rgba(0, 120, 212, 0.6)'; 
+      case 'gold':
+        return 'rgba(255, 204, 56, 0.7)'; 
+      default:
+        return '#FFFFFF';
+    }
+  };
+  const leagueColor = getLeagueColor(tempUser.league);
+
   return (
     <div className="profile-block">
       <img src={`http://localhost:5000/${tempUser.avatar}`} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
       <span className="profile-block-name">{`${tempUser.lastName} ${tempUser.firstName}`}</span>
       
       <div className="profile-block-content">
+        <div className="profile-block-content-comands">
+          <div className="profile-block-content-comands-items">
+            <div className="profile-block-content-comands-items-rect"></div>
+            <div className="profile-block-content-comands-items-circle"></div>
+            <div className="profile-block-content-comands-item"> 
+              <p className="profile-block-content-comands-item-text">Моя команда</p>
+              <p className="profile-block-content-data-title-name">{tempUser.team}</p>
+            </div>
+            <div className="profile-block-content-comands-list"></div>
+          </div>
+          <div className="profile-block-content-comands-items">
+            <div div className="profile-block-content-comands-items-rect" style={{ backgroundColor: leagueColor }}></div>
+            <div className="profile-block-content-comands-items-circle" style={{ backgroundColor: leagueColor }}></div>
+            <div className="profile-block-content-comands-item"> 
+              <p className="profile-block-content-comands-item-text">Моя лига</p>
+              <p className="profile-block-content-data-title-name">{tempUser.league}</p>
+            </div>
+            <p className="profile-block-content-comands-position">Вы на {tempUser.place_league} месте в {tempUser.league} лиге!</p>
+          </div>
+        </div>
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мои данные</p> 
@@ -182,16 +216,14 @@ const ProfileBlock = ({ user }) => {
                 })()}
               </div>
             </div>
-              {editModeProfile && (
-                <div className="profile-block-content-data-btn">
-                  <button onClick={handleCancelClickProfile} className="profile-block-content-data-btn-cancel">Отменить</button>
-                  <button onClick={handleSaveClickProfile} className="profile-block-content-data-btn-save">Сохранить</button>
-                </div>
-              )}
           </div>
+            {editModeProfile && (
+              <div className="profile-block-content-data-btn">
+                <button onClick={handleCancelClickProfile} className="profile-block-content-data-btn-cancel">Отменить</button>
+                <button onClick={handleSaveClickProfile} className="profile-block-content-data-btn-save">Сохранить</button>
+              </div>
+            )}
         </div>
-        
-
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой прогресс</p>
@@ -201,39 +233,48 @@ const ProfileBlock = ({ user }) => {
               </svg>
             </button>
           </div>
-
           <div className="profile-block-content-data-line"/>
-            <div className="profile-block-content-data-item">
-              <p className="profile-block-content-data-item-text">Сбросил вес</p>
-              <div className="profile-block-content-data-item-oval">
-                {editModeProgress ? (
-                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.weightLoss} onChange={(event) => handleInputChange(event, 'weightLoss')} />
-                ) : (
-                  <p className="profile-block-content-data-item-oval-text">{tempUser.weightLoss} кг</p>
-                )}
-              </div>
+          <div className="profile-block-content-data-item">
+            {/* <div className="profile-block-content-data-item-row">
+              <p className="profile-block-content-data-item-label">Бассейн:</p>
+              <p className="profile-block-content-data-item-value">{tempUser.activity[0].time} часов</p>
+            </div> */}
+            <div className="profile-block-content-data-line"/>
+            <div className="profile-block-content-data-item-row">
+              <p className="profile-block-content-data-item-label">Моя цель:</p>
+              <p className="profile-block-content-data-item-value">Улучшить форму</p>
             </div>
-            <div className="profile-block-content-data-item">
-              <p className="profile-block-content-data-item-text">Тренировок</p>
-              <div className="profile-block-content-data-item-oval">
-                {editModeProgress ? (
-                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.trainings} onChange={(event) => handleInputChange(event, 'trainings')} />
-                ) : (
-                  <p className="profile-block-content-data-item-oval-text">{tempUser.trainings}</p>
-                )}
-              </div>
+          </div>
+          <div className="profile-block-content-data-item">
+            <p className="profile-block-content-data-item-text">Сбросил вес</p>
+            <div className="profile-block-content-data-item-oval">
+              {/* {editModeProgress ? (
+                <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.weightLoss} onChange={(event) => handleInputChange(event, 'weightLoss')} />
+              ) : (
+                <p className="profile-block-content-data-item-oval-text">{tempUser.weightLoss} кг</p>
+              )} */}
             </div>
-            <div className="profile-block-content-data-item">
-              <p className="profile-block-content-data-item-text">Потрачено калорий</p>
-              <div className="profile-block-content-data-item-oval">
-                {editModeProgress ? (
-                  <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.caloriesBurned} onChange={(event) => handleInputChange(event, 'caloriesBurned')} />
-                ) : (
-                  <p className="profile-block-content-data-item-oval-text">{tempUser.caloriesBurned} ккал</p>
-                )}
-              </div>
+          </div>
+          <div className="profile-block-content-data-item">
+            <p className="profile-block-content-data-item-text">Тренировок</p>
+            <div className="profile-block-content-data-item-oval">
+              {/* {editModeProgress ? (
+                <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.trainings} onChange={(event) => handleInputChange(event, 'trainings')} />
+              ) : (
+                <p className="profile-block-content-data-item-oval-text">{tempUser.trainings}</p>
+              )} */}
             </div>
-
+          </div>
+          <div className="profile-block-content-data-item">
+            <p className="profile-block-content-data-item-text">Потрачено калорий</p>
+            <div className="profile-block-content-data-item-oval">
+              {/* {editModeProgress ? (
+                <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.caloriesBurned} onChange={(event) => handleInputChange(event, 'caloriesBurned')} />
+              ) : (
+                <p className="profile-block-content-data-item-oval-text">{tempUser.caloriesBurned} ккал</p>
+              )} */}
+            </div>
+          </div>
           <div className="profile-block-content-data-btns">
             {editModeProgress ? (
               <div className="profile-block-content-data-btns">
@@ -247,9 +288,6 @@ const ProfileBlock = ({ user }) => {
             ) : null}
           </div>
         </div>
-
-
-        
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой аккаунт</p>
@@ -259,26 +297,58 @@ const ProfileBlock = ({ user }) => {
               </svg>
             </button>
           </div>
-          <div className="profile-block-content-account-line"/>
-          <div className="profile-block-content-account-items">
-            <div className="profile-block-content-account-item">
-              <p className="profile-block-content-account-item-text">Электронная почта</p>
-              <div className="profile-block-content-account-item-oval">
-                {editModeAccount ? (
-                  <input className="profile-block-content-account-item-oval-input" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
-                ) : (
-                  <p className="profile-block-content-account-item-oval-text">{tempUser.email}</p>
+          <div className="profile-block-content-data-line"/>
+          <div className="profile-block-content-data-profile">
+            <div className="profile-block-content-data-item-column">
+              <div className="profile-block-content-data-item-value">
+                <img src={editMode ? tempUser.avatar : tempUser.avatar} alt={tempUser.name} className="profile-block-content-data-item-image" />
+                {editModeAccount && (
+                  <input type="file" onChange={(event) => handleInputChange(event, 'avatar')} />
                 )}
               </div>
             </div>
-            <div className="profile-block-content-account-item">
-              <p className="profile-block-content-account-item-text">Пароль</p>
-              <div className="profile-block-content-account-item-oval">
+            <div className="profile-block-content-data-profile-column">
+              <div className="profile-block-content-data-profile-column-i">
+              <p className="profile-block-content-data-item-text">Имя</p>
+              <div className="profile-block-content-data-item-value">
                 {editModeAccount ? (
-                  <input className="profile-block-content-account-item-oval-input" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
+                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.firstName} onChange={(event) => handleInputChange(event, 'lastName')} />
                 ) : (
-                  <p className="profile-block-content-account-item-oval-text">********</p>
+                  <p>{tempUser.firstName}</p>
                 )}
+              </div>
+              </div>
+              <div className="profile-block-content-data-profile-column-i">
+              <p className="profile-block-content-data-item-text">Фамилия</p>
+              <div className="profile-block-content-data-item-value">
+                {editModeAccount ? (
+                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.lastName} onChange={(event) => handleInputChange(event, 'lastName')} />
+                ) : (
+                  <p>{tempUser.lastName}</p>
+                )}
+              </div>
+              </div>
+            </div>
+            <div className="profile-block-content-data-profile-column">
+            <div className="profile-block-content-data-profile-column-i">
+              <p className="profile-block-content-data-item-text">Электронная почта</p>
+              <div className="profile-block-content-data-item-value">
+                {editModeAccount ? (
+                  <input className="profile-block-content-data-item-value" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
+                ) : (
+                  <p>{tempUser.email}</p>
+                )}
+              </div>
+              </div>
+              <div className="profile-block-content-data-profile-column-i">
+              <p className="profile-block-content-data-item-text">Пароль</p>
+              <div className="profile-block-content-data-item-value">
+                {editModeAccount ? (
+                  <input className="profile-block-content-data-item-value" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
+                ) : (
+                  <p>*******</p>
+                )}
+              </div>
               </div>
             </div>
           </div>

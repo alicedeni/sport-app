@@ -6,7 +6,6 @@ import axios from 'axios';
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
   const [activities, setActivities] = useState([]);
-
   const [formState, setFormState] = useState("");
   const [activityTypes, setActivityTypes] = useState([]); 
   const [activityType, setActivityType] = useState("");
@@ -86,7 +85,7 @@ const Activity = () => {
     if (file) {
       const formData = new FormData();
       formData.append('image', file);
-  
+
       axios.post('http://localhost:5000/uploads', formData)
       .then(response => {
         setActivityImage(response.data.imageUrl);
@@ -120,6 +119,12 @@ const Activity = () => {
 
   const handleActivityTypeChange = (type) => {
     setActivityType(type);
+    // const allActivityTypes = ['pool', 'cardio', 'run', 'power', 'bike', 'game', 'dance', 'other'];
+    // allActivityTypes.forEach(activity => {
+    //   if (activity !== type) {
+    //     document.getElementById(activity).style.display = 'none';
+    //   }
+    // });
   };
 
   const handleSaveActivity = (event) => {
@@ -154,6 +159,7 @@ const Activity = () => {
   };
 
   const getTotalTime = () => {
+    // return activities.reduce((total, activity) => total + activity.time, 0);
     const totalMinutes = activities.reduce((total, activity) => total + parseTimeToMinutes(activity.time), 0);
     return formatMinutesToHours(totalMinutes);
   };
@@ -188,7 +194,7 @@ const Activity = () => {
           <div className="activity-list">
             {activities.map((activity, index) => (
               <div key={index} className="activity-list-item">
-                <div key={activity.type} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
+                <div key={activity.type} id={activity.tag} className={`activity-tags ${activity.tag}-M`}>
                   {activity.type.toUpperCase()}
                 </div>
                 <div className={`activity-list-item-time ${activity.tag}`}>{activity.time} часов</div>
@@ -302,19 +308,18 @@ const Activity = () => {
                     ></textarea>
                     <div className="activity-input-content-image">
                         <label>Добавить фото активности</label>
-
                         <input
-                          type="file" accept=".jpg, .jpeg, .png" 
-                          onChange={handleActivityImageChange} // Нет e.target.files[0]
+                            type="file" accept=".jpg, .jpeg, .png"
+                            onChange={handleActivityImageChange}
                         />
-                      </div>
-                      {activityImage && (
+                        {activityImage && (
                         <>
                             {console.log(activityImage)}
                             <img src={`http://localhost:5000${activityImage}`} alt="Activity Image" />
                         </>
                       )}
                     </div>
+                </div>
             </div>
             <div className="activity-submit_btn">
             <ButtonEnter className="welcome-block__btn" text="Далее" type="submit" textContent={"Далее"}></ButtonEnter>

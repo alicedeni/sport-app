@@ -3,8 +3,16 @@ import axios from 'axios';
 
 const Challenges = () => {
   const [selectedSide, setSelectedSide] = useState('current');
-  const [currentChallenges, setCurrentChallenges] = useState([]);
-  const [completedChallenges, setCompletedChallenges] = useState([]);
+  const [currentChallenges, setCurrentChallenges] = useState([
+    { id: 1, name: 'Пробежать 10 км', progress: 75, points: 100 },
+    { id: 2, name: 'Отжаться 100 раз', progress: 50, points: 50 },
+    { id: 3, name: 'Проплыть 1 км', progress: 90, points: 75 },
+  ]);
+  const [completedChallenges, setCompletedChallenges] = useState([
+    { id: 1, name: 'Сделать 1000 шагов',progress: 100, points: 25 },
+    { id: 2, name: 'Поднять 50 кг', progress: 100, points: 75 },
+    { id: 3, name: 'Отжаться 50 раз', progress: 90, points: 50 },
+  ]);
 
   useEffect(() => {
     let isMounted = true;
@@ -36,7 +44,6 @@ const Challenges = () => {
       }
     };
     fetchData();
-
     return () => {
       isMounted = false;
     };
@@ -82,8 +89,8 @@ const Challenges = () => {
                   ></div>
                 </div>
                 <div className="points">{challenge.points} баллов</div>
-              </div>
-            ))
+            </div>
+          ))
           ) : (
             <div>No current challenges</div>
           )}
@@ -101,8 +108,8 @@ const Challenges = () => {
                   ></div>
                 </div>
                 <div className="points">{challenge.points} баллов</div>
-              </div>
-            ))
+            </div>
+          ))
           ) : (
             <div>No completed challenges</div>
           )}

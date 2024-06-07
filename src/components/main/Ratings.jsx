@@ -3,9 +3,16 @@ import axios from 'axios';
 
 const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left');
-  const [participants, setParticipants] = useState([]);
-  const [teams, setTeams] = useState([]);
-
+  const [participants, setParticipants] = useState([
+    { id: 1, firstName: 'Иван', lastName: 'Иванов', team: 'Команда 1', progress: 500 },
+    { id: 2, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 400 },
+    { id: 3, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 200 },
+  ]);
+  const [teams, setTeams] = useState([
+    { id: 1, name: 'Команда 1', members: 10, totalProgress: 5000 },
+    { id: 2, name: 'Команда 2', members: 8, totalProgress: 3500 },
+    { id: 3, name: 'Команда 3', members: 12, totalProgress: 4200 },
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
