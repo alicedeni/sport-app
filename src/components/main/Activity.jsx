@@ -3,7 +3,7 @@ import { ButtonActivity, ButtonEnter } from "../Buttons";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const Activity = () => {
+const Activity = ({setPage, isFeedPage}) => {
   const [selectedSide, setSelectedSide] = useState('week');
   const [activities, setActivities] = useState([
     { 
@@ -11,7 +11,7 @@ const Activity = () => {
       tag: 'cardio',
       type: 'КАРДИОТРЕНИРОВКА',
       color: '$yellow',
-      time: 14,
+      time: '14:30',
       average: 30,
     },
     { 
@@ -19,7 +19,7 @@ const Activity = () => {
       tag: 'power',
       type: 'СИЛОВАЯ ТРЕНИРОВКА',
       color: '$pink',
-      time: 25,
+      time: '25:00',
       average: 51,
     }
   ]);
@@ -157,7 +157,7 @@ const Activity = () => {
       description: activityDescription,
     };
   
-    navigate('/editting', { state: { activityData } });
+    navigate('/main', { state: { activityData, page: 'view' } });
   };
 
   // const getTotalTime = () => {
@@ -211,7 +211,7 @@ const Activity = () => {
           <div className="activity-list">
             {activities.map((activity, index) => (
               <div key={index} className="activity-list-item">
-                <div key={activity.type} id={activity.tag} className={`activity-btn ${activity.tag}-bold-small`}>
+                <div key={activity.type} id={activity.tag} className={`activity-tags ${activity.tag}-M`}>
                   {activity.type.toUpperCase()}
                 </div>
                 <div className={`activity-list-item-time ${activity.tag}`}>{activity.time} часов</div>

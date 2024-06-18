@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from '../components/main/Header';
 import Posts from '../components/main/Posts';
 import Challenges from '../components/main/Challenges';
 import Ratings from '../components/main/Ratings';
 import Activity from '../components/main/Activity';
+import Preview from '../components/main/Preview';
 import axios from 'axios';
 
 const Main = () => {
@@ -36,6 +38,13 @@ const Main = () => {
       text: 'This is post 2.',
     }, 
   ]);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state && location.state.page) {
+      setPage(location.state.page);
+    }
+  }, [location.state]);
 
   const getPostData = () => {
     return axios.get('http://localhost:5000/posts', {})
@@ -72,6 +81,9 @@ const Main = () => {
       break;
     case 'activity':
       content = <Activity setPage={setPage} isFeedPage={false} />;
+      break;
+    case 'view':
+      content = <Preview setPage={setPage} isFeedPage={false} activityData={location.state.activityData}  />;
       break;
     default:
       content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />;

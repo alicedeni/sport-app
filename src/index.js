@@ -9,7 +9,6 @@ import Profile from './pages/Profile';
 import Registration from './pages/Registration';
 import ErrorPage404 from './pages/ErrorPage404';
 import GlobalGoal from './pages/GlobalGoal';
-import EditingPage from './pages/View';
 import { BeatLoader } from "react-spinners";
 
 import "./scss/main.scss";
@@ -38,7 +37,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/main",
-    element: <Main page={""}/>,
+    element: <Main />,
     loader: async () => {
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
     }
@@ -53,13 +52,6 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
-  },
-  {
-    path: "/editting",
-    element: <EditingPage />,
     loader: async () => {
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
     }

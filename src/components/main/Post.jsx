@@ -5,10 +5,12 @@ import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
-import CommentDefaultIcon from '../../assets/icons/commentDefault.svg';
-import HeartDefaultIcon from '../../assets/icons/heartDefault.svg';
-import CommentFilledIcon from '../../assets/icons/commentFilled.svg';
-import HeartFilledIcon from '../../assets/icons/heartFilled.svg';
+import CommentDefault from '../../assets/icons/commentDefault.svg';
+import HeartFilled from '../../assets/icons/heartFilled.svg';
+import HeartDefault from '../../assets/icons/heartDefault.svg';
+import CommentFilled from '../../assets/icons/commentFilled.svg';
+import SendDefault from '../../assets/icons/sendDefault.svg';
+import SendFilled from '../../assets/icons/sendFilled.svg';
 
 ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
@@ -20,6 +22,7 @@ const Post = ({ post }) => {
   const [commentText, setCommentText] = useState('');
   const [comments, setComments] = useState(post.comments || []);
   const [commentCount, setCommentCount] = useState(post.commentCount || 0);
+  const [sendIcon, setSendIcon] = useState('SendDefault');
 
   console.log(post); 
 
@@ -117,6 +120,10 @@ const Post = ({ post }) => {
       })
       .catch(error => console.error('Error commenting on post:', error));
   };
+
+  const handleSendIconHover = (isHovered) => {
+    setSendIcon(isHovered ? 'SendFilled' : 'SendDefault');
+  };
   
   return (
     <div className="post">
@@ -153,7 +160,7 @@ const Post = ({ post }) => {
         </div>
         <div className="post__info">
           <div className="post__title">
-          <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
+          <div id={post.tag} className={`activity-tags ${post.tag}-L`}>
                   {post.type.toUpperCase()}
                 </div>
           </div>
@@ -195,26 +202,40 @@ const Post = ({ post }) => {
       </div>
       <div className="post__actions">
         <div className="post__like-container">
-          <IconButton onClick={handleLikeClick}>
-            {/* количество лайков */}
-            {isLiked ? <Favorite color="secondary" /> : <FavoriteBorder />}
-          </IconButton>
           <div className="post__like-count">{likeCount}</div>
+          <IconButton onClick={handleLikeClick}>
+            {isLiked ? <img src={HeartFilled} alt="Liked" /> : <img src={HeartDefault} alt="Not Liked" />}
+          </IconButton>
         </div>
         <div className="post__comment-container">
-          <IconButton onClick={handleCommentClick}>
-            <Comment />
-          </IconButton>
           <div className="post__comment-count">{commentCount}</div>
+          <IconButton onClick={handleCommentClick}>
+            {isCommentOpen ? <img src={CommentFilled} alt="Commented" /> : <img src={CommentDefault} alt="Not Commented" />}
+          </IconButton>
+        </div>
+      </div>
+        <div className="post__comment-containerinput">
           {isCommentOpen && (
             <div className="post__comment-section">
-              <input
-                className="post__comment-input"
-                placeholder="Написать комментарий..."
-                value={commentText}
-                onChange={handleCommentChange}
+              <textarea
+                  className="post__comment-input"
+                  placeholder="Написать комментарий..."
+                  value={commentText}
+                  onChange={handleCommentChange}
+                  rows={1}
               />
-              <button onClick={handleCommentSubmit}>Отправить</button>
+              <IconButton
+                className="post__comment-input-btn"
+                onClick={handleCommentSubmit}
+                onMouseEnter={() => handleSendIconHover(true)}
+                onMouseLeave={() => handleSendIconHover(false)}
+              >
+                  {sendIcon === 'SendDefault' ? (
+                      <img src={SendDefault} alt="Send" />
+                  ) : (
+                      <img src={SendFilled} alt="Send" />
+                  )}
+              </IconButton>
               {comments.length > 0 && (
                 <div className="post__comments">
                   {comments.map((comment, index) => (
@@ -227,7 +248,6 @@ const Post = ({ post }) => {
             </div>
           )}
         </div>
-      </div>
     </div>
   );
 };
