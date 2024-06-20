@@ -23,7 +23,7 @@ module.exports = ({ mode }) => {
       host: '0.0.0.0',
       static: './dist',
       hot: false,
-      port: 3000,
+      port: 8080,
       historyApiFallback: true,
       headers: {
         "Access-Control-Allow-Origin": "*",
