@@ -174,7 +174,8 @@ const Post = ({ post }) => {
           </div> */}
           <div className="post__points">
             <div className="post__points__point"> Время
-              <div className="post__time">
+              {/* <div className="post__time"> */}
+              <div className={`post__metric ${post.tag}-metric`}>
                 {post.time && (
                     <div className="formatted-time">
                         {(() => {
@@ -193,7 +194,8 @@ const Post = ({ post }) => {
             </div>
             <div className="post__points__point">
               Калории
-              <div className="post__calories">{post.calories} ккал</div>
+              {/* <div className="post__calories">{post.calories} ккал</div> */}
+              <div className={`post__metric ${post.tag}-metric`}>{post.calories} ккал</div>
             </div>
           </div>
           <div className="post__line"></div>

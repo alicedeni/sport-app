@@ -25,6 +25,27 @@
       color: $blue;
     }
   }
+  &-participants-leagues{
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    &-variant {
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      cursor: pointer;
+      height: 40px;
+      width: 305px;
+      font-size: 16px;
+      font-weight: bold;
+      color: $white2;
+    }
+  }
   &-participants-list{
     width: 100%;
   }
@@ -125,3 +146,23 @@
 
   
 
+.ratings-participants-list table th {
+  border-bottom: 3px solid transparent;
+  padding-bottom: 5px;
+}
+
+.ratings-participants-list table th.league-title {
+  border-bottom-color: currentColor;
+}
+
+.ratings-participants-list table tbody tr:hover {
+  background-color: transparent;
+}
+
+.ratings-participants-leagues-variant:hover {
+  border-width: 3px !important;
+}
+
+.ratings-participants-list table thead tr:hover {
+  background-color: transparent;
+}

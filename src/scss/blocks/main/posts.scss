@@ -126,6 +126,56 @@
         margin: 20px 0px;
         font-size: 20px;
       }
+
+      &__metric {
+        font-size: 24px;
+        border-radius: 20px;
+        height: 40px;
+        padding: 0px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        &.pool-metric {
+          color: $blue;
+          border: 2px solid $blue;
+        }
+        
+        &.cardio-metric {
+          color: $yellow;
+          border: 2px solid $yellow;
+        }
+        
+        &.run-metric {
+          color: $green;
+          border: 2px solid $green;
+        }
+        
+        &.power-metric {
+          color: $pink;
+          border: 2px solid $pink;
+        }
+        
+        &.bike-metric {
+          color: $purple2;
+          border: 2px solid $purple2;
+        }
+        
+        &.game-metric {
+          color: $dark-blue;
+          border: 2px solid $dark-blue;
+        }
+        
+        &.dance-metric {
+          color: $purple1;
+          border: 2px solid $purple1;
+        }
+        
+        &.other-metric {
+          color: $grey4;
+          border: 2px solid $grey4;
+        }
+      }
     
       &__actions {
         display: flex;
