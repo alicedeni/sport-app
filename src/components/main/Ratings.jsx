@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TeamModal } from "./TeamModal";
+import TeamModal from './TeamModal';
 
 const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left');
   const [participants, setParticipants] = useState([
-    { id: 1, firstName: 'Иван', lastName: 'Иванов', team: 'Команда 1', progress: 500, league: 'ЗОЛОТАЯ ЛИГА' },
-    { id: 2, firstName: 'Алиса', lastName: 'Денисова', team: 'Команда 3', progress: 470, league: 'ЗОЛОТАЯ ЛИГА' },
-    { id: 3, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 400, league: 'СЕРЕБРЯНАЯ ЛИГА' },
-    { id: 4, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 200, league: 'БРОНЗОВАЯ ЛИГА' },
+    { id: 1, firstName: 'Иван', lastName: 'Иванов', team: 'Команда 1', progress: 500, league: 'gold' },
+    { id: 2, firstName: 'Алиса', lastName: 'Денисова', team: 'Команда 3', progress: 470, league: 'gold' },
+    { id: 3, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 400, league: 'silver' },
+    { id: 4, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 200, league: 'bronze' },
   ]);
   const [teams, setTeams] = useState([
     { id: 1, name: 'Команда 1', members: 10, totalProgress: 5000 },
@@ -18,10 +18,10 @@ const Ratings = () => {
   ]);
   const [selectedLeague, setSelectedLeague] = useState([1]);
   const [leagues, setLeagues] = useState([
-    { id: 1, name: 'ВСЕ УЧАСТНИКИ', color: '#51B8FF' },
-    { id: 2, name: 'ЗОЛОТАЯ ЛИГА', color: '#FFCC38' },
-    { id: 3, name: 'СЕРЕБРЯНАЯ ЛИГА', color: '#0078D4' },
-    { id: 4, name: 'БРОНЗОВАЯ ЛИГА', color: '#FF3D75' },
+    { id: 1, name: 'ВСЕ УЧАСТНИКИ', color: '#51B8FF', ind: 'ВСЕ УЧАСТНИКИ' },
+    { id: 2, name: 'ЗОЛОТАЯ ЛИГА', color: '#FFCC38', ind: 'gold' },
+    { id: 3, name: 'СЕРЕБРЯНАЯ ЛИГА', color: '#0078D4', ind: 'silver'  },
+    { id: 4, name: 'БРОНЗОВАЯ ЛИГА', color: '#FF3D75', ind: 'bronze' },
   ]);
   const [showModal, setShowModal] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(null);
@@ -79,7 +79,7 @@ const Ratings = () => {
     if (selectedLeague.includes(1)) {
       return true;
     } else {
-      return selectedLeague.includes(leagues.find((league) => league.name.toLowerCase() === participant.league.toLowerCase())?.id);
+      return selectedLeague.includes(leagues.find((league) => league.ind.toLowerCase() === participant.league.toLowerCase())?.id);
     }
   });
 
@@ -87,7 +87,7 @@ const Ratings = () => {
     setSelectedTeam(team);
     setShowModal(true);
   };
-
+  
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedTeam(null);
@@ -135,7 +135,7 @@ const Ratings = () => {
                       {leagues.find((l) => l.id === 2)?.name}
                     </th>
                   </tr>
-                  {filteredParticipants.filter((participant) => participant.league.toLowerCase() === 'золотая лига').map((participant, index) => (
+                  {filteredParticipants.filter((participant) => participant.league.toLowerCase() === 'gold').map((participant, index) => (
                     <tr key={participant.id}>
                       <td>{index + 1}</td>
                       <td>{participant.lastName} {participant.firstName}</td>
@@ -148,7 +148,7 @@ const Ratings = () => {
                       {leagues.find((l) => l.id === 3)?.name}
                     </th>
                   </tr>
-                  {filteredParticipants.filter((participant) => participant.league.toLowerCase() === 'серебряная лига').map((participant, index) => (
+                  {filteredParticipants.filter((participant) => participant.league.toLowerCase() === 'silver').map((participant, index) => (
                     <tr key={participant.id}>
                       <td>{index + 1}</td>
                       <td>{participant.lastName} {participant.firstName}</td>
@@ -161,7 +161,7 @@ const Ratings = () => {
                       {leagues.find((l) => l.id === 4)?.name}
                     </th>
                   </tr>
-                  {filteredParticipants.filter((participant) => participant.league.toLowerCase() === 'бронзовая лига').map((participant, index) => (
+                  {filteredParticipants.filter((participant) => participant.league.toLowerCase() === 'bronze').map((participant, index) => (
                     <tr key={participant.id}>
                       <td>{index + 1}</td>
                       <td>{participant.lastName} {participant.firstName}</td>
@@ -178,7 +178,7 @@ const Ratings = () => {
                         {league.name}
                       </th>
                     </tr>
-                    {filteredParticipants.filter((participant) => leagues.find((l) => l.name.toLowerCase() === participant.league.toLowerCase())?.id === league.id).map((participant, index) => (
+                    {filteredParticipants.filter((participant) => leagues.find((l) => l.ind.toLowerCase() === participant.league.toLowerCase())?.id === league.id).map((participant, index) => (
                       <tr key={participant.id}>
                         <td>{index + 1}</td>
                         <td>{participant.lastName} {participant.firstName}</td>
@@ -208,7 +208,13 @@ const Ratings = () => {
           ))}
         </div>
       )}
-      
+      {showModal && (
+        <TeamModal
+          team={selectedTeam}
+          onClose={handleCloseModal}
+          participants={participants}
+        />
+      )}
     </div>
   );
 };

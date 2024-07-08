@@ -1,37 +1,32 @@
 import React from 'react';
 
 const TeamModal = ({ team, onClose, participants }) => {
-  const teamParticipants = participants.filter((participant) => participant.team === team.name);
+  if (!team) return null;
 
   return (
-    <div className="team-modal">
-      <div className="team-modal-content">
-        <div className="team-modal-header">
-          <h3>{team.name}</h3>
-          <button className="close-button" onClick={onClose}>
-            &times;
-          </button>
-        </div>
-        <div className="team-modal-body">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Участник</th>
-                <th>Прогресс</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teamParticipants.map((participant, index) => (
-                <tr key={participant.id}>
-                  <td>{index + 1}</td>
-                  <td>{participant.lastName} {participant.firstName}</td>
-                  <td>{participant.progress}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div
+      isOpen={!!team}
+      onRequestClose={onClose}
+      contentLabel="Team Modal"
+      className="modal-content"
+      overlayClassName="modal-overlay"
+      shouldCloseOnOverlayClick={true}
+      shouldCloseOnEsc={true}
+      ariaHideApp={false}
+    >
+      <div className="modal-content show">
+        <span className="close" onClick={onClose}>&times;</span>
+        <h2>{team.name}</h2>
+        <p>Количество участников: {team.members}</p>
+        <p>Общий прогресс: {team.totalProgress}</p>
+        <h3>Участники:</h3>
+        <ul>
+          {participants.filter(participant => participant.team === team.name).map(participant => (
+            <li key={participant.id}>
+              {participant.lastName} {participant.firstName} - Прогресс: {participant.progress}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

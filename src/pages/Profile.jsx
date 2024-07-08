@@ -12,7 +12,6 @@ const Profile = () => {
         email: "test@gmail.com",
         height: 170,
         weight: 70,
-        // progress
         activity: [{type: 'pool', color: 'blue', time: 16, calories: 8500},],
         team: "Команда №1",
         teammates: 8,

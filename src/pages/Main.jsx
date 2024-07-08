@@ -10,7 +10,7 @@ import axios from 'axios';
 
 const Main = () => {
   const [page, setPage] = useState('feed');
-  const [posts, setPosts] = useState([
+  const [posts, setPosts] = useState([/*
     { 
       id: 1, 
       miniAvatar: 'https://example.com/avatar1.jpg', 
@@ -36,7 +36,7 @@ const Main = () => {
       time: '5', 
       calories: '50', 
       text: 'This is post 2.',
-    }, 
+    }, */
   ]);
   const location = useLocation();
 

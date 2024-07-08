@@ -53,13 +53,23 @@ const Challenges = () => {
     setSelectedSide(side);
   };
 
+  const calculateCompletedPoints = () => {
+    return completedChallenges.reduce((total, challenge) => total + challenge.points, 0);
+  };
+
+  const calculateIncompletedChallenges = () => {
+    return completedChallenges.filter((challenge) => challenge.progress < 100).length;
+  };
+
   return (
     <div className="challenges">
       <div className="select_pt">
         <div
           className="select_pt-variant"
           style={{
-            backgroundColor: selectedSide === 'current' ? 'rgba(81, 184, 255, 0.2)' : 'white',
+            color: selectedSide === 'current' ? '#51B8FF' : '#808080',
+            fontSize: selectedSide === 'current' ? '40px' : '32px',
+            borderBottom: selectedSide === 'current' ? '2px solid #51B8FF' : 'none',
           }}
           onClick={() => handleClick('current')}
         >
@@ -68,7 +78,9 @@ const Challenges = () => {
         <div
           className="select_pt-variant"
           style={{
-            backgroundColor: selectedSide === 'completed' ? 'rgba(81, 184, 255, 0.2)' : 'white',
+            color: selectedSide === 'completed' ? '#51B8FF' : '#808080',
+            fontSize: selectedSide === 'completed' ? '40px' : '32px',
+            borderBottom: selectedSide === 'completed' ? '2px solid #51B8FF' : 'none',
           }}
           onClick={() => handleClick('completed')}
         >
@@ -78,17 +90,20 @@ const Challenges = () => {
 
       {selectedSide === 'current' ? (
         <div className="current-challenges">
+          <div className="metrics">Выбрано <span style={{ color: '#51B8FF' }}>{currentChallenges.length}/{currentChallenges.length}</span></div>
           {currentChallenges.length > 0 ? (
             currentChallenges.map((challenge) => (
               <div key={challenge.id} className="challenge-item">
-                <h3>{challenge.name}</h3>
+                <div className="challenge-item-text">
+                  <h3 className="challenge-item-text-name">{challenge.name}</h3>
+                  <div className="challenge-item-text-points">{challenge.points} баллов</div>
+                </div>
                 <div className="progress-bar">
                   <div
                     className="progress"
                     style={{ width: `${challenge.progress}%` }}
                   ></div>
                 </div>
-                <div className="points">{challenge.points} баллов</div>
             </div>
           ))
           ) : (
@@ -97,17 +112,33 @@ const Challenges = () => {
         </div>
       ) : (
         <div className="completed-challenges">
+          <div className="metrics">Выполненные: <span style={{ color: '#51B8FF' }}>{completedChallenges.length}</span></div>
+          <div className="metrics">Незавершенные: <span style={{ color: '#51B8FF' }}>{calculateIncompletedChallenges()}</span></div>
+          <div className="metrics">Заработано баллов: <span style={{ color: '#51B8FF' }}>{calculateCompletedPoints()}</span></div>
           {completedChallenges.length > 0 ? (
             completedChallenges.map((challenge) => (
               <div key={challenge.id} className="challenge-item">
-                <h3>{challenge.name}</h3>
+                <div className="challenge-item-text">
+                  <h3 className="challenge-item-text-name">{challenge.name}</h3>
+                  <div
+                    className="challenge-item-text-points"
+                    style={{
+                      color: challenge.progress === 100 ? '#51B8FF' : '#FF3D75',
+                      backgroundColor:
+                        challenge.progress === 100
+                          ? 'rgba(81, 184, 255, 0.2)'
+                          : 'rgba(255, 61, 117, 0.2)',
+                    }}
+                  >
+                    {challenge.points} баллов
+                  </div>
+                </div>
                 <div className="progress-bar">
                   <div
                     className="progress"
                     style={{ width: `${challenge.progress}%` }}
                   ></div>
                 </div>
-                <div className="points">{challenge.points} баллов</div>
             </div>
           ))
           ) : (
