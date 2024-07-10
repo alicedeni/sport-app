@@ -21,6 +21,7 @@ module.exports = ({ mode }) => {
     devtool: isProduction ? 'source-map' : 'eval-source-map',
     devServer: {
       host: '0.0.0.0',
+      allowedHosts: 'team2go.ru',
       static: './dist',
       hot: false,
       port: 3000,
