@@ -2,17 +2,58 @@ import React, { useState, useEffect } from 'react';
 import { ButtonDelete, ButtonExit } from "./Buttons";
 import axios from 'axios';
 
+import { link } from '../consts.js';
+
 const ProfileBlock = ({ user }) => {
   const [editMode, setEditMode] = useState(false);
   const [editModeProfile, setEditModeProfile] = useState(false);
   const [editModeProgress, setEditModeProgress] = useState(false);
   const [editModeAccount, setEditModeAccount] = useState(false);
+  const [activities, setActivities] = useState([
+    {
+      type: 'Бассейн',
+      tag: 'pool',
+      time: 16,
+      calories: 2387,
+    },
+    {
+      type: 'велотренировка',
+      tag: 'bike',
+      time: 4,
+      calories: 2387
+    },
+    {
+      type: 'Бассейн',
+      tag: 'pool',
+      time: 16,
+      calories: 2387
+    },
+    {
+      type: 'Бассейн',
+      tag: 'pool',
+      time: 16,
+    },
+  ]);
 
   const [tempUser, setTempUser] = useState(user);
 
   useEffect(() => {
     setTempUser(user);
   }, [user]);
+
+  useEffect(() => {
+    axios.get(`${link}/profile_activities`)
+      .then(response => {
+        if (response.data.status === 200) {
+          setActivities(response.data.activities);
+        } else {
+          console.error('Error loading activities:', response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading activities:', error);
+      });
+  }, []);
 
   const handleEditClickProfile = () => {
     setEditModeProfile(true);
@@ -45,7 +86,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post('http://localhost:5000/edit_person_data', tempUser)
+    axios.post(`${link}/edit_person_data`, tempUser)
         .then(response => {
             if (response.data.status === 200) {
                 setUser(tempUser);
@@ -80,7 +121,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleExit = () => {
-    axios.post('http://localhost:5000/logout')
+    axios.post(`${link}/logout`)
     .then(response => {
       if (response.data.status === 200) {
         window.location.href = '/';
@@ -95,7 +136,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleDelete = () => {
-    axios.delete(`http://localhost:5000/delete_account`)
+    axios.delete(`${link}/delete_account`)
       .then(response => {
         if (response.data.status === 200) {
           window.location.href = '/';
@@ -143,7 +184,7 @@ const ProfileBlock = ({ user }) => {
 
   return (
     <div className="profile-block">
-      <img src={`http://localhost:5000/${tempUser.avatar}`} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
+      <img src={`${link}/${tempUser.avatar}`} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
       <span className="profile-block-name">{`${tempUser.lastName} ${tempUser.firstName}`}</span>
       
       <div className="profile-block-content">
@@ -235,9 +276,18 @@ const ProfileBlock = ({ user }) => {
           </div>
           <div className="profile-block-content-data-line"/>
           <div className="profile-block-content-data-item">
-            <div className="profile-block-content-data-item-row">
-              <p className="profile-block-content-data-item-label">Бассейн:</p>
-              <p className="profile-block-content-data-item-value">{tempUser.activity[0].time} часов</p>
+            <div className="profile-block__activity-list">
+              {activities.map((activity, index) => (
+                <div key={index} className={`profile-block__activity-list-item ${activity.tag}-metric`}>
+                  <div key={activity.type} id={activity.tag} className={`activity-tags ${activity.tag}-S`}>
+                  {/* <div key={activity.type} id={activity.tag} className={`activity-tags ${activity.tag} size-M`}> */}
+
+                  {/* <div key={activity.type} id={activity.tag} className={`activity-tags ${activity.tag}-${activity.size}`}> */}
+                    {activity.type.toUpperCase()}
+                  </div>
+                  <div className={`profile-block__activity-list-item-time ${activity.tag}`}>{activity.time} часов</div>
+                </div>
+              ))}
             </div>
             <div className="profile-block-content-data-line"/>
             <div className="profile-block-content-data-item-row">
@@ -245,6 +295,7 @@ const ProfileBlock = ({ user }) => {
               <p className="profile-block-content-data-item-value">Улучшить форму</p>
             </div>
           </div>
+          {/*
           <div className="profile-block-content-data-item">
             <p className="profile-block-content-data-item-text">Сбросил вес</p>
             <div className="profile-block-content-data-item-oval">
@@ -275,6 +326,7 @@ const ProfileBlock = ({ user }) => {
               )}
             </div>
           </div>
+           */}
           <div className="profile-block-content-data-btns">
             {editModeProgress ? (
               <div className="profile-block-content-data-btns">

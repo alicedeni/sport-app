@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+import {link} from '../../consts.js';
+
 const Challenges = () => {
   const [selectedSide, setSelectedSide] = useState('current');
   const [currentChallenges, setCurrentChallenges] = useState([
@@ -21,9 +23,9 @@ const Challenges = () => {
       try {
         let response;
         if (selectedSide === 'current') {
-          response = await axios.get('http://localhost:5000/current-challenges');
+          response = await axios.get(`${link}/current-challenges`);
         } else {
-          response = await axios.get('http://localhost:5000/completed-challenges');
+          response = await axios.get(`${link}/completed-challenges`);
         }
         if (isMounted) {
           const data = response.data;
@@ -54,7 +56,8 @@ const Challenges = () => {
   };
 
   const calculateCompletedPoints = () => {
-    return completedChallenges.reduce((total, challenge) => total + challenge.points, 0);
+    return completedChallenges.filter(challenge => challenge.progress === 100)
+      .reduce((total, challenge) => total + challenge.points, 0);
   };
 
   const calculateIncompletedChallenges = () => {
@@ -123,11 +126,11 @@ const Challenges = () => {
                   <div
                     className="challenge-item-text-points"
                     style={{
-                      color: challenge.progress === 100 ? '#51B8FF' : '#FF3D75',
+                      color: challenge.progress === 100 ? '#51B8FF' : '#FF4D53',
                       backgroundColor:
                         challenge.progress === 100
                           ? 'rgba(81, 184, 255, 0.2)'
-                          : 'rgba(255, 61, 117, 0.2)',
+                          : 'rgba(255, 77, 83, 0.2)',
                     }}
                   >
                     {challenge.points} баллов

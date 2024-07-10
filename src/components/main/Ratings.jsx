@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import TeamModal from './TeamModal';
 
+import { link } from '../../consts.js';
+
 const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left');
   const [participants, setParticipants] = useState([
@@ -12,9 +14,9 @@ const Ratings = () => {
   ]);
   const [teams, setTeams] = useState([
     { id: 1, name: 'Команда 1', members: 10, totalProgress: 5000 },
-    { id: 2, name: 'Команда 2', members: 8, totalProgress: 3500 },
-    { id: 3, name: 'Команда 3', members: 12, totalProgress: 4200 },
-    { id: 4, name: 'Команда 4', members: 2, totalProgress: 4000 },
+    { id: 2, name: 'Команда 3', members: 8, totalProgress: 4200 },
+    { id: 3, name: 'Команда 2', members: 12, totalProgress: 3500 },
+    { id: 4, name: 'Команда 4', members: 2, totalProgress: 2000 },
   ]);
   const [selectedLeague, setSelectedLeague] = useState([1]);
   const [leagues, setLeagues] = useState([
@@ -30,7 +32,7 @@ const Ratings = () => {
     const fetchData = async () => {
       try {
         if (selectedSide === 'left') {
-          const response = await axios.get('http://localhost:5000/participants-rating');
+          const response = await axios.get(`${link}/participants-rating`);
           if (Array.isArray(response.data.leaderboard)) {
             setParticipants(response.data.leaderboard);
           } else {
@@ -38,7 +40,7 @@ const Ratings = () => {
             setParticipants([]);
           }
         } else {
-          const response = await axios.get('http://localhost:5000/teams-rating');
+          const response = await axios.get(`${link}/teams-rating`);
           if (Array.isArray(response.data.leaderboard)) {
             setTeams(response.data.leaderboard);
           } else {

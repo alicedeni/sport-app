@@ -3,6 +3,8 @@ import ProfileBlock from '../components/ProfileBlock';
 import axios from 'axios';
 import Header from '../components/main/Header';
 
+import { link } from '../consts.js';
+
 const Profile = () => {
     const [page, setPage] = React.useState('feed');
     const [user, setUser] = useState({
@@ -21,7 +23,7 @@ const Profile = () => {
     });
 
     const getUserData = () => {
-        return axios.get('http://localhost:5000/profile', {})
+        return axios.get(`${link}/profile`, {})
             .then(response => {
                 return response.data;
             })

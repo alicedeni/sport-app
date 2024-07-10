@@ -12,6 +12,8 @@ import CommentFilled from '../../assets/icons/commentFilled.svg';
 import SendDefault from '../../assets/icons/sendDefault.svg';
 import SendFilled from '../../assets/icons/sendFilled.svg';
 
+import {link} from '../../consts.js';
+
 ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
 
@@ -27,7 +29,7 @@ const Post = ({ post }) => {
   console.log(post); 
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/get_comments/${post.feed_id}`)
+    axios.get(`${link}/get_comments/${post.feed_id}`)
       .then(response => {
         if (response.data.status === 200) {
           setComments(response.data.comments);
@@ -47,7 +49,7 @@ const Post = ({ post }) => {
     };
     
     if (isLiked) {
-      axios.post('http://localhost:5000/unlike', likeData)
+      axios.post(`${link}/unlike`, likeData)
         .then(response => {
           if (response.data.status === 200) {
             setIsLiked(false);
@@ -61,7 +63,7 @@ const Post = ({ post }) => {
         });
     } else {
       // лайк
-      axios.post('http://localhost:5000/like', likeData)
+      axios.post(`${link}/like`, likeData)
         .then(response => {
           if (response.data.status === 200) {
             setIsLiked(true);
@@ -83,7 +85,7 @@ const Post = ({ post }) => {
   
   const handleCommentClick = () => {
     if (!isCommentOpen) {
-      axios.get(`http://localhost:5000/get_comments/${post.feed_id}`)
+      axios.get(`${link}/get_comments/${post.feed_id}`)
         .then(response => {
           if (response.data.status === 200) {
             setComments(response.data.comments);
@@ -108,7 +110,7 @@ const Post = ({ post }) => {
       comment_text: commentText,
     };
     
-    axios.post('http://localhost:5000/comment', commentData)
+    axios.post(`${link}/comment`, commentData)
       .then(response => {
         if (response.data.status === 200) {
           setComments([...comments, { text: commentText, surname: 'Вы' }]);
@@ -129,7 +131,7 @@ const Post = ({ post }) => {
     <div className="post">
       <div className="post__header">
         {post.miniAvatar ? ( 
-          <Avatar className="post__mini-avatar" src={`http://localhost:5000/${post.miniAvatar}`} alt="avatar" />
+          <Avatar className="post__mini-avatar" src={`${link}/${post.miniAvatar}`} alt="avatar" />
         ) : (
           <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
         )}
@@ -156,7 +158,7 @@ const Post = ({ post }) => {
       <div className="post__content">
         <div className="post__image-container">
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
-          <img className="post__image" src={`http://localhost:5000/${post.image}`} alt="Post image" />
+          <img className="post__image" src={`${link}/${post.image}`} alt="Post image" />
         </div>
         <div className="post__info">
           <div className="post__title">

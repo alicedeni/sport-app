@@ -3,6 +3,70 @@
     margin-right: 100px;
     margin-top: -100px;
     margin-bottom: 40px;
+    &__activity-list {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      width: 100%;
+      flex-wrap: wrap;
+      &-item{
+        width: 270px;
+        border-radius: 15px;
+        &.pool-metric {
+          color: $blue;
+          border: 2px solid $blue;
+        }
+        
+        &.cardio-metric {
+          color: $yellow;
+          border: 2px solid $yellow;
+        }
+        
+        &.run-metric {
+          color: $green;
+          border: 2px solid $green;
+        }
+        
+        &.power-metric {
+          color: $pink;
+          border: 2px solid $pink;
+        }
+        
+        &.bike-metric {
+          color: $purple2;
+          border: 2px solid $purple2;
+        }
+        
+        &.game-metric {
+          color: $dark-blue;
+          border: 2px solid $dark-blue;
+        }
+        
+        &.dance-metric {
+          color: $purple1;
+          border: 2px solid $purple1;
+        }
+        
+        &.other-metric {
+          color: $grey4;
+          border: 2px solid $grey4;
+        }
+        &-time {
+          font-size: 28px;
+          font-weight: bold;
+          text-align: center;
+          margin: 20px;
+        }
+        .pool {color: $blue;}
+        .cardio {color: $yellow;}
+        .run {color: $green;}
+        .power {color: $pink;}
+        .bike {color: $purple2;}
+        .game {color: $dark-blue;}
+        .dance {color: $purple1;}
+        .other {color: $grey4;}
+      }
+    }
     &-avatar {
       position:absolute;
       top: 205px;

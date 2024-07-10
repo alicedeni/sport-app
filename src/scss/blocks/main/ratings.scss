@@ -188,3 +188,10 @@
   width: 90%;
 }
 
+.ratings-participants-leagues-variant {
+  transition: transform 0.3s ease-in-out;
+}
+
+.ratings-participants-leagues-variant.swap {
+  transform: translateX(-100%);
+}

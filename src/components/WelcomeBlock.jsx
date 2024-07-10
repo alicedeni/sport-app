@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ButtonEnter, ButtonReg } from "./Buttons";
 
+import { link } from '../consts.js';
 
 const WelcomeBlock = () => {
   const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const WelcomeBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post('http://localhost:5000/login', { email, password })
+      axios.post(link + 'login', { email, password })
         .then(response => {
           if (response.data.status === 200) {
             checkHelloStatus();
@@ -33,10 +34,10 @@ const WelcomeBlock = () => {
   };
 
   const checkHelloStatus = () => {
-    axios.get('http://localhost:5000/get_hello_status')
+    axios.get(`${link}/get_hello_status`)
       .then(response => {
         if (response.data.f_hello === false) {
-          axios.post('http://localhost:5000/update_f_hello')
+          axios.post(`${link}/update_f_hello`)
             .then(() => {
               window.location.href = '/about';
             })

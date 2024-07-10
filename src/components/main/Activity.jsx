@@ -3,6 +3,8 @@ import { ButtonActivity, ButtonEnter } from "../Buttons";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+import {link} from '../../consts.js';
+
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week');
   const [activities, setActivities] = useState([]);
@@ -20,7 +22,7 @@ const Activity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get('http://localhost:5000/list_of_activities')
+    axios.get(`${link}/list_of_activities`)
       .then(response => {
         if (response.data.status === 200) {
           setActivityTypes(response.data.activities);
@@ -38,11 +40,11 @@ const Activity = () => {
       try {
         let response;
         if (selectedSide === 'week') {
-          response = await axios.get('http://localhost:5000/activities/week');
+          response = await axios.get(`${link}/activities/week`);
         } else if (selectedSide === 'month') {
-          response = await axios.get('http://localhost:5000/activities/month');
+          response = await axios.get(`${link}/activities/month`);
         } else {
-          response = await axios.get('http://localhost:5000/activities/all');
+          response = await axios.get(`${link}/activities/all`);
         }
         setActivities(response.data.activities);
       } catch (error) {
@@ -86,7 +88,7 @@ const Activity = () => {
       const formData = new FormData();
       formData.append('image', file);
 
-      axios.post('http://localhost:5000/uploads', formData)
+      axios.post(`${link}/uploads`, formData)
       .then(response => {
         setActivityImage(response.data.imageUrl);
       })
@@ -102,7 +104,7 @@ const Activity = () => {
       const formData = new FormData();
       formData.append('image', file);
   
-      axios.post('http://localhost:5000/uploads', formData)
+      axios.post(`${link}/uploads`, formData)
       .then(response => {
         setActivityVerification(response.data.imageUrl);
       })

@@ -6,6 +6,8 @@ import { Avatar, IconButton } from '@material-ui/core';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
 
+import { link } from '../../consts.js';
+
 ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
 
@@ -34,7 +36,7 @@ const Preview = () => {
         console.error('Данные активности отсутствуют');
         return;
       }
-      axios.post('http://localhost:5000/activities', activityData)
+      axios.post(`${link}/activities`, activityData)
         .then(response => {
           if (response.data.status === 200) {
             console.log('Активность успешно опубликована');
@@ -67,7 +69,7 @@ const Preview = () => {
         <div className="preview-post">
             <div className="preview-post__header">
                 {post.miniAvatar ? ( 
-                <Avatar className="preview-post__mini-avatar" src={`http://localhost:5000/${post.miniAvatar}`} alt="avatar" />
+                <Avatar className="preview-post__mini-avatar" src={`${link}/${post.miniAvatar}`} alt="avatar" />
                 ) : (
                 <Avatar className="preview-post__mini-avatar" src={post.miniAvatar} alt="avatar" />
                 )}

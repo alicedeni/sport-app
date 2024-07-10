@@ -3,6 +3,8 @@ import Notification from './Notification';
 import { CButtonProfile } from "../Buttons";
 import axios from 'axios';
 
+import {link} from '../../consts.js';
+
 const Header = ({ setPage, isFeedPage }) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(true);
   const [userName, setUserName] = useState("");
@@ -17,7 +19,7 @@ const Header = ({ setPage, isFeedPage }) => {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:5000/main', {})
+    axios.get(`${link}/main`, {})
       .then(response => {
         setUserName(response.data.name);
         setAvatar(response.data.avatar);
@@ -51,7 +53,7 @@ const Header = ({ setPage, isFeedPage }) => {
       <div className="header-title">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ
         <CButtonProfile points={points}>
           {avatar ? (
-            <img src={`http://localhost:5000/${avatar}`} alt="User Avatar" className="avatar" />
+            <img src={`${link}/${avatar}`} alt="User Avatar" className="avatar" />
           ) : (
             <div>{userName ? userName.charAt(0) : ''}</div>
           )}

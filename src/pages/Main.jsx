@@ -8,9 +8,11 @@ import Activity from '../components/main/Activity';
 import Preview from '../components/main/Preview';
 import axios from 'axios';
 
+import { link } from '../consts.js';
+
 const Main = () => {
   const [page, setPage] = useState('feed');
-  const [posts, setPosts] = useState([/*
+  const [posts, setPosts] = useState([
     { 
       id: 1, 
       miniAvatar: 'https://example.com/avatar1.jpg', 
@@ -36,7 +38,7 @@ const Main = () => {
       time: '5', 
       calories: '50', 
       text: 'This is post 2.',
-    }, */
+    }, 
   ]);
   const location = useLocation();
 
@@ -47,7 +49,7 @@ const Main = () => {
   }, [location.state]);
 
   const getPostData = () => {
-    return axios.get('http://localhost:5000/posts', {})
+    return axios.get(`${link}/posts`, {})
     .then(response => {
       return response.data;
     })

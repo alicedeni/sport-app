@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { ButtonEnter, ButtonToEnter, ButtonNext } from "./Buttons";
 
+import { link } from '../consts.js';
+
 const RegistrationBlock = () => {
   const [formState, setFormState] = useState("registration");
   const [email, setEmail] = useState("");
@@ -20,7 +22,7 @@ const RegistrationBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post('http://localhost:5000/register', { name, surname, patronymic, email, password })
+      axios.post(`${link}/register`, { name, surname, patronymic, email, password })
         .then(response => {
           if (response.data.status === 200) {
             window.location.href = '/';
