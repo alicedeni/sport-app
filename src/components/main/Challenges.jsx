@@ -13,6 +13,8 @@ const Challenges = () => {
   const [completedChallenges, setCompletedChallenges] = useState([
     { id: 1, name: 'Сделать 1000 шагов',progress: 100, points: 25 },
     { id: 2, name: 'Поднять 50 кг', progress: 100, points: 75 },
+  ]);
+  const [incompletedChallenges, setIncompletedChallenges] = useState([
     { id: 3, name: 'Отжаться 50 раз', progress: 90, points: 50 },
   ]);
 
@@ -34,6 +36,7 @@ const Challenges = () => {
               setCurrentChallenges(data.current_challenges || []);
             } else {
               setCompletedChallenges(data.completed_challenges || []);
+              setIncompletedChallenges(data.incompleted_challenges || []);
             }
           } else {
             console.error('Data error:', data.message);
@@ -58,10 +61,6 @@ const Challenges = () => {
   const calculateCompletedPoints = () => {
     return completedChallenges.filter(challenge => challenge.progress === 100)
       .reduce((total, challenge) => total + challenge.points, 0);
-  };
-
-  const calculateIncompletedChallenges = () => {
-    return completedChallenges.filter((challenge) => challenge.progress < 100).length;
   };
 
   return (
@@ -116,7 +115,7 @@ const Challenges = () => {
       ) : (
         <div className="completed-challenges">
           <div className="metrics">Выполненные: <span style={{ color: '#51B8FF' }}>{completedChallenges.length}</span></div>
-          <div className="metrics">Незавершенные: <span style={{ color: '#51B8FF' }}>{calculateIncompletedChallenges()}</span></div>
+          <div className="metrics">Незавершенные: <span style={{ color: '#51B8FF' }}>{incompletedChallenges.length}</span></div>
           <div className="metrics">Заработано баллов: <span style={{ color: '#51B8FF' }}>{calculateCompletedPoints()}</span></div>
           {completedChallenges.length > 0 ? (
             completedChallenges.map((challenge) => (
@@ -126,26 +125,52 @@ const Challenges = () => {
                   <div
                     className="challenge-item-text-points"
                     style={{
-                      color: challenge.progress === 100 ? '#51B8FF' : '#FF4D53',
-                      backgroundColor:
-                        challenge.progress === 100
-                          ? 'rgba(81, 184, 255, 0.2)'
-                          : 'rgba(255, 77, 83, 0.2)',
+                      color: '#51B8FF',
+                      backgroundColor:'rgba(81, 184, 255, 0.2)',
                     }}
                   >
                     {challenge.points} баллов
                   </div>
                 </div>
-                <div className="progress-bar">
+                <div className="progress-bar" >
                   <div
                     className="progress"
-                    style={{ width: `${challenge.progress}%` }}
+                    style={{ width: `${challenge.progress}%`,}}
                   ></div>
                 </div>
-            </div>
-          ))
+              </div>
+            ))
           ) : (
             <div>No completed challenges</div>
+          )}
+          <div className="challenge-line"></div>
+          {incompletedChallenges.length > 0 ? (
+            incompletedChallenges.map((challenge) => (
+              <div key={challenge.id} className="challenge-item">
+                <div className="challenge-item-text" style={{ opacity: 0.7, }}>
+                  <h3 className="challenge-item-text-name" style={{ opacity: 0.7, }}>{challenge.name}</h3>
+                  <div
+                    className="challenge-item-text-points"
+                    style={{
+                      color: '#FF4D53',
+                      backgroundColor: 'rgba(255, 77, 83, 0.2)',
+                      opacity: 0.7, 
+                    }}
+                  >
+                    {challenge.points} баллов
+                  </div>
+                </div>
+                <div className="progress-bar" style={{ opacity: 0.7, }}>
+                  <div
+                    className="progress"
+                    style={{ width: `${challenge.progress}%`,
+                    opacity: 0.7, }}
+                  ></div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div></div>
           )}
         </div>
       )}

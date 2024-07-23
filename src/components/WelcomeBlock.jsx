@@ -17,7 +17,7 @@ const WelcomeBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post(link + 'login', { email, password })
+      axios.post(`${link}/login`, { email, password })
         .then(response => {
           if (response.data.status === 200) {
             checkHelloStatus();

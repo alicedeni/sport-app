@@ -168,24 +168,51 @@
 }
 
 .modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  position: fixed; /* Фиксированное положение относительно окна браузера */
+  top: 0; /* Прикрепить к верхней части окна */
+  left: 0; /* Прикрепить к левой части окна */
+  right: 0; /* Прикрепить к правой части окна */
+  bottom: 0; /* Прикрепить к нижней части окна */
+  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+  display: flex; /* Используем flexbox для центрирования содержимого */
+  justify-content: center; /* Центрирование по горизонтали */
+  align-items: center; /* Центрирование по вертикали */
+  z-index: 1000; /* Убедитесь, что модальное окно выше других элементов */
 }
 
 .modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 4px;
-  max-width: 600px;
-  width: 90%;
+  position: fixed; /* Фиксированное положение относительно окна браузера */
+  top: 0; /* Прикрепить к верхней части окна */
+  left: 0; /* Прикрепить к левой части окна */
+  right: 0; /* Прикрепить к правой части окна */
+  bottom: 0; /* Прикрепить к нижней части окна */
+  width: 600px; /* Ширина модального окна */
+  background-color: white; /* Цвет фона модального окна */
+  border-radius: 8px; /* Закругленные углы */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Тень для модального окна */
+  position: relative; /* Относительное позиционирование для close кнопки */
+  padding: 20px; /* Отступы внутри модального окна */
+}
+
+.close {
+  position: absolute; /* Абсолютное позиционирование для кнопки закрытия */
+  top: 10px; /* Отступ сверху */
+  right: 10px; /* Отступ справа */
+  font-size: 24px; /* Размер шрифта */
+  cursor: pointer; /* Указатель при наведении */
+}
+
+h2, h3, p {
+  margin: 10px 0; /* Отступы для заголовков и параграфов */
+}
+
+ul {
+  list-style-type: none; /* Убираем маркеры списка */
+  padding: 0; /* Убираем отступы */
+}
+
+li {
+  margin: 5px 0; /* Отступы для элементов списка */
 }
 
 .ratings-participants-leagues-variant {
