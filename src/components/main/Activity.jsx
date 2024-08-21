@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import {link} from '../../consts.js';
 
-const Activity = () => {
+const Activity = ({ setPage, isFeedPage }) => {
   const [selectedSide, setSelectedSide] = useState('week');
   const [activities, setActivities] = useState([]);
   const [formState, setFormState] = useState("");
@@ -142,7 +142,7 @@ const Activity = () => {
       description: activityDescription,
     };
   
-    navigate('/editting', { state: { activityData } });
+    navigate('/main', { state: { activityData, page: "view" } });
   };
 
   // const getTotalTime = () => {

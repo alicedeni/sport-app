@@ -20,15 +20,6 @@ const Preview = () => {
     { 
         id: 1, 
         miniAvatar: 'https://example.com/avatar1.jpg', 
-        username: 'User 1', 
-        timestamp: '2023-03-12T10:00:00.000Z', 
-        fireCount: 10, 
-        image: 'https://www.meme-arsenal.com/memes/8b870fc24daef3a08f8a4548690e82ea.jpg', 
-        type: 'КАРДИОТРЕНИРОВКА', 
-        tag: 'cardio',
-        time: '10', 
-        calories: '100', 
-        text: 'This is post 1.', 
     })
 
     const handlePublish = () => {
