@@ -36,7 +36,7 @@ const ProfileBlock = ({ user }) => {
   ]);
 
   const [tempUser, setTempUser] = useState(user);
-
+{/* 
   useEffect(() => {
     setTempUser(user);
   }, [user]);
@@ -54,7 +54,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Error loading activities:', error);
       });
   }, []);
-
+*/}
   const handleEditClickProfile = () => {
     setEditModeProfile(true);
   };
@@ -80,7 +80,7 @@ const ProfileBlock = ({ user }) => {
     setEditModeAccount(false);
     setTempUser(user);
   };
-
+{/*
   const handleSave = () => {
     if (!tempUser) {
         console.error('Данные пользователя отсутствуют');
@@ -100,6 +100,7 @@ const ProfileBlock = ({ user }) => {
             console.error('Ошибка при отправке данных на сервер:', error);
         });
   };
+  */}
 
   const handleSaveClickProfile = () => {
     console.log('user', user);
@@ -119,7 +120,7 @@ const ProfileBlock = ({ user }) => {
     setTempUser(user);
     handleSave();
   };
-
+{/* 
   const handleExit = () => {
     axios.post(`${link}/logout`)
     .then(response => {
@@ -149,6 +150,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Ошибка при удалении аккаунта:', error);
       });
   };
+  */}
 
   const handleInputChange = (event, field) => {
     setTempUser({ ...tempUser, [field]: event.target.value });

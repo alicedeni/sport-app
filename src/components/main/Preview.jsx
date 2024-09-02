@@ -21,7 +21,7 @@ const Preview = () => {
         id: 1, 
         miniAvatar: 'https://example.com/avatar1.jpg', 
     })
-
+{/* 
     const handlePublish = () => {
       if (!activityData) {
         console.error('Данные активности отсутствуют');
@@ -40,7 +40,7 @@ const Preview = () => {
           console.error(error);
         });
     };
-  
+  */}
     const handleBack = () => {
       if (activityData) {
         navigate('/main', { state: { page: 'activity', formState: 'add' } });

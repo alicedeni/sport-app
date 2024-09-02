@@ -13,7 +13,7 @@ const RegistrationBlock = () => {
   const [name, setName] = useState("");
   const [patronymic, setPatronymic] = useState("");
   const [error, setError] = useState("");
-
+{/* 
   const handleLogin = (event) => {
     event.preventDefault();
     if (email.trim() === "" || password.trim() === "") {
@@ -22,6 +22,7 @@ const RegistrationBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
+      
       axios.post(`${link}/register`, { name, surname, patronymic, email, password })
         .then(response => {
           if (response.data.status === 200) {
@@ -34,6 +35,7 @@ const RegistrationBlock = () => {
         });
     }
   };
+  */}
 
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;

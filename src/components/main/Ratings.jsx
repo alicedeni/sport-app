@@ -6,18 +6,18 @@ import { link } from '../../consts.js';
 
 const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left');
-  const [participants, setParticipants] = useState([/*
+  const [participants, setParticipants] = useState([
     { id: 1, firstName: 'Иван', lastName: 'Иванов', team: 'Команда 1', progress: 500, league: 'gold' },
     { id: 2, firstName: 'Алиса', lastName: 'Денисова', team: 'Команда 3', progress: 470, league: 'gold' },
     { id: 3, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 400, league: 'silver' },
     { id: 4, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 200, league: 'bronze' },
-*/]);
-  const [teams, setTeams] = useState([/*
+]);
+  const [teams, setTeams] = useState([
     { id: 1, name: 'Команда 1', members: 10, totalProgress: 5000 },
     { id: 2, name: 'Команда 3', members: 8, totalProgress: 4200 },
     { id: 3, name: 'Команда 2', members: 12, totalProgress: 3500 },
     { id: 4, name: 'Команда 4', members: 2, totalProgress: 2000 },
-*/]);
+]);
   const [selectedLeague, setSelectedLeague] = useState([1]);
   const [leagues, setLeagues] = useState([
     { id: 1, name: 'ВСЕ УЧАСТНИКИ', color: '#51B8FF', ind: 'ВСЕ УЧАСТНИКИ' },
