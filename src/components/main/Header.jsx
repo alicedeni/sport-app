@@ -17,7 +17,6 @@ const Header = ({ setPage, isFeedPage }) => {
     participants: 0,
     count: 0,
   });
-{/* 
   useEffect(() => {
     axios.get(`${link}/main`, {})
       .then(response => {
@@ -37,7 +36,6 @@ const Header = ({ setPage, isFeedPage }) => {
         console.error(error);
       });
   }, []);
-  */}
 
   const handlePageChange = (page) => {
     setPage(page);

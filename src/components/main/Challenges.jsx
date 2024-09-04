@@ -18,7 +18,6 @@ const Challenges = () => {
     { id: 3, name: 'Отжаться 50 раз', progress: 90, points: 50 },
 */]);
 
-{/* 
   useEffect(() => {
     let isMounted = true;
 
@@ -54,7 +53,6 @@ const Challenges = () => {
       isMounted = false;
     };
   }, [selectedSide]);
-*/}
   const handleClick = (side) => {
     setSelectedSide(side);
   };

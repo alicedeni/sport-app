@@ -20,7 +20,7 @@ const Activity = ({ setPage, isFeedPage }) => {
   const [activityDescription, setActivityDescription] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-{/* 
+
   useEffect(() => {
     axios.get(`${link}/list_of_activities`)
       .then(response => {
@@ -53,7 +53,6 @@ const Activity = ({ setPage, isFeedPage }) => {
     };
     fetchActivities();
   }, [selectedSide]);
-  */}
 
   const handleClick = (side) => {
     setSelectedSide(side);
@@ -82,7 +81,6 @@ const Activity = ({ setPage, isFeedPage }) => {
   const handleActivityCaloriesChange = (calories) => {
     setActivityCalories(calories);
   };
- {/* 
   const handleActivityImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -114,7 +112,6 @@ const Activity = ({ setPage, isFeedPage }) => {
       });
     }
   };
-  */}
 
   const handleActivityDescriptionChange = (description) => {
     setActivityDescription(description);

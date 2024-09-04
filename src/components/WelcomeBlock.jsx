@@ -8,7 +8,7 @@ const WelcomeBlock = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-{/* 
+ 
   const handleLogin = (event) => {
     event.preventDefault();
     if (email.trim() === "" || password.trim() === "") {
@@ -54,7 +54,6 @@ const WelcomeBlock = () => {
         setError("Произошла ошибка при проверке статуса.");
       });
   };
-  */}
 
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;

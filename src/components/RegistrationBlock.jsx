@@ -13,7 +13,7 @@ const RegistrationBlock = () => {
   const [name, setName] = useState("");
   const [patronymic, setPatronymic] = useState("");
   const [error, setError] = useState("");
-{/* 
+
   const handleLogin = (event) => {
     event.preventDefault();
     if (email.trim() === "" || password.trim() === "") {
@@ -35,7 +35,6 @@ const RegistrationBlock = () => {
         });
     }
   };
-  */}
 
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
