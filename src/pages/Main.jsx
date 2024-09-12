@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Header from '../components/main/Header';
 import Posts from '../components/main/Posts';
 import Challenges from '../components/main/Challenges';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import { link } from '../consts.js';
 
 const Main = () => {
+  const { id } = useParams();
   const [page, setPage] = useState('feed');
   const [posts, setPosts] = useState([/*
     { 
@@ -49,8 +50,8 @@ const Main = () => {
     }
   }, [location.state]);
 
-  const getPostData = () => {
-    return axios.get(`${link}/posts`, {})
+  const getPostData = (id) => {
+    return axios.get(`${link}/user/${id}/posts`, {})
     .then(response => {
       console.log(response.data);
       return response.data;
@@ -62,7 +63,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    getPostData()
+    getPostData(id)
       .then(data => {
         if (data && data.posts) {
           setPosts(data.posts);

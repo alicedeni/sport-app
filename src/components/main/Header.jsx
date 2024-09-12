@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import Notification from './Notification';
 import { CButtonProfile } from "../Buttons";
 import axios from 'axios';
+import { link } from '../../consts.js';
 
-import {link} from '../../consts.js';
-
-const Header = ({ setPage, isFeedPage }) => {
+const Header = ({ currentPage }) => {
+  const { id } = useParams();
   const [isNotificationOpen, setIsNotificationOpen] = useState(true);
   const [userName, setUserName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [points, setPoints] = useState(0);
   const [goal, setGoal] = useState(90);
-  const [currentPage, setCurrentPage] = useState('');
   const [mainInfo, setMainInfo] = useState({
     teams: 0,
     participants: 0,
     count: 0,
   });
+
   useEffect(() => {
-    axios.get(`${link}/main`, {})
+    axios.get(`${link}/user/${id}/main`)
       .then(response => {
         setUserName(response.data.name);
         setAvatar(response.data.avatar);
@@ -29,22 +30,14 @@ const Header = ({ setPage, isFeedPage }) => {
           participants: response.data.participants,
           count: response.data.count,
         });
-        console.log("Response:", response.data);
-        console.log(localStorage.getItem('token'));
       })
       .catch(error => {
         console.error(error);
       });
   }, []);
 
-  const handlePageChange = (page) => {
-    setPage(page);
-    setCurrentPage(page);
-  };
-
   const handlePageNotification = () => {
     setIsNotificationOpen(false);
-    setCurrentPage('feed');
   };
 
   return (
@@ -62,36 +55,40 @@ const Header = ({ setPage, isFeedPage }) => {
       <nav className="header-nav">
         <ul className="header-nav-list">
           <li>
-            <a href="/main#feed" className="header-nav-list-item" onClick={() => handlePageChange('feed')}>ЛЕНТА</a>
+            <Link to={`/main/${id}`} className="header-nav-list-item">ЛЕНТА</Link>
           </li>
           <li>
-            <a href="/main#challenges" className="header-nav-list-item" onClick={() => handlePageChange('challenges')}>ЧЕЛЛЕНДЖИ</a>
+            <Link to={`/challenges/${id}`} className="header-nav-list-item">ЧЕЛЛЕНДЖИ</Link>
           </li>
           <li>
-            <a href="/main#ratings" className="header-nav-list-item" onClick={() => handlePageChange('ratings')}>РЕЙТИНГИ</a>
+            <Link to={`/ratings/${id}`} className="header-nav-list-item">РЕЙТИНГИ</Link>
           </li>
           <li>
-            <a href="/main#activity" className="header-nav-list-item" onClick={() => handlePageChange('activity')}>АКТИВНОСТЬ</a>
+            <Link to={`/activity/${id}`} className="header-nav-list-item">АКТИВНОСТЬ</Link>
           </li>
         </ul>
       </nav>
-      {isFeedPage && <Notification isOpen={isNotificationOpen} userName={userName} onClose={() => handlePageNotification()} />}
-      {((currentPage === 'challenges') || (currentPage === 'feed' && !isNotificationOpen)) && (
+
+      {currentPage === 'feed' && isNotificationOpen && (
+        <Notification isOpen={isNotificationOpen} userName={userName} onClose={handlePageNotification} />
+      )}
+
+      {currentPage === 'challenges' && (
         <div className="goal-status">
           <div className="goal-text">Наша цель — Lorem ipsum dolor sit amet.</div>
           <div className="goal-bar">
-            <div
-              className="goal"
-              style={{ width: `${goal}%` }}
-            ></div>
+            <div className="goal" style={{ width: `${goal}%` }}></div>
           </div>
         </div>
       )}
-      {((currentPage === 'feed' && !isNotificationOpen)) && (<div className="goal-info">
-        <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.teams}</span>  команды</div>
+
+      {currentPage === 'feed' && !isNotificationOpen && (
+        <div className="goal-info">
+          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.teams}</span>  команды</div>
           <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.participants}</span> участников</div>
           <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.count}</span> собрано</div>
-        </div>)}
+        </div>
+      )}
     </div>
   );
 };

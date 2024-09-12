@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ButtonEnter, ButtonToEnter, ButtonNext } from "./Buttons";
+import { useParams } from 'react-router-dom';
 
 import { link } from '../consts.js';
 
 const RegistrationBlock = () => {
+  const { id } = useParams();
   const [formState, setFormState] = useState("registration");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

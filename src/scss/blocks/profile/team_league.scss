@@ -1,0 +1,258 @@
+.team-members-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+  
+  .team-member-item {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .team-member-item:hover {
+    background-color: #f0f0f0;
+  }
+
+
+  .team-members-count {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    margin-left: 5px;
+  }
+  
+  .arrow-up {
+    border-bottom: 5px solid #333;
+  }
+  
+  .arrow-down {
+    border-top: 5px solid #333;
+  }
+
+
+  .profile-block {
+    margin-left: 400px;
+    margin-right: 100px;
+    margin-top: -100px;
+    margin-bottom: 40px;
+    &__activity-list {
+      display: flex;
+      flex-direction: row;
+      gap: 20px;
+      width: 100%;
+      flex-wrap: wrap;
+      &-item{
+        width: 270px;
+        border-radius: 15px;
+        &.pool-metric {
+          color: $blue;
+          border: 2px solid $blue;
+        }
+        
+        &.cardio-metric {
+          color: $yellow;
+          border: 2px solid $yellow;
+        }
+        
+        &.run-metric {
+          color: $green;
+          border: 2px solid $green;
+        }
+        
+        &.power-metric {
+          color: $pink;
+          border: 2px solid $pink;
+        }
+        
+        &.bike-metric {
+          color: $purple2;
+          border: 2px solid $purple2;
+        }
+        
+        &.game-metric {
+          color: $dark-blue;
+          border: 2px solid $dark-blue;
+        }
+        
+        &.dance-metric {
+          color: $purple1;
+          border: 2px solid $purple1;
+        }
+        
+        &.other-metric {
+          color: $grey4;
+          border: 2px solid $grey4;
+        }
+        &-time {
+          font-size: 28px;
+          font-weight: bold;
+          text-align: center;
+          margin: 20px;
+        }
+        .pool {color: $blue;}
+        .cardio {color: $yellow;}
+        .run {color: $green;}
+        .power {color: $pink;}
+        .bike {color: $purple2;}
+        .game {color: $dark-blue;}
+        .dance {color: $purple1;}
+        .other {color: $grey4;}
+      }
+    }
+    &-avatar {
+      position:absolute;
+      top: 205px;
+      left: 80px;
+      width: 270px;
+      height: 270px;
+      border-radius: 135px;
+      border: 10px solid $white2; 
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    }
+    &-name {
+      font-size: 40px;
+      color: $white2;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    &-content{
+      margin-top: 100px;
+      &-comands {
+        width: 100%;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        &-list {
+          
+          height: 50px;
+
+        }
+        &-item {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          &-text {
+            font-size: 16px;
+            color: $grey1;
+            margin-bottom: 5px;
+          }
+        }
+        &-items {
+          position: relative;
+          background: $white2;
+          padding: 16px;
+          border-radius: 10px;
+          width: 49%;
+          height: 350px;
+          &-rect {
+            height: 80px;
+            background: $purple1;
+            border-radius: 5px;
+            margin-bottom: 100px;
+          }
+          &-circle {
+            position: absolute;
+            top: 46px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            background: $purple1;
+            border: 5px solid $white2;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+          }
+        }
+        &-position{
+          font-size: 20px;
+          color: $blue;
+          text-align: center;
+          margin-top: 20px;
+        }
+      }
+      &-data {
+        padding: 30px 50px;
+        background: $white2;
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        &-title {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          &-name {
+            color: black;
+            font-size: 32px;
+            font-weight: bold;
+          }
+          &-pen {
+            background-color: transparent;
+            border: none;
+          }
+        }
+        &-profile {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: row;
+          justify-content: space-between;
+
+          margin-top: 30px;
+          margin-right: 30px;
+          &-column {
+            display: flex;
+            flex-direction: column;
+            &-i {
+              margin: 0px 30px;
+            }
+          }
+        }
+        &-btn {
+          margin-top: 20px;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          gap: 20px;
+          &-save {
+            font-size: 24px;
+            font-weight: bold;
+            width: 240px;
+            height: 48px;
+            border-radius: 24px;
+            color: $white2;
+            background-color: $blue;
+            border: none;
+          }
+          &-cancel {
+            font-size: 24px;
+            font-weight: bold;
+            width: 240px;
+            height: 48px;
+            border-radius: 24px;
+            color: $grey1;
+            border: 2px solid $grey1;
+            background-color: transparent;
+          }
+        }
+      }
+    }
+    &-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: 20px;
+    }
+  }

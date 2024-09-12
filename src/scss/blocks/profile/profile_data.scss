@@ -1,0 +1,117 @@
+.profile-block {
+    margin-left: 400px;
+    margin-right: 100px;
+    margin-top: -100px;
+    margin-bottom: 40px;
+    &-content{
+        margin-top: 100px;
+        &-data {
+          padding: 30px 50px;
+          background: $white2;
+          width: 100%;
+          border-radius: 10px;
+          margin-bottom: 20px;
+          &-line {
+            width: 100%;
+            color: $grey3;
+            background-color: $grey3;
+            height: 2px;
+            margin-top: 20px;
+          }
+          &-title {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            &-name {
+              color: black;
+              font-size: 32px;
+              font-weight: bold;
+            }
+            &-pen {
+              background-color: transparent;
+              border: none;
+            }
+          }
+          &-items {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+          }
+          &-item {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: column;
+            &-text {
+              font-size: 16px;
+              color: $grey1;
+              margin-bottom: 5px;
+            }
+            &-value {
+              font-size: 20px;
+              border:none;
+            }
+            &-column {
+              flex-direction: row;
+              display: flex;
+            }
+            &-image {
+              width: 150px;
+              height: 150px;
+              border-radius: 75px;
+              border: 5px solid $white2; 
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+            }
+            &-oval {
+              width: 240px;
+              height: 40px;
+              border-radius: 20px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 2px solid $blue;
+              &-text {
+                font-size: 24px;
+                color: $blue;
+                text-align: center;
+              }
+              &-input {
+                font-size: 24px;
+                color: $blue;
+                text-align: center;
+                border: none;
+                width: 200px;
+              }
+            }
+          }
+          &-btn {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            gap: 20px;
+            &-save {
+              font-size: 24px;
+              font-weight: bold;
+              width: 240px;
+              height: 48px;
+              border-radius: 24px;
+              color: $white2;
+              background-color: $blue;
+              border: none;
+            }
+            &-cancel {
+              font-size: 24px;
+              font-weight: bold;
+              width: 240px;
+              height: 48px;
+              border-radius: 24px;
+              color: $grey1;
+              border: 2px solid $grey1;
+              background-color: transparent;
+            }
+          }
+        }
+      }
+}
