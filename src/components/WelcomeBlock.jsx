@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { ButtonEnter, ButtonReg } from "./Buttons";
 
 import { link } from '../consts.js';
 
 const WelcomeBlock = () => {
+  const { id } = useParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,7 +19,7 @@ const WelcomeBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post(`${link}/login`, { email, password })
+      axios.post(`${link}/user/${id}`, { email, password })
         .then(response => {
           if (response.data.status === 200) {
             checkHelloStatus();
@@ -34,10 +36,10 @@ const WelcomeBlock = () => {
   };
 
   const checkHelloStatus = () => {
-    axios.get(`${link}/get_hello_status`)
+    axios.get(`${link}/user/${id}/get_hello_status`)
       .then(response => {
         if (response.data.f_hello === false) {
-          axios.post(`${link}/update_f_hello`)
+          axios.post(`${link}/user/${id}/update_f_hello`)
             .then(() => {
               window.location.href = '/about';
             })
@@ -46,7 +48,7 @@ const WelcomeBlock = () => {
               setError("Произошла ошибка при обновлении статуса.");
             });
         } else {
-          window.location.href = '/main';
+          window.location.href = `/main/${id}`;
         }
       })
       .catch(error => {

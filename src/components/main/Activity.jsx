@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import {link} from '../../consts.js';
 
 const Activity = ({ setPage, isFeedPage }) => {
+  const { id } = useParams();
   const [selectedSide, setSelectedSide] = useState('week');
   const [activities, setActivities] = useState([]);
   const [formState, setFormState] = useState("");
@@ -22,7 +23,7 @@ const Activity = ({ setPage, isFeedPage }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${link}/list_of_activities`)
+    axios.get(`${link}/user/${id}/list_of_activities`)
       .then(response => {
         if (response.data.status === 200) {
           setActivityTypes(response.data.activities);
@@ -40,11 +41,11 @@ const Activity = ({ setPage, isFeedPage }) => {
       try {
         let response;
         if (selectedSide === 'week') {
-          response = await axios.get(`${link}/activities/week`);
+          response = await axios.get(`${link}/user/${id}/activities/week`);
         } else if (selectedSide === 'month') {
-          response = await axios.get(`${link}/activities/month`);
+          response = await axios.get(`${link}/user/${id}/activities/month`);
         } else {
-          response = await axios.get(`${link}/activities/all`);
+          response = await axios.get(`${link}/user/${id}/activities/all`);
         }
         setActivities(response.data.activities);
       } catch (error) {
@@ -140,7 +141,7 @@ const Activity = ({ setPage, isFeedPage }) => {
       description: activityDescription,
     };
   
-    navigate('/main', { state: { activityData, page: "view" } });
+    navigate(`/preview/${id}`, { state: { activityData, page: "view" } });
   };
 
   // const getTotalTime = () => {

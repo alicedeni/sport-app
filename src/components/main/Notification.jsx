@@ -1,7 +1,9 @@
 import React from 'react';
 import { ButtonProfile } from "../Buttons";
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 
 const Notification = ({ isOpen, userName, onClose }) => {
+  const { id } = useParams();
   if (!isOpen) {
     return null;
   }

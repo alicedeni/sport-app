@@ -1,1 +1,1 @@
-export const link = 'http://locst:5000';
+export const link = 'https://team2go-api.ru';

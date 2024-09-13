@@ -88,7 +88,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/edit_person_data`, tempUser)
+    axios.post(`${link}/edit_person_data/${id}`, tempUser)
         .then(response => {
             if (response.data.status === 200) {
                 setUser(tempUser);
@@ -137,7 +137,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleDelete = () => {
-    axios.delete(`${link}/delete_account`)
+    axios.delete(`${link}/delete_account/${id}`)
       .then(response => {
         if (response.data.status === 200) {
           window.location.href = '/';

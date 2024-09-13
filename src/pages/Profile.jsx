@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import ProfileBlock from '../components/ProfileBlock';
 import axios from 'axios';
 import Header from '../components/main/Header';
@@ -6,6 +7,7 @@ import Header from '../components/main/Header';
 import { link } from '../consts.js';
 
 const Profile = () => {
+    const { id } = useParams();
     const [page, setPage] = React.useState('feed');
     const [user, setUser] = useState({
         id: 1,
@@ -23,7 +25,7 @@ const Profile = () => {
     });
  
     const getUserData = () => {
-        return axios.get(`${link}/profile`, {})
+        return axios.get(`${link}/profile/${id}`, {})
             .then(response => {
                 return response.data;
             })

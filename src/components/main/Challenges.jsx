@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 import {link} from '../../consts.js';
 
 const Challenges = () => {
+  const { id } = useParams();
   const [selectedSide, setSelectedSide] = useState('current');
   const [currentChallenges, setCurrentChallenges] = useState([/*
     { id: 1, name: 'Пробежать 10 км', progress: 75, points: 100 },
@@ -25,9 +27,9 @@ const Challenges = () => {
       try {
         let response;
         if (selectedSide === 'current') {
-          response = await axios.get(`${link}/current-challenges`);
+          response = await axios.get(`${link}/user/${id}/current-challenges`);
         } else {
-          response = await axios.get(`${link}/completed-challenges`);
+          response = await axios.get(`${link}/user/${id}/completed-challenges`);
         }
         if (isMounted) {
           const data = response.data;

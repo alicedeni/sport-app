@@ -19,7 +19,7 @@ const Header = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    axios.get(`${link}/user/${id}/main`)
+    axios.get(`${link}/main/${id}`)
       .then(response => {
         setUserName(response.data.name);
         setAvatar(response.data.avatar);

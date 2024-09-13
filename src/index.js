@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Welcome from './pages/Welcome';
-import Main from './pages/Main';
+import PreviewPage from './pages/Preview';
 import Feed from './pages/Feed';
 import ChallengesPage from './pages/Challenges';
 import RatingsPage from './pages/Ratings';
@@ -61,6 +61,13 @@ const router = createBrowserRouter([
   {
     path: "/activity/:id",
     element: <ActivityPage />,
+    loader: async () => {
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
+    }
+  },
+  {
+    path: "/preview/:id",
+    element: <PreviewPage />,
     loader: async () => {
       return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
     }

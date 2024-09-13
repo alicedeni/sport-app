@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Favorite, FavoriteBorder, Comment } from '@material-ui/icons';
 import { ButtonEnter } from "../Buttons";
 import { Avatar, IconButton } from '@material-ui/core';
@@ -12,6 +12,7 @@ ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
 
 const Preview = () => {
+    const { id } = useParams();
     const [page, setPage] = useState('feed');
     const { state } = useLocation();
     const { activityData } = state;
@@ -27,11 +28,11 @@ const Preview = () => {
         console.error('Данные активности отсутствуют');
         return;
       }
-      axios.post(`${link}/activities`, activityData)
+      axios.post(`${link}/user/${id}/activities`, activityData)
         .then(response => {
           if (response.data.status === 200) {
             console.log('Активность успешно опубликована');
-            window.location.href = '/main';
+            window.location.href = `/main/${id}`;
           } else {
             console.error('Ошибка при публикации активности:', response.data.error);
           }
@@ -42,7 +43,7 @@ const Preview = () => {
     };
     const handleBack = () => {
       if (activityData) {
-        navigate('/main', { state: { page: 'activity', formState: 'add' } });
+        navigate(`/activity/${id}`, { state: { page: 'activity', formState: 'add' } });
       } else {
         console.error('Данные активности отсутствуют');
       }

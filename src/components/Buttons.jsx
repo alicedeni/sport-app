@@ -1,3 +1,6 @@
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
 export function ButtonEnter({src, onClick, textContent}) {
   return (
     <a className="welcome-block__link-forward" onClick={onClick}>
@@ -37,14 +40,20 @@ export function ButtonToEnter({src, onClick, textContent}){
   )
 }
 
-export function ButtonProfile({src, onClick, textContent}){
-  return(
-    <a className="welcome-block__profile" href="/profile" onClick={onClick}>
-        <button className={`button button-profile`}>
-        <span className="button_text">{textContent}</span>
-      </button>
-    </a>
-  )
+export function ButtonProfile({ onClick, textContent }) {
+  const navigate = useNavigate();
+  const { id } = useParams();
+  
+  const handleClick = () => {
+    if (onClick) onClick(); 
+    navigate(`/profile/${id}`); 
+  };
+
+  return (
+    <button className={`button button-profile`} onClick={handleClick}>
+      <span className="button_text">{textContent}</span>
+    </button>
+  );
 }
 
 export function ButtonActivity({src, onClick, textContent}){
@@ -58,15 +67,22 @@ export function ButtonActivity({src, onClick, textContent}){
 }
 
 export function CButtonProfile({ children, points, onClick }) {
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const handleClick = (e) => {
+    if (onClick) onClick(); 
+    e.preventDefault(); 
+    navigate(`/profile/${id}`);
+  };
+
   return (
-    <a className="cbutton__profile" href="/profile" onClick={onClick}>
-      <button className="button cbutton-profile">
-        <div className="points">
-          {points}
-        </div>
-        {children}
-      </button>
-    </a>
+    <button className="button cbutton-profile" onClick={handleClick}>
+      <div className="points">
+        {points}
+      </div>
+      {children}
+    </button>
   );
 }
 
