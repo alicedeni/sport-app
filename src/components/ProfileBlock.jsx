@@ -3,6 +3,7 @@ import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { ButtonDelete, ButtonExit } from "./Buttons";
 import ProfileData from './profile/ProfileData';
 import TeamAndLeague from './profile/TeamLeague';
+import AccountSection from './profile/AccountSection';
 import axios from 'axios';
 
 import { link } from '../consts.js';
@@ -46,7 +47,7 @@ const ProfileBlock = ({ user }) => {
   }, [user]);
 
   useEffect(() => {
-    axios.get(`${link}/profile_activities`)
+    axios.get(`${link}/user/${id}/activities/all`)
       .then(response => {
         if (response.data.status === 200) {
           setActivities(response.data.activities);
@@ -125,7 +126,7 @@ const ProfileBlock = ({ user }) => {
     axios.post(`${link}/logout`)
     .then(response => {
       if (response.data.status === 200) {
-        window.location.href = '/';
+        window.location.href = `main/${id}`;
         console.log('Выход из аккаунта выполнен успешно');
       } else {
         console.error('Ошибка при выходе из аккаунта:', response.data.error);
@@ -140,7 +141,7 @@ const ProfileBlock = ({ user }) => {
     axios.delete(`${link}/delete_account/${id}`)
       .then(response => {
         if (response.data.status === 200) {
-          window.location.href = '/';
+          window.location.href = `main/${id}`;
           console.log('Аккаунт успешно удален');
         } else {
           console.error('Ошибка при удалении аккаунта:', response.data.error);
@@ -238,83 +239,14 @@ const ProfileBlock = ({ user }) => {
             ) : null}
           </div>
         </div>
-        <div className="profile-block-content-data">
-          <div className="profile-block-content-data-title">
-            <p className="profile-block-content-data-title-name">Мой аккаунт</p>
-            <button onClick={handleEditClickAccount} className="profile-block-content-data-title-pen">
-              <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z" stroke="#E0E0E0" strokeWidth="2" />
-              </svg>
-            </button>
-          </div>
-          <div className="profile-block-content-data-line"/>
-          <div className="profile-block-content-data-profile">
-            <div className="profile-block-content-data-item-column">
-              <div className="profile-block-content-data-item-value">
-                <img src={editMode ? tempUser.avatar : tempUser.avatar} alt={tempUser.name} className="profile-block-content-data-item-image" />
-                {editModeAccount && (
-                  <input type="file" onChange={(event) => handleInputChange(event, 'avatar')} />
-                )}
-              </div>
-            </div>
-            <div className="profile-block-content-data-profile-column">
-              <div className="profile-block-content-data-profile-column-i">
-              <p className="profile-block-content-data-item-text">Имя</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.firstName} onChange={(event) => handleInputChange(event, 'lastName')} />
-                ) : (
-                  <p>{tempUser.firstName}</p>
-                )}
-              </div>
-              </div>
-              <div className="profile-block-content-data-profile-column-i">
-              <p className="profile-block-content-data-item-text">Фамилия</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="text" value={tempUser.lastName} onChange={(event) => handleInputChange(event, 'lastName')} />
-                ) : (
-                  <p>{tempUser.lastName}</p>
-                )}
-              </div>
-              </div>
-            </div>
-            <div className="profile-block-content-data-profile-column">
-            <div className="profile-block-content-data-profile-column-i">
-              <p className="profile-block-content-data-item-text">Электронная почта</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="email" value={tempUser.email} onChange={(event) => handleInputChange(event, 'email')} />
-                ) : (
-                  <p>{tempUser.email}</p>
-                )}
-              </div>
-              </div>
-              <div className="profile-block-content-data-profile-column-i">
-              <p className="profile-block-content-data-item-text">Пароль</p>
-              <div className="profile-block-content-data-item-value">
-                {editModeAccount ? (
-                  <input className="profile-block-content-data-item-value" type="password" value={tempUser.password} onChange={(event) => handleInputChange(event, 'password')} />
-                ) : (
-                  <p>*******</p>
-                )}
-              </div>
-              </div>
-            </div>
-          </div>
-          <div className="profile-block-content-account-btns">
-            {editModeAccount ? (
-              <div className="profile-block-content-account-btns">
-                <button className="profile-block-content-account-btn profile-block-content-account-btn_cancel" onClick={handleCancelClickAccount}>
-                  Отменить
-                </button>
-                <button className="profile-block-content-account-btn profile-block-content-account-btn_save" onClick={handleSaveClickAccount}>
-                  Сохранить
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </div>
+        <AccountSection 
+                tempUser={tempUser}
+                editModeAccount={editModeAccount}
+                handleInputChange={handleInputChange}
+                handleCancelClickAccount={handleCancelClickAccount}
+                handleSaveClickAccount={handleSaveClickAccount}
+                handleEditClickAccount={handleEditClickAccount}
+            />
       </div>
       <div className="profile-block-btn">
         <ButtonExit text="Выйти из аккаунта" textContent={"Выйти из аккаунта"} onClick={handleExit}/>

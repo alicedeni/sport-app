@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.3",
-  "description": "Vers for individual ids",
+  "version": "1.0.4",
+  "description": "Vers with profile info",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
