@@ -11,7 +11,7 @@ const Notification = ({ isOpen, userName, onClose }) => {
   return (
     <div className="header-notification">
       <h1 className="header-notification-title">Привет, {userName}!</h1>
-      <p className="header-notification-text">Рады видеть тебя в нашем спортивном челлендже. Наша глобальная цель — Lorem ipsum dolor sit amet.<br></br>Основное соревнование начнется со второй недели, а пока что ты можешь заполнить данные о себе и свои персональные цели в личном профиле.</p>
+      <p className="header-notification-text">Рады видеть тебя в нашем спортивном челлендже. Наша глобальная цель — Прошагать до центра Земли .<br></br>Основное соревнование начнется со второй недели, а пока что ты можешь заполнить данные о себе и свои персональные цели в личном профиле.</p>
       <ButtonProfile className="welcome-block__btn" text="Личный профиль" textContent={"Личный профиль"}></ButtonProfile>
       <button className="header-notification-close" onClick={onClose}>
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

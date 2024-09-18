@@ -75,7 +75,7 @@ const Header = ({ currentPage }) => {
 
       {currentPage === 'challenges' && (
         <div className="goal-status">
-          <div className="goal-text">Наша цель — Lorem ipsum dolor sit amet.</div>
+          <div className="goal-text">Наша цель — Прошагать до центра Земли.</div>
           <div className="goal-bar">
             <div className="goal" style={{ width: `${goal}%` }}></div>
           </div>

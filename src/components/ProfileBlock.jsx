@@ -14,6 +14,9 @@ const ProfileBlock = ({ user }) => {
   const [editModeProfile, setEditModeProfile] = useState(false);
   const [editModeProgress, setEditModeProgress] = useState(false);
   const [editModeAccount, setEditModeAccount] = useState(false);
+  const [weightGoal, setWeightGoal] = useState('lose');
+  const [currentWeight, setCurrentWeight] = useState('');
+  const [progressData, setProgressData] = useState(60); 
   const [activities, setActivities] = useState([
     {
       type: 'Бассейн',
@@ -58,7 +61,28 @@ const ProfileBlock = ({ user }) => {
       .catch(error => {
         console.error('Error loading activities:', error);
       });
-  }, []);
+    
+    axios.get(`${link}/user/${id}/progress`)
+      .then(response => {
+        if (response.data.status === 200) {
+          setProgressData(response.data.progress);
+        } else {
+          console.error('Error loading progress:', response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading progress:', error);
+      });
+  }, [id]);
+
+  const handleWeightGoalChange = (event) => {
+    setWeightGoal(event.target.value);
+  };
+
+  const handleWeightChange = (event) => {
+    setCurrentWeight(event.target.value);
+  };
+
   const handleEditClickProfile = () => {
     setEditModeProfile(true);
   };
@@ -202,11 +226,6 @@ const ProfileBlock = ({ user }) => {
         <div className="profile-block-content-data">
           <div className="profile-block-content-data-title">
             <p className="profile-block-content-data-title-name">Мой прогресс</p>
-            <button onClick={handleEditClickProgress} className="profile-block-content-data-title-pen">
-              <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z" stroke="#E0E0E0" strokeWidth="2" />
-              </svg>
-            </button>
           </div>
           <div className="profile-block-content-data-line"/>
           <div className="profile-block-content-data-item">
@@ -221,23 +240,40 @@ const ProfileBlock = ({ user }) => {
               ))}
             </div>
             <div className="profile-block-content-data-line"/>
-            <div className="profile-block-content-data-item-row">
-              <p className="profile-block-content-data-item-label">Моя цель:</p>
-              <p className="profile-block-content-data-item-value">Улучшить форму</p>
+            <div className="profile-block-content-data-title">
+              <p className="profile-block-content-data-title-name" style={{fontSize: '24px'}}>Моя цель:</p>
+              <button onClick={handleEditClickProgress} className="profile-block-content-data-title-pen">
+              <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z" stroke="#E0E0E0" strokeWidth="2" />
+              </svg>
+            </button>
             </div>
+            <div className="profile-block-content-data-item-row">
+            <select value={weightGoal} onChange={handleWeightGoalChange}>
+              <option value="lose">Похудеть</option>
+              <option value="gain">Набрать вес</option>
+            </select>
+            <input 
+              type="number" 
+              value={currentWeight} 
+              onChange={handleWeightChange} 
+              placeholder="Вес" 
+            />
           </div>
-          <div className="profile-block-content-data-btns">
-            {editModeProgress ? (
-              <div className="profile-block-content-data-btns">
-                <button className="profile-block-content-data-btn profile-block-content-data-btn_cancel" onClick={handleCancelClickProgress}>
-                  Отменить
-                </button>
-                <button className="profile-block-content-data-btn profile-block-content-data-btn_save" onClick={handleSaveClickProgress}>
-                  Сохранить
-                </button>
-              </div>
-            ) : null}
+          <div className="progress-bar">
+            <div 
+              className="progress" 
+              style={{ width: `${progressData}%` }}
+            ></div>
           </div>
+          </div>
+          
+          {editModeProgress && (
+            <div className="profile-block-content-data-btn">
+              <button onClick={handleCancelClickProgress} className="profile-block-content-data-btn-cancel">Отменить</button>
+              <button onClick={handleSaveClickProgress} className="profile-block-content-data-btn-save">Сохранить</button>
+            </div>
+          )}
         </div>
         <AccountSection 
                 tempUser={tempUser}

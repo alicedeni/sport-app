@@ -4,6 +4,7 @@ import { Favorite, FavoriteBorder, Comment } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import ReactDOM from 'react-dom';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
 import CommentDefault from '../../assets/icons/commentDefault.svg';
 import HeartFilled from '../../assets/icons/heartFilled.svg';
@@ -18,6 +19,7 @@ ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
 
 const Post = ({ post }) => {
+  const { id } = useParams();
   const [isCommentOpen, setIsCommentOpen] = React.useState(false);
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likeCount, setLikeCount] = useState(post.likeCount);
@@ -28,28 +30,13 @@ const Post = ({ post }) => {
 
   console.log(post); 
 
-  useEffect(() => {
-    axios.get(`${link}/get_comments/${post.feed_id}`)
-      .then(response => {
-        if (response.data.status === 200) {
-          setComments(response.data.comments);
-          setCommentCount(response.data.comments.length);
-        } else {
-          console.error('Error fetching comments:', response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error fetching comments:', error);
-      });
-  }, [post.feed_id]);
-
   const handleLikeClick = () => {
     const likeData = {
       post_id: post.feed_id,
     };
     
     if (isLiked) {
-      axios.post(`${link}/unlike`, likeData)
+      axios.post(`${link}/user/${id}/unlike`, likeData)
         .then(response => {
           if (response.data.status === 200) {
             setIsLiked(false);
@@ -63,7 +50,7 @@ const Post = ({ post }) => {
         });
     } else {
       // лайк
-      axios.post(`${link}/like`, likeData)
+      axios.post(`${link}/user/${id}/like`, likeData)
         .then(response => {
           if (response.data.status === 200) {
             setIsLiked(true);
@@ -110,7 +97,7 @@ const Post = ({ post }) => {
       comment_text: commentText,
     };
     
-    axios.post(`${link}/comment`, commentData)
+    axios.post(`${link}/user/${id}/comment`, commentData)
       .then(response => {
         if (response.data.status === 200) {
           setComments([...comments, { text: commentText, surname: 'Вы' }]);

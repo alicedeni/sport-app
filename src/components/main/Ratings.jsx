@@ -196,13 +196,13 @@ const Ratings = () => {
         </div>
       ) : (
         <div className="ratings-teams-list">
-          {teams.map((team) => (
+          {teams.map((team, index) => (
             <div
               key={team.id}
               className="ratings-teams-list-team-item"
               onClick={() => handleTeamClick(team)}
             >
-              <div className="ratings-teams-list-team-item-team-num">{team.id}</div>
+              <div className="ratings-teams-list-team-item-team-num">{index + 1}</div>
               <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
               <div className="ratings-teams-list-team-item-team-members">{team.members} участников</div>
               <div className="ratings-teams-list-team-item-team-progress">{team.totalProgress}</div>

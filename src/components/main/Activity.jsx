@@ -130,8 +130,25 @@ const Activity = ({ setPage, isFeedPage }) => {
 
   const handleSaveActivity = (event) => {
     event.preventDefault();
+    function calculateTimeDifference(startTime, endTime) {
+      const [startHours, startMinutes] = startTime.split(':').map(Number);
+      const [endHours, endMinutes] = endTime.split(':').map(Number);
+    
+      const startTotalMinutes = startHours * 60 + startMinutes;
+      const endTotalMinutes = endHours * 60 + endMinutes;
+    
+      const differenceInMinutes = endTotalMinutes - startTotalMinutes;
+      const hours = Math.floor(differenceInMinutes / 60);
+      const minutes = differenceInMinutes % 60;
+    
+      return `${hours}:${minutes}`;
+    }
+    const time = calculateTimeDifference(activityStartTime, activityEndTime);
+    
     const activityData = {
       type: activityType,
+      tag: activityType,
+      time: time,
       startTime: activityStartTime,
       endTime: activityEndTime,
       distance: activityDistance,
@@ -140,6 +157,7 @@ const Activity = ({ setPage, isFeedPage }) => {
       image: activityImage,
       description: activityDescription,
     };
+
   
     navigate(`/preview/${id}`, { state: { activityData, page: "view" } });
   };
