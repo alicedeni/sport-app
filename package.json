@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.6",
-  "description": "Profile and icon changes",
+  "version": "1.0.7",
+  "description": "modal comand window",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
