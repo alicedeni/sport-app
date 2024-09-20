@@ -210,7 +210,7 @@ const ProfileBlock = ({ user }) => {
 
   return (
     <div className="profile-block">
-      <img src={`${link}/${tempUser.avatar}`} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
+      <img src={tempUser.avatar} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
       <span className="profile-block-name">{`${tempUser.lastName} ${tempUser.firstName}`}</span>
       
       <div className="profile-block-content">
@@ -248,19 +248,22 @@ const ProfileBlock = ({ user }) => {
               </svg>
             </button>
             </div>
-            <div className="profile-block-content-data-item-row">
-            <select value={weightGoal} onChange={handleWeightGoalChange}>
-              <option value="lose">Похудеть</option>
-              <option value="gain">Набрать вес</option>
-            </select>
-            <input 
-              type="number" 
-              value={currentWeight} 
-              onChange={handleWeightChange} 
-              placeholder="Вес" 
-            />
+            <div className="profile-block-content-data-items">
+            <div className="profile-block-content-data-item-oval">
+              <select value={weightGoal} onChange={handleWeightGoalChange} className="custom-select">
+                <option value="lose">Похудеть</option>
+                <option value="gain">Набрать вес</option>
+              </select>
+            </div>
+            <div className="profile-block-content-data-item-oval">
+              {editModeProgress ? (
+                <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.currentWeight} onChange={(event) => handleInputChange(event, 'currentWeight')} />
+              ) : (
+                <p className="profile-block-content-data-item-oval-text">{tempUser.currentWeight} кг</p>
+              )}
+            </div>
           </div>
-          <div className="progress-bar">
+          <div className="progress-bar" style={{marginTop: '20px'}}>
             <div 
               className="progress" 
               style={{ width: `${progressData}%` }}

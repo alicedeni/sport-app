@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.5",
-  "description": "Likes & comments connection",
+  "version": "1.0.6",
+  "description": "Profile and icon changes",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

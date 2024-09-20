@@ -34,6 +34,13 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
+                style={{
+                    borderRadius: '20px',
+                    height: '38px',
+                    fontSize: '16px',
+                    padding: '0 10px',
+                    boxSizing: 'border-box'
+                }}
                   type="text"
                   value={tempUser.firstName}
                   onChange={(event) => handleInputChange(event, 'firstName')}
@@ -48,6 +55,13 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
+                style={{
+                    borderRadius: '20px',
+                    height: '38px',
+                    fontSize: '16px',
+                    padding: '0 10px',
+                    boxSizing: 'border-box'
+                }}
                   type="text"
                   value={tempUser.lastName}
                   onChange={(event) => handleInputChange(event, 'lastName')}
@@ -64,6 +78,13 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
+                style={{
+                    borderRadius: '20px',
+                    height: '38px',
+                    fontSize: '16px',
+                    padding: '0 10px',
+                    boxSizing: 'border-box'
+                }}
                   type="email"
                   value={tempUser.email}
                   onChange={(event) => handleInputChange(event, 'email')}
@@ -78,10 +99,18 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
-                  type="password"
-                  value={tempUser.password}
-                  onChange={(event) => handleInputChange(event, 'password')}
-                />
+                className='profile-block-content-data-item-value-input'
+                type="password"
+                value={tempUser.password}
+                onChange={(event) => handleInputChange(event, 'password')}
+                style={{
+                    borderRadius: '20px',
+                    height: '38px',
+                    fontSize: '16px',
+                    padding: '0 10px',
+                    boxSizing: 'border-box'
+                }}
+            />
               ) : (
                 <p>*******</p>
               )}
