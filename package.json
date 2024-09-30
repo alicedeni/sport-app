@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.7",
-  "description": "modal comand window",
+  "version": "1.0.8",
+  "description": "team league name+surnames",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

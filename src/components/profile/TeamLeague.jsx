@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { link } from '../../consts.js';
+import { useParams } from 'react-router-dom';
 
 const TeamAndLeague = ({ tempUser, leagueColor }) => {
-  const [teamMembers, setTeamMembers] = useState([{name: "маша"}]);
+  const [teamMembers, setTeamMembers] = useState([]);
   const [isMembersVisible, setIsMembersVisible] = useState(false);
+  const { id } = useParams();
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await axios.get(`${link}/team_members`);
+        const response = await axios.get(`${link}/user/${id}/team_members`);
         if (response.data.status === 200) {
-          setTeamMembers(response.data.members);
+          setTeamMembers(response.data.teamMembers);
         } else {
           console.error('Ошибка при загрузке участников команды:', response.data.message);
         }
@@ -43,7 +45,10 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
             <ul className="team-members-list">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
-                  <li key={index} className="team-member-item">{member.name || member}</li>
+                  // <li key={index} className="team-member-item">{member.name || member}</li>\
+                  <li key={index} className="team-member-item">
+                  {member.surname} {member.name}
+                  </li>
                 ))
               ) : (
                 <li className="team-member-item">Участников нет</li>
