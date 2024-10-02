@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import ProfileBlock from '../components/ProfileBlock';
 import axios from 'axios';
 import Header from '../components/main/Header';
-
 import { link } from '../consts.js';
 
 const Profile = () => {
     const { id } = useParams();
-    const [page, setPage] = React.useState('feed');
+    const [page, setPage] = useState('feed');
     const [user, setUser] = useState({
         id: 1,
         lastName: "Иванов",
@@ -16,8 +15,8 @@ const Profile = () => {
         email: "test@gmail.com",
         height: 170,
         weight: 70,
-        currentWeight: 10,
-        activity: [{type: 'pool', color: 'blue', time: 16, calories: 8500},],
+        target_weight: 10,
+        activity: [{ type: 'pool', color: 'blue', time: 16, calories: 8500 }],
         team: "Команда №1",
         teammates: 8,
         league: "gold",
@@ -40,6 +39,7 @@ const Profile = () => {
       getUserData()
         .then(data => {
           if (data && data.profile) {
+            console.log(data.profile)
             setUser(data.profile);
           }
         })
@@ -54,5 +54,3 @@ const Profile = () => {
 };
 
 export default Profile;
-
-

@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.8",
-  "description": "team league name+surnames",
+  "version": "1.0.9",
+  "description": "edit profile",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

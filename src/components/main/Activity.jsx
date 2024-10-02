@@ -311,7 +311,7 @@ const Activity = ({ setPage, isFeedPage }) => {
                   {activityVerification && (
                     <>
                         {console.log(activityVerification)}
-                        <img src={`http://localhost:5000${activityVerification}`} alt="Activity Verification" />
+                        <img src={`${link}/${activityVerification}`} alt="Activity Verification" />
                         {/* <img src={activityVerification} alt="Activity Verification" /> */}
                     </>
                   )}

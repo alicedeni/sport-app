@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ButtonDelete, ButtonExit } from "./Buttons";
 import ProfileData from './profile/ProfileData';
 import TeamAndLeague from './profile/TeamLeague';
@@ -75,14 +75,6 @@ const ProfileBlock = ({ user }) => {
       });
   }, [id]);
 
-  const handleWeightGoalChange = (event) => {
-    setWeightGoal(event.target.value);
-  };
-
-  const handleWeightChange = (event) => {
-    setCurrentWeight(event.target.value);
-  };
-
   const handleEditClickProfile = () => {
     setEditModeProfile(true);
   };
@@ -113,10 +105,14 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
+    console.log('Отправляемые данные:', tempUser);
     axios.post(`${link}/edit_person_data/${id}`, tempUser)
         .then(response => {
             if (response.data.status === 200) {
-                setUser(tempUser);
+                setTempUser(prevUser => ({
+                  ...prevUser,
+                  ...tempUser
+                }));
                 setEditModeProfile(false);
                 console.log('Данные пользователя успешно отправлены на сервер');
             } else {
@@ -128,6 +124,31 @@ const ProfileBlock = ({ user }) => {
         });
   };
 
+  const handleSaveGoal = () => {
+    if (!tempUser) {
+        console.error('Данные пользователя отсутствуют');
+        return;
+    }
+    console.log('Отправляемые данные:', tempUser);
+    axios.post(`${link}/user/${id}/set_goal`, tempUser)
+        .then(response => {
+            if (response.data.status === 200) {
+                setTempUser(prevUser => ({
+                  ...prevUser,
+                  ...tempUser
+                }));
+                setEditModeProgress(false);
+                console.log('Данные пользователя успешно отправлены на сервер');
+            } else {
+                console.error('Ошибка при отправке данных на сервер:', response.data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке данных на сервер:', error);
+        });
+  };
+
+
   const handleSaveClickProfile = () => {
     console.log('user', user);
     setEditModeProfile(false);
@@ -138,7 +159,7 @@ const ProfileBlock = ({ user }) => {
   const handleSaveClickProgress = () => {
     setEditModeProgress(false);
     setTempUser(user);
-    handleSave();
+    handleSaveGoal();
   };
 
   const handleSaveClickAccount = () => {
@@ -178,6 +199,7 @@ const ProfileBlock = ({ user }) => {
 
   const handleInputChange = (event, field) => {
     setTempUser({ ...tempUser, [field]: event.target.value });
+    console.log(event.target.value);
   };
 
   const getColorCode = (bmi) => {
@@ -250,16 +272,10 @@ const ProfileBlock = ({ user }) => {
             </div>
             <div className="profile-block-content-data-items">
             <div className="profile-block-content-data-item-oval">
-              <select value={weightGoal} onChange={handleWeightGoalChange} className="custom-select">
-                <option value="lose">Похудеть</option>
-                <option value="gain">Набрать вес</option>
-              </select>
-            </div>
-            <div className="profile-block-content-data-item-oval">
               {editModeProgress ? (
-                <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.currentWeight} onChange={(event) => handleInputChange(event, 'currentWeight')} />
+                <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.target_weight} onChange={(event) => handleInputChange(event, 'target_weight')} />
               ) : (
-                <p className="profile-block-content-data-item-oval-text">{tempUser.currentWeight} кг</p>
+                <p className="profile-block-content-data-item-oval-text">{tempUser.target_weight} кг</p>
               )}
             </div>
           </div>
