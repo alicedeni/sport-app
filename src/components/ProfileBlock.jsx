@@ -44,6 +44,19 @@ const ProfileBlock = ({ user }) => {
   ]);
 
   const [tempUser, setTempUser] = useState(user);
+  const handleProgress = () => {
+    axios.get(`${link}/user/${id}/progress`)
+      .then(response => {
+        if (response.data.status === 200) {
+          setProgressData(response.data.progress);
+        } else {
+          console.error('Error loading progress:', response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error loading progress:', error);
+      });
+  };
 
   useEffect(() => {
     setTempUser(user);
@@ -114,6 +127,7 @@ const ProfileBlock = ({ user }) => {
                   ...tempUser
                 }));
                 setEditModeProfile(false);
+                handleProgress();
                 console.log('Данные пользователя успешно отправлены на сервер');
             } else {
                 console.error('Ошибка при отправке данных на сервер:', response.data.error);
@@ -138,6 +152,7 @@ const ProfileBlock = ({ user }) => {
                   ...tempUser
                 }));
                 setEditModeProgress(false);
+                handleProgress();
                 console.log('Данные пользователя успешно отправлены на сервер 2');
             } else {
                 console.error('Ошибка при отправке данных на сервер:', response.data.error);
