@@ -138,7 +138,31 @@ const ProfileBlock = ({ user }) => {
                   ...tempUser
                 }));
                 setEditModeProgress(false);
-                console.log('Данные пользователя успешно отправлены на сервер');
+                console.log('Данные пользователя успешно отправлены на сервер 2');
+            } else {
+                console.error('Ошибка при отправке данных на сервер:', response.data.error);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке данных на сервер:', error);
+        });
+  };
+
+  const handleSaveInfo = () => {
+    if (!tempUser) {
+        console.error('Данные пользователя отсутствуют');
+        return;
+    }
+    console.log('Отправляемые данные:', tempUser);
+    axios.post(`${link}/edit_fio_data/${id}`, tempUser)
+        .then(response => {
+            if (response.data.status === 200) {
+                setTempUser(prevUser => ({
+                  ...prevUser,
+                  ...tempUser
+                }));
+                setEditModeProgress(false);
+                console.log('Данные пользователя успешно отправлены на сервер 3');
             } else {
                 console.error('Ошибка при отправке данных на сервер:', response.data.error);
             }
@@ -165,7 +189,7 @@ const ProfileBlock = ({ user }) => {
   const handleSaveClickAccount = () => {
     setEditModeAccount(false);
     setTempUser(user);
-    handleSave();
+    handleSaveInfo();
   };
   const handleExit = () => {
     axios.post(`${link}/logout`)

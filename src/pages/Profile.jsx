@@ -10,8 +10,8 @@ const Profile = () => {
     const [page, setPage] = useState('feed');
     const [user, setUser] = useState({
         id: 1,
-        lastName: "Иванов",
-        firstName: "Иван",
+        last_name: "Иванов",
+        first_name: "Иван",
         email: "test@gmail.com",
         height: 170,
         weight: 70,

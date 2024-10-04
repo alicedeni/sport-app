@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.9",
-  "description": "edit profile",
+  "version": "1.0.10",
+  "description": "edit profile info 2",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
