@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const AccountSection = ({
   tempUser,
@@ -8,6 +9,31 @@ const AccountSection = ({
   handleSaveClickAccount,
   handleEditClickAccount
 }) => {
+  const [imageFile, setImageFile] = useState(null);
+  const [uploadedImageUrl, setUploadedImageUrl] = useState(tempUser.avatar); 
+
+  const handleImageUpload = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setImageFile(file);
+      try {
+        const formData = new FormData();
+        formData.append('file', file); 
+        const uploadUrl = `https://storage.yandexcloud.net/team2go/${file.name}`;
+        console.log(uploadUrl);
+
+        await axios.put(uploadUrl, file, {
+          headers: {
+            'Content-Type': file.type,
+          }
+        });
+
+        setUploadedImageUrl(uploadUrl);
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
   return (
     <div className="profile-block-content-data">
       <div className="profile-block-content-data-title">
@@ -24,7 +50,7 @@ const AccountSection = ({
           <div className="profile-block-content-data-item-value">
             <img src={tempUser.avatar} alt={tempUser.name} className="profile-block-content-data-item-image" />
             {editModeAccount && (
-              <input type="file" onChange={(event) => handleInputChange(event, 'avatar')} />
+              <input type="file" onChange={handleImageUpload} />
             )}
           </div>
         </div>
