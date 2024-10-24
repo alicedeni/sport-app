@@ -118,7 +118,7 @@ const Post = ({ post }) => {
     <div className="post">
       <div className="post__header">
         {post.miniAvatar ? ( 
-          <Avatar className="post__mini-avatar" src={`${link}/${post.miniAvatar}`} alt="avatar" />
+          <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
         ) : (
           <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
         )}
@@ -145,7 +145,7 @@ const Post = ({ post }) => {
       <div className="post__content">
         <div className="post__image-container">
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
-          <img className="post__image" src={`${link}/${post.image}`} alt="Post image" />
+          <img className="post__image" src={post.image} alt="Post image" />
         </div>
         <div className="post__info">
           <div className="post__title">

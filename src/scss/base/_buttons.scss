@@ -105,11 +105,15 @@ a{
 
 .cbutton-profile {
   height: 42px;
-  width: 42px;
+  width: auto;
   border-radius: 21px;
-  background: $purple1;
+  background: transparent;
   color: $white;
   position: absolute;
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 0px 0px 10px;
+  gap: 10px;
   top: 30px; 
   right: 100px;
   &_text{

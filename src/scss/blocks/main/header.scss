@@ -18,8 +18,9 @@
     font-weight: lighter;
     img {
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
+      border: 2px solid $white2;
     }
     .avatar-placeholder {
       justify-content: center;
@@ -32,7 +33,6 @@
     }
   }
   .points {
-    margin-right: 10px;
     font-size: 24px;
     color: $white2;
   }

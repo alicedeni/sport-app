@@ -21,7 +21,7 @@ const Profile = () => {
         teammates: 8,
         league: "gold",
         place_league: 6,
-        avatar: "https://i.pinimg.com/736x/19/dd/ac/19ddacef8e14946b73248fe5b20338b0.jpg",
+        avatar: "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg",
     });
  
     const getUserData = () => {

@@ -61,7 +61,7 @@ const Preview = () => {
         <div className="preview-post">
             <div className="preview-post__header">
                 {post.miniAvatar ? ( 
-                <Avatar className="preview-post__mini-avatar" src={`${link}/${post.miniAvatar}`} alt="avatar" />
+                <Avatar className="preview-post__mini-avatar" src={post.miniAvatar} alt="avatar" />
                 ) : (
                 <Avatar className="preview-post__mini-avatar" src={activityData.miniAvatar} alt="avatar" />
                 )}
@@ -88,7 +88,7 @@ const Preview = () => {
             <div className="preview-post__content">
                 <div className="preview-post__image-container">
                 {activityData && (
-                <img className="preview-post__image" src={`activityData.image`} alt="Post image" />)}
+                <img className="preview-post__image" src={activityData.image} alt="Post image" />)}
                 </div>
                 <div className="preview-post__info">
                 <div className="preview-post__title">

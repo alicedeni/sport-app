@@ -237,9 +237,13 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleInputChange = (event, field) => {
-    setTempUser({ ...tempUser, [field]: event.target.value });
+    setTempUser(prevState => ({
+        ...prevState,
+        [field]: event.target.value
+    }));
     console.log(event.target.value);
-  };
+    console.log(tempUser);
+};
 
   const getColorCode = (bmi) => {
     if (bmi <= 16) return '#6699CC'; 
@@ -258,11 +262,11 @@ const ProfileBlock = ({ user }) => {
   const getLeagueColor = (league) => {
     switch (league) {
       case 'bronze':
-        return 'rgba(255, 61, 117, 0.6)';
+        return '#ed96ad';
       case 'silver':
-        return 'rgba(0, 120, 212, 0.6)'; 
+        return '#91aee1'; 
       case 'gold':
-        return 'rgba(255, 204, 56, 0.7)'; 
+        return '#f5dc8b'; 
       default:
         return '#FFFFFF';
     }

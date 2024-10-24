@@ -45,7 +45,7 @@ const Header = ({ currentPage }) => {
       <div className="header-title">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ
         <CButtonProfile points={points}>
           {avatar ? (
-            <img src={`${link}/${avatar}`} alt="User Avatar" className="avatar" />
+            <img src={`${avatar}`} alt="User Avatar" className="avatar" />
           ) : (
             <div>{userName ? userName.charAt(0) : ''}</div>
           )}

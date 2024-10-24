@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.12",
-  "description": "images test profile",
+  "version": "1.0.13",
+  "description": "images integration",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
@@ -46,10 +46,18 @@
     "webpack-dev-server": "^4.15.2"
   },
   "dependencies": {
+    "@aws-amplify/ui-react-storage": "^3.3.7",
+    "@aws-sdk/client-s3": "^3.670.0",
+    "@aws-sdk/s3-request-presigner": "^3.670.0",
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
-    "axios": "^1.6.7",
+    "aws-amplify": "^6.6.4",
+    "aws-sdk": "^2.1691.0",
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
+    "express": "^4.21.1",
     "path": "^0.12.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

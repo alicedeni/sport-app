@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
 import { useNavigate, useParams } from 'react-router-dom';
+import photoPost from '../../assets/icons/photoPost.svg';
+import photoVerification from '../../assets/icons/photoVerification.svg';
 import axios from 'axios';
 
 import {link} from '../../consts.js';
@@ -82,7 +84,8 @@ const Activity = ({ setPage, isFeedPage }) => {
   const handleActivityCaloriesChange = (calories) => {
     setActivityCalories(calories);
   };
-  const handleActivityImageChange = (e) => {
+
+  {/*const handleActivityImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const formData = new FormData();
@@ -96,21 +99,63 @@ const Activity = ({ setPage, isFeedPage }) => {
         console.error('Error uploading image:', error);
       });
     }
+  };*/}
+
+  const getImgKeys = async () => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:5000/img_keys`);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
-  const handleActivityVerificationChange = (e) => {
-    const file = e.target.files[0];
+  const handleActivityImageChange = async (event) => {
+    const file = event.target.files[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('image', file);
-  
-      axios.post(`${link}/uploads`, formData)
-      .then(response => {
-        setActivityVerification(response.data.imageUrl);
-      })
-      .catch(error => {
+      try {
+        const uploadedUrl = await uploadFile(file);
+        setActivityImage(uploadedUrl);
+        console.log(uploadedUrl);
+      } catch (error) {
         console.error('Error uploading image:', error);
+      }
+    }
+  };
+
+  const uploadFile = async (file) => {
+    const presignedFields = await getImgKeys();
+    const formData = new FormData();
+    formData.append('key', `users/uploads/activity/${file.name}`);
+    formData.append('X-Amz-Credential', presignedFields["fields"]["x-amz-credential"]);
+    formData.append('acl', 'public-read');
+    formData.append('X-Amz-Algorithm', 'AWS4-HMAC-SHA256');
+    formData.append('X-Amz-Date', presignedFields["fields"]["x-amz-date"]);
+    formData.append('policy', presignedFields["fields"]["policy"]);
+    formData.append('X-Amz-Signature', presignedFields["fields"]["x-amz-signature"]);
+    formData.append('file', file);
+
+    try {
+      await axios.post('https://storage.yandexcloud.net/team2go', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
+      return `https://storage.yandexcloud.net/team2go/users/uploads/activity/${file.name}`;
+    } catch (error) {
+      throw new Error('File upload failed');
+    }
+  };
+
+
+  const handleActivityVerificationChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      try {
+        const uploadedUrl = await uploadFile(file);
+        setActivityVerification(uploadedUrl);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
     }
   };
 
@@ -120,12 +165,6 @@ const Activity = ({ setPage, isFeedPage }) => {
 
   const handleActivityTypeChange = (type) => {
     setActivityType(type);
-    // const allActivityTypes = ['pool', 'cardio', 'run', 'power', 'bike', 'game', 'dance', 'other'];
-    // allActivityTypes.forEach(activity => {
-    //   if (activity !== type) {
-    //     document.getElementById(activity).style.display = 'none';
-    //   }
-    // });
   };
 
   const handleSaveActivity = (event) => {
@@ -302,47 +341,53 @@ const Activity = ({ setPage, isFeedPage }) => {
                 Подтверждение</div>
                 <div className="activity-input-content">
                   <div className="activity-input-content-verification">
-                    <label>Загрузить изображение</label>
-                    <input
-                      type="file" accept=".jpg, .jpeg, .png" 
-                      onChange={handleActivityVerificationChange} // Нет e.target.files[0]
-                    />
+                    {activityVerification ? (
+                        <>
+                          <img src={activityVerification} alt="Activity Verification" />
+                        </>
+                    ) : (
+                        <>
+                            <img src={photoVerification} alt="Add Verification Photo Icon" style={{ marginBottom: '8px', width: '50px' }} />
+                            <label>Загрузить изображение</label>
+                            <input
+                              type="file" accept=".jpg, .jpeg, .png" 
+                              onChange={handleActivityVerificationChange} 
+                            />
+                        </>
+                      )}
                   </div>
-                  {activityVerification && (
-                    <>
-                        {console.log(activityVerification)}
-                        <img src={`${link}/${activityVerification}`} alt="Activity Verification" />
-                        {/* <img src={activityVerification} alt="Activity Verification" /> */}
-                    </>
-                  )}
                 </div>
             </div>
             <div className="activity-input">
-                <div className="activity-input-title">
-                    <div className="activity-input-title-number">4</div>
-                    Дополнительные данные
-                </div>
-                <div className="activity-input-content">
-                    <textarea
-                        className="activity-input-content-description"
-                        value={activityDescription}
-                        onChange={(e) => handleActivityDescriptionChange(e.target.value)}
-                    ></textarea>
-                    <div className="activity-input-content-image">
-                        <label>Добавить фото активности</label>
-                        <input
-                            type="file" accept=".jpg, .jpeg, .png"
-                            onChange={handleActivityImageChange}
-                        />
-                        {activityImage && (
-                        <>
-                            {console.log(activityImage)}
-                            <img src={`http://localhost:5000${activityImage}`} alt="Activity Image" />
-                        </>
+              <div className="activity-input-title">
+                  <div className="activity-input-title-number">4</div>
+                  Дополнительные данные
+              </div>
+              <div className="activity-input-content">
+                  <textarea
+                      className="activity-input-content-description"
+                      value={activityDescription}
+                      onChange={(e) => handleActivityDescriptionChange(e.target.value)}
+                      placeholder='Здесь вы можете добавить комментарий к активности'
+                  ></textarea>
+                  <div className="activity-input-content-image">
+                      {activityImage ? (
+                          <>
+                              <img src={activityImage} alt="Activity Image" />
+                          </>
+                      ) : (
+                          <>
+                              <img src={photoPost} alt="Add Photo Icon" style={{ marginBottom: '8px', width: '40px' }} />
+                              <label>Добавить фото активности</label>
+                              <input
+                                  type="file" accept=".jpg, .jpeg, .png"
+                                  onChange={handleActivityImageChange}
+                              />
+                          </>
                       )}
-                    </div>
-                </div>
-            </div>
+                  </div>
+              </div>
+          </div>
             <div className="activity-submit_btn">
             <ButtonEnter className="welcome-block__btn" text="Далее" type="submit" textContent={"Далее"}></ButtonEnter>
             </div>
