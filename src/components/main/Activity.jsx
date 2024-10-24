@@ -103,7 +103,7 @@ const Activity = ({ setPage, isFeedPage }) => {
 
   const getImgKeys = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:5000/img_keys`);
+      const response = await axios.get(`${link}/img_keys`);
       return response.data;
     } catch (error) {
       console.error(error);
