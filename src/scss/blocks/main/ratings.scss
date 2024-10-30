@@ -208,7 +208,7 @@ ul {
 }
 
 li {
-  margin: 5px 0; /* Отступы для элементов списка */
+  margin: 5px 0;
 }
 
 .ratings-participants-leagues-variant {
@@ -217,4 +217,13 @@ li {
 
 .ratings-participants-leagues-variant.swap {
   transform: translateX(-100%);
+}
+
+@media (max-width: 768px) {
+  .ratings {
+    padding: 0px 10px;
+    &-participants-leagues{
+      flex-direction: column;
+    }
+  }
 }

@@ -76,6 +76,7 @@ const Post = ({ post }) => {
         .then(response => {
           if (response.data.status === 200) {
             setComments(response.data.comments);
+            console.log(response.data.comments);
           } else {
             console.error('Error fetching comments:', response.data.message);
           }
@@ -92,6 +93,7 @@ const Post = ({ post }) => {
   };
 
   const handleCommentSubmit = () => {
+    if (commentText.trim() === '') return;
     const commentData = {
       post_id: post.feed_id,
       comment_text: commentText,
@@ -110,6 +112,13 @@ const Post = ({ post }) => {
       .catch(error => console.error('Error commenting on post:', error));
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleCommentSubmit();
+    }
+  };
+
   const handleSendIconHover = (isHovered) => {
     setSendIcon(isHovered ? 'SendFilled' : 'SendDefault');
   };
@@ -124,7 +133,7 @@ const Post = ({ post }) => {
         )}
         <div className="post__user-info">
           <div className="post__svg-fire-container">
-            <div className="post__username">{post.username}</div>
+            <div className="post__username">{post.username + " " + post.name}</div>
             <svg width="21" height="27" viewBox="0 0 21 27" fill="none" xmlns="http://www.w3.org/2000/svg" className="post__svg-fire-container-svg">
               <path d="M0.75 16C0.75 24 8.25 27.6251 9 26.5C9.5 25.75 7.7124 25.7444 8.25 22.25C8.75 19 13 16 12.5 18.25C11.9166 20.8754 13.7067 20.6534 14 23C14.3277 25.6219 12.5632 25.6266 13 26.5C13.559 27.6181 21 24.5 21 16.75C21 10.5 19 9 18.25 9C17.5 9 18.65 10.25 17.25 12C16.65 12.75 15.7007 13.3521 15.5 12.75C15.25 12 17 11.25 15.75 6.75009C14.8573 3.5364 11 0.499976 10 0.750042C9 1.00011 9.75 2.55 9.75 3.75C9.75 5.75 8.62495 6.00011 7.5 8.25C5.75 11.75 8 13.6251 7.25 14C6.5 14.3749 5 12.5177 5 10.75C5 8.5 6.25 7.5 5.75 7C5.25 6.5 0.75 8.00004 0.75 16Z" fill="url(#paint0_linear_101_308)"/>
               <defs>
@@ -214,6 +223,8 @@ const Post = ({ post }) => {
                   value={commentText}
                   onChange={handleCommentChange}
                   rows={1}
+                  maxLength={200}
+                  onKeyPress={handleKeyPress}
               />
               <IconButton
                 className="post__comment-input-btn"
@@ -231,7 +242,7 @@ const Post = ({ post }) => {
                 <div className="post__comments">
                   {comments.map((comment, index) => (
                     <div key={index} className="post__comment">
-                      <strong>{comment.surname}{comment.name}</strong>: {comment.text}
+                      <strong>{comment.author_id == id ? 'Вы' : comment.surname + " " + comment.name}</strong>: {comment.text}
                     </div>
                   ))}
                 </div>

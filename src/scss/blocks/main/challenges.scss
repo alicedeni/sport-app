@@ -101,3 +101,13 @@
   font-size: 24px;
   margin-bottom: 10px;
 }
+
+@media (max-width: 768px) {
+  .challenges {
+    padding: 0px 10px;
+  }
+
+  .select_pt{
+    flex-direction: column;
+  }
+}

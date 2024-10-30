@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '@aws-amplify/ui-react/styles.css';
 import { link } from '../../consts.js';
+import { FaUpload } from 'react-icons/fa';
 
 const AccountSection = ({
   tempUser,
@@ -9,7 +10,8 @@ const AccountSection = ({
   handleInputChange,
   handleCancelClickAccount,
   handleSaveClickAccount,
-  handleEditClickAccount
+  handleEditClickAccount,
+  handleUpdateUser
 }) => {
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState(tempUser.avatar);
@@ -25,19 +27,27 @@ const AccountSection = ({
     }
   };
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const selectedFile = event.target.files[0];
     if (selectedFile) {
       setImageFile(selectedFile);
-      setUploadedImageUrl(URL.createObjectURL(selectedFile));
-      handleInputChange({ target: { value: `https://storage.yandexcloud.net/team2go/users/uploads/${selectedFile?.name}` } }, 'avatar'); 
+      const uploadedUrl = await uploadFile(selectedFile);
+      handleInputChange({ target: { value: uploadedUrl } }, 'avatar'); 
     }
   };
 
   const uploadFile = async (file) => {
     const presignedFields = await getImgKeys();
+
+    const userId = tempUser.id;
+    const timestamp = Date.now(); 
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${userId}_${timestamp}.${fileExtension}`; 
+    console.log('1');
+
+
     const formData = new FormData();
-    formData.append('key', `users/uploads/${file.name}`);
+    formData.append('key', `users/uploads/profile/${fileName}`);
     formData.append('X-Amz-Credential', presignedFields["fields"]["x-amz-credential"]);
     formData.append('acl', 'public-read');
     formData.append('X-Amz-Algorithm', 'AWS4-HMAC-SHA256');
@@ -52,39 +62,21 @@ const AccountSection = ({
           'Content-Type': 'multipart/form-data',
         },
       });
-      setUploadedImageUrl(`https://storage.yandexcloud.net/team2go/users/uploads/${file?.name}`);
-
-      return `https://storage.yandexcloud.net/team2go/users/uploads/${file?.name}`;
+      setUploadedImageUrl(`https://storage.yandexcloud.net/team2go/users/uploads/profile/${fileName}`);
+      return `https://storage.yandexcloud.net/team2go/users/uploads/profile/${fileName}`;
     } catch (error) {
       console.error('Ошибка при загрузке файла:', error);
       throw error;
     }
   };
-{/*  
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    try {
-      const response = await axios.post('https://storage.yandexcloud.net/team2go', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      console.log('Файл успешно загружен:', `https://storage.yandexcloud.net/team2go/users/uploads/${file?.name}`);
-      setUploadedImageUrl(`https://storage.yandexcloud.net/team2go/users/uploads/${file?.name}`);
-
-    } catch (error) {
-      console.error('Ошибка при загрузке файла:', error);
-    }
-  };
-*/}
   
   const handleSaveClick = async () => {
     if (imageFile) {
       try {
+        setImageFile(imageFile); 
         const uploadedUrl = await uploadFile(imageFile);
-        setUploadedImageUrl(uploadedUrl); 
+        console.log(uploadedUrl);
+        setUploadedImageUrl(uploadedUrl);
         handleInputChange({ target: { value: uploadedUrl } }, 'avatar'); 
       } catch (error) {
         alert("Ошибка при загрузке изображения. Пожалуйста, попробуйте еще раз.");
@@ -115,7 +107,17 @@ const AccountSection = ({
           />
           {editModeAccount && (
             <>
-              <input type="file" name="file" onChange={handleImageUpload} required /> <br />
+              <label htmlFor="file-upload" className="custom-file-upload">
+                <FaUpload size={20} />
+                Загрузить фото
+                <input 
+                  id="file-upload" 
+                  type="file" 
+                  accept=".jpg, .jpeg, .png" 
+                  onChange={handleImageUpload} 
+                  required 
+                />
+              </label>
             </>
           )}
         </div>

@@ -1,5 +1,6 @@
-
+@use './base/variables';
 @import "./base/variables"; 
+
 *{
   margin: 0;
   padding: 0;
@@ -69,6 +70,7 @@ body {
 @import "./blocks/main/ratings";
 @import "./blocks/main/challenges";
 @import "./blocks/main/view";
+@import "./blocks/main/mobile_header";
 @import "./blocks/profile/profile_block";
 @import "./blocks/profile/profile_data";
 @import "./blocks/profile/team_league";

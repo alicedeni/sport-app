@@ -113,6 +113,11 @@ const ProfileBlock = ({ user }) => {
     setEditModeAccount(false);
     setTempUser(user);
   };
+  const handleUpdateUser = (updatedUser) => {
+    setTempUser(updatedUser);
+    setUser(updatedUser);
+  };
+
   const handleSave = () => {
     if (!tempUser) {
         console.error('Данные пользователя отсутствуют');
@@ -344,6 +349,7 @@ const ProfileBlock = ({ user }) => {
                 handleCancelClickAccount={handleCancelClickAccount}
                 handleSaveClickAccount={handleSaveClickAccount}
                 handleEditClickAccount={handleEditClickAccount}
+                handleUpdateUser={handleUpdateUser}
             />
       </div>
       <div className="profile-block-btn">

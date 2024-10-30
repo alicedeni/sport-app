@@ -14,6 +14,7 @@ const Activity = ({ setPage, isFeedPage }) => {
   const [formState, setFormState] = useState("");
   const [activityTypes, setActivityTypes] = useState([]); 
   const [activityType, setActivityType] = useState("");
+  const [activityTag, setActivityTag] = useState("");
   const [activityStartTime, setActivityStartTime] = useState("");
   const [activityEndTime, setActivityEndTime] = useState("");
   const [activityDistance, setActivityDistance] = useState("");
@@ -126,8 +127,14 @@ const Activity = ({ setPage, isFeedPage }) => {
 
   const uploadFile = async (file) => {
     const presignedFields = await getImgKeys();
+
+    const userId = id;
+    const timestamp = Date.now(); 
+    const fileExtension = file.name.split('.').pop();
+    const fileName = `${userId}_${timestamp}.${fileExtension}`;
+
     const formData = new FormData();
-    formData.append('key', `users/uploads/activity/${file.name}`);
+    formData.append('key', `users/uploads/activity/${fileName}`);
     formData.append('X-Amz-Credential', presignedFields["fields"]["x-amz-credential"]);
     formData.append('acl', 'public-read');
     formData.append('X-Amz-Algorithm', 'AWS4-HMAC-SHA256');
@@ -140,7 +147,7 @@ const Activity = ({ setPage, isFeedPage }) => {
       await axios.post('https://storage.yandexcloud.net/team2go', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      return `https://storage.yandexcloud.net/team2go/users/uploads/activity/${file.name}`;
+      return `https://storage.yandexcloud.net/team2go/users/uploads/activity/${fileName}`;
     } catch (error) {
       throw new Error('File upload failed');
     }
@@ -163,8 +170,9 @@ const Activity = ({ setPage, isFeedPage }) => {
     setActivityDescription(description);
   };
 
-  const handleActivityTypeChange = (type) => {
-    setActivityType(type);
+  const handleActivityTypeChange = (activity) => {
+    setActivityType(activity.type);
+    setActivityTag(activity.tag);
   };
 
   const handleSaveActivity = (event) => {
@@ -177,15 +185,18 @@ const Activity = ({ setPage, isFeedPage }) => {
       const endTotalMinutes = endHours * 60 + endMinutes;
     
       const differenceInMinutes = endTotalMinutes - startTotalMinutes;
-      const hours = Math.floor(differenceInMinutes / 60);
-      const minutes = differenceInMinutes % 60;
+      let hours = Math.floor(differenceInMinutes / 60);
+      let minutes = differenceInMinutes % 60;
+      if (differenceInMinutes < 0 && differenceInMinutes > -60) {
+        hours = 0;
+      } 
     
       return `${hours}:${minutes}`;
     }
     const time = calculateTimeDifference(activityStartTime, activityEndTime);
     
     const activityData = {
-      type: activityType,
+      type: activityTag,
       tag: activityType,
       time: time,
       startTime: activityStartTime,
@@ -281,9 +292,9 @@ const Activity = ({ setPage, isFeedPage }) => {
 
                 {activityTypes.map(activity => (
                   <div key={activity.type} id={activity.tag} className={`activity-btn ${
-                      activityType === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
+                      activityTag === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
                     }`}
-                    onClick={() => handleActivityTypeChange(activity.tag)}
+                    onClick={() => handleActivityTypeChange(activity)}
                   >
                     {activity.type.toUpperCase()}
                   </div>

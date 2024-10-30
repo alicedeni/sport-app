@@ -34,7 +34,7 @@ const Header = ({ currentPage }) => {
       .catch(error => {
         console.error(error);
       });
-  }, []);
+  }, [id]);
 
   const handlePageNotification = () => {
     setIsNotificationOpen(false);

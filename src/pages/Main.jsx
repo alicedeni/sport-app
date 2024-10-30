@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import Header from '../components/main/Header';
+import MobileHeader from '../components/main/MobileHeader';
 import Posts from '../components/main/Posts';
 import Challenges from '../components/main/Challenges';
 import Ratings from '../components/main/Ratings';
@@ -43,6 +44,16 @@ const Main = () => {
   */]);
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (location.state && location.state.page) {
@@ -100,7 +111,12 @@ const Main = () => {
 
   return (
     <div className="container" id="root">
-      <Header setPage={setPage} isFeedPage={page === 'feed'}/>
+      {isMobile ? (
+        <MobileHeader avatar={user.avatar} userName={userName} points={points} /> // Отображаем мобильный заголовок
+      ) : (
+        <Header setPage={setPage} isFeedPage={page === 'feed'} />
+      )}
+      
       <div className="main">{content}</div>
     </div>
   );

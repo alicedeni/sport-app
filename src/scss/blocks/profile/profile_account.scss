@@ -1,0 +1,18 @@
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 20px; 
+    padding: 10px;
+    margin-top: 10px;
+    gap: 10px;
+    font-size: 12px;
+  }
+  
+  .custom-file-upload:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .custom-file-upload input[type="file"] {
+    display: none; 
+  }

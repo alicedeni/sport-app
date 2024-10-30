@@ -17,6 +17,11 @@ import { BeatLoader } from "react-spinners";
 
 import "./scss/main.scss";
 
+const validateId = (id) => {
+  const numId = parseInt(id, 10);
+  return numId >= 10 && numId <= 17;
+};
+
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
@@ -26,65 +31,101 @@ const router = createBrowserRouter([
   {
     path: "/:id",
     element: <Welcome />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 /> 
   },
   {
     path: "/about/:id",
     element: <GlobalGoal />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/main/:id",
     element: <Feed />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/challenges/:id",
     element: <ChallengesPage />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/ratings/:id",
     element: <RatingsPage />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/activity/:id",
     element: <ActivityPage />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/preview/:id",
     element: <PreviewPage />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/registration/:id",
     element: <Registration />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
   {
     path: "/profile/:id",
     element: <Profile />,
-    loader: async () => {
-      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={0.7} />;
-    }
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
   },
 ]);
 
