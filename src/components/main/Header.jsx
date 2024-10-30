@@ -73,9 +73,9 @@ const Header = ({ currentPage }) => {
         <Notification isOpen={isNotificationOpen} userName={userName} onClose={handlePageNotification} />
       )}
 
-      {currentPage === 'challenges' && (
+      {(currentPage === 'challenges' || (currentPage === 'feed' && !isNotificationOpen)) && (
         <div className="goal-status">
-          <div className="goal-text">Наша цель — Прошагать до центра Земли.</div>
+          <div className="goal-text">Наша цель — Прошагать 100000 км.</div>
           <div className="goal-bar">
             <div className="goal" style={{ width: `${goal}%` }}></div>
           </div>
@@ -84,9 +84,9 @@ const Header = ({ currentPage }) => {
 
       {currentPage === 'feed' && !isNotificationOpen && (
         <div className="goal-info">
-          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.teams}</span>  команды</div>
-          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.participants}</span> участников</div>
-          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold' }}>{mainInfo.count}</span> собрано</div>
+          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>{mainInfo.teams}</span>  команды</div>
+          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>{mainInfo.participants}</span> участников</div>
+          <div className="goal-info__metrics"><span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>{mainInfo.count}</span> пройдено</div>
         </div>
       )}
     </div>

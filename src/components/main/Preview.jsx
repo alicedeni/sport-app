@@ -32,7 +32,6 @@ const Preview = () => {
     getUserData()
       .then(data => {
         if (data && data.profile) {
-          console.log(data.profile)
           setUser(data.profile);
         }
       })
@@ -45,7 +44,6 @@ const Preview = () => {
       console.error('Данные активности отсутствуют');
       return;
     }
-    console.log(activityData)
     if (!activityData.image) {
       activityData.image = `https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.png`;
     }
@@ -65,7 +63,7 @@ const Preview = () => {
 
     const handleBack = () => {
       if (activityData) {
-        navigate(`/activity/${id}`, { state: { page: 'activity', formState: 'add' } });
+        navigate(`/activity_make/${id}`, { state: { page: 'activity', activityData } });
       } else {
         console.error('Данные активности отсутствуют');
       }
@@ -134,7 +132,6 @@ const Preview = () => {
                             {(() => {
                                 const [hours, minutes] = activityData.time.split(':').map(Number);
                                 let totalHours = hours + Math.round(minutes / 60 * 2) / 2;
-                                console.log(totalHours);
                                 if (totalHours == -0.5) {
                                   totalHours += 24;
                                 } else if (totalHours < 0 && totalHours % 1) {

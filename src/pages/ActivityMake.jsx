@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material'; 
 import Header from '../components/main/Header';
 import MobileHeader from '../components/main/MobileHeader';
-import Activity from '../components/main/Activity';
+import ActivityMake from '../components/main/ActivityMake';
 import axios from 'axios';
 
 import { link } from '../consts.js';
 
-const ActivityPage = () => {
+const ActivityMakePage = () => {
   const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [user, setUser] = useState({
@@ -65,10 +65,10 @@ const ActivityPage = () => {
         <Header currentPage="activity"  />
       )}
       <div className="main">
-        <Activity />
+        <ActivityMake />
       </div>
     </div>
   );
 };
 
-export default ActivityPage;
+export default ActivityMakePage;

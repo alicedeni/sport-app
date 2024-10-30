@@ -28,8 +28,6 @@ const Post = ({ post }) => {
   const [commentCount, setCommentCount] = useState(post.commentCount || 0);
   const [sendIcon, setSendIcon] = useState('SendDefault');
 
-  console.log(post); 
-
   const handleLikeClick = () => {
     const likeData = {
       post_id: post.feed_id,
@@ -76,7 +74,6 @@ const Post = ({ post }) => {
         .then(response => {
           if (response.data.status === 200) {
             setComments(response.data.comments);
-            console.log(response.data.comments);
           } else {
             console.error('Error fetching comments:', response.data.message);
           }
@@ -102,7 +99,7 @@ const Post = ({ post }) => {
     axios.post(`${link}/user/${id}/comment`, commentData)
       .then(response => {
         if (response.data.status === 200) {
-          setComments([...comments, { text: commentText, surname: 'Вы' }]);
+          setComments([...comments, { text: commentText, author_id: id}]);
           setCommentText('');
           setCommentCount(commentCount + 1);
         } else {

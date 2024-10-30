@@ -41,7 +41,6 @@ const ChallengesPage = () => {
     getUserData()
       .then(data => {
         if (data && data.profile) {
-          console.log(data.profile)
           setUser(data.profile);
         }
       })

@@ -10,44 +10,52 @@
       width: 100%;
       flex-wrap: wrap;
       &-item{
-        width: 270px;
+        width: 300px;
         border-radius: 15px;
         &.pool-metric {
+          width: 290px;
           color: $blue;
           border: 2px solid $blue;
         }
         
         &.cardio-metric {
+          width: 290px;
           color: $yellow;
           border: 2px solid $yellow;
         }
         
         &.run-metric {
+          width: 290px;
           color: $green;
           border: 2px solid $green;
         }
         
         &.power-metric {
+          width: 290px;
           color: $pink;
           border: 2px solid $pink;
         }
         
         &.bike-metric {
+          width: 290px;
           color: $purple2;
           border: 2px solid $purple2;
         }
         
         &.game-metric {
+          width: 290px;
           color: $dark-blue;
           border: 2px solid $dark-blue;
         }
         
         &.dance-metric {
+          width: 290px;
           color: $purple1;
           border: 2px solid $purple1;
         }
         
         &.other-metric {
+          width: 290px;
           color: $grey4;
           border: 2px solid $grey4;
         }
@@ -148,7 +156,7 @@
         &-title {
           display: flex;
           flex-direction: row;
-          align-items: center;
+          align-items: flex-start;
           gap: 10px;
           &-name {
             color: black;

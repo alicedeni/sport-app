@@ -30,7 +30,6 @@ const Feed = () => {
   const getPostData = (id) => {
     return axios.get(`${link}/user/${id}/posts`, {})
     .then(response => {
-      console.log(response.data);
       return response.data;
     })
     .catch(error => {
@@ -64,7 +63,6 @@ const Feed = () => {
     getUserData()
       .then(data => {
         if (data && data.profile) {
-          console.log(data.profile)
           setUser(data.profile);
         }
       })

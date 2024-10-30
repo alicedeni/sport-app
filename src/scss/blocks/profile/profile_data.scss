@@ -64,6 +64,7 @@
               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
             }
             &-oval {
+              position: relative;
               width: 240px;
               height: 40px;
               border-radius: 20px;
@@ -74,11 +75,17 @@
               &-text {
                 font-size: 24px;
                 color: $blue;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 text-align: center;
               }
               &-input {
                 font-size: 24px;
                 color: $blue;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 text-align: center;
                 border: none;
                 width: 200px;
@@ -114,4 +121,28 @@
           }
         }
       }
+}
+
+
+.profile-label{
+  top: 3px;
+  right: 5px;
+  position: absolute;
+  margin-left: 10px;
+  font-size: 20px;
+  color: $blue;
+  background: $blue-20p; 
+  padding: 0px 5px;
+  border-radius: 50px;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
 }

@@ -64,7 +64,6 @@ const Main = () => {
   const getPostData = (id) => {
     return axios.get(`${link}/user/${id}/posts`, {})
     .then(response => {
-      console.log(response.data);
       return response.data;
     })
     .catch(error => {
@@ -88,19 +87,15 @@ const Main = () => {
   switch (page) {
     case 'feed':
       content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />;
-      console.log(new URLSearchParams(location.search));
       break;
     case 'challenges':
       content = <Challenges setPage={setPage} isFeedPage={false} />;
-      console.log(new URLSearchParams(location.search));
       break;
     case 'ratings':
       content = <Ratings setPage={setPage} isFeedPage={false} />;
-      console.log(new URLSearchParams(location.search));
       break;
     case 'activity':
       content = <Activity setPage={setPage} isFeedPage={false} />;
-      console.log(new URLSearchParams(location.search));
       break;
     case 'view':
       content = <Preview setPage={setPage} isFeedPage={false} activityData={location.state.activityData}  />;

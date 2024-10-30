@@ -9,6 +9,7 @@ import Feed from './pages/Feed';
 import ChallengesPage from './pages/Challenges';
 import RatingsPage from './pages/Ratings';
 import ActivityPage from './pages/Activity';
+import ActivityMakePage from './pages/ActivityMake';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';
 import ErrorPage404 from './pages/ErrorPage404';
@@ -86,6 +87,17 @@ const router = createBrowserRouter([
   {
     path: "/activity/:id",
     element: <ActivityPage />,
+    loader: async ({ params }) => {
+      if (!validateId(params.id)) {
+        throw new Response("Invalid ID", { status: 404 });
+      }
+      return <BeatLoader className='loader' color="#8000ff" speedMultiplier={1} />;
+    },
+    errorElement: <ErrorPage404 />
+  },
+  {
+    path: "/activity_make/:id",
+    element: <ActivityMakePage />,
     loader: async ({ params }) => {
       if (!validateId(params.id)) {
         throw new Response("Invalid ID", { status: 404 });

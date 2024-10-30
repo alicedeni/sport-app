@@ -43,7 +43,6 @@ const AccountSection = ({
     const timestamp = Date.now(); 
     const fileExtension = file.name.split('.').pop();
     const fileName = `${userId}_${timestamp}.${fileExtension}`; 
-    console.log('1');
 
 
     const formData = new FormData();
@@ -75,7 +74,6 @@ const AccountSection = ({
       try {
         setImageFile(imageFile); 
         const uploadedUrl = await uploadFile(imageFile);
-        console.log(uploadedUrl);
         setUploadedImageUrl(uploadedUrl);
         handleInputChange({ target: { value: uploadedUrl } }, 'avatar'); 
       } catch (error) {

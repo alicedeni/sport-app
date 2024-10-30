@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.14",
-  "description": "fix preview & profile & mobile header",
+  "version": "1.0.15",
+  "description": "cosmetic bug fix",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

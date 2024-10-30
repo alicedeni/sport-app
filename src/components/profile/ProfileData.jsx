@@ -11,6 +11,23 @@ const ProfileData = ({ tempUser, editModeProfile, handleInputChange, handleCance
     else return '#FF0000'; 
   };
 
+  const handleKeyPress = (event) => {
+    if (!/[0-9]/.test(event.key)) {
+      event.preventDefault();
+    }
+  };
+
+  // Расчет ИМТ
+  const calculateBMI = () => {
+    const { height, weight } = tempUser;
+    if (!height || !weight) {
+      return null; // Если рост или вес не заданы, возвращаем null
+    }
+    return (weight / ((height / 100) * (height / 100))).toFixed(1); // Рассчитываем ИМТ
+  };
+
+  const bmi = calculateBMI(); // Получаем значение ИМТ
+
   return (
     <div className="profile-block-content-data">
       <div className="profile-block-content-data-title">
@@ -27,30 +44,44 @@ const ProfileData = ({ tempUser, editModeProfile, handleInputChange, handleCance
           <p className="profile-block-content-data-item-text">Рост</p>
           <div className="profile-block-content-data-item-oval">
             {editModeProfile ? (
-              <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.height} onChange={(event) => handleInputChange(event, 'height')} />
+              <input className="profile-block-content-data-item-oval-input" 
+              type="number" 
+              value={tempUser.height} 
+              onChange={(event) => handleInputChange(event, 'height')}
+              onKeyPress={handleKeyPress}
+              min="1" />
             ) : (
-              <p className="profile-block-content-data-item-oval-text">{tempUser.height} см</p>
+              <p className="profile-block-content-data-item-oval-text">{tempUser.height}</p>
             )}
+            <label className="profile-label">см</label>
           </div>
         </div>
         <div className="profile-block-content-data-item">
           <p className="profile-block-content-data-item-text">Вес</p>
           <div className="profile-block-content-data-item-oval">
             {editModeProfile ? (
-              <input className="profile-block-content-data-item-oval-input" type="number" value={tempUser.weight} onChange={(event) => handleInputChange(event, 'weight')} />
+              <input className="profile-block-content-data-item-oval-input" 
+              type="number" value={tempUser.weight} 
+              onChange={(event) => handleInputChange(event, 'weight')}
+              onKeyPress={handleKeyPress}
+              min="1" />
             ) : (
-              <p className="profile-block-content-data-item-oval-text">{tempUser.weight} кг</p>
+              <p className="profile-block-content-data-item-oval-text">{tempUser.weight}</p>
             )}
+            <label className="profile-label">кг</label>
           </div>
         </div>
         <div className="profile-block-content-data-item">
           <p className="profile-block-content-data-item-text">Индекс массы тела</p>
-          <div className="profile-block-content-data-item-oval" style={{ backgroundColor: getColorCode((tempUser.weight / ((tempUser.height / 100) * (tempUser.height / 100))).toFixed(1)), border: 'none' }}>
-            <p className="profile-block-content-data-item-oval-text" style={{ color: '#ffffff' }}>{(tempUser.weight / ((tempUser.height / 100) * (tempUser.height / 100))).toFixed(1)}</p>
+          <div className="profile-block-content-data-item-oval" style={{ backgroundColor: bmi ? getColorCode(bmi) : '#B0B0B0' }}>
+            {bmi !== null ? (
+              <p className="profile-block-content-data-item-oval-text" style={{ color: '#ffffff' }}>{bmi}</p>
+            ) : (
+              <p className="profile-block-content-data-item-oval-text" style={{ color: '#B0B0B0' }}>-</p>
+            )}
           </div>
-          <div style={{ color: getColorCode((tempUser.weight / ((tempUser.height / 100) * (tempUser.height / 100))).toFixed(1)), fontSize: '14px' }}>
-            {(() => {
-              const bmi = (tempUser.weight / ((tempUser.height / 100) * (tempUser.height / 100))).toFixed(1);
+          <div style={{ color: bmi ? getColorCode(bmi) : '#B0B0B0', fontSize: '14px' }}>
+            {bmi === null ? 'Индекс массы тела не определен' : (() => {
               if (bmi <= 16) return 'Выраженный дефицит массы тела';
               else if (bmi > 16 && bmi <= 18.5) return 'Недостаточная масса тела';
               else if (bmi > 18.5 && bmi <= 25) return 'Норма';
@@ -69,7 +100,7 @@ const ProfileData = ({ tempUser, editModeProfile, handleInputChange, handleCance
         </div>
       )}
     </div>
-  );
+);
 };
 
 export default ProfileData;

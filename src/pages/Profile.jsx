@@ -13,8 +13,8 @@ const Profile = () => {
         last_name: "Иванов",
         first_name: "Иван",
         email: "test@gmail.com",
-        height: 170,
-        weight: 70,
+        height: 0,
+        weight: 0,
         target_weight: 10,
         activity: [{ type: 'pool', color: 'blue', time: 16, calories: 8500 }],
         team: "Команда №1",
@@ -39,7 +39,6 @@ const Profile = () => {
       getUserData()
         .then(data => {
           if (data && data.profile) {
-            console.log(data.profile)
             setUser(data.profile);
           }
         })
