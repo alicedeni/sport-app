@@ -10,7 +10,7 @@ const Profile = () => {
   const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [page, setPage] = useState('feed');
-  const [user, setUser] = useState({
+  const [user, setUser] = useState({/*
       id: 1,
       last_name: "Иванов",
       first_name: "Иван",
@@ -24,7 +24,7 @@ const Profile = () => {
       league: "gold",
       place_league: 6,
       avatar: "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg",
-  });
+*/});
  
   const getUserData = () => {
       return axios.get(`${link}/profile/${id}`, {})

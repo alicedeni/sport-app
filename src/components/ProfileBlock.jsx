@@ -17,7 +17,7 @@ const ProfileBlock = ({ user }) => {
   const [weightGoal, setWeightGoal] = useState('lose');
   const [currentWeight, setCurrentWeight] = useState('');
   const [progressData, setProgressData] = useState(60); 
-  const [activities, setActivities] = useState([
+  const [activities, setActivities] = useState([/*
     {
       type: 'Бассейн',
       tag: 'pool',
@@ -41,7 +41,7 @@ const ProfileBlock = ({ user }) => {
       tag: 'pool',
       time: 16,
     },
-  ]);
+  */]);
 
   const [tempUser, setTempUser] = useState(user);
   const handleProgress = () => {

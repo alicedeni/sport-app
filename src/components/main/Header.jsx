@@ -11,7 +11,7 @@ const Header = ({ currentPage }) => {
   const [userName, setUserName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [points, setPoints] = useState(0);
-  const [goal, setGoal] = useState(90);
+  const [goal, setGoal] = useState(0);
   const [mainInfo, setMainInfo] = useState({
     teams: 0,
     participants: 0,
