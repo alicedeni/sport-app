@@ -75,7 +75,7 @@ const Header = ({ currentPage }) => {
 
       {(currentPage === 'challenges' || (currentPage === 'feed' && !isNotificationOpen)) && (
         <div className="goal-status">
-          <div className="goal-text">Наша цель — Прошагать 100000 км.</div>
+          <div className="goal-text">Наша цель — Прошагать 10000 км.</div>
           <div className="goal-bar">
             <div className="goal" style={{ width: `${goal}%` }}></div>
           </div>

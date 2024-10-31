@@ -280,7 +280,11 @@ const ProfileBlock = ({ user }) => {
 
   return (
     <div className="profile-block">
-      <img src={tempUser.avatar} alt={`${tempUser.firstName} ${tempUser.lastName}`} className="profile-block-avatar" />
+      <img 
+        src={tempUser.avatar ? tempUser.avatar : "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg"} 
+        alt={`${tempUser.firstName} ${tempUser.lastName}`} 
+        className="profile-block-avatar" 
+      />
       <span className="profile-block-name">{`${tempUser.lastName} ${tempUser.firstName}`}</span>
       
       <div className="profile-block-content">

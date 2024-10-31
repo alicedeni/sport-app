@@ -99,7 +99,7 @@ const AccountSection = ({
       <div className="profile-block-content-data-item-column">
         <div className="profile-block-content-data-item-value">
           <img 
-            src={tempUser.avatar}
+            src={tempUser.avatar ? tempUser.avatar : "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg"} 
             alt={tempUser.name} 
             className="profile-block-content-data-item-image" 
           />

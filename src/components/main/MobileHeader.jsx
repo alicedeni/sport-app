@@ -14,13 +14,6 @@ const MobileHeader = ({ avatar, userName, points }) => {
     <div className="mobile-header">
       <div className="mobile-header__title">
         <span>СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ</span>
-        <CButtonProfile points={points}>
-          {avatar ? (
-            <img src={avatar} alt="User Avatar" className="avatar" />
-          ) : (
-            <div>{userName ? userName.charAt(0) : ''}</div>
-          )}
-        </CButtonProfile>
       </div>
       <button className="mobile-header__toggle" onClick={toggleMenu}>
         <span className={`hamburger ${isMenuOpen ? 'open' : ''}`}></span>
@@ -39,6 +32,9 @@ const MobileHeader = ({ avatar, userName, points }) => {
             </li>
             <li>
               <Link to={`/activity/${id}`} className="mobile-header__nav-list-item">АКТИВНОСТЬ</Link>
+            </li>
+            <li>
+              <Link to={`/profile/${id}`} className="mobile-header__nav-list-item">ПРОФИЛЬ</Link>
             </li>
           </ul>
         </nav>

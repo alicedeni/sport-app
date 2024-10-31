@@ -154,3 +154,48 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .preview {
+    padding: 0px 10px;
+    justify-content: center;
+    &-post{
+      &__mini-avatar {
+        width: 40px;
+        height: 40px;
+        margin-right: 5px; 
+      }
+      &__username {
+        font-size: 24px;
+        margin-right: 5px;
+      }
+      &__timestamp {
+        font-size: 16px;
+        color: $grey1;
+      }
+      &__content {
+        flex-direction: column;
+        height: auto;
+      }
+      &__image-container {
+        width: 100%;
+        margin-right: 0px;
+      }
+      &__info {
+        width: 100%;
+        padding: 20px;
+      }
+      &__title {
+        justify-content: center;
+      }
+      &__points {
+        justify-content: center;
+      }
+      &__comment-input {
+        &-btn{
+          left: 85%;
+        }
+      }
+    }
+  }
+}

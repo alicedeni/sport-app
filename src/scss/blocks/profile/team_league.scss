@@ -3,9 +3,10 @@
     padding: 0;
     margin: 5px 0;
     border: 1px solid #ccc;
-    background-color: #fff;
+    background-color: hsl(0, 0%, 100%);
     max-height: 150px;
     overflow-y: auto;
+    z-index: 100;
   }
   
   .team-member-item {
@@ -42,10 +43,6 @@
 
 
   .profile-block {
-    margin-left: 400px;
-    margin-right: 100px;
-    margin-top: -100px;
-    margin-bottom: 40px;
     &__activity-list {
       display: flex;
       flex-direction: row;
@@ -109,22 +106,6 @@
         .dance {color: $purple1;}
         .other {color: $grey4;}
       }
-    }
-    &-avatar {
-      position:absolute;
-      top: 205px;
-      left: 80px;
-      width: 270px;
-      height: 270px;
-      border-radius: 135px;
-      border: 10px solid $white2; 
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    }
-    &-name {
-      font-size: 40px;
-      color: $white2;
-      font-weight: bold;
-      margin-top: 10px;
     }
     &-content{
       margin-top: 100px;

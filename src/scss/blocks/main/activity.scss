@@ -268,7 +268,13 @@
 @media (max-width: 768px) {
   .activity {
     padding: 0px 10px;
-    justify-content: center;
+    justify-content: center !important;
+    align-items: center !important;
+    &-input {
+      width: 350px;
+      height: 100%;
+      padding: 10px;
+    }
   }
 
   .select_time{
