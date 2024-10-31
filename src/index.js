@@ -20,7 +20,7 @@ import "./scss/main.scss";
 
 const validateId = (id) => {
   const numId = parseInt(id, 10);
-  return numId >= 10 && numId <= 17;
+  return numId >= 10 && numId <= 19;
 };
 
 const queryClient = new QueryClient();
