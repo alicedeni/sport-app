@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Avatar, IconButton } from '@material-ui/core';
-import { Favorite, FavoriteBorder, Comment } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
 import ReactDOM from 'react-dom';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import CommentDefault from '../../assets/icons/commentDefault.svg';
 import HeartFilled from '../../assets/icons/heartFilled.svg';
@@ -27,6 +26,7 @@ const Post = ({ post }) => {
   const [comments, setComments] = useState(post.comments || []);
   const [commentCount, setCommentCount] = useState(post.commentCount || 0);
   const [sendIcon, setSendIcon] = useState('SendDefault');
+  const hasImage = post && post.image;
 
   const handleLikeClick = () => {
     const likeData = {
@@ -148,10 +148,18 @@ const Post = ({ post }) => {
           </div>
         </div>
       </div>
-      <div className="post__content">
-        <div className="post__image-container">
+      <div className={`post__content ${hasImage ? '' : 'post__content-svg'}`}>
+        <div className={`post__image-container ${hasImage ? '' : 'post__image-container-svg'}`}>
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
-          <img className="post__image" src={post.image} alt="Post image" />
+          { hasImage ? (
+            <img className="post__image" src={post.image} alt="Post image" />
+          ):(
+            <img 
+            className="post__image" 
+            src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}.svg`} 
+            alt={`${post.tag} activity`} 
+            />
+          )}
         </div>
         <div className="post__info">
           <div className="post__title">
@@ -214,9 +222,19 @@ const Post = ({ post }) => {
         <div className="post__comment-containerinput">
           {isCommentOpen && (
             <div className="post__comment-section">
+              {comments.length > 0 && (
+                <div className="post__comments">
+                  {comments.map((comment, index) => (
+                    <div key={index} className="post__comment">
+                      <strong>{comment.author_id == id ? 'Вы' : comment.surname + " " + comment.name}</strong>: {comment.text}
+                    </div>
+                  ))}
+                </div>
+              )}
               <textarea
                   className="post__comment-input"
                   placeholder="Написать комментарий..."
+                  style={{marginTop: '20px'}}
                   value={commentText}
                   onChange={handleCommentChange}
                   rows={1}
@@ -235,15 +253,7 @@ const Post = ({ post }) => {
                       <img src={SendFilled} alt="Send" />
                   )}
               </IconButton>
-              {comments.length > 0 && (
-                <div className="post__comments">
-                  {comments.map((comment, index) => (
-                    <div key={index} className="post__comment">
-                      <strong>{comment.author_id == id ? 'Вы' : comment.surname + " " + comment.name}</strong>: {comment.text}
-                    </div>
-                  ))}
-                </div>
-              )}
+              
             </div>
           )}
         </div>

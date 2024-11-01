@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.17",
-  "description": "remove plugs",
+  "version": "1.0.18",
+  "description": "fix posts & preview",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { ButtonEnter } from "../Buttons";
-import { Avatar, IconButton } from '@material-ui/core';
+import { Avatar } from '@material-ui/core';
 import axios from 'axios';
 import ReactDOM from 'react-dom';
 
@@ -16,6 +16,7 @@ const Preview = () => {
   const { activityData } = state;
   const navigate = useNavigate();
   const [user, setUser] = useState({});
+  const hasImage = activityData && activityData.image;
 
   const getUserData = () => {
     return axios.get(`${link}/profile/${id}`, {})
@@ -44,9 +45,10 @@ const Preview = () => {
       console.error('Данные активности отсутствуют');
       return;
     }
+    /*
     if (!activityData.image) {
       activityData.image = `https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.png`;
-    }
+    }*/
     axios.post(`${link}/user/${id}/activities`, activityData)
       .then(response => {
         if (response.data.status === 200) {
@@ -76,16 +78,16 @@ const Preview = () => {
                 &lt;
               </button>
               <div>Публикация активности</div>
-            </div>
-        <div className="preview-post">
-            <div className="preview-post__header">
+            </div> 
+        <div className="post">
+            <div className="post__header">
                 {user.avatar ? ( 
-                <Avatar className="preview-post__mini-avatar" src={user.avatar} alt="avatar" />
+                <Avatar className="post__mini-avatar" src={user.avatar} alt="avatar" />
                 ) : (
-                <Avatar className="preview-post__mini-avatar" src={user.avatar} alt="avatar" />
+                <Avatar className="post__mini-avatar" src={user.avatar} alt="avatar" />
                 )}
-                <div className="preview-post__user-info">
-                <div className="preview-post__svg-fire-container">
+                <div className="post__user-info">
+                <div className="post__svg-fire-container">
                     <div className="preview-post__username">{user.lastName} {user.firstName}</div>
                     <svg width="21" height="27" viewBox="0 0 21 27" fill="none" xmlns="http://www.w3.org/2000/svg" className="post__svg-fire-container-svg">
                     <path d="M0.75 16C0.75 24 8.25 27.6251 9 26.5C9.5 25.75 7.7124 25.7444 8.25 22.25C8.75 19 13 16 12.5 18.25C11.9166 20.8754 13.7067 20.6534 14 23C14.3277 25.6219 12.5632 25.6266 13 26.5C13.559 27.6181 21 24.5 21 16.75C21 10.5 19 9 18.25 9C17.5 9 18.65 10.25 17.25 12C16.65 12.75 15.7007 13.3521 15.5 12.75C15.25 12 17 11.25 15.75 6.75009C14.8573 3.5364 11 0.499976 10 0.750042C9 1.00011 9.75 2.55 9.75 3.75C9.75 5.75 8.62495 6.00011 7.5 8.25C5.75 11.75 8 13.6251 7.25 14C6.5 14.3749 5 12.5177 5 10.75C5 8.5 6.25 7.5 5.75 7C5.25 6.5 0.75 8.00004 0.75 16Z" fill="url(#paint0_linear_101_308)"/>
@@ -97,37 +99,37 @@ const Preview = () => {
                     </linearGradient>
                     </defs>
                     </svg>
-                    <div className="preview-post__fire-count">{user.fireCount}</div>
+                    <div className="post__fire-count">{user.fireCount}</div>
                 </div>
-                <div className="preview-post__timestamp">
+                <div className="post__timestamp">
                     Предпросмотр
                 </div>
                 </div>
             </div>
-            <div className="preview-post__content">
-                <div className="preview-post__image-container">
-                {activityData && activityData.image ? (
-                            <img className="preview-post__image" src={activityData.image} alt="Post image" />
-                        ) : (
-                            <img 
-                                className="preview-post__image" 
-                                src={`https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.png`} 
-                                alt={`${activityData.type} activity`} 
-                            />
-                        )}
-                </div>
-                <div className="preview-post__info">
-                <div className="preview-post__title">
-                {/* !!! */}
+            <div className={`post__content ${hasImage ? '' : 'post__content-svg'}`}>
+              <div className={`post__image-container ${hasImage ? '' : 'post__image-container-svg'}`}>
+                { hasImage ? (
+                <img className="post__image" src={activityData.image} alt="Post image" />
+                ):(
+                  <img 
+                  className="post__image" 
+                  src={`https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.svg`} 
+                  alt={`${activityData.type} activity`} 
+                  />
+                )}
+              </div>
+                <div className="post__info">
+                <div className="post__title">
+                
                 {activityData && (
                 <div id={activityData.type} className={`activity-btn ${activityData.type}-bold`}>
                         {activityData.tag.toUpperCase()}
                         </div>
                 )}
                 </div>
-                <div className="preview-post__points">
-                    <div className="preview-post__points__point"> Время
-                      <div className="preview-post__time">
+                <div className="post__points">
+                    <div className="post__points__point"> Время
+                      <div className={`post__metric ${activityData.type}-metric`}>
                           <div className="formatted-time">
                             {(() => {
                                 const [hours, minutes] = activityData.time.split(':').map(Number);
@@ -150,16 +152,16 @@ const Preview = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="preview-post__points__point">
+                    <div className="post__points__point">
                     Калории
                     {activityData && (
-                    <div className="preview-post__calories">{activityData.calories} ккал</div>
+                    <div className={`post__metric ${activityData.type}-metric`}>{activityData.calories} ккал</div>
                     )}
                     </div>
                 </div>
-                <div className="preview-post__line"></div>
+                <div className="post__line"></div>
                 {activityData && (
-                <div className="preview-post__text">{activityData.description}</div>
+                <div className="post__text">{activityData.description}</div>
                 )}
                 </div>
             </div>
