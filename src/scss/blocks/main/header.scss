@@ -18,9 +18,16 @@
     font-weight: lighter;
     img {
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border: 2px solid $white2;
+    }
+    .avatar-default{
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      background: $purple2;
+      font-size: 26px;
     }
     .avatar-placeholder {
       justify-content: center;

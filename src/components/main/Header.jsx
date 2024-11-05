@@ -47,7 +47,7 @@ const Header = ({ currentPage }) => {
           {avatar ? (
             <img src={`${avatar}`} alt="User Avatar" className="avatar" />
           ) : (
-            <div>{userName ? userName.charAt(0) : ''}</div>
+            <div className="avatar-default">{userName ? userName.charAt(0) : ''}</div>
           )}
         </CButtonProfile>
       </div>

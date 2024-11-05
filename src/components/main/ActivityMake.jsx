@@ -151,8 +151,8 @@ const ActivityMake = () => {
   const handleSaveActivity = (event) => {
     event.preventDefault();
 
-    if (!activityTag || !activityStartTime || !activityCalories || !activityEndTime) {
-        alert("Пожалуйста, заполните все обязательные поля: тип активности, время начала/окончания и калории.");
+    if (!activityTag || !activityStartTime || !activityEndTime) {
+        alert("Пожалуйста, заполните все обязательные поля: тип активности, время начала/окончания.");
         return;
       }
 

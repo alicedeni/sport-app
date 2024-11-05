@@ -152,12 +152,11 @@ const Preview = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="post__points__point">
+                    {activityData && activityData.calories && (<div className="post__points__point">
                     Калории
-                    {activityData && (
                     <div className={`post__metric ${activityData.type}-metric`}>{activityData.calories} ккал</div>
-                    )}
                     </div>
+                    )}
                 </div>
                 <div className="post__line"></div>
                 {activityData && (

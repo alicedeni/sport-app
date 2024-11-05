@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.18",
-  "description": "fix posts & preview",
+  "version": "1.0.19",
+  "description": "fix bugs & removing calories",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

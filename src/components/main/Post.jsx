@@ -195,11 +195,11 @@ const Post = ({ post }) => {
                 )}
               </div>
             </div>
-            <div className="post__points__point">
+            {post && post.calories && (<div className="post__points__point">
               Калории
               {/* <div className="post__calories">{post.calories} ккал</div> */}
               <div className={`post__metric ${post.tag}-metric`}>{post.calories} ккал</div>
-            </div>
+            </div>)}
           </div>
           <div className="post__line"></div>
           <div className="post__text">{post.text}</div>
@@ -222,11 +222,17 @@ const Post = ({ post }) => {
         <div className="post__comment-containerinput">
           {isCommentOpen && (
             <div className="post__comment-section">
+              <div className="post__line"></div>
               {comments.length > 0 && (
                 <div className="post__comments">
                   {comments.map((comment, index) => (
                     <div key={index} className="post__comment">
-                      <strong>{comment.author_id == id ? 'Вы' : comment.surname + " " + comment.name}</strong>: {comment.text}
+                      <strong>{comment.author_id == id ? 'Вы' : comment.surname + " " + comment.name}</strong> 
+                      <div>{comment.text}</div>
+                      <div className="post__comment-timestamp">
+                        {format(new Date('01.01.2001'/* comment.timestamp */), 'd MMMM, HH:mm', { locale: ru })}
+                      </div>
+                      <div className="post__line" style={{marginTop: '10px'}}></div>
                     </div>
                   ))}
                 </div>
