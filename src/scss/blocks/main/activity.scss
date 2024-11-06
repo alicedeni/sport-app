@@ -253,6 +253,10 @@
   margin: 0;
 }
 
+.activity-input-content-item-field[type="number"]::-webkit-inner-spin-button { 
+  display: none;
+}
+
 .calories-label{
   top: 29px;
   right: 5px;

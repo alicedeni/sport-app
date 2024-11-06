@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.19",
-  "description": "fix bugs & removing calories",
+  "version": "1.0.20",
+  "description": "fix scroll number",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

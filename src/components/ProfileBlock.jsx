@@ -366,6 +366,7 @@ const ProfileBlock = ({ user }) => {
               <label className="profile-label">кг</label>
             </div>
           </div>
+          <p className='profile-block-content-data-title-name-small'>Прогресс от начального веса к желаемому</p>
           <div className="progress-bar" style={{marginTop: '20px'}}>
             <div 
               className="progress" 
