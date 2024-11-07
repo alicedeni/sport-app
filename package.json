@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.20",
-  "description": "fix scroll number",
+  "version": "1.0.21",
+  "description": "adding walk&yoga",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",

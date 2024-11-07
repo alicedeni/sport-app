@@ -14,6 +14,8 @@
     &.run-light { @extend .run-normal; }
     &.power-light { @extend .power-normal; }
     &.bike-light { @extend .bike-normal; }
+    &.yoga-light { @extend .yoga-normal; }
+    &.walk-light { @extend .walk-normal; }
     &.game-light { @extend .game-normal; }
     &.dance-light { @extend .dance-normal; }
     &.other-light { @extend .other-normal; }
@@ -24,12 +26,10 @@
     color: $blue;
     border: 1px solid $blue;
   }
-
   .cardio-light {
     color: $yellow;
     border: 1px solid $yellow;
   }
-
   .run-light {
     color: $green;
     border: 1px solid $green;
@@ -41,6 +41,14 @@
   .bike-light {
     color: $purple2;
     border: 1px solid $purple2;
+  }
+  .yoga-light {
+    color: $turquoise;
+    border: 1px solid $turquoise;
+  }
+  .walk-light {
+    color: $orange;
+    border: 1px solid $orange;
   }
   .game-light {
     color: $dark-blue;
@@ -61,13 +69,11 @@
     background: $blue-20p;
     border: 1px solid $blue;
   }
-
   .cardio-normal {
     color: $yellow;
     background: $yellow-20p;
     border: 1px solid $yellow;
   }
-
   .run-normal {
     color: $green;
     background: $green-20p;
@@ -82,6 +88,16 @@
     color: $purple2;
     background: $purple2-20p;
     border: 1px solid $purple2;
+  }
+  .yoga-normal {
+    color: $turquoise;
+    background: $turquoise-20p;
+    border: 1px solid $turquoise;
+  }
+  .walk-normal {
+    color: $orange;
+    background: $orange-20p;
+    border: 1px solid $orange;
   }
   .game-normal {
     color: $dark-blue;
@@ -106,14 +122,12 @@
     font-weight: bold;
     border: 2px solid $blue;
   }
-
   .cardio-bold {
     color: $yellow;
     background: $yellow-20p;
     font-weight: bold;
     border: 2px solid $yellow;
   }
-
   .run-bold {
     color: $green;
     background: $green-20p;
@@ -131,6 +145,18 @@
     background: $purple2-20p;
     font-weight: bold;
     border: 2px solid $purple2;
+  }
+  .yoga-bold {
+    color: $turquoise;
+    background: $turquoise-20p;
+    font-weight: bold;
+    border: 2px solid $turquoise;
+  }
+  .walk-bold {
+    color: $orange;
+    background: $orange-20p;
+    font-weight: bold;
+    border: 2px solid $orange;
   }
   .game-bold {
     color: $dark-blue;
