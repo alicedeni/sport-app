@@ -63,7 +63,7 @@ const Profile = () => {
       ) : (
         <Header setPage={setPage} isFeedPage={false} />
       )}
-      <div className="main"><ProfileBlock user={user} setUser={setUser}/></div>
+      <div className="main" style={{marginTop: '100px'}}><ProfileBlock user={user} setUser={setUser}/></div>
     </div>
   );
 };

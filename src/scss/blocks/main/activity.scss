@@ -119,12 +119,14 @@
           justify-content: center;
         }
       }
+      
       &-content {
         margin-left: 60px;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         gap: 20px;
+        
       
         &-description {
           border-radius: 10px;
@@ -239,25 +241,25 @@
 }
 
 
-.activity-input-content-item-field[type="time"]::-webkit-calendar-picker-indicator {
+input[type="time"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
-
-.activity-input-content-item-field[type="number"] {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-.activity-input-content-item-field[type="number"]::-webkit-inner-spin-button,
-.activity-input-content-item-field[type="number"]::-webkit-outer-spin-button {
+input[type="date"] {
   -webkit-appearance: none;
-  margin: 0;
+  appearance: none; 
 }
 
-.activity-input-content-item-field[type="number"]::-webkit-inner-spin-button { 
-  display: none;
+input[type="date"]::-webkit-calendar-picker-indicator {
+  display: none; 
 }
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-outer-spin-button {
+    display: none;
+}
+
 
 .calories-label{
   top: 29px;

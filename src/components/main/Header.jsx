@@ -41,7 +41,7 @@ const Header = ({ currentPage }) => {
   };
 
   return (
-    <div className="header">
+    <div className="header" style={{ marginBottom: (currentPage === 'feed' || currentPage === 'challenges') ? '100px' : '0' }}>
       <div className="header-title">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ
         <CButtonProfile points={points}>
           {avatar ? (
@@ -53,24 +53,16 @@ const Header = ({ currentPage }) => {
       </div>
       <hr style={{ width: "100%", color: "$white", backgroundColor: "$white", height: "1px" }} />
       <nav className="header-nav">
-        <ul className="header-nav-list">
-          <li>
-            <Link to={`/main/${id}`} className="header-nav-list-item">ЛЕНТА</Link>
-          </li>
-          <li>
-            <Link to={`/challenges/${id}`} className="header-nav-list-item">ЧЕЛЛЕНДЖИ</Link>
-          </li>
-          <li>
-            <Link to={`/ratings/${id}`} className="header-nav-list-item">РЕЙТИНГИ</Link>
-          </li>
-          <li>
-            <Link to={`/activity/${id}`} className="header-nav-list-item">АКТИВНОСТЬ</Link>
-          </li>
-        </ul>
+        <div className="header-nav-list">
+          <Link to={`/main/${id}`} className="header-nav-list-item">ЛЕНТА</Link>
+          <Link to={`/challenges/${id}`} className="header-nav-list-item">ЧЕЛЛЕНДЖИ</Link>
+          <Link to={`/ratings/${id}`} className="header-nav-list-item">РЕЙТИНГИ</Link>
+          <Link to={`/activity/${id}`} className="header-nav-list-item">АКТИВНОСТЬ</Link>  
+        </div>
       </nav>
 
       {currentPage === 'feed' && isNotificationOpen && (
-        <Notification isOpen={isNotificationOpen} userName={userName} onClose={handlePageNotification} />
+        <Notification isOpen={isNotificationOpen} userName={userName} onClose={handlePageNotification}/>
       )}
 
       {(currentPage === 'challenges' || (currentPage === 'feed' && !isNotificationOpen)) && (

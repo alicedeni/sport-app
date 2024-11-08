@@ -73,6 +73,7 @@ const Post = ({ post }) => {
       axios.get(`${link}/get_comments/${post.feed_id}`)
         .then(response => {
           if (response.data.status === 200) {
+            console.log(response.data.comments);
             setComments(response.data.comments);
           } else {
             console.error('Error fetching comments:', response.data.message);
@@ -99,7 +100,9 @@ const Post = ({ post }) => {
     axios.post(`${link}/user/${id}/comment`, commentData)
       .then(response => {
         if (response.data.status === 200) {
-          setComments([...comments, { text: commentText, author_id: id}]);
+          const currentDate = new Date();
+          const formattedDate = currentDate.toISOString();
+          setComments([{ text: commentText, author_id: id, created_at: formattedDate}, ...comments]);
           setCommentText('');
           setCommentCount(commentCount + 1);
         } else {
@@ -200,6 +203,10 @@ const Post = ({ post }) => {
               {/* <div className="post__calories">{post.calories} ккал</div> */}
               <div className={`post__metric ${post.tag}-metric`}>{post.calories} ккал</div>
             </div>)}
+            {post && post.step && (<div className="post__points__point">
+              Шаги
+              <div className={`post__metric ${post.type}-metric`}>{post.step} шагов</div>
+            </div>)}
           </div>
           <div className="post__line"></div>
           <div className="post__text">{post.text}</div>
@@ -230,7 +237,7 @@ const Post = ({ post }) => {
                       <strong>{comment.author_id == id ? 'Вы' : comment.surname + " " + comment.name}</strong> 
                       <div>{comment.text}</div>
                       <div className="post__comment-timestamp">
-                        {format(new Date('01.01.2001'/* comment.timestamp */), 'd MMMM, HH:mm', { locale: ru })}
+                        {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
                       </div>
                       <div className="post__line" style={{marginTop: '10px'}}></div>
                     </div>
@@ -244,7 +251,7 @@ const Post = ({ post }) => {
                   value={commentText}
                   onChange={handleCommentChange}
                   rows={1}
-                  maxLength={200}
+                  maxLength={100}
                   onKeyPress={handleKeyPress}
               />
               <IconButton

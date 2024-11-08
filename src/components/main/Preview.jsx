@@ -134,15 +134,6 @@ const Preview = () => {
                             {(() => {
                                 const [hours, minutes] = activityData.time.split(':').map(Number);
                                 let totalHours = hours + Math.round(minutes / 60 * 2) / 2;
-                                if (totalHours == -0.5) {
-                                  totalHours += 24;
-                                } else if (totalHours < 0 && totalHours % 1) {
-                                  totalHours += 25;
-                                } else if (totalHours < 0) {
-                                  totalHours += 24;
-                                } else if (minutes < 0) {
-                                  totalHours += 24;
-                                }
                                 if (totalHours !== 0) {
                                 return <span>{totalHours} часа</span>;
                                 } else {
@@ -155,6 +146,11 @@ const Preview = () => {
                     {activityData && activityData.calories && (<div className="post__points__point">
                     Калории
                     <div className={`post__metric ${activityData.type}-metric`}>{activityData.calories} ккал</div>
+                    </div>
+                    )}
+                    {activityData && activityData.step && (<div className="post__points__point">
+                    Шаги
+                    <div className={`post__metric ${activityData.type}-metric`}>{activityData.step} шагов</div>
                     </div>
                     )}
                 </div>

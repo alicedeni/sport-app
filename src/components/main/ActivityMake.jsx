@@ -14,6 +14,9 @@ const ActivityMake = () => {
   const [activityTypes, setActivityTypes] = useState([]); 
   const [activityType, setActivityType] = useState("");
   const [activityTag, setActivityTag] = useState("");
+  const [activityStartDate, setActivityStartDate] = useState("");
+  const [activityEndDate, setActivityEndDate] = useState(""); 
+  const [activityStep, setActivityStep] = useState(""); 
   const [activityStartTime, setActivityStartTime] = useState("");
   const [activityEndTime, setActivityEndTime] = useState("");
   const [activityDistance, setActivityDistance] = useState("");
@@ -28,6 +31,9 @@ const ActivityMake = () => {
     if (activityData) {
       setActivityType(activityData.tag);
       setActivityTag(activityData.type);
+      setActivityStartDate(activityData.startDate);
+      setActivityEndDate(activityData.endDate); 
+      setActivityStep(activityData.step);
       setActivityStartTime(activityData.startTime);
       setActivityEndTime(activityData.endTime);
       setActivityDistance(activityData.distance);
@@ -62,8 +68,8 @@ const ActivityMake = () => {
     setActivityEndTime(time);
   };
 
-  const handleActivityDistanceChange = (distance) => {
-    setActivityDistance(distance);
+  const handleActivityStepChange = (step) => {
+    setActivityStep(step);
   };
 
   const handleActivityCaloriesChange = (calories) => {
@@ -151,33 +157,57 @@ const ActivityMake = () => {
   const handleSaveActivity = (event) => {
     event.preventDefault();
 
-    if (!activityTag || !activityStartTime || !activityEndTime) {
-        alert("Пожалуйста, заполните все обязательные поля: тип активности, время начала/окончания.");
+    if (!activityTag || !activityStartDate || !activityStartTime || !activityEndDate || !activityEndTime) {
+        alert("Пожалуйста, заполните все обязательные поля: тип активности, дата и время начала/окончания.");
         return;
-      }
-
-    function calculateTimeDifference(startTime, endTime) {
-      const [startHours, startMinutes] = startTime.split(':').map(Number);
-      const [endHours, endMinutes] = endTime.split(':').map(Number);
-    
-      const startTotalMinutes = startHours * 60 + startMinutes;
-      const endTotalMinutes = endHours * 60 + endMinutes;
-    
-      const differenceInMinutes = endTotalMinutes - startTotalMinutes;
-      let hours = Math.floor(differenceInMinutes / 60);
-      let minutes = differenceInMinutes % 60;
-      if (differenceInMinutes < 0 && differenceInMinutes > -60) {
-        hours = 0;
-      } 
-    
-      return `${hours}:${minutes}`;
     }
-    const time = calculateTimeDifference(activityStartTime, activityEndTime);
+
+    const startDateTime = new Date(`${activityStartDate}T${activityStartTime}`);
+    const endDateTime = new Date(`${activityEndDate}T${activityEndTime}`);
+    const now = new Date();
+
+    if (startDateTime > now) {
+      alert("Дата и время начала не могут быть в будущем.");
+      return;
+    }
+
+    if (endDateTime > now) {
+        alert("Дата и время окончания не могут быть в будущем.");
+        return;
+    }
+
+    if (endDateTime < startDateTime) {
+        alert("Дата и время окончания не могут быть раньше даты и времени начала.");
+        return;
+    }
+
+    if (endDateTime.toISOString().slice(0, -5) === startDateTime.toISOString().slice(0, -5) && endDateTime <= startDateTime) {
+        alert("Время окончания не может быть раньше или равно времени начала в один день.");
+        return;
+    }
     
+
+    function calculateTimeDifference(startDateTime, endDateTime) {
+        const differenceInMilliseconds = endDateTime - startDateTime;
+        
+        if (differenceInMilliseconds < 0) return "0:00";
+
+        const totalMinutes = Math.floor(differenceInMilliseconds / (1000 * 60));
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+
+        return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`; 
+    }
+
+    const time = calculateTimeDifference(startDateTime, endDateTime);
+
     const activityData = {
       type: activityTag,
       tag: activityType,
       time: time,
+      startDate: activityStartDate,
+      endDate: activityEndDate,
+      step: activityStep,
       startTime: activityStartTime,
       endTime: activityEndTime,
       distance: activityDistance,
@@ -187,7 +217,6 @@ const ActivityMake = () => {
       description: activityDescription,
     };
 
-  
     navigate(`/preview/${id}`, { state: { activityData, page: "view" } });
   };
 
@@ -222,51 +251,73 @@ const ActivityMake = () => {
                 <div className="activity-input-title">
                 <div className="activity-input-title-number">2</div>
                 Введите данные об активности</div>
-                <div className="activity-input-content">
-                <div className="activity-input-content-item">
-                    <label className="activity-input-content-item-name">Время начала</label>
-                    <input
-                    className="activity-input-content-item-field"
-                    type="time"
-                    value={activityStartTime}
-                    onChange={(e) => handleActivityStartTimeChange(e.target.value)}
-                    />
-                </div>
-                <div className="activity-input-content-item">
-                    <label className="activity-input-content-item-name">Время окончания</label>
-                    <input
-                    className="activity-input-content-item-field"
-                    type="time"
-                    value={activityEndTime}
-                    onChange={(e) => handleActivityEndTimeChange(e.target.value)}
-                    />
-                </div>
-                {['pool', 'run', 'bike'].includes(activityType) && (
+                <div className="activity-input-content" style={{flexDirection: 'colunmn'}}>
+                  <div className="activity-input-content">
                     <div className="activity-input-content-item">
-                    <label className="activity-input-content-item-name">Расстояние</label>
+                        <label className="activity-input-content-item-name">Дата начала</label>
+                        <input
+                        className="activity-input-content-item-field"
+                        type="date"
+                        value={activityStartDate}
+                        onChange={(e) => setActivityStartDate(e.target.value)}
+                        />
+                    </div>
+                    <div className="activity-input-content-item">
+                        <label className="activity-input-content-item-name">Время начала</label>
+                        <input
+                        className="activity-input-content-item-field"
+                        type="time"
+                        value={activityStartTime}
+                        onChange={(e) => handleActivityStartTimeChange(e.target.value)}
+                        />
+                    </div>
+                    <div className="activity-input-content-item">
+                        <label className="activity-input-content-item-name">Дата окончания</label>
+                        <input
+                        className="activity-input-content-item-field"
+                        type="date"
+                        value={activityEndDate}
+                        onChange={(e) => setActivityEndDate(e.target.value)}
+                        />
+                    </div>
+                    <div className="activity-input-content-item">
+                        <label className="activity-input-content-item-name">Время окончания</label>
+                        <input
+                        className="activity-input-content-item-field"
+                        type="time"
+                        value={activityEndTime}
+                        onChange={(e) => handleActivityEndTimeChange(e.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="activity-input-content">
+                  {['run', 'walk'].includes(activityTag) && (
+                    <div className="activity-input-content-item">
+                    <label className="activity-input-content-item-name">Шаги</label>
                     <input
                         className="activity-input-content-item-field"
                         type="number"
-                        value={activityDistance}
-                        onChange={(e) => handleActivityDistanceChange(e.target.value)}
+                        value={activityStep}
+                        onChange={(e) => handleActivityStepChange(e.target.value)}
                         onKeyPress={handleKeyPress}
                         min="1"
                     />
                     </div>
-                )}
-                <div className="activity-input-content-item">
-                    <label className="activity-input-content-item-name">Калории</label>
-                    <input
-                    className="activity-input-content-item-field"
-                    type="number"
-                    value={activityCalories}
-                    onChange={(e) => handleActivityCaloriesChange(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    min="1"
-                    />
-                    <label className="calories-label">ккал</label>
+                  )}
+                  <div className="activity-input-content-item">
+                      <label className="activity-input-content-item-name">Калории</label>
+                      <input
+                      className="activity-input-content-item-field"
+                      type="number"
+                      value={activityCalories}
+                      onChange={(e) => handleActivityCaloriesChange(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      min="1"
+                      />
+                      <label className="calories-label">ккал</label>
+                  </div>
                 </div>
-                </div>
+              </div>
             </div>
             <div className="activity-input">
                 <div className="activity-input-title">
