@@ -205,7 +205,7 @@ const Post = ({ post }) => {
             </div>)}
             {post && post.step && (<div className="post__points__point">
               Шаги
-              <div className={`post__metric ${post.type}-metric`}>{post.step} шагов</div>
+              <div className={`post__metric ${post.tag}-metric`}>{post.step} шагов</div>
             </div>)}
           </div>
           <div className="post__line"></div>

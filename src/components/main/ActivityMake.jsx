@@ -252,7 +252,7 @@ const ActivityMake = () => {
                 <div className="activity-input-title-number">2</div>
                 Введите данные об активности</div>
                 <div className="activity-input-content" style={{flexDirection: 'colunmn'}}>
-                  <div className="activity-input-content">
+                  <div className="activity-input-content" style={{marginLeft: '0px'}}>
                     <div className="activity-input-content-item">
                         <label className="activity-input-content-item-name">Дата начала</label>
                         <input
@@ -290,7 +290,7 @@ const ActivityMake = () => {
                         />
                     </div>
                 </div>
-                <div className="activity-input-content">
+                <div className="activity-input-content" style={{marginLeft: '0px'}}>
                   {['run', 'walk'].includes(activityTag) && (
                     <div className="activity-input-content-item">
                     <label className="activity-input-content-item-name">Шаги</label>
