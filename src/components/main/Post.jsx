@@ -250,8 +250,7 @@ const Post = ({ post }) => {
                   style={{marginTop: '20px'}}
                   value={commentText}
                   onChange={handleCommentChange}
-                  rows={1}
-                  maxLength={100}
+                  maxLength={250}
                   onKeyPress={handleKeyPress}
               />
               <IconButton

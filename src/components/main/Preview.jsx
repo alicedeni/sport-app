@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { ButtonEnter } from "../Buttons";
 import { Avatar } from '@material-ui/core';
@@ -17,6 +17,7 @@ const Preview = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState({});
   const hasImage = activityData && activityData.image;
+  const isMounted = useRef(true);
 
   const getUserData = () => {
     return axios.get(`${link}/profile/${id}`, {})
@@ -37,6 +38,9 @@ const Preview = () => {
         }
       })
       .catch(error => console.error(error));
+    return () => {
+      isMounted.current = false; 
+    };
   }, []);
 
 

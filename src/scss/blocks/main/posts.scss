@@ -140,6 +140,9 @@
     &__text {
       margin: 20px 0px;
       font-size: 20px;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      
     }
 
     &__metric {
@@ -226,8 +229,8 @@
     &__comment{
       margin: 10px 0px;
       &-container {
-      display: flex;
-      flex-direction: row;
+        display: flex;
+        flex-direction: row;
       }
       &-count {
         font-size: 24px;

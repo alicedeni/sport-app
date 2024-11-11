@@ -12,20 +12,6 @@ const Activity = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`${link}/user/${id}/list_of_activities`)
-      .then(response => {
-        if (response.data.status === 200) {
-          setActivityTypes(response.data.activities);
-        } else {
-          console.error('Error loading activities:', response.data.message);
-        }
-      })
-      .catch(error => {
-        console.error('Error loading activities:', error);
-      });
-  }, []);
-
-  useEffect(() => {
     const fetchActivities = async () => {
       try {
         let response;

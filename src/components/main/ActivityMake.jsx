@@ -14,7 +14,8 @@ const ActivityMake = () => {
   const [activityTypes, setActivityTypes] = useState([]); 
   const [activityType, setActivityType] = useState("");
   const [activityTag, setActivityTag] = useState("");
-  const [activityStartDate, setActivityStartDate] = useState("");
+  const [otherActivityTag, setOtherActivityTag] = useState(""); 
+  const [activityStartDate, setActivityStartDate] = useState();
   const [activityEndDate, setActivityEndDate] = useState(""); 
   const [activityStep, setActivityStep] = useState(""); 
   const [activityStartTime, setActivityStartTime] = useState("");
@@ -27,7 +28,21 @@ const ActivityMake = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
+  const formatDateToInput = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); 
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   useEffect(() => {
+
+    const today = new Date();
+    setActivityStartDate(formatDateToInput(today));
+    setActivityEndDate(formatDateToInput(today));
+
+    
     if (activityData) {
       setActivityType(activityData.tag);
       setActivityTag(activityData.type);
@@ -41,6 +56,7 @@ const ActivityMake = () => {
       setActivityVerification(activityData.verification);
       setActivityImage(activityData.image);
       setActivityDescription(activityData.description);
+      setOtherActivityTag(activityData.other);
     }
 
     axios.get(`${link}/user/${id}/list_of_activities`)
@@ -145,7 +161,10 @@ const ActivityMake = () => {
 
   const handleActivityTypeChange = (activity) => {
     setActivityType(activity.type);
-    setActivityTag(activity.tag);
+      setActivityTag(activity.tag);
+    if (activity.tag !== 'other') {
+      setOtherActivityTag(''); 
+    }
   };
 
   const handleKeyPress = (event) => {
@@ -161,6 +180,7 @@ const ActivityMake = () => {
         alert("Пожалуйста, заполните все обязательные поля: тип активности, дата и время начала/окончания.");
         return;
     }
+    const finalTag = otherActivityTag ? otherActivityTag : activityType;
 
     const startDateTime = new Date(`${activityStartDate}T${activityStartTime}`);
     const endDateTime = new Date(`${activityEndDate}T${activityEndTime}`);
@@ -203,7 +223,7 @@ const ActivityMake = () => {
 
     const activityData = {
       type: activityTag,
-      tag: activityType,
+      tag: finalTag,
       time: time,
       startDate: activityStartDate,
       endDate: activityEndDate,
@@ -215,6 +235,7 @@ const ActivityMake = () => {
       verification: activityVerification,
       image: activityImage,
       description: activityDescription,
+      other: otherActivityTag,
     };
 
     navigate(`/preview/${id}`, { state: { activityData, page: "view" } });
@@ -245,6 +266,18 @@ const ActivityMake = () => {
                     {activity.type.toUpperCase()}
                     </div>
                 ))}
+
+                {activityTag === 'other' && (
+                  <div className="activity-input-content-item">
+                      <input
+                          className="activity-input-content-item-field-other"
+                          type="text"
+                          value={otherActivityTag}
+                          onChange={(e) => setOtherActivityTag(e.target.value)}
+                          placeholder="Название активности"
+                      />
+                  </div>
+                )}
                 </div>
             </div>
             <div className="activity-input">
@@ -352,7 +385,8 @@ const ActivityMake = () => {
                         className="activity-input-content-description"
                         value={activityDescription}
                         onChange={(e) => handleActivityDescriptionChange(e.target.value)}
-                        placeholder='Здесь вы можете добавить комментарий к активности'
+                        placeholder='Здесь вы можете добавить комментарий к активности (до 500 символов)'
+                        maxLength={500}
                     ></textarea>
                     <div className="activity-input-content-image">
                         {activityImage ? (

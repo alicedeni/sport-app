@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.22",
-  "description": "fix comments & adding steps",
+  "version": "1.0.23",
+  "description": "activity date",
   "main": "index.js",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
