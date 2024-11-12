@@ -42,7 +42,7 @@ const ActivityMake = () => {
     setActivityStartDate(formatDateToInput(today));
     setActivityEndDate(formatDateToInput(today));
 
-    
+
     if (activityData) {
       setActivityType(activityData.tag);
       setActivityTag(activityData.type);
@@ -361,6 +361,10 @@ const ActivityMake = () => {
                     {activityVerification ? (
                         <>
                             <img src={activityVerification} alt="Activity Verification" />
+                            <input
+                                type="file" accept=".jpg, .jpeg, .png" 
+                                onChange={handleActivityVerificationChange} 
+                            />
                         </>
                     ) : (
                         <>
@@ -392,6 +396,10 @@ const ActivityMake = () => {
                         {activityImage ? (
                             <>
                                 <img src={activityImage} alt="Activity Image" />
+                                <input
+                                    type="file" accept=".jpg, .jpeg, .png"
+                                    onChange={handleActivityImageChange}
+                                />
                             </>
                         ) : (
                             <>

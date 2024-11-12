@@ -2,13 +2,13 @@ import React from 'react';
 
 const ProfileData = ({ tempUser, editModeProfile, handleInputChange, handleCancelClickProfile, handleSaveClickProfile, handleEditClickProfile }) => {
   const getColorCode = (bmi) => {
-    if (bmi <= 16) return '#6699CC'; 
-    else if (bmi > 16 && bmi <= 18.5) return '#339966';
-    else if (bmi > 18.5 && bmi <= 25) return '#33CC66'; 
-    else if (bmi > 25 && bmi <= 30) return '#00CC00';
-    else if (bmi > 30 && bmi <= 35) return '#FF6600';
-    else if (bmi > 35 && bmi <= 40) return '#FF3300';
-    else return '#FF0000'; 
+    if (bmi > 18.5 && bmi <= 25) return 'rgba(5, 232, 117, 0.2)'; 
+    else return 'rgba(255, 204, 56, 0.2)'; 
+  };
+
+  const getColorCodeText = (bmi) => {
+    if (bmi > 18.5 && bmi <= 25) return 'rgb(5, 232, 117)'; 
+    else return 'rgb(255, 204, 56)'; 
   };
 
   const handleKeyPress = (event) => {
@@ -22,13 +22,13 @@ const ProfileData = ({ tempUser, editModeProfile, handleInputChange, handleCance
     const { height, weight } = tempUser;
     console.log(weight, height);
     if (!height || !weight || height === '0' || weight === '0') {
-      return null; // Если рост или вес не заданы, возвращаем null
+      return null; 
     }
-    return (weight / ((height / 100) * (height / 100))).toFixed(1); // Рассчитываем ИМТ
+    return (weight / ((height / 100) * (height / 100))).toFixed(1); 
   };
 
   const bmi = calculateBMI(); 
-  console.log(bmi);// Получаем значение ИМТ
+  console.log(bmi);
 
   return (
     <div className="profile-block-content-data">
@@ -100,22 +100,17 @@ const ProfileData = ({ tempUser, editModeProfile, handleInputChange, handleCance
         </div>
         <div className="profile-block-content-data-item">
           <p className="profile-block-content-data-item-text">Индекс массы тела</p>
-          <div className="profile-block-content-data-item-oval" style={{ backgroundColor: bmi ? getColorCode(bmi) : '#B0B0B0' }}>
+          <div className="profile-block-content-data-item-oval" style={{ backgroundColor: bmi ? getColorCode(bmi) : '#B0B0B0', borderColor:  bmi ? getColorCodeText(bmi) : '#B0B0B0'  }}>
             {(bmi !== null && bmi != 0) ? (
-              <p className="profile-block-content-data-item-oval-text" style={{ color: '#ffffff' }}>{bmi}</p>
+              <p className="profile-block-content-data-item-oval-text" style={{ color: getColorCodeText(bmi) }}>{bmi}</p>
             ) : (
               <p className="profile-block-content-data-item-oval-text" style={{ color: '#B0B0B0' }}>-</p>
             )}
           </div>
-          <div style={{ color: bmi ? getColorCode(bmi) : '#B0B0B0', fontSize: '14px' }}>
+          <div style={{ color: bmi ? getColorCodeText(bmi) : '#B0B0B0', fontSize: '14px' }}>
             {(bmi === null) ? 'Индекс массы тела не определен' : (() => {
-              if (bmi <= 16) return 'Выраженный дефицит массы тела';
-              else if (bmi > 16 && bmi <= 18.5) return 'Недостаточная масса тела';
-              else if (bmi > 18.5 && bmi <= 25) return 'Норма';
-              else if (bmi > 25 && bmi <= 30) return 'Избыточная масса тела';
-              else if (bmi > 30 && bmi <= 35) return 'Ожирение 1-й степени';
-              else if (bmi > 35 && bmi <= 40) return 'Ожирение 2-й степени';
-              else return 'Ожирение 3-й степени';
+              if (bmi > 18.5 && bmi <= 25) return 'Норма';
+              else return 'Выше нормы';
             })()}
           </div>
         </div>

@@ -107,7 +107,7 @@ const Main = () => {
   return (
     <div className="container" id="root">
       {isMobile ? (
-        <MobileHeader avatar={user.avatar} userName={userName} points={points} /> // Отображаем мобильный заголовок
+        <MobileHeader avatar={user.avatar} userName={userName} points={points} /> 
       ) : (
         <Header setPage={setPage} isFeedPage={page === 'feed'} />
       )}
