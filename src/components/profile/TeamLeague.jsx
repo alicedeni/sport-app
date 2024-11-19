@@ -11,7 +11,7 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await axios.get(`${link}/user/${id}/team_members`);
+        const response = await axios.get(`${link}/user/team_members`);
         if (response.data.status === 200) {
           setTeamMembers(response.data.teamMembers);
         } else {
@@ -46,12 +46,12 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
                   // <li key={index} className="team-member-item">{member.name || member}</li>\
-                  <li key={index} className="team-member-item">
+                  <li key={index} className="team-members-item">
                   {member.surname} {member.name}
                   </li>
                 ))
               ) : (
-                <li className="team-member-item">Участников нет</li>
+                <li className="team-members-item">Участников нет</li>
               )}
             </ul>
           )}

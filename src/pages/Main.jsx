@@ -62,7 +62,7 @@ const Main = () => {
   }, [location.state]);
 
   const getPostData = (id) => {
-    return axios.get(`${link}/user/${id}/posts`, {})
+    return axios.get(`${link}/user/posts`, {})
     .then(response => {
       return response.data;
     })

@@ -27,7 +27,7 @@ const RatingsPage = () => {
   });
 
   const getUserData = () => {
-      return axios.get(`${link}/profile/${id}`, {})
+      return axios.get(`${link}/profile`, {})
           .then(response => {
               return response.data;
           })

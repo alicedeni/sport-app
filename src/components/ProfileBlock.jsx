@@ -45,7 +45,7 @@ const ProfileBlock = ({ user }) => {
 
   const [tempUser, setTempUser] = useState(user);
   const handleProgress = () => {
-    axios.get(`${link}/user/${id}/progress`)
+    axios.get(`${link}/user/progress`)
       .then(response => {
         if (response.data.status === 200) {
           setProgressData(response.data.progress);
@@ -63,7 +63,7 @@ const ProfileBlock = ({ user }) => {
   }, [user]);
 
   useEffect(() => {
-    axios.get(`${link}/user/${id}/activities/all`)
+    axios.get(`${link}/user/activities/all`)
       .then(response => {
         if (response.data.status === 200) {
           setActivities(response.data.activities);
@@ -75,7 +75,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Error loading activities:', error);
       });
     
-    axios.get(`${link}/user/${id}/progress`)
+    axios.get(`${link}/user/progress`)
       .then(response => {
         if (response.data.status === 200) {
           setProgressData(response.data.progress);
@@ -86,7 +86,7 @@ const ProfileBlock = ({ user }) => {
       .catch(error => {
         console.error('Error loading progress:', error);
       });
-  }, [id]);
+  }, []);
 
   const handleEditClickProfile = () => {
     setEditModeProfile(true);
@@ -123,7 +123,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/edit_person_data/${id}`, tempUser)
+    axios.post(`${link}/edit_person_data`, tempUser)
         .then(response => {
             if (response.data.status === 200) {
                 setTempUser(prevUser => ({
@@ -147,7 +147,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/user/${id}/set_goal`, tempUser)
+    axios.post(`${link}/user/set_goal`, tempUser)
         .then(response => {
             if (response.data.status === 200) {
                 setTempUser(prevUser => ({
@@ -171,7 +171,7 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/edit_fio_data/${id}`, tempUser)
+    axios.post(`${link}/edit_fio_data`, tempUser)
         .then(response => {
             if (response.data.status === 200) {
                 setTempUser(prevUser => ({
@@ -223,7 +223,7 @@ const ProfileBlock = ({ user }) => {
   };
 
   const handleDelete = () => {
-    axios.delete(`${link}/delete_account/${id}`)
+    axios.delete(`${link}/delete_account`)
       .then(response => {
         if (response.data.status === 200) {
           window.location.href = `main/${id}`;

@@ -60,7 +60,7 @@
       display: flex;
       margin-bottom: 10px;
       background: $white2;
-      height: 465px;
+      height: 505px;
       border-radius: 10px;
       &-svg{
         display: flex;
@@ -142,7 +142,7 @@
       font-size: 20px;
       overflow-wrap: break-word;
       word-wrap: break-word;
-      
+      line-height: 1.2;
     }
 
     &__metric {

@@ -16,11 +16,11 @@ const Activity = () => {
       try {
         let response;
         if (selectedSide === 'week') {
-          response = await axios.get(`${link}/user/${id}/activities/week`);
+          response = await axios.get(`${link}/user/activities/week`);
         } else if (selectedSide === 'month') {
-          response = await axios.get(`${link}/user/${id}/activities/month`);
+          response = await axios.get(`${link}/user/activities/month`);
         } else {
-          response = await axios.get(`${link}/user/${id}/activities/all`);
+          response = await axios.get(`${link}/user/activities/all`);
         }
         setActivities(response.data.activities);
       } catch (error) {

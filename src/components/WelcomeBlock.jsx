@@ -19,7 +19,7 @@ const WelcomeBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post(`${link}/user/${id}`, { email, password })
+      axios.post(`${link}/user`, { email, password })
         .then(response => {
           if (response.data.status === 200) {
             checkHelloStatus();
@@ -36,10 +36,10 @@ const WelcomeBlock = () => {
   };
 
   const checkHelloStatus = () => {
-    axios.get(`${link}/user/${id}/get_hello_status`)
+    axios.get(`${link}/user/get_hello_status`)
       .then(response => {
         if (response.data.f_hello === false) {
-          axios.post(`${link}/user/${id}/update_f_hello`)
+          axios.post(`${link}/user/update_f_hello`)
             .then(() => {
               window.location.href = '/about';
             })

@@ -19,7 +19,7 @@ const Header = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    axios.get(`${link}/main/${id}`)
+    axios.get(`${link}/main`)
       .then(response => {
         setUserName(response.data.name);
         setAvatar(response.data.avatar);
@@ -34,7 +34,7 @@ const Header = ({ currentPage }) => {
       .catch(error => {
         console.error(error);
       });
-  }, [id]);
+  }, []);
 
   const handlePageNotification = () => {
     setIsNotificationOpen(false);
@@ -54,7 +54,7 @@ const Header = ({ currentPage }) => {
       <hr style={{ width: "100%", color: "$white", backgroundColor: "$white", height: "1px" }} />
       <nav className="header-nav">
         <div className="header-nav-list">
-          <Link to={`/main/${id}`} className="header-nav-list-item">ЛЕНТА</Link>
+          <Link to={`/main/${id}`} className="header-nav-list-item" style={{backgroundColor: currentPage === 'feed' ? '#000' : '#B0B0B0' }}>ЛЕНТА</Link>
           <Link to={`/challenges/${id}`} className="header-nav-list-item">ЧЕЛЛЕНДЖИ</Link>
           <Link to={`/ratings/${id}`} className="header-nav-list-item">РЕЙТИНГИ</Link>
           <Link to={`/activity/${id}`} className="header-nav-list-item">АКТИВНОСТЬ</Link>  

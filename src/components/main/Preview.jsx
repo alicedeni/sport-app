@@ -20,7 +20,7 @@ const Preview = () => {
   const isMounted = useRef(true);
 
   const getUserData = () => {
-    return axios.get(`${link}/profile/${id}`, {})
+    return axios.get(`${link}/profile`, {})
         .then(response => {
             return response.data;
         })
@@ -53,7 +53,7 @@ const Preview = () => {
     if (!activityData.image) {
       activityData.image = `https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.png`;
     }*/
-    axios.post(`${link}/user/${id}/activities`, activityData)
+    axios.post(`${link}/user/activities`, activityData)
       .then(response => {
         if (response.data.status === 200) {
           console.log('Активность успешно опубликована');
@@ -93,15 +93,15 @@ const Preview = () => {
                 <div className="post__user-info">
                 <div className="post__svg-fire-container">
                     <div className="preview-post__username">{user.lastName} {user.firstName}</div>
-                    <svg width="21" height="27" viewBox="0 0 21 27" fill="none" xmlns="http://www.w3.org/2000/svg" className="post__svg-fire-container-svg">
-                    <path d="M0.75 16C0.75 24 8.25 27.6251 9 26.5C9.5 25.75 7.7124 25.7444 8.25 22.25C8.75 19 13 16 12.5 18.25C11.9166 20.8754 13.7067 20.6534 14 23C14.3277 25.6219 12.5632 25.6266 13 26.5C13.559 27.6181 21 24.5 21 16.75C21 10.5 19 9 18.25 9C17.5 9 18.65 10.25 17.25 12C16.65 12.75 15.7007 13.3521 15.5 12.75C15.25 12 17 11.25 15.75 6.75009C14.8573 3.5364 11 0.499976 10 0.750042C9 1.00011 9.75 2.55 9.75 3.75C9.75 5.75 8.62495 6.00011 7.5 8.25C5.75 11.75 8 13.6251 7.25 14C6.5 14.3749 5 12.5177 5 10.75C5 8.5 6.25 7.5 5.75 7C5.25 6.5 0.75 8.00004 0.75 16Z" fill="url(#paint0_linear_101_308)"/>
-                    <defs>
-                    <linearGradient id="paint0_linear_101_308" x1="0.75" y1="26.7205" x2="23.6352" y2="24.1442" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#9D9DE6"/>
-                    <stop offset="0.427083" stopColor="#567FE3"/>
-                    <stop offset="0.885417" stopColor="#9664C8"/>
-                    </linearGradient>
-                    </defs>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path fill-rule="evenodd" clip-rule="evenodd" d="M17.4006 27.6937C17.2411 28.0524 17.5086 28.4685 17.8968 28.411C22.6002 27.7139 25.5 23.5418 25.5 18.4992C25.5 15.9861 25.0965 12.13 22.3843 10.1754C22.2387 10.0705 22.0486 10.2362 22.1055 10.407C22.4411 11.4139 22.5 13.5 21.5 13.5C20.5 13.5 20.89 12.4781 20.6806 11.3092C20.5567 10.6172 20.4079 9.78662 20.0714 8.94027C19.2108 6.7753 17.5314 3.78656 12.6971 3.50027C12.5065 3.48898 12.3798 3.83213 12.4962 3.9845C13.9003 5.82401 14.5101 11.5 12.5 11.5C11.2779 11.5 11.4041 9.37078 12.1256 7.67401C12.1963 7.50762 12.0142 7.34151 11.8633 7.44003C6.92323 10.6652 6.5 15.9253 6.5 18.4992C6.5 23.5418 9.39983 27.7139 14.1032 28.411C14.4914 28.4685 14.7589 28.0524 14.5994 27.6937C14.1613 26.7084 13.7381 25.3583 13.7381 23.8689C13.7381 20.32 15.3235 18.7871 15.7965 18.044C15.8945 17.89 16.1055 17.89 16.2035 18.044C16.6765 18.7871 18.2619 20.32 18.2619 23.8689C18.2619 25.3583 17.8387 26.7084 17.4006 27.6937Z" fill="url(#paint0_linear_1096_2207)"/>
+                      <defs>
+                      <linearGradient id="paint0_linear_1096_2207" x1="6.5" y1="28.5" x2="27.9857" y2="26.1412" gradientUnits="userSpaceOnUse">
+                      <stop stop-color="#9D9DE6"/>
+                      <stop offset="0.427083" stop-color="#567FE3"/>
+                      <stop offset="0.885417" stop-color="#9664C8"/>
+                      </linearGradient>
+                      </defs>
                     </svg>
                     <div className="post__fire-count">{user.fireCount}</div>
                 </div>

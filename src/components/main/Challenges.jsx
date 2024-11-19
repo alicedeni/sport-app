@@ -27,9 +27,9 @@ const Challenges = () => {
       try {
         let response;
         if (selectedSide === 'current') {
-          response = await axios.get(`${link}/user/${id}/current-challenges`);
+          response = await axios.get(`${link}/user/current-challenges`);
         } else {
-          response = await axios.get(`${link}/user/${id}/completed-challenges`);
+          response = await axios.get(`${link}/user/completed-challenges`);
         }
         if (isMounted) {
           const data = response.data;

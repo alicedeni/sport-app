@@ -59,7 +59,7 @@ const ActivityMake = () => {
       setOtherActivityTag(activityData.other);
     }
 
-    axios.get(`${link}/user/${id}/list_of_activities`)
+    axios.get(`${link}/user/list_of_activities`)
       .then(response => {
         if (response.data.status === 200) {
           setActivityTypes(response.data.activities);
