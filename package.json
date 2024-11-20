@@ -1,8 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.24",
-  "description": "images & comments & ",
-  "main": "index.js",
+  "version": "1.0.25",
+  "description": "auth check",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
