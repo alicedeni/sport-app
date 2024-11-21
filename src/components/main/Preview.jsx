@@ -11,7 +11,6 @@ ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
 
 const Preview = () => {
-  const { id } = useParams();
   const { state } = useLocation();
   const { activityData } = state;
   const navigate = useNavigate();
@@ -20,7 +19,10 @@ const Preview = () => {
   const isMounted = useRef(true);
 
   const getUserData = () => {
-    return axios.get(`${link}/profile`, {})
+    const token = localStorage.getItem('token');
+    return axios.get(`${link}/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
         .then(response => {
             return response.data;
         })
@@ -53,11 +55,14 @@ const Preview = () => {
     if (!activityData.image) {
       activityData.image = `https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.png`;
     }*/
-    axios.post(`${link}/user/activities`, activityData)
+    const token = localStorage.getItem('token');
+    axios.post(`${link}/user/activities`, activityData, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         if (response.data.status === 200) {
           console.log('Активность успешно опубликована');
-          window.location.href = `/main/${id}`;
+          window.location.href = `/main`;
         } else {
           console.error('Ошибка при публикации активности:', response.data.error);
         }
@@ -69,7 +74,7 @@ const Preview = () => {
 
     const handleBack = () => {
       if (activityData) {
-        navigate(`/activity_make/${id}`, { state: { page: 'activity', activityData } });
+        navigate(`/activity_make`, { state: { page: 'activity', activityData } });
       } else {
         console.error('Данные активности отсутствуют');
       }

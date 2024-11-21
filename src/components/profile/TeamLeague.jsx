@@ -6,12 +6,14 @@ import { useParams } from 'react-router-dom';
 const TeamAndLeague = ({ tempUser, leagueColor }) => {
   const [teamMembers, setTeamMembers] = useState([]);
   const [isMembersVisible, setIsMembersVisible] = useState(false);
-  const { id } = useParams();
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const response = await axios.get(`${link}/user/team_members`);
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${link}/user/team_members`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         if (response.data.status === 200) {
           setTeamMembers(response.data.teamMembers);
         } else {

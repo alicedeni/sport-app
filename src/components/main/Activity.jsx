@@ -6,7 +6,6 @@ import axios from 'axios';
 import {link} from '../../consts.js';
 
 const Activity = () => {
-  const { id } = useParams();
   const [selectedSide, setSelectedSide] = useState('week');
   const [activities, setActivities] = useState([]);
   const navigate = useNavigate();
@@ -15,12 +14,19 @@ const Activity = () => {
     const fetchActivities = async () => {
       try {
         let response;
+        const token = localStorage.getItem('token');
         if (selectedSide === 'week') {
-          response = await axios.get(`${link}/user/activities/week`);
+          response = await axios.get(`${link}/user/activities/week`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
         } else if (selectedSide === 'month') {
-          response = await axios.get(`${link}/user/activities/month`);
+          response = await axios.get(`${link}/user/activities/month`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
         } else {
-          response = await axios.get(`${link}/user/activities/all`);
+          response = await axios.get(`${link}/user/activities/all`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
         }
         setActivities(response.data.activities);
       } catch (error) {
@@ -35,7 +41,7 @@ const Activity = () => {
   };
 
   const handleFormChange = () => {
-    navigate(`/activity_make/${id}`, { state: { page: "activity" } });
+    navigate(`/activity_make`, { state: { page: "activity" } });
   };
 
   const parseTimeToMinutes = (timeStr) => {

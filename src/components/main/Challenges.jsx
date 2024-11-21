@@ -5,7 +5,6 @@ import axios from 'axios';
 import {link} from '../../consts.js';
 
 const Challenges = () => {
-  const { id } = useParams();
   const [selectedSide, setSelectedSide] = useState('current');
   const [currentChallenges, setCurrentChallenges] = useState([/*
     { id: 1, name: 'Пробежать 10 км', progress: 75, points: 100 },
@@ -26,10 +25,15 @@ const Challenges = () => {
     const fetchData = async () => {
       try {
         let response;
+        const token = localStorage.getItem('token');
         if (selectedSide === 'current') {
-          response = await axios.get(`${link}/user/current-challenges`);
+          response = await axios.get(`${link}/user/current-challenges`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
         } else {
-          response = await axios.get(`${link}/user/completed-challenges`);
+          response = await axios.get(`${link}/user/completed-challenges`, {
+            headers: {Authorization: `Bearer ${token}` }
+          });
         }
         if (isMounted) {
           const data = response.data;

@@ -6,7 +6,6 @@ import { ButtonEnter, ButtonReg } from "./Buttons";
 import { link } from '../consts.js';
 
 const WelcomeBlock = () => {
-  const { id } = useParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,8 +18,13 @@ const WelcomeBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      axios.post(`${link}/login`, { email, password })
+      console.log({ email, password });
+      const token = localStorage.getItem('token');
+      axios.post(`${link}/login`, { email, password }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(response => {
+          console.log(response.data);
           if (response.data.status === 200) {
             console.log(response.data.token);
             localStorage.setItem('token', response.data.token);
@@ -52,7 +56,7 @@ const WelcomeBlock = () => {
     })
       .then(response => {
         if (response.data.f_hello === false) {
-          axios.post(`${link}/user/update_f_hello`, {}, {
+          axios.post(`${link}/user/update_f_hello`, {
             headers: { Authorization: `Bearer ${token}` }
           })
             .then(() => {
@@ -63,7 +67,7 @@ const WelcomeBlock = () => {
               setError("Произошла ошибка при обновлении статуса.");
             });
         } else {
-          window.location.href = `/main/${id}`;
+          window.location.href = `/main`;
         }
       })
       .catch(error => {

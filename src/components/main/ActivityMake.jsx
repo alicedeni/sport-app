@@ -8,7 +8,6 @@ import axios from 'axios';
 import {link} from '../../consts.js';
 
 const ActivityMake = () => {
-  const { id } = useParams();
   const location = useLocation();
   const { activityData } = location.state || {};
   const [activityTypes, setActivityTypes] = useState([]); 
@@ -58,8 +57,10 @@ const ActivityMake = () => {
       setActivityDescription(activityData.description);
       setOtherActivityTag(activityData.other);
     }
-
-    axios.get(`${link}/user/list_of_activities`)
+    const token = localStorage.getItem('token');
+    axios.get(`${link}/user/list_of_activities`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         if (response.data.status === 200) {
           setActivityTypes(response.data.activities);
@@ -73,7 +74,7 @@ const ActivityMake = () => {
   }, [activityData]);
 
   const handleFormChange = () => {
-    navigate(`/activity/${id}`, { state: { page: "activity" } });
+    navigate(`/activity`, { state: { page: "activity" } });
   };
 
   const handleActivityStartTimeChange = (time) => {
@@ -94,7 +95,10 @@ const ActivityMake = () => {
 
   const getImgKeys = async () => {
     try {
-      const response = await axios.get(`${link}/img_keys`);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${link}/img_keys`, {
+        headers : { Authorization: `Bearer ${token}` }
+      });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -116,8 +120,8 @@ const ActivityMake = () => {
 
   const uploadFile = async (file) => {
     const presignedFields = await getImgKeys();
-
-    const userId = id;
+    const token = localStorage.getItem('token');
+    const userId = token;
     const timestamp = Date.now(); 
     const fileExtension = file.name.split('.').pop();
     const fileName = `${userId}_${timestamp}.${fileExtension}`;
@@ -238,7 +242,7 @@ const ActivityMake = () => {
       other: otherActivityTag,
     };
 
-    navigate(`/preview/${id}`, { state: { activityData, page: "view" } });
+    navigate(`/preview`, { state: { activityData, page: "view" } });
   };
 
   return (

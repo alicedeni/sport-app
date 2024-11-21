@@ -19,7 +19,10 @@ const AccountSection = ({
 
   const getImgKeys = async () => {
     try {
-      const response = await axios.get(`${link}/img_keys`);
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`${link}/img_keys`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       return response.data;
     } catch (error) {
       console.error(error);
@@ -38,8 +41,8 @@ const AccountSection = ({
 
   const uploadFile = async (file) => {
     const presignedFields = await getImgKeys();
-
-    const userId = tempUser.id;
+    const token = localStorage.getItem('token');
+    const userId = token;
     const timestamp = Date.now(); 
     const fileExtension = file.name.split('.').pop();
     const fileName = `${userId}_${timestamp}.${fileExtension}`; 

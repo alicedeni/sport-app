@@ -18,7 +18,6 @@ ReactDOM.findDOMNode = () => {};
 ReactDOM.createPortal = () => {};
 
 const Post = ({ post }) => {
-  const { id } = useParams();
   const [isCommentOpen, setIsCommentOpen] = React.useState(false);
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likeCount, setLikeCount] = useState(post.likeCount);
@@ -32,9 +31,11 @@ const Post = ({ post }) => {
     const likeData = {
       post_id: post.feed_id,
     };
-    
+    const token = localStorage.getItem('token');
     if (isLiked) {
-      axios.post(`${link}/user/unlike`, likeData)
+      axios.post(`${link}/user/unlike`, likeData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(response => {
           if (response.data.status === 200) {
             setIsLiked(false);
@@ -48,7 +49,9 @@ const Post = ({ post }) => {
         });
     } else {
       // лайк
-      axios.post(`${link}/user/like`, likeData)
+      axios.post(`${link}/user/like`, likeData, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(response => {
           if (response.data.status === 200) {
             setIsLiked(true);
@@ -70,7 +73,10 @@ const Post = ({ post }) => {
   
   const handleCommentClick = () => {
     if (!isCommentOpen) {
-      axios.get(`${link}/get_comments/${post.feed_id}`)
+      const token = localStorage.getItem('token');
+      axios.get(`${link}/get_comments/${post.feed_id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(response => {
           if (response.data.status === 200) {
             console.log(response.data.comments);
@@ -96,8 +102,10 @@ const Post = ({ post }) => {
       post_id: post.feed_id,
       comment_text: commentText,
     };
-    
-    axios.post(`${link}/user/comment`, commentData)
+    const token = localStorage.getItem('token');
+    axios.post(`${link}/user/comment`, commentData, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         if (response.data.status === 200) {
           const currentDate = new Date();

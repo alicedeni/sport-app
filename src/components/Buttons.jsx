@@ -42,11 +42,10 @@ export function ButtonToEnter({src, onClick, textContent}){
 
 export function ButtonProfile({ onClick, textContent }) {
   const navigate = useNavigate();
-  const { id } = useParams();
   
   const handleClick = () => {
     if (onClick) onClick(); 
-    navigate(`/profile/${id}`); 
+    navigate(`/profile`); 
   };
 
   return (
@@ -68,12 +67,11 @@ export function ButtonActivity({src, onClick, textContent}){
 
 export function CButtonProfile({ children, points, onClick }) {
   const navigate = useNavigate();
-  const { id } = useParams();
 
   const handleClick = (e) => {
     if (onClick) onClick(); 
     e.preventDefault(); 
-    navigate(`/profile/${id}`);
+    navigate(`/profile`);
   };
 
   return (

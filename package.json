@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.25",
-  "description": "auth check",
+  "version": "1.0.26",
+  "description": "token roots",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -8,7 +8,6 @@ import axios from 'axios';
 import { link } from '../consts.js';
 
 const RatingsPage = () => {
-  const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [user, setUser] = useState({
     id: 1,
@@ -27,14 +26,17 @@ const RatingsPage = () => {
   });
 
   const getUserData = () => {
-      return axios.get(`${link}/profile`, {})
-          .then(response => {
-              return response.data;
-          })
-          .catch(error => {
-              console.error(error);
-              throw error;
-          });
+    const token = localStorage.getItem('token');
+    return axios.get(`${link}/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+          return response.data;
+      })
+      .catch(error => {
+          console.error(error);
+          throw error;
+      });
   };
 
   useEffect(() => {

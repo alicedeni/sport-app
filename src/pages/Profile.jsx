@@ -7,7 +7,6 @@ import MobileHeader from '../components/main/MobileHeader';
 import { link } from '../consts.js';
 
 const Profile = () => {
-  const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [page, setPage] = useState('feed');
   const [user, setUser] = useState({/*
@@ -27,14 +26,17 @@ const Profile = () => {
 */});
  
   const getUserData = () => {
-      return axios.get(`${link}/profile`, {})
-          .then(response => {
-              return response.data;
-          })
-          .catch(error => {
-              console.error(error);
-              throw error;
-          });
+    const token = localStorage.getItem('token');
+    return axios.get(`${link}/profile`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+      .then(response => {
+          return response.data;
+      })
+      .catch(error => {
+          console.error(error);
+          throw error;
+      });
   };
 
   useEffect(() => {

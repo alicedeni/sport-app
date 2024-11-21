@@ -8,7 +8,6 @@ import axios from 'axios';
 import { link } from '../consts.js';
 
 const ChallengesPage = () => {
-  const { id } = useParams();
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [user, setUser] = useState({
     id: 1,
@@ -27,7 +26,8 @@ const ChallengesPage = () => {
   });
 
   const getUserData = () => {
-      return axios.get(`${link}/profile`, {})
+    const token = localStorage.getItem('token');
+    return axios.get(`${link}/user`, {headers: { Authorization: `Bearer ${token}`}})
           .then(response => {
               return response.data;
           })

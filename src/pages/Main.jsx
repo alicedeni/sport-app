@@ -12,7 +12,6 @@ import axios from 'axios';
 import { link } from '../consts.js';
 
 const Main = () => {
-  const { id } = useParams();
   const [page, setPage] = useState('feed');
   const [posts, setPosts] = useState([/*
     { 
@@ -61,8 +60,11 @@ const Main = () => {
     }
   }, [location.state]);
 
-  const getPostData = (id) => {
-    return axios.get(`${link}/user/posts`, {})
+  const getPostData = () => {
+    const token = localStorage.getItem('token');
+    return axios.get(`${link}/user/posts`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     .then(response => {
       return response.data;
     })
@@ -73,7 +75,7 @@ const Main = () => {
   };
 
   useEffect(() => {
-    getPostData(id)
+    getPostData()
       .then(data => {
         if (data && data.posts) {
           setPosts(data.posts);

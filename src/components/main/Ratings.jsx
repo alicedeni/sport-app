@@ -31,8 +31,11 @@ const Ratings = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem('token');
         if (selectedSide === 'left') {
-          const response = await axios.get(`${link}/participants-rating`);
+          const response = await axios.get(`${link}/participants-rating`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
           if (Array.isArray(response.data.leaderboard)) {
             setParticipants(response.data.leaderboard);
           } else {
@@ -40,7 +43,9 @@ const Ratings = () => {
             setParticipants([]);
           }
         } else {
-          const response = await axios.get(`${link}/teams-rating`);
+          const response = await axios.get(`${link}/teams-rating`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
           if (Array.isArray(response.data.leaderboard)) {
             setTeams(response.data.leaderboard);
           } else {

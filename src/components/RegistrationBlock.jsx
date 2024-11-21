@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import { link } from '../consts.js';
 
 const RegistrationBlock = () => {
-  const { id } = useParams();
   const [formState, setFormState] = useState("registration");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,8 +23,10 @@ const RegistrationBlock = () => {
       setError("Пожалуйста, введите корректный email.");
     } else {
       setError("");
-      
-      axios.post(`${link}/register`, { name, surname, patronymic, email, password })
+      const token = localStorage.getItem('token');
+      axios.post(`${link}/register`, { name, surname, patronymic, email, password }, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(response => {
           if (response.data.status === 200) {
             window.location.href = '/';

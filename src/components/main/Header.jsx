@@ -6,7 +6,6 @@ import axios from 'axios';
 import { link } from '../../consts.js';
 
 const Header = ({ currentPage }) => {
-  const { id } = useParams();
   const [isNotificationOpen, setIsNotificationOpen] = useState(true);
   const [userName, setUserName] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -19,7 +18,10 @@ const Header = ({ currentPage }) => {
   });
 
   useEffect(() => {
-    axios.get(`${link}/main`)
+    const token = localStorage.getItem('token');
+    axios.get(`${link}/main`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         setUserName(response.data.name);
         setAvatar(response.data.avatar);
@@ -54,10 +56,10 @@ const Header = ({ currentPage }) => {
       <hr style={{ width: "100%", color: "$white", backgroundColor: "$white", height: "1px" }} />
       <nav className="header-nav">
         <div className="header-nav-list">
-          <Link to={`/main/${id}`} className="header-nav-list-item">ЛЕНТА</Link>
-          <Link to={`/challenges/${id}`} className="header-nav-list-item">ЧЕЛЛЕНДЖИ</Link>
-          <Link to={`/ratings/${id}`} className="header-nav-list-item">РЕЙТИНГИ</Link>
-          <Link to={`/activity/${id}`} className="header-nav-list-item">АКТИВНОСТЬ</Link>  
+          <Link to={`/main`} className="header-nav-list-item">ЛЕНТА</Link>
+          <Link to={`/challenges`} className="header-nav-list-item">ЧЕЛЛЕНДЖИ</Link>
+          <Link to={`/ratings`} className="header-nav-list-item">РЕЙТИНГИ</Link>
+          <Link to={`/activity`} className="header-nav-list-item">АКТИВНОСТЬ</Link>  
         </div>
       </nav>
 

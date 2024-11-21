@@ -8,7 +8,6 @@ import axios from 'axios';
 import { link } from '../consts.js';
 
 const Feed = () => {
-  const { id } = useParams();
   const [posts, setPosts] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [user, setUser] = useState({
@@ -27,8 +26,11 @@ const Feed = () => {
     avatar: "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg",
   });
   
-  const getPostData = (id) => {
-    return axios.get(`${link}/user/posts`, {})
+  const getPostData = () => {
+    const token = localStorage.getItem('token');
+    return axios.get(`${link}/user/posts`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     .then(response => {
       return response.data;
     })
@@ -39,7 +41,7 @@ const Feed = () => {
   };
 
   useEffect(() => {
-    getPostData(id)
+    getPostData()
       .then(data => {
         if (data && data.posts) {
           setPosts(data.posts);
@@ -49,8 +51,10 @@ const Feed = () => {
   }, []);
 
   const getUserData = () => {
-      return axios.get(`${link}/profile`, {})
+      const token = localStorage.getItem('token');
+      return axios.get(`${link}/user`, {headers: { Authorization: `Bearer ${token}`}})
           .then(response => {
+            console.log(responce.data);
               return response.data;
           })
           .catch(error => {

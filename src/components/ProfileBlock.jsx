@@ -9,7 +9,6 @@ import axios from 'axios';
 import { link } from '../consts.js';
 
 const ProfileBlock = ({ user }) => {
-  const { id } = useParams();
   const [editMode, setEditMode] = useState(false);
   const [editModeProfile, setEditModeProfile] = useState(false);
   const [editModeProgress, setEditModeProgress] = useState(false);
@@ -45,7 +44,10 @@ const ProfileBlock = ({ user }) => {
 
   const [tempUser, setTempUser] = useState(user);
   const handleProgress = () => {
-    axios.get(`${link}/user/progress`)
+    const token = localStorage.getItem('token');
+    axios.get(`${link}/user/progress`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         if (response.data.status === 200) {
           setProgressData(response.data.progress);
@@ -63,7 +65,10 @@ const ProfileBlock = ({ user }) => {
   }, [user]);
 
   useEffect(() => {
-    axios.get(`${link}/user/activities/all`)
+    const token = localStorage.getItem('token');
+    axios.get(`${link}/user/activities/all`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         if (response.data.status === 200) {
           setActivities(response.data.activities);
@@ -75,7 +80,9 @@ const ProfileBlock = ({ user }) => {
         console.error('Error loading activities:', error);
       });
     
-    axios.get(`${link}/user/progress`)
+    axios.get(`${link}/user/progress`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
       .then(response => {
         if (response.data.status === 200) {
           setProgressData(response.data.progress);
@@ -123,23 +130,26 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/edit_person_data`, tempUser)
-        .then(response => {
-            if (response.data.status === 200) {
-                setTempUser(prevUser => ({
-                  ...prevUser,
-                  ...tempUser
-                }));
-                setEditModeProfile(false);
-                handleProgress();
-                console.log('1');
-            } else {
-                console.error('Ошибка при отправке данных на сервер:', response.data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка при отправке данных на сервер:', error);
-        });
+    const token = localStorage.getItem('token');
+    axios.post(`${link}/edit_person_data`, tempUser, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+        if (response.data.status === 200) {
+            setTempUser(prevUser => ({
+              ...prevUser,
+              ...tempUser
+            }));
+            setEditModeProfile(false);
+            handleProgress();
+            console.log('1');
+        } else {
+            console.error('Ошибка при отправке данных на сервер:', response.data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при отправке данных на сервер:', error);
+    });
   };
 
   const handleSaveGoal = () => {
@@ -147,23 +157,26 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/user/set_goal`, tempUser)
-        .then(response => {
-            if (response.data.status === 200) {
-                setTempUser(prevUser => ({
-                  ...prevUser,
-                  ...tempUser
-                }));
-                setEditModeProgress(false);
-                handleProgress();
-                console.log('2');
-            } else {
-                console.error('Ошибка при отправке данных на сервер:', response.data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка при отправке данных на сервер:', error);
-        });
+    const token = localStorage.getItem('token');
+    axios.post(`${link}/user/set_goal`, tempUser, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+        if (response.data.status === 200) {
+            setTempUser(prevUser => ({
+              ...prevUser,
+              ...tempUser
+            }));
+            setEditModeProgress(false);
+            handleProgress();
+            console.log('2');
+        } else {
+            console.error('Ошибка при отправке данных на сервер:', response.data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при отправке данных на сервер:', error);
+    });
   };
 
   const handleSaveInfo = () => {
@@ -171,22 +184,25 @@ const ProfileBlock = ({ user }) => {
         console.error('Данные пользователя отсутствуют');
         return;
     }
-    axios.post(`${link}/edit_fio_data`, tempUser)
-        .then(response => {
-            if (response.data.status === 200) {
-                setTempUser(prevUser => ({
-                  ...prevUser,
-                  ...tempUser
-                }));
-                setEditModeProgress(false);
-                console.log('3');
-            } else {
-                console.error('Ошибка при отправке данных на сервер:', response.data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Ошибка при отправке данных на сервер:', error);
-        });
+    const token = localStorage.getItem('token');
+    axios.post(`${link}/edit_fio_data`, tempUser, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+        if (response.data.status === 200) {
+            setTempUser(prevUser => ({
+              ...prevUser,
+              ...tempUser
+            }));
+            setEditModeProgress(false);
+            console.log('3');
+        } else {
+            console.error('Ошибка при отправке данных на сервер:', response.data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка при отправке данных на сервер:', error);
+    });
   };
 
 
@@ -208,10 +224,13 @@ const ProfileBlock = ({ user }) => {
     handleSaveInfo();
   };
   const handleExit = () => {
-    axios.post(`${link}/logout`)
+    const token = localStorage.getItem('token');
+    axios.post(`${link}/logout`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
     .then(response => {
       if (response.data.status === 200) {
-        window.location.href = `main/${id}`;
+        window.location.href = `main`;
         console.log('Выход из аккаунта выполнен успешно');
       } else {
         console.error('Ошибка при выходе из аккаунта:', response.data.error);
@@ -226,7 +245,7 @@ const ProfileBlock = ({ user }) => {
     axios.delete(`${link}/delete_account`)
       .then(response => {
         if (response.data.status === 200) {
-          window.location.href = `main/${id}`;
+          window.location.href = `main`;
           console.log('Аккаунт успешно удален');
         } else {
           console.error('Ошибка при удалении аккаунта:', response.data.error);
