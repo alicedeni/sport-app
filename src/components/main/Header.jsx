@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Notification from './Notification';
 import { CButtonProfile } from "../Buttons";
 import axios from 'axios';

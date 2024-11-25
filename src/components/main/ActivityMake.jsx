@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
-import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import photoPost from '../../assets/icons/photoPost.svg';
 import photoVerification from '../../assets/icons/photoVerification.svg';
 import axios from 'axios';
@@ -19,6 +19,7 @@ const ActivityMake = () => {
   const [activityStep, setActivityStep] = useState(""); 
   const [activityStartTime, setActivityStartTime] = useState("");
   const [activityEndTime, setActivityEndTime] = useState("");
+  const [activityDuration, setActivityDuration] = useState("");
   const [activityDistance, setActivityDistance] = useState("");
   const [activityCalories, setActivityCalories] = useState("");
   const [activityVerification, setActivityVerification] = useState(null);
@@ -81,13 +82,18 @@ const ActivityMake = () => {
     setActivityStartTime(time);
   };
 
-  const handleActivityEndTimeChange = (time) => {
-    setActivityEndTime(time);
+  const handleActivityDurationChange = (time) => {
+    setActivityDuration(time);
   };
 
   const handleActivityStepChange = (step) => {
     setActivityStep(step);
   };
+
+  const handleActivityDistanceChange = (step) => {
+    setActivityDistance(step);
+  };
+
 
   const handleActivityCaloriesChange = (calories) => {
     setActivityCalories(calories);
@@ -180,7 +186,7 @@ const ActivityMake = () => {
   const handleSaveActivity = (event) => {
     event.preventDefault();
 
-    if (!activityTag || !activityStartDate || !activityStartTime || !activityEndDate || !activityEndTime) {
+    if (!activityTag || !activityStartDate || !activityStartTime || !activityDuration) {
         alert("Пожалуйста, заполните все обязательные поля: тип активности, дата и время начала/окончания.");
         return;
     }
@@ -195,45 +201,16 @@ const ActivityMake = () => {
       return;
     }
 
-    if (endDateTime > now) {
-        alert("Дата и время окончания не могут быть в будущем.");
-        return;
-    }
-
-    if (endDateTime < startDateTime) {
-        alert("Дата и время окончания не могут быть раньше даты и времени начала.");
-        return;
-    }
-
-    if (endDateTime.toISOString().slice(0, -5) === startDateTime.toISOString().slice(0, -5) && endDateTime <= startDateTime) {
-        alert("Время окончания не может быть раньше или равно времени начала в один день.");
-        return;
-    }
-    
-
-    function calculateTimeDifference(startDateTime, endDateTime) {
-        const differenceInMilliseconds = endDateTime - startDateTime;
-        
-        if (differenceInMilliseconds < 0) return "0:00";
-
-        const totalMinutes = Math.floor(differenceInMilliseconds / (1000 * 60));
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-
-        return `${hours}:${minutes < 10 ? '0' : ''}${minutes}`; 
-    }
-
-    const time = calculateTimeDifference(startDateTime, endDateTime);
-
     const activityData = {
       type: activityTag,
       tag: finalTag,
-      time: time,
+      time: activityDuration,
       startDate: activityStartDate,
       endDate: activityEndDate,
       step: activityStep,
       startTime: activityStartTime,
       endTime: activityEndTime,
+      duration: activityDuration,
       distance: activityDistance,
       calories: activityCalories,
       verification: activityVerification,
@@ -309,50 +286,40 @@ const ActivityMake = () => {
                         />
                     </div>
                     <div className="activity-input-content-item">
-                        <label className="activity-input-content-item-name">Дата окончания</label>
-                        <input
-                        className="activity-input-content-item-field"
-                        type="date"
-                        value={activityEndDate}
-                        onChange={(e) => setActivityEndDate(e.target.value)}
-                        />
-                    </div>
-                    <div className="activity-input-content-item">
-                        <label className="activity-input-content-item-name">Время окончания</label>
+                        <label className="activity-input-content-item-name">Длительность</label>
                         <input
                         className="activity-input-content-item-field"
                         type="time"
-                        value={activityEndTime}
-                        onChange={(e) => handleActivityEndTimeChange(e.target.value)}
+                        value={activityDuration}
+                        onChange={(e) => handleActivityDurationChange(e.target.value)}
                         />
                     </div>
-                </div>
-                <div className="activity-input-content" style={{marginLeft: '0px'}}>
-                  {['run', 'walk'].includes(activityTag) && (
-                    <div className="activity-input-content-item">
-                    <label className="activity-input-content-item-name">Шаги</label>
-                    <input
-                        className="activity-input-content-item-field"
-                        type="number"
-                        value={activityStep}
-                        onChange={(e) => handleActivityStepChange(e.target.value)}
-                        onKeyPress={handleKeyPress}
-                        min="1"
-                    />
-                    </div>
-                  )}
-                  <div className="activity-input-content-item">
-                      <label className="activity-input-content-item-name">Калории</label>
+                    {['run', 'walk'].includes(activityTag) && (
+                      <div className="activity-input-content-item">
+                      <label className="activity-input-content-item-name">Шаги</label>
                       <input
-                      className="activity-input-content-item-field"
-                      type="number"
-                      value={activityCalories}
-                      onChange={(e) => handleActivityCaloriesChange(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      min="1"
+                          className="activity-input-content-item-field"
+                          type="number"
+                          value={activityStep}
+                          onChange={(e) => handleActivityStepChange(e.target.value)}
+                          onKeyPress={handleKeyPress}
+                          min="1"
                       />
-                      <label className="calories-label">ккал</label>
-                  </div>
+                      </div>
+                    )}
+                    {['pool', 'bike', 'run', 'walk'].includes(activityTag) && (
+                      <div className="activity-input-content-item">
+                      <label className="activity-input-content-item-name">Дистанция</label>
+                      <input
+                          className="activity-input-content-item-field"
+                          type="number"
+                          value={activityDistance}
+                          onChange={(e) => handleActivityDistanceChange(e.target.value)}
+                          onKeyPress={handleKeyPress}
+                          min="1"
+                      />
+                      </div>
+                    )}
                 </div>
               </div>
             </div>

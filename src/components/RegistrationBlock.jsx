@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { ButtonEnter, ButtonToEnter, ButtonNext } from "./Buttons";
-import { useParams } from 'react-router-dom';
 
 import { link } from '../consts.js';
 

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { link } from '../../consts.js';
-import { useParams } from 'react-router-dom';
 
 const TeamAndLeague = ({ tempUser, leagueColor }) => {
   const [teamMembers, setTeamMembers] = useState([]);

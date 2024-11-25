@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useMediaQuery } from '@mui/material'; 
 import Header from '../components/main/Header';
 import MobileHeader from '../components/main/MobileHeader';
 import Activity from '../components/main/Activity';

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonActivity, ButtonEnter } from "../Buttons";
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import {link} from '../../consts.js';

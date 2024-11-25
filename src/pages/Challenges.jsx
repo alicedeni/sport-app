@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import Header from '../components/main/Header';
 import MobileHeader from '../components/main/MobileHeader';
 import Challenges from '../components/main/Challenges';

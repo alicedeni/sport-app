@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import Header from '../components/main/Header';
 import MobileHeader from '../components/main/MobileHeader';
 import Posts from '../components/main/Posts';
@@ -54,7 +53,6 @@ const Feed = () => {
       const token = localStorage.getItem('token');
       return axios.get(`${link}/user`, {headers: { Authorization: `Bearer ${token}`}})
           .then(response => {
-            console.log(responce.data);
               return response.data;
           })
           .catch(error => {

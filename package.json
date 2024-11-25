@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.26",
-  "description": "token roots",
+  "version": "1.0.27",
+  "description": "post comment fix & activity metrics",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import ProfileBlock from '../components/ProfileBlock';
 import axios from 'axios';
 import Header from '../components/main/Header';
