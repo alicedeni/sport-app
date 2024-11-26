@@ -47,11 +47,10 @@ const ActivityMake = () => {
       setActivityType(activityData.tag);
       setActivityTag(activityData.type);
       setActivityStartDate(activityData.startDate);
-      setActivityEndDate(activityData.endDate); 
       setActivityStep(activityData.step);
       setActivityStartTime(activityData.startTime);
-      setActivityEndTime(activityData.endTime);
       setActivityDistance(activityData.distance);
+      setActivityDuration(activityData.duration);
       setActivityCalories(activityData.calories);
       setActivityVerification(activityData.verification);
       setActivityImage(activityData.image);
@@ -92,11 +91,6 @@ const ActivityMake = () => {
 
   const handleActivityDistanceChange = (step) => {
     setActivityDistance(step);
-  };
-
-
-  const handleActivityCaloriesChange = (calories) => {
-    setActivityCalories(calories);
   };
 
   const getImgKeys = async () => {
@@ -318,6 +312,7 @@ const ActivityMake = () => {
                           onKeyPress={handleKeyPress}
                           min="1"
                       />
+                      <label className="calories-label">{activityTag === 'pool' ? 'м' : 'км'}</label>
                       </div>
                     )}
                 </div>
