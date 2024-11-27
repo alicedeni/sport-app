@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import ProfileBlock from '../components/ProfileBlock';
-import axios from 'axios';
-import Header from '../components/main/Header';
-import MobileHeader from '../components/main/MobileHeader';
-import { link } from '../consts.js';
+import React, { useState, useEffect } from 'react'
+import ProfileBlock from '../components/ProfileBlock'
+import axios from 'axios'
+import Header from '../components/main/Header'
+import MobileHeader from '../components/main/MobileHeader'
+import { link } from '../consts.js'
 
 const Profile = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [page, setPage] = useState('feed');
-  const [user, setUser] = useState({/*
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [page, setPage] = useState('feed')
+  const [user, setUser] = useState({
+    /*
       id: 1,
       last_name: "Иванов",
       first_name: "Иван",
@@ -22,51 +23,51 @@ const Profile = () => {
       league: "gold",
       place_league: 6,
       avatar: "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg",
-*/});
- 
+*/
+  })
+
   const getUserData = () => {
-    const token = localStorage.getItem('token');
-    return axios.get(`${link}/profile`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
-          return response.data;
+    const token = localStorage.getItem('token')
+    return axios
+      .get(`${link}/profile`, {
+        headers: { Authorization: `Bearer ${token}` },
       })
-      .catch(error => {
-          console.error(error);
-          throw error;
-      });
-  };
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        console.error(error)
+        throw error
+      })
+  }
 
   useEffect(() => {
     getUserData()
-      .then(data => {
+      .then((data) => {
         if (data && data.profile) {
-          setUser(data.profile);
+          setUser(data.profile)
         }
       })
-      .catch(error => console.error(error));
-  }, []);
+      .catch((error) => console.error(error))
+  }, [])
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+      setIsMobile(window.innerWidth <= 768)
+    }
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   return (
     <div className="container">
-      {isMobile ? (
-        <MobileHeader  />
-      ) : (
-        <Header setPage={setPage} isFeedPage={false} />
-      )}
-      <div className="main" style={{marginTop: '100px'}}><ProfileBlock user={user} setUser={setUser}/></div>
+      {isMobile ? <MobileHeader /> : <Header setPage={setPage} isFeedPage={false} />}
+      <div className="main" style={{ marginTop: '100px' }}>
+        <ProfileBlock user={user} setUser={setUser} />
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Profile;
+export default Profile

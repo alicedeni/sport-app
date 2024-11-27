@@ -1,41 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { link } from '../../consts.js';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { link } from '../../consts.js'
 
 const TeamAndLeague = ({ tempUser, leagueColor }) => {
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [isMembersVisible, setIsMembersVisible] = useState(false);
+  const [teamMembers, setTeamMembers] = useState([])
+  const [isMembersVisible, setIsMembersVisible] = useState(false)
 
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
         const response = await axios.get(`${link}/user/team_members`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
+          headers: { Authorization: `Bearer ${token}` },
+        })
         if (response.data.status === 200) {
-          setTeamMembers(response.data.teamMembers);
+          setTeamMembers(response.data.teamMembers)
         } else {
-          console.error('Ошибка при загрузке участников команды:', response.data.message);
+          console.error('Ошибка при загрузке участников команды:', response.data.message)
         }
       } catch (error) {
-        console.error('Ошибка при загрузке участников команды:', error);
+        console.error('Ошибка при загрузке участников команды:', error)
       }
-    };
+    }
 
-    fetchTeamMembers();
-  }, [tempUser.teamId]);
+    fetchTeamMembers()
+  }, [tempUser.teamId])
 
   const toggleMembersVisibility = () => {
-    setIsMembersVisible(!isMembersVisible);
-  };
+    setIsMembersVisible(!isMembersVisible)
+  }
 
   return (
     <div className="profile-block-content-comands">
       <div className="profile-block-content-comands-items">
         <div className="profile-block-content-comands-items-rect"></div>
         <div className="profile-block-content-comands-items-circle"></div>
-        <div className="profile-block-content-comands-item"> 
+        <div className="profile-block-content-comands-item">
           <p className="profile-block-content-comands-item-text">Моя команда</p>
           <p className="profile-block-content-data-title-name">{tempUser.team}</p>
           <div className="team-members-count" onClick={toggleMembersVisibility}>
@@ -48,7 +48,7 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
                 teamMembers.map((member, index) => (
                   // <li key={index} className="team-member-item">{member.name || member}</li>\
                   <li key={index} className="team-members-item">
-                  {member.surname} {member.name}
+                    {member.surname} {member.name}
                   </li>
                 ))
               ) : (
@@ -60,16 +60,24 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
         <div className="profile-block-content-comands-list"></div>
       </div>
       <div className="profile-block-content-comands-items">
-        <div className="profile-block-content-comands-items-rect" style={{ backgroundColor: leagueColor }}></div>
-        <div className="profile-block-content-comands-items-circle" style={{ backgroundColor: leagueColor }}></div>
-        <div className="profile-block-content-comands-item"> 
+        <div
+          className="profile-block-content-comands-items-rect"
+          style={{ backgroundColor: leagueColor }}
+        ></div>
+        <div
+          className="profile-block-content-comands-items-circle"
+          style={{ backgroundColor: leagueColor }}
+        ></div>
+        <div className="profile-block-content-comands-item">
           <p className="profile-block-content-comands-item-text">Моя лига</p>
           <p className="profile-block-content-data-title-name">{tempUser.league}</p>
         </div>
-        <p className="profile-block-content-comands-position">Вы на {tempUser.place_league} месте в {tempUser.league} лиге!</p>
+        <p className="profile-block-content-comands-position">
+          Вы на {tempUser.place_league} месте в {tempUser.league} лиге!
+        </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TeamAndLeague;
+export default TeamAndLeague

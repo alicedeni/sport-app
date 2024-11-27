@@ -94,7 +94,6 @@
     }
     &-input {
       background: $white2;
-      width: 1280px;
       display: flex;
       flex-direction: column;
       margin-bottom: 30px;
@@ -131,14 +130,14 @@
         &-description {
           border-radius: 10px;
           border: 2px solid $grey1;
-          width: 810px;
+          width: 75%;
           padding: 20px;
           resize: none;
         }
       
         &-image {
           background: $grey3;
-          width: 210px;
+          width: 20%;
           height: 210px;
           display: flex;
           flex-direction: column;
@@ -287,9 +286,23 @@ input[type="date"]::-webkit-outer-spin-button {
     justify-content: center !important;
     align-items: center !important;
     &-input {
-      width: 350px;
       height: 100%;
       padding: 10px;
+      &-content {
+        margin-left: 60px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+
+
+        &-description {
+          width: 100%;
+        }
+        &-image {
+          width: 40%;
+        }
+      }
     }
   }
 

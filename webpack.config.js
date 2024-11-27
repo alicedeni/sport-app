@@ -1,11 +1,11 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const express = require('express');
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
+const express = require('express')
 
 module.exports = ({ mode }) => {
-  const isProduction = mode === 'production';
+  const isProduction = mode === 'production'
 
   return {
     mode: isProduction ? 'production' : 'development',
@@ -27,16 +27,16 @@ module.exports = ({ mode }) => {
       port: 3000,
       historyApiFallback: true,
       headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
-        "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+        'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
       },
       devMiddleware: {
         writeToDisk: true,
       },
       setupMiddlewares: (middlewares, devServer) => {
-        devServer.app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
-        return middlewares;
+        devServer.app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')))
+        return middlewares
       },
     },
     plugins: [
@@ -64,8 +64,8 @@ module.exports = ({ mode }) => {
           test: /\.(png|jpe?g|gif|svg|webp|ico)$/i,
           type: 'asset/resource',
           generator: {
-            filename: 'assets/img/[hash][ext][query]'
-          }
+            filename: 'assets/img/[hash][ext][query]',
+          },
         },
         {
           test: /\.jsx?$/,
@@ -74,9 +74,7 @@ module.exports = ({ mode }) => {
             loader: 'babel-loader',
             options: {
               cacheDirectory: true,
-              plugins: [
-                !isProduction && require.resolve('react-refresh/babel')
-              ].filter(Boolean),
+              plugins: [!isProduction && require.resolve('react-refresh/babel')].filter(Boolean),
             },
           },
         },
@@ -93,5 +91,5 @@ module.exports = ({ mode }) => {
         '@style': path.resolve(__dirname, 'src/scss'),
       },
     },
-  };
-};
+  }
+}

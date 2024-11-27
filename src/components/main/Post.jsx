@@ -1,154 +1,184 @@
-import React, { useState, useEffect } from 'react';
-import { Avatar, IconButton } from '@material-ui/core';
-import { format } from 'date-fns';
-import { ru } from 'date-fns/locale';
-import ReactDOM from 'react-dom';
-import axios from 'axios';
-import CommentDefault from '../../assets/icons/commentDefault.svg';
-import HeartFilled from '../../assets/icons/heartFilled.svg';
-import HeartDefault from '../../assets/icons/heartDefault.svg';
-import CommentFilled from '../../assets/icons/commentFilled.svg';
-import SendDefault from '../../assets/icons/sendDefault.svg';
-import SendFilled from '../../assets/icons/sendFilled.svg';
+import React, { useState } from 'react'
+import { Avatar, IconButton } from '@material-ui/core'
+import { format } from 'date-fns'
+import { ru } from 'date-fns/locale'
+import ReactDOM from 'react-dom'
+import axios from 'axios'
+import CommentDefault from '../../assets/icons/commentDefault.svg'
+import HeartFilled from '../../assets/icons/heartFilled.svg'
+import HeartDefault from '../../assets/icons/heartDefault.svg'
+import CommentFilled from '../../assets/icons/commentFilled.svg'
+import SendDefault from '../../assets/icons/sendDefault.svg'
+import SendFilled from '../../assets/icons/sendFilled.svg'
 
-import {link} from '../../consts.js';
+import { link } from '../../consts.js'
 
-ReactDOM.findDOMNode = () => {};
-ReactDOM.createPortal = () => {};
+ReactDOM.findDOMNode = () => {}
+ReactDOM.createPortal = () => {}
 
 const Post = ({ post }) => {
-  const [isCommentOpen, setIsCommentOpen] = React.useState(false);
-  const [isLiked, setIsLiked] = useState(post.isLiked);
-  const [likeCount, setLikeCount] = useState(post.likeCount);
-  const [commentText, setCommentText] = useState('');
-  const [comments, setComments] = useState(post.comments || []);
-  const [commentCount, setCommentCount] = useState(post.commentCount || 0);
-  const [sendIcon, setSendIcon] = useState('SendDefault');
-  const hasImage = post && post.image;
+  const [isCommentOpen, setIsCommentOpen] = React.useState(false)
+  const [isLiked, setIsLiked] = useState(post.isLiked)
+  const [likeCount, setLikeCount] = useState(post.likeCount)
+  const [commentText, setCommentText] = useState('')
+  const [comments, setComments] = useState(post.comments || [])
+  const [commentCount, setCommentCount] = useState(post.commentCount || 0)
+  const [sendIcon, setSendIcon] = useState('SendDefault')
+  const hasImage = post && post.image
 
   const handleLikeClick = () => {
     const likeData = {
       post_id: post.feed_id,
-    };
-    const token = localStorage.getItem('token');
+    }
+    const token = localStorage.getItem('token')
     if (isLiked) {
-      axios.post(`${link}/user/unlike`, likeData, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(response => {
+      axios
+        .post(`${link}/user/unlike`, likeData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
           if (response.data.status === 200) {
-            setIsLiked(false);
-            setLikeCount(likeCount - 1);
+            setIsLiked(false)
+            setLikeCount(likeCount - 1)
           } else {
-            console.error('Error unliking post:', response.data.message);
+            console.error('Error unliking post:', response.data.message)
           }
         })
-        .catch(error => {
-          console.error('Error unliking post:', error);
-        });
+        .catch((error) => {
+          console.error('Error unliking post:', error)
+        })
     } else {
       // лайк
-      axios.post(`${link}/user/like`, likeData, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(response => {
+      axios
+        .post(`${link}/user/like`, likeData, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
           if (response.data.status === 200) {
-            setIsLiked(true);
-            setLikeCount(likeCount + 1);
+            setIsLiked(true)
+            setLikeCount(likeCount + 1)
           } else {
-            console.error('Error liking post:', response.data.message);
+            console.error('Error liking post:', response.data.message)
           }
         })
-        .catch(error => {
-          console.error('Error liking post:', error);
-        });
+        .catch((error) => {
+          console.error('Error liking post:', error)
+        })
     }
-  };
+  }
 
   // проверка на авторство комментария
   // const handleCommentClick = () => {
   //   setIsCommentOpen(!isCommentOpen);
   // };
-  
+
   const handleCommentClick = () => {
     if (!isCommentOpen) {
-      const token = localStorage.getItem('token');
-      axios.get(`${link}/get_comments/${post.feed_id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
-        .then(response => {
+      const token = localStorage.getItem('token')
+      axios
+        .get(`${link}/get_comments/${post.feed_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
           if (response.data.status === 200) {
-            console.log(response.data.comments);
-            setComments(response.data.comments);
+            console.log(response.data.comments)
+            setComments(response.data.comments)
           } else {
-            console.error('Error fetching comments:', response.data.message);
+            console.error('Error fetching comments:', response.data.message)
           }
         })
-        .catch(error => {
-          console.error('Error fetching comments:', error);
-        });
+        .catch((error) => {
+          console.error('Error fetching comments:', error)
+        })
     }
-    setIsCommentOpen(!isCommentOpen);
-  };
-  
+    setIsCommentOpen(!isCommentOpen)
+  }
+
   const handleCommentChange = (event) => {
-    setCommentText(event.target.value);
-  };
+    setCommentText(event.target.value)
+  }
 
   const handleCommentSubmit = () => {
-    if (commentText.trim() === '') return;
+    if (commentText.trim() === '') return
     const commentData = {
       post_id: post.feed_id,
       comment_text: commentText,
-    };
-    const token = localStorage.getItem('token');
-    axios.post(`${link}/user/comment`, commentData, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(response => {
+    }
+    const token = localStorage.getItem('token')
+    axios
+      .post(`${link}/user/comment`, commentData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
         if (response.data.status === 200) {
-          const currentDate = new Date();
-          const formattedDate = currentDate.toISOString();
-          setComments([{ text: commentText, author_id: token, created_at: formattedDate, is_current_user: true}, ...comments]);
-          setCommentText('');
-          setCommentCount(commentCount + 1);
+          const currentDate = new Date()
+          const formattedDate = currentDate.toISOString()
+          setComments([
+            {
+              text: commentText,
+              author_id: token,
+              created_at: formattedDate,
+              is_current_user: true,
+            },
+            ...comments,
+          ])
+          setCommentText('')
+          setCommentCount(commentCount + 1)
         } else {
-          console.error('Error commenting on post:', response.data.message);
+          console.error('Error commenting on post:', response.data.message)
         }
       })
-      .catch(error => console.error('Error commenting on post:', error));
-  };
+      .catch((error) => console.error('Error commenting on post:', error))
+  }
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault();
-      handleCommentSubmit();
+      event.preventDefault()
+      handleCommentSubmit()
     }
-  };
+  }
 
   const handleSendIconHover = (isHovered) => {
-    setSendIcon(isHovered ? 'SendFilled' : 'SendDefault');
-  };
-  
+    setSendIcon(isHovered ? 'SendFilled' : 'SendDefault')
+  }
+
   return (
     <div className="post">
       <div className="post__header">
-        {post.miniAvatar ? ( 
+        {post.miniAvatar ? (
           <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
         ) : (
           <Avatar className="post__mini-avatar" src={post.miniAvatar} alt="avatar" />
         )}
         <div className="post__user-info">
           <div className="post__svg-fire-container">
-            <div className="post__username">{post.username + " " + post.name}</div>
-            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fillRule="evenodd" clipRule="evenodd" d="M17.4006 27.6937C17.2411 28.0524 17.5086 28.4685 17.8968 28.411C22.6002 27.7139 25.5 23.5418 25.5 18.4992C25.5 15.9861 25.0965 12.13 22.3843 10.1754C22.2387 10.0705 22.0486 10.2362 22.1055 10.407C22.4411 11.4139 22.5 13.5 21.5 13.5C20.5 13.5 20.89 12.4781 20.6806 11.3092C20.5567 10.6172 20.4079 9.78662 20.0714 8.94027C19.2108 6.7753 17.5314 3.78656 12.6971 3.50027C12.5065 3.48898 12.3798 3.83213 12.4962 3.9845C13.9003 5.82401 14.5101 11.5 12.5 11.5C11.2779 11.5 11.4041 9.37078 12.1256 7.67401C12.1963 7.50762 12.0142 7.34151 11.8633 7.44003C6.92323 10.6652 6.5 15.9253 6.5 18.4992C6.5 23.5418 9.39983 27.7139 14.1032 28.411C14.4914 28.4685 14.7589 28.0524 14.5994 27.6937C14.1613 26.7084 13.7381 25.3583 13.7381 23.8689C13.7381 20.32 15.3235 18.7871 15.7965 18.044C15.8945 17.89 16.1055 17.89 16.2035 18.044C16.6765 18.7871 18.2619 20.32 18.2619 23.8689C18.2619 25.3583 17.8387 26.7084 17.4006 27.6937Z" fill="url(#paint0_linear_1096_2207)"/>
+            <div className="post__username">{post.username + ' ' + post.name}</div>
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M17.4006 27.6937C17.2411 28.0524 17.5086 28.4685 17.8968 28.411C22.6002 27.7139 25.5 23.5418 25.5 18.4992C25.5 15.9861 25.0965 12.13 22.3843 10.1754C22.2387 10.0705 22.0486 10.2362 22.1055 10.407C22.4411 11.4139 22.5 13.5 21.5 13.5C20.5 13.5 20.89 12.4781 20.6806 11.3092C20.5567 10.6172 20.4079 9.78662 20.0714 8.94027C19.2108 6.7753 17.5314 3.78656 12.6971 3.50027C12.5065 3.48898 12.3798 3.83213 12.4962 3.9845C13.9003 5.82401 14.5101 11.5 12.5 11.5C11.2779 11.5 11.4041 9.37078 12.1256 7.67401C12.1963 7.50762 12.0142 7.34151 11.8633 7.44003C6.92323 10.6652 6.5 15.9253 6.5 18.4992C6.5 23.5418 9.39983 27.7139 14.1032 28.411C14.4914 28.4685 14.7589 28.0524 14.5994 27.6937C14.1613 26.7084 13.7381 25.3583 13.7381 23.8689C13.7381 20.32 15.3235 18.7871 15.7965 18.044C15.8945 17.89 16.1055 17.89 16.2035 18.044C16.6765 18.7871 18.2619 20.32 18.2619 23.8689C18.2619 25.3583 17.8387 26.7084 17.4006 27.6937Z"
+                fill="url(#paint0_linear_1096_2207)"
+              />
               <defs>
-              <linearGradient id="paint0_linear_1096_2207" x1="6.5" y1="28.5" x2="27.9857" y2="26.1412" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#9D9DE6"/>
-              <stop offset="0.427083" stopColor="#567FE3"/>
-              <stop offset="0.885417" stopColor="#9664C8"/>
-              </linearGradient>
+                <linearGradient
+                  id="paint0_linear_1096_2207"
+                  x1="6.5"
+                  y1="28.5"
+                  x2="27.9857"
+                  y2="26.1412"
+                  gradientUnits="userSpaceOnUse"
+                >
+                  <stop stopColor="#9D9DE6" />
+                  <stop offset="0.427083" stopColor="#567FE3" />
+                  <stop offset="0.885417" stopColor="#9664C8" />
+                </linearGradient>
               </defs>
             </svg>
             <div className="post__fire-count">{post.fireCount}</div>
@@ -161,21 +191,21 @@ const Post = ({ post }) => {
       <div className={`post__content ${hasImage ? '' : 'post__content-svg'}`}>
         <div className={`post__image-container ${hasImage ? '' : 'post__image-container-svg'}`}>
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
-          { hasImage ? (
+          {hasImage ? (
             <img className="post__image" src={post.image} alt="Post image" />
-          ):(
-            <img 
-            className="post__image" 
-            src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}.svg`} 
-            alt={`${post.tag} activity`} 
+          ) : (
+            <img
+              className="post__image"
+              src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}.svg`}
+              alt={`${post.tag} activity`}
             />
           )}
         </div>
         <div className="post__info">
           <div className="post__title">
-          <div id={post.tag} className={`activity-tags ${post.tag}-L`}>
-                  {post.type && post.type.toUpperCase()}
-                </div>
+            <div id={post.tag} className={`activity-tags ${post.tag}-L`}>
+              {post.type && post.type.toUpperCase()}
+            </div>
           </div>
           {/* {post.tag && post.type ? (
               <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
@@ -186,38 +216,48 @@ const Post = ({ post }) => {
             )}
           </div> */}
           <div className="post__points">
-            <div className="post__points__point"> Время
+            <div className="post__points__point">
+              {' '}
+              Время
               {/* <div className="post__time"> */}
               <div className={`post__metric ${post.tag}-metric`}>
                 {post.time && (
-                    <div className="formatted-time">
-                        {(() => {
-                            const [hours, minutes] = post.time.split(':').map(Number);
-                            let totalHours = hours + Math.round(minutes / 60 * 2) / 2;
-                            let hour = Math.floor(totalHours);
-                            if (hour !== 0) {
-                              return <span>{totalHours} часа</span>;
-                            } else {
-                              return <span>{minutes} мин</span>;
-                            }
-                        })()}
-                    </div>
+                  <div className="formatted-time">
+                    {(() => {
+                      const [hours, minutes] = post.time.split(':').map(Number)
+                      let totalHours = hours + Math.round((minutes / 60) * 2) / 2
+                      let hour = Math.floor(totalHours)
+                      if (hour !== 0) {
+                        return <span>{totalHours} часа</span>
+                      } else {
+                        return <span>{minutes} мин</span>
+                      }
+                    })()}
+                  </div>
                 )}
               </div>
             </div>
-            {post && post.calories && (<div className="post__points__point">
-              Калории
-              {/* <div className="post__calories">{post.calories} ккал</div> */}
-              <div className={`post__metric ${post.tag}-metric`}>{post.calories} ккал</div>
-            </div>)}
-            {post && post.step && (<div className="post__points__point">
-              Шаги
-              <div className={`post__metric ${post.tag}-metric`}>{post.step} шагов</div>
-            </div>)}
-            {post && post.distance && (<div className="post__points__point">
-              Дистанция
-              <div className={`post__metric ${post.tag}-metric`}>{post.distance} {post.tag === 'pool' ? 'м' : 'км'}</div>
-            </div>)}
+            {post && post.calories && (
+              <div className="post__points__point">
+                Калории
+                {/* <div className="post__calories">{post.calories} ккал</div> */}
+                <div className={`post__metric ${post.tag}-metric`}>{post.calories} ккал</div>
+              </div>
+            )}
+            {post && post.step && (
+              <div className="post__points__point">
+                Шаги
+                <div className={`post__metric ${post.tag}-metric`}>{post.step} шагов</div>
+              </div>
+            )}
+            {post && post.distance && (
+              <div className="post__points__point">
+                Дистанция
+                <div className={`post__metric ${post.tag}-metric`}>
+                  {post.distance} {post.tag === 'pool' ? 'м' : 'км'}
+                </div>
+              </div>
+            )}
           </div>
           <div className="post__line"></div>
           <div className="post__text">{post.text}</div>
@@ -227,62 +267,70 @@ const Post = ({ post }) => {
         <div className="post__like-container">
           <div className="post__like-count">{likeCount}</div>
           <IconButton onClick={handleLikeClick}>
-            {isLiked ? <img src={HeartFilled} alt="Liked" /> : <img src={HeartDefault} alt="Not Liked" />}
+            {isLiked ? (
+              <img src={HeartFilled} alt="Liked" />
+            ) : (
+              <img src={HeartDefault} alt="Not Liked" />
+            )}
           </IconButton>
         </div>
         <div className="post__comment-container">
           <div className="post__comment-count">{commentCount}</div>
           <IconButton onClick={handleCommentClick}>
-            {isCommentOpen ? <img src={CommentFilled} alt="Commented" /> : <img src={CommentDefault} alt="Not Commented" />}
+            {isCommentOpen ? (
+              <img src={CommentFilled} alt="Commented" />
+            ) : (
+              <img src={CommentDefault} alt="Not Commented" />
+            )}
           </IconButton>
         </div>
       </div>
-        <div className="post__comment-containerinput">
-          {isCommentOpen && (
-            <div className="post__comment-section">
-              <div className="post__line"></div>
-              {comments.length > 0 && (
-                <div className="post__comments">
-                  {comments.map((comment, index) => (
-                    <div key={index} className="post__comment">
-                      <strong>{comment.is_current_user ? 'Вы' : comment.surname + " " + comment.name}</strong> 
-                      <div>{comment.text}</div>
-                      <div className="post__comment-timestamp">
-                        {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
-                      </div>
-                      <div className="post__line" style={{marginTop: '10px'}}></div>
+      <div className="post__comment-containerinput">
+        {isCommentOpen && (
+          <div className="post__comment-section">
+            <div className="post__line"></div>
+            {comments.length > 0 && (
+              <div className="post__comments">
+                {comments.map((comment, index) => (
+                  <div key={index} className="post__comment">
+                    <strong>
+                      {comment.is_current_user ? 'Вы' : comment.surname + ' ' + comment.name}
+                    </strong>
+                    <div>{comment.text}</div>
+                    <div className="post__comment-timestamp">
+                      {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
                     </div>
-                  ))}
-                </div>
+                    <div className="post__line" style={{ marginTop: '10px' }}></div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <textarea
+              className="post__comment-input"
+              placeholder="Написать комментарий..."
+              style={{ marginTop: '20px' }}
+              value={commentText}
+              onChange={handleCommentChange}
+              maxLength={250}
+              onKeyPress={handleKeyPress}
+            />
+            <IconButton
+              className="post__comment-input-btn"
+              onClick={handleCommentSubmit}
+              onMouseEnter={() => handleSendIconHover(true)}
+              onMouseLeave={() => handleSendIconHover(false)}
+            >
+              {sendIcon === 'SendDefault' ? (
+                <img src={SendDefault} alt="Send" />
+              ) : (
+                <img src={SendFilled} alt="Send" />
               )}
-              <textarea
-                  className="post__comment-input"
-                  placeholder="Написать комментарий..."
-                  style={{marginTop: '20px'}}
-                  value={commentText}
-                  onChange={handleCommentChange}
-                  maxLength={250}
-                  onKeyPress={handleKeyPress}
-              />
-              <IconButton
-                className="post__comment-input-btn"
-                onClick={handleCommentSubmit}
-                onMouseEnter={() => handleSendIconHover(true)}
-                onMouseLeave={() => handleSendIconHover(false)}
-              >
-                  {sendIcon === 'SendDefault' ? (
-                      <img src={SendDefault} alt="Send" />
-                  ) : (
-                      <img src={SendFilled} alt="Send" />
-                  )}
-              </IconButton>
-              
-            </div>
-          )}
-        </div>
+            </IconButton>
+          </div>
+        )}
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default Post;
-
+export default Post

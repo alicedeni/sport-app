@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { CButtonProfile } from "../Buttons";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const MobileHeader = ({ avatar, userName, points }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
-    setIsMenuOpen(prevState => !prevState);
-  };
+    setIsMenuOpen((prevState) => !prevState)
+  }
 
   return (
     <div className="mobile-header">
@@ -21,25 +20,35 @@ const MobileHeader = ({ avatar, userName, points }) => {
         <nav className="mobile-header__nav">
           <ul className="mobile-header__nav-list">
             <li>
-              <Link to={`/main`} className="mobile-header__nav-list-item">ЛЕНТА</Link>
+              <Link to={`/main`} className="mobile-header__nav-list-item">
+                ЛЕНТА
+              </Link>
             </li>
             <li>
-              <Link to={`/challenges`} className="mobile-header__nav-list-item">ЧЕЛЛЕНДЖИ</Link>
+              <Link to={`/challenges`} className="mobile-header__nav-list-item">
+                ЧЕЛЛЕНДЖИ
+              </Link>
             </li>
             <li>
-              <Link to={`/ratings`} className="mobile-header__nav-list-item">РЕЙТИНГИ</Link>
+              <Link to={`/ratings`} className="mobile-header__nav-list-item">
+                РЕЙТИНГИ
+              </Link>
             </li>
             <li>
-              <Link to={`/activity`} className="mobile-header__nav-list-item">АКТИВНОСТЬ</Link>
+              <Link to={`/activity`} className="mobile-header__nav-list-item">
+                АКТИВНОСТЬ
+              </Link>
             </li>
             <li>
-              <Link to={`/profile`} className="mobile-header__nav-list-item">ПРОФИЛЬ</Link>
+              <Link to={`/profile`} className="mobile-header__nav-list-item">
+                ПРОФИЛЬ
+              </Link>
             </li>
           </ul>
         </nav>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MobileHeader;
+export default MobileHeader

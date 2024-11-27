@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
-import Header from '../components/main/Header';
-import MobileHeader from '../components/main/MobileHeader';
-import Posts from '../components/main/Posts';
-import Challenges from '../components/main/Challenges';
-import Ratings from '../components/main/Ratings';
-import Activity from '../components/main/Activity';
-import Preview from '../components/main/Preview';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import Header from '../components/main/Header'
+import MobileHeader from '../components/main/MobileHeader'
+import Posts from '../components/main/Posts'
+import Challenges from '../components/main/Challenges'
+import Ratings from '../components/main/Ratings'
+import Activity from '../components/main/Activity'
+import Preview from '../components/main/Preview'
+import axios from 'axios'
 
-import { link } from '../consts.js';
+import { link } from '../consts.js'
 
 const Main = () => {
-  const [page, setPage] = useState('feed');
-  const [posts, setPosts] = useState([/*
+  const [page, setPage] = useState('feed')
+  const [posts, setPosts] = useState([
+    /*
     { 
       id: 1, 
       miniAvatar: 'https://example.com/avatar1.jpg', 
@@ -40,83 +41,87 @@ const Main = () => {
       calories: '50', 
       text: 'This is post 2.',
     }, 
-  */]);
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  */
+  ])
+  const location = useLocation()
+  const params = new URLSearchParams(location.search)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+      setIsMobile(window.innerWidth <= 768)
+    }
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     if (location.state && location.state.page) {
-      setPage(location.state.page);
+      setPage(location.state.page)
     }
-  }, [location.state]);
+  }, [location.state])
 
   const getPostData = () => {
-    const token = localStorage.getItem('token');
-    return axios.get(`${link}/user/posts`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-    .then(response => {
-      return response.data;
-    })
-    .catch(error => {
-      console.error(error);
-      throw error;
-    });
-  };
+    const token = localStorage.getItem('token')
+    return axios
+      .get(`${link}/user/posts`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        console.error(error)
+        throw error
+      })
+  }
 
   useEffect(() => {
     getPostData()
-      .then(data => {
+      .then((data) => {
         if (data && data.posts) {
-          setPosts(data.posts);
+          setPosts(data.posts)
         }
       })
-      .catch(error => console.error(error));
-  }, []);
+      .catch((error) => console.error(error))
+  }, [])
 
-  let content;
+  let content
 
   switch (page) {
     case 'feed':
-      content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />;
-      break;
+      content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />
+      break
     case 'challenges':
-      content = <Challenges setPage={setPage} isFeedPage={false} />;
-      break;
+      content = <Challenges setPage={setPage} isFeedPage={false} />
+      break
     case 'ratings':
-      content = <Ratings setPage={setPage} isFeedPage={false} />;
-      break;
+      content = <Ratings setPage={setPage} isFeedPage={false} />
+      break
     case 'activity':
-      content = <Activity setPage={setPage} isFeedPage={false} />;
-      break;
+      content = <Activity setPage={setPage} isFeedPage={false} />
+      break
     case 'view':
-      content = <Preview setPage={setPage} isFeedPage={false} activityData={location.state.activityData}  />;
-      break;
+      content = (
+        <Preview setPage={setPage} isFeedPage={false} activityData={location.state.activityData} />
+      )
+      break
     default:
-      content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />;
+      content = <Posts posts={posts} setPage={setPage} isFeedPage={true} />
   }
 
   return (
     <div className="container" id="root">
       {isMobile ? (
-        <MobileHeader avatar={user.avatar} userName={userName} points={points} /> 
+        <MobileHeader avatar={user.avatar} userName={userName} points={points} />
       ) : (
         <Header setPage={setPage} isFeedPage={page === 'feed'} />
       )}
-      
+
       <div className="main">{content}</div>
     </div>
-  );
-};
+  )
+}
 
-export default Main;
+export default Main

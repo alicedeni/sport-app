@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.29",
-  "description": "all metrics",
+  "version": "1.0.30",
+  "description": "prettier code",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
@@ -33,6 +33,7 @@
     "postcss": "^8.4.5",
     "postcss-loader": "^6.2.1",
     "postcss-preset-env": "^7.0.2",
+    "prettier": "^3.4.1",
     "react-query": "^3.39.3",
     "react-refresh": "^0.11.0",
     "resolve-url-loader": "^5.0.0",

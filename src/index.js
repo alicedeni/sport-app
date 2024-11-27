@@ -13,8 +13,8 @@ import ActivityMakePage from './pages/ActivityMake';
 import Profile from './pages/Profile';
 import Registration from './pages/Registration';
 import ErrorPage404 from './pages/ErrorPage404';
-import GlobalGoal from './pages/GlobalGoal';
-import { BeatLoader } from "react-spinners";
+import GlobalGoal from './pages/GlobalGoal'
+import { BeatLoader } from 'react-spinners'
 
 import "./scss/main.scss";
 

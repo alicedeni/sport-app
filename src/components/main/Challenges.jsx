@@ -1,71 +1,78 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-import {link} from '../../consts.js';
+import { link } from '../../consts.js'
 
 const Challenges = () => {
-  const [selectedSide, setSelectedSide] = useState('current');
-  const [currentChallenges, setCurrentChallenges] = useState([/*
+  const [selectedSide, setSelectedSide] = useState('current')
+  const [currentChallenges, setCurrentChallenges] = useState([
+    /*
     { id: 1, name: 'Пробежать 10 км', progress: 75, points: 100 },
     { id: 2, name: 'Отжаться 100 раз', progress: 50, points: 50 },
     { id: 3, name: 'Проплыть 1 км', progress: 90, points: 75 },
-*/]);
-  const [completedChallenges, setCompletedChallenges] = useState([/*
+*/
+  ])
+  const [completedChallenges, setCompletedChallenges] = useState([
+    /*
     { id: 1, name: 'Сделать 1000 шагов',progress: 100, points: 25 },
     { id: 2, name: 'Поднять 50 кг', progress: 100, points: 75 },
-*/]);
-  const [incompletedChallenges, setIncompletedChallenges] = useState([/*
+*/
+  ])
+  const [incompletedChallenges, setIncompletedChallenges] = useState([
+    /*
     { id: 3, name: 'Отжаться 50 раз', progress: 90, points: 50 },
-*/]);
+*/
+  ])
 
   useEffect(() => {
-    let isMounted = true;
+    let isMounted = true
 
     const fetchData = async () => {
       try {
-        let response;
-        const token = localStorage.getItem('token');
+        let response
+        const token = localStorage.getItem('token')
         if (selectedSide === 'current') {
           response = await axios.get(`${link}/user/current-challenges`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
+            headers: { Authorization: `Bearer ${token}` },
+          })
         } else {
           response = await axios.get(`${link}/user/completed-challenges`, {
-            headers: {Authorization: `Bearer ${token}` }
-          });
+            headers: { Authorization: `Bearer ${token}` },
+          })
         }
         if (isMounted) {
-          const data = response.data;
+          const data = response.data
           if (data.status === 200) {
             if (selectedSide === 'current') {
-              setCurrentChallenges(data.current_challenges || []);
+              setCurrentChallenges(data.current_challenges || [])
             } else {
-              setCompletedChallenges(data.completed_challenges || []);
-              setIncompletedChallenges(data.incompleted_challenges || []);
+              setCompletedChallenges(data.completed_challenges || [])
+              setIncompletedChallenges(data.incompleted_challenges || [])
             }
           } else {
-            console.error('Data error:', data.message);
+            console.error('Data error:', data.message)
           }
         }
       } catch (error) {
         if (isMounted) {
-          console.error('Error fetching data:', error);
+          console.error('Error fetching data:', error)
         }
       }
-    };
-    fetchData();
+    }
+    fetchData()
     return () => {
-      isMounted = false;
-    };
-  }, [selectedSide]);
+      isMounted = false
+    }
+  }, [selectedSide])
   const handleClick = (side) => {
-    setSelectedSide(side);
-  };
+    setSelectedSide(side)
+  }
 
   const calculateCompletedPoints = () => {
-    return completedChallenges.filter(challenge => challenge.progress === 100)
-      .reduce((total, challenge) => total + challenge.points, 0);
-  };
+    return completedChallenges
+      .filter((challenge) => challenge.progress === 100)
+      .reduce((total, challenge) => total + challenge.points, 0)
+  }
 
   return (
     <div className="challenges">
@@ -96,7 +103,12 @@ const Challenges = () => {
 
       {selectedSide === 'current' ? (
         <div className="current-challenges">
-          <div className="metrics">Выбрано <span style={{ color: '#51B8FF' }}>{currentChallenges.length}/{currentChallenges.length}</span></div>
+          <div className="metrics">
+            Выбрано{' '}
+            <span style={{ color: '#51B8FF' }}>
+              {currentChallenges.length}/{currentChallenges.length}
+            </span>
+          </div>
           {currentChallenges.length > 0 ? (
             currentChallenges.map((challenge) => (
               <div key={challenge.id} className="challenge-item">
@@ -105,22 +117,26 @@ const Challenges = () => {
                   <div className="challenge-item-text-points">{challenge.points} баллов</div>
                 </div>
                 <div className="progress-bar">
-                  <div
-                    className="progress"
-                    style={{ width: `${challenge.progress}%` }}
-                  ></div>
+                  <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
                 </div>
-            </div>
-          ))
+              </div>
+            ))
           ) : (
             <div>No current challenges</div>
           )}
         </div>
       ) : (
         <div className="completed-challenges">
-          <div className="metrics">Выполненные: <span style={{ color: '#51B8FF' }}>{completedChallenges.length}</span></div>
-          <div className="metrics">Незавершенные: <span style={{ color: '#51B8FF' }}>{incompletedChallenges.length}</span></div>
-          <div className="metrics">Заработано баллов: <span style={{ color: '#51B8FF' }}>{calculateCompletedPoints()}</span></div>
+          <div className="metrics">
+            Выполненные: <span style={{ color: '#51B8FF' }}>{completedChallenges.length}</span>
+          </div>
+          <div className="metrics">
+            Незавершенные: <span style={{ color: '#51B8FF' }}>{incompletedChallenges.length}</span>
+          </div>
+          <div className="metrics">
+            Заработано баллов:{' '}
+            <span style={{ color: '#51B8FF' }}>{calculateCompletedPoints()}</span>
+          </div>
           {completedChallenges.length > 0 ? (
             completedChallenges.map((challenge) => (
               <div key={challenge.id} className="challenge-item">
@@ -130,17 +146,14 @@ const Challenges = () => {
                     className="challenge-item-text-points"
                     style={{
                       color: '#51B8FF',
-                      backgroundColor:'rgba(81, 184, 255, 0.2)',
+                      backgroundColor: 'rgba(81, 184, 255, 0.2)',
                     }}
                   >
                     {challenge.points} баллов
                   </div>
                 </div>
-                <div className="progress-bar" >
-                  <div
-                    className="progress"
-                    style={{ width: `${challenge.progress}%`,}}
-                  ></div>
+                <div className="progress-bar">
+                  <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
                 </div>
               </div>
             ))
@@ -151,24 +164,25 @@ const Challenges = () => {
           {incompletedChallenges.length > 0 ? (
             incompletedChallenges.map((challenge) => (
               <div key={challenge.id} className="challenge-item">
-                <div className="challenge-item-text" style={{ opacity: 0.7, }}>
-                  <h3 className="challenge-item-text-name" style={{ opacity: 0.7, }}>{challenge.name}</h3>
+                <div className="challenge-item-text" style={{ opacity: 0.7 }}>
+                  <h3 className="challenge-item-text-name" style={{ opacity: 0.7 }}>
+                    {challenge.name}
+                  </h3>
                   <div
                     className="challenge-item-text-points"
                     style={{
                       color: '#FF4D53',
                       backgroundColor: 'rgba(255, 77, 83, 0.2)',
-                      opacity: 0.7, 
+                      opacity: 0.7,
                     }}
                   >
                     {challenge.points} баллов
                   </div>
                 </div>
-                <div className="progress-bar" style={{ opacity: 0.7, }}>
+                <div className="progress-bar" style={{ opacity: 0.7 }}>
                   <div
                     className="progress"
-                    style={{ width: `${challenge.progress}%`,
-                    opacity: 0.7, }}
+                    style={{ width: `${challenge.progress}%`, opacity: 0.7 }}
                   ></div>
                 </div>
               </div>
@@ -179,7 +193,7 @@ const Challenges = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Challenges;
+export default Challenges
