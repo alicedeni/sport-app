@@ -409,7 +409,7 @@ const ProfileBlock = ({ user }) => {
                 handleUpdateUser={handleUpdateUser}
             />
       </div>
-      <div className="profile-block-btn" style={{display: 'none'}}>
+      <div className="profile-block-btn">
         <ButtonExit text="Выйти из аккаунта" textContent={"Выйти из аккаунта"} onClick={handleExit}/>
         <ButtonDelete text="Удалить аккаунт" textContent={"Удалить аккаунт"}  onClick={handleDelete}/>
       </div>

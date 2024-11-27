@@ -33,6 +33,7 @@ const Preview = () => {
   };
 
   useEffect(() => {
+    console.log(activityData);
     getUserData()
       .then(data => {
         if (data && data.profile) {
@@ -162,6 +163,10 @@ const Preview = () => {
                     <div className={`post__metric ${activityData.type}-metric`}>{activityData.step} шагов</div>
                     </div>
                     )}
+                    {activityData && activityData.distance && (<div className="post__points__point">
+                      Дистанция
+                      <div className={`post__metric ${activityData.type}-metric`}>{activityData.distance} {activityData.type === 'pool' ? 'м' : 'км'}</div>
+                    </div>)}
                 </div>
                 <div className="post__line"></div>
                 {activityData && (

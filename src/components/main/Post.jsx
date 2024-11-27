@@ -216,7 +216,7 @@ const Post = ({ post }) => {
             </div>)}
             {post && post.distance && (<div className="post__points__point">
               Дистанция
-              <div className={`post__metric ${post.tag}-metric`}>{post.step} {post.tag === 'pool' ? 'м' : 'км'}</div>
+              <div className={`post__metric ${post.tag}-metric`}>{post.distance} {post.tag === 'pool' ? 'м' : 'км'}</div>
             </div>)}
           </div>
           <div className="post__line"></div>

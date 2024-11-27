@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.28",
-  "description": "tags & distance",
+  "version": "1.0.29",
+  "description": "all metrics",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
