@@ -10,6 +10,8 @@ import HeartDefault from '../../assets/icons/heartDefault.svg'
 import CommentFilled from '../../assets/icons/commentFilled.svg'
 import SendDefault from '../../assets/icons/sendDefault.svg'
 import SendFilled from '../../assets/icons/sendFilled.svg'
+import DeleteDefault from '../../assets/icons/deleteDefault.svg'
+import DeleteFilled from '../../assets/icons/deleteFilled.svg'
 
 import { link } from '../../consts.js'
 
@@ -20,6 +22,8 @@ const Post = ({ post }) => {
   const [isCommentOpen, setIsCommentOpen] = React.useState(false)
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post.likeCount)
+  const [isLikedComment, setIsLikedComment] = useState()
+  const [likeCountComment, setLikeCountComment] = useState()
   const [commentText, setCommentText] = useState('')
   const [comments, setComments] = useState(post.comments || [])
   const [commentCount, setCommentCount] = useState(post.commentCount || 0)
@@ -67,10 +71,13 @@ const Post = ({ post }) => {
     }
   }
 
-  // проверка на авторство комментария
-  // const handleCommentClick = () => {
-  //   setIsCommentOpen(!isCommentOpen);
-  // };
+  const handleLikeCommentClick = (commentId) => {
+    return 0
+  }
+
+  const handleDeleteClick = (commentId) => {
+    return 0
+  }
 
   const handleCommentClick = () => {
     if (!isCommentOpen) {
@@ -207,14 +214,6 @@ const Post = ({ post }) => {
               {post.type && post.type.toUpperCase()}
             </div>
           </div>
-          {/* {post.tag && post.type ? (
-              <div id={post.tag} className={`activity-btn ${post.tag}-bold`}>
-                {post.type.toUpperCase()}
-              </div>
-            ) : (
-              <div className="activity-btn">Unknown Type</div>
-            )}
-          </div> */}
           <div className="post__points">
             <div className="post__points__point">
               {' '}
@@ -240,7 +239,6 @@ const Post = ({ post }) => {
             {post && post.calories && (
               <div className="post__points__point">
                 Калории
-                {/* <div className="post__calories">{post.calories} ккал</div> */}
                 <div className={`post__metric ${post.tag}-metric`}>{post.calories} ккал</div>
               </div>
             )}
@@ -293,14 +291,35 @@ const Post = ({ post }) => {
               <div className="post__comments">
                 {comments.map((comment, index) => (
                   <div key={index} className="post__comment">
-                    <strong>
-                      {comment.is_current_user ? 'Вы' : comment.surname + ' ' + comment.name}
-                    </strong>
-                    <div>{comment.text}</div>
-                    <div className="post__comment-timestamp">
-                      {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
+                    <div className="post__comment-start">
+                      <strong>
+                        {comment.is_current_user ? 'Вы' : comment.surname + ' ' + comment.name}
+                      </strong>
+                      <div>{comment.text}</div>
+                      <div className="post__comment-timestamp">
+                        {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
+                      </div>
                     </div>
-                    <div className="post__line" style={{ marginTop: '10px' }}></div>
+                    <div className="post__like-container-all">
+                      {comment.is_current_user && (
+                        <div className="post__like-container-comments">
+                          <IconButton onClick={() => handleDeleteClick(comment.id)}>
+                            <img src={DeleteDefault} alt="" style={{ width: '24px' }} />
+                          </IconButton>
+                        </div>
+                      )}
+                      <div className="post__like-container-comments">
+                        <div className="post__like-count-comments">{likeCountComment}</div>
+                        <IconButton onClick={() => handleLikeCommentClick(comment.id)}>
+                          {isLikedComment ? (
+                            <img src={HeartFilled} alt="Liked" style={{ width: '24px' }} />
+                          ) : (
+                            <img src={HeartDefault} alt="Not Liked" style={{ width: '24px' }} />
+                          )}
+                        </IconButton>
+                      </div>
+                    </div>
+                    {/*<div className="post__line" style={{ marginTop: '10px' }}></div>*/}
                   </div>
                 ))}
               </div>

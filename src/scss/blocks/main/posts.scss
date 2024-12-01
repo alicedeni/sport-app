@@ -215,7 +215,18 @@
     &__like-container {
       display: flex;
       align-items: center;
-      flex-direction: row; 
+      flex-direction: row;
+      &-all {
+        display: flex;
+        align-items: flex-end;
+        justify-content: flex-end;
+        flex-direction: column;
+      }
+      &-comments {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+      }
     }
   
     &__like-count {
@@ -225,9 +236,25 @@
       margin-right: -7px;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      &-comments {
+        font-size: 24px;
+        font-weight: bold;
+        background-image: $gradient;
+        margin-right: -7px;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
     }
     &__comment{
       margin: 10px 0px;
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid $grey1;
+      &-start {
+        display: flex;
+        flex-direction: column;
+      }
       &-container {
         display: flex;
         flex-direction: row;

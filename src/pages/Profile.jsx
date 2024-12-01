@@ -7,24 +7,8 @@ import { link } from '../consts.js'
 
 const Profile = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
-  const [page, setPage] = useState('feed')
-  const [user, setUser] = useState({
-    /*
-      id: 1,
-      last_name: "Иванов",
-      first_name: "Иван",
-      email: "test@gmail.com",
-      height: 0,
-      weight: 0,
-      target_weight: 10,
-      activity: [{ type: 'pool', color: 'blue', time: 16, calories: 8500 }],
-      team: "Команда №1",
-      teammates: 8,
-      league: "gold",
-      place_league: 6,
-      avatar: "https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg",
-*/
-  })
+  const [user, setUser] = useState({})
+  const [loadingUser, setLoadingUser] = useState(true)
 
   const getUserData = () => {
     const token = localStorage.getItem('token')
@@ -39,6 +23,7 @@ const Profile = () => {
         console.error(error)
         throw error
       })
+      .finally(() => setLoadingUser(false))
   }
 
   useEffect(() => {
@@ -49,9 +34,7 @@ const Profile = () => {
         }
       })
       .catch((error) => console.error(error))
-  }, [])
 
-  useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768)
     }
@@ -60,9 +43,13 @@ const Profile = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  if (loadingUser) {
+    return <div></div>
+  }
+
   return (
     <div className="container">
-      {isMobile ? <MobileHeader /> : <Header setPage={setPage} isFeedPage={false} />}
+      {isMobile ? <MobileHeader /> : <Header isFeedPage={false} />}
       <div className="main" style={{ marginTop: '100px' }}>
         <ProfileBlock user={user} setUser={setUser} />
       </div>

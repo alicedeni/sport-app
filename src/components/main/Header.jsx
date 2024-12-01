@@ -4,6 +4,7 @@ import Notification from './Notification'
 import { CButtonProfile } from '../Buttons'
 import axios from 'axios'
 import { link } from '../../consts.js'
+import { TailSpin } from 'react-loader-spinner'
 
 const Header = ({ currentPage }) => {
   const [isNotificationOpen, setIsNotificationOpen] = useState(true)
@@ -11,6 +12,7 @@ const Header = ({ currentPage }) => {
   const [avatar, setAvatar] = useState('')
   const [points, setPoints] = useState(0)
   const [goal, setGoal] = useState(0)
+  const [loadingUser, setLoadingUser] = useState(true)
   const [mainInfo, setMainInfo] = useState({
     teams: 0,
     participants: 0,
@@ -37,10 +39,21 @@ const Header = ({ currentPage }) => {
       .catch((error) => {
         console.error(error)
       })
+      .finally(() => setLoadingUser(false))
   }, [])
 
   const handlePageNotification = () => {
     setIsNotificationOpen(false)
+  }
+
+  if (loadingUser) {
+    return (
+      <div
+        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
+      >
+        <TailSpin height="80" width="80" color="white" ariaLabel="loading" />
+      </div>
+    )
   }
 
   return (
