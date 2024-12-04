@@ -11,7 +11,7 @@ import CommentFilled from '../../assets/icons/commentFilled.svg'
 import SendDefault from '../../assets/icons/sendDefault.svg'
 import SendFilled from '../../assets/icons/sendFilled.svg'
 import DeleteDefault from '../../assets/icons/deleteDefault.svg'
-import DeleteFilled from '../../assets/icons/deleteFilled.svg'
+import Comment from './Comment'
 
 import { link } from '../../consts.js'
 
@@ -71,12 +71,24 @@ const Post = ({ post }) => {
     }
   }
 
-  const handleLikeCommentClick = (commentId) => {
-    return 0
-  }
+  const handleDeleteClick = async (commentId) => {
+    const token = localStorage.getItem('token')
+    try {
+      const response = await axios.delete(`${link}/user/delete_comment/${commentId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
 
-  const handleDeleteClick = (commentId) => {
-    return 0
+      if (response.data.status === 200) {
+        setComments((prevComments) =>
+          prevComments.filter((comment) => comment.comment_id !== commentId),
+        )
+        setCommentCount(commentCount - 1)
+      } else {
+        console.error('Error deleting comment:', response.data.message)
+      }
+    } catch (error) {
+      console.error('Error deleting comment:', error)
+    }
   }
 
   const handleCommentClick = () => {
@@ -286,41 +298,10 @@ const Post = ({ post }) => {
       <div className="post__comment-containerinput">
         {isCommentOpen && (
           <div className="post__comment-section">
-            <div className="post__line"></div>
             {comments.length > 0 && (
               <div className="post__comments">
                 {comments.map((comment, index) => (
-                  <div key={index} className="post__comment">
-                    <div className="post__comment-start">
-                      <strong>
-                        {comment.is_current_user ? 'Вы' : comment.surname + ' ' + comment.name}
-                      </strong>
-                      <div>{comment.text}</div>
-                      <div className="post__comment-timestamp">
-                        {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
-                      </div>
-                    </div>
-                    <div className="post__like-container-all">
-                      {comment.is_current_user && (
-                        <div className="post__like-container-comments">
-                          <IconButton onClick={() => handleDeleteClick(comment.id)}>
-                            <img src={DeleteDefault} alt="" style={{ width: '24px' }} />
-                          </IconButton>
-                        </div>
-                      )}
-                      <div className="post__like-container-comments">
-                        <div className="post__like-count-comments">{likeCountComment}</div>
-                        <IconButton onClick={() => handleLikeCommentClick(comment.id)}>
-                          {isLikedComment ? (
-                            <img src={HeartFilled} alt="Liked" style={{ width: '24px' }} />
-                          ) : (
-                            <img src={HeartDefault} alt="Not Liked" style={{ width: '24px' }} />
-                          )}
-                        </IconButton>
-                      </div>
-                    </div>
-                    {/*<div className="post__line" style={{ marginTop: '10px' }}></div>*/}
-                  </div>
+                  <Comment key={index} comment={comment} onDelete={handleDeleteClick} />
                 ))}
               </div>
             )}

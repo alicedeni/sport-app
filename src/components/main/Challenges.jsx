@@ -32,7 +32,7 @@ const Challenges = () => {
         let response
         const token = localStorage.getItem('token')
         if (selectedSide === 'current') {
-          response = await axios.get(`${link}/user/current-challenges`, {
+          response = await axios.get(`${link}/user/available-challenges`, {
             headers: { Authorization: `Bearer ${token}` },
           })
         } else {
