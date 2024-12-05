@@ -22,8 +22,6 @@ const Post = ({ post }) => {
   const [isCommentOpen, setIsCommentOpen] = React.useState(false)
   const [isLiked, setIsLiked] = useState(post.isLiked)
   const [likeCount, setLikeCount] = useState(post.likeCount)
-  const [isLikedComment, setIsLikedComment] = useState()
-  const [likeCountComment, setLikeCountComment] = useState()
   const [commentText, setCommentText] = useState('')
   const [comments, setComments] = useState(post.comments || [])
   const [commentCount, setCommentCount] = useState(post.commentCount || 0)
@@ -117,6 +115,25 @@ const Post = ({ post }) => {
     setCommentText(event.target.value)
   }
 
+  const fetchComments = () => {
+    const token = localStorage.getItem('token')
+    axios
+      .get(`${link}/get_comments/${post.feed_id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        if (response.data.status === 200) {
+          console.log(response.data.comments)
+          setComments(response.data.comments)
+        } else {
+          console.error('Error fetching comments:', response.data.message)
+        }
+      })
+      .catch((error) => {
+        console.error('Error fetching comments:', error)
+      })
+  }
+
   const handleCommentSubmit = () => {
     if (commentText.trim() === '') return
     const commentData = {
@@ -132,15 +149,7 @@ const Post = ({ post }) => {
         if (response.data.status === 200) {
           const currentDate = new Date()
           const formattedDate = currentDate.toISOString()
-          setComments([
-            {
-              text: commentText,
-              author_id: token,
-              created_at: formattedDate,
-              is_current_user: true,
-            },
-            ...comments,
-          ])
+          fetchComments()
           setCommentText('')
           setCommentCount(commentCount + 1)
         } else {
@@ -227,27 +236,28 @@ const Post = ({ post }) => {
             </div>
           </div>
           <div className="post__points">
-            <div className="post__points__point">
-              {' '}
-              Время
-              {/* <div className="post__time"> */}
-              <div className={`post__metric ${post.tag}-metric`}>
-                {post.time && (
-                  <div className="formatted-time">
-                    {(() => {
-                      const [hours, minutes] = post.time.split(':').map(Number)
-                      let totalHours = hours + Math.round((minutes / 60) * 2) / 2
-                      let hour = Math.floor(totalHours)
-                      if (hour !== 0) {
-                        return <span>{totalHours} часа</span>
-                      } else {
-                        return <span>{minutes} мин</span>
-                      }
-                    })()}
-                  </div>
-                )}
+            {post && post.time && (
+              <div className="post__points__point">
+                Время
+                {/* <div className="post__time"> */}
+                <div className={`post__metric ${post.tag}-metric`}>
+                  {post.time && (
+                    <div className="formatted-time">
+                      {(() => {
+                        const [hours, minutes] = post.time.split(':').map(Number)
+                        let totalHours = hours + Math.round((minutes / 60) * 2) / 2
+                        let hour = Math.floor(totalHours)
+                        if (hour !== 0) {
+                          return <span>{totalHours} часа</span>
+                        } else {
+                          return <span>{minutes} мин</span>
+                        }
+                      })()}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
+            )}
             {post && post.calories && (
               <div className="post__points__point">
                 Калории

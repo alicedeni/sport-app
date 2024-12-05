@@ -9,9 +9,8 @@ import axios from 'axios'
 import { link } from '../../consts.js'
 
 const Comment = ({ comment, onDelete }) => {
-  const [isLiked, setIsLiked] = useState(comment.isLiked)
-  const [likeCount, setLikeCount] = useState(comment.likeCount || 0)
-  console.log(comment)
+  const [isLiked, setIsLiked] = useState(comment.is_liked)
+  const [likeCount, setLikeCount] = useState(comment.likeCountComment || 0)
   const handleLikeClick = async () => {
     const likeData = { comment_id: comment.comment_id }
     const token = localStorage.getItem('token')

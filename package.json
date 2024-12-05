@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.32",
-  "description": "like & delete comments roots",
+  "version": "1.0.33",
+  "description": "like & activity importance",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

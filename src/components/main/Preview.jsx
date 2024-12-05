@@ -156,23 +156,24 @@ const Preview = () => {
               )}
             </div>
             <div className="post__points">
-              <div className="post__points__point">
-                {' '}
-                Время
-                <div className={`post__metric ${activityData.type}-metric`}>
-                  <div className="formatted-time">
-                    {(() => {
-                      const [hours, minutes] = activityData.time.split(':').map(Number)
-                      let totalHours = hours + Math.round((minutes / 60) * 2) / 2
-                      if (totalHours !== 0) {
-                        return <span>{totalHours} часа</span>
-                      } else {
-                        return <span>{minutes} мин</span>
-                      }
-                    })()}
+              {activityData && activityData.duration && (
+                <div className="post__points__point">
+                  Время
+                  <div className={`post__metric ${activityData.type}-metric`}>
+                    <div className="formatted-time">
+                      {(() => {
+                        const [hours, minutes] = activityData.time.split(':').map(Number)
+                        let totalHours = hours + Math.round((minutes / 60) * 2) / 2
+                        if (totalHours !== 0) {
+                          return <span>{totalHours} часа</span>
+                        } else {
+                          return <span>{minutes} мин</span>
+                        }
+                      })()}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               {activityData && activityData.calories && (
                 <div className="post__points__point">
                   Калории

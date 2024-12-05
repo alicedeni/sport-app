@@ -5,6 +5,7 @@ import photoPost from '../../assets/icons/photoPost.svg'
 import axios from 'axios'
 
 import { link } from '../../consts.js'
+import { act } from 'react-dom/test-utils'
 
 const ActivityMake = () => {
   const location = useLocation()
@@ -144,18 +145,6 @@ const ActivityMake = () => {
     }
   }
 
-  const handleActivityVerificationChange = async (event) => {
-    const file = event.target.files[0]
-    if (file) {
-      try {
-        const uploadedUrl = await uploadFile(file)
-        setActivityVerification(uploadedUrl)
-      } catch (error) {
-        console.error('Error uploading image:', error)
-      }
-    }
-  }
-
   const handleActivityDescriptionChange = (description) => {
     setActivityDescription(description)
   }
@@ -177,10 +166,16 @@ const ActivityMake = () => {
   const handleSaveActivity = (event) => {
     event.preventDefault()
 
-    if (!activityTag || !activityStartDate || !activityStartTime || !activityDuration) {
-      alert(
-        'Пожалуйста, заполните все обязательные поля: тип активности, дата и время начала/окончания.',
-      )
+    if (
+      !activityTag ||
+      !activityStartDate ||
+      !activityStartTime ||
+      (['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
+        !activityDuration) ||
+      (activityType === 'walk' && !activityStep) ||
+      (['bike', 'pool', 'run'].includes(activityTag) && !activityDistance)
+    ) {
+      alert('Пожалуйста, заполните все обязательные поля')
       return
     }
     const finalTag = otherActivityTag ? otherActivityTag : activityType
@@ -228,7 +223,7 @@ const ActivityMake = () => {
         <div className="activity-input">
           <div className="activity-input-title">
             <div className="activity-input-title-number">1</div>
-            Выберите вид активности
+            Выберите вид активности <span style={{ color: 'red' }}>*</span>
           </div>
           <div className="activity-input-content">
             {activityTypes.map((activity) => (
@@ -265,7 +260,9 @@ const ActivityMake = () => {
           <div className="activity-input-content" style={{ flexDirection: 'colunmn' }}>
             <div className="activity-input-content" style={{ marginLeft: '0px' }}>
               <div className="activity-input-content-item">
-                <label className="activity-input-content-item-name">Дата начала</label>
+                <label className="activity-input-content-item-name">
+                  Дата начала <span style={{ color: 'red' }}>*</span>
+                </label>
                 <input
                   className="activity-input-content-item-field"
                   type="date"
@@ -274,7 +271,9 @@ const ActivityMake = () => {
                 />
               </div>
               <div className="activity-input-content-item">
-                <label className="activity-input-content-item-name">Время начала</label>
+                <label className="activity-input-content-item-name">
+                  Время начала <span style={{ color: 'red' }}>*</span>
+                </label>
                 <input
                   className="activity-input-content-item-field"
                   type="time"
@@ -283,7 +282,12 @@ const ActivityMake = () => {
                 />
               </div>
               <div className="activity-input-content-item">
-                <label className="activity-input-content-item-name">Длительность</label>
+                <label className="activity-input-content-item-name">
+                  Длительность
+                  {['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) && (
+                    <span style={{ color: 'red' }}>*</span>
+                  )}
+                </label>
                 <input
                   className="activity-input-content-item-field"
                   type="time"
@@ -293,7 +297,9 @@ const ActivityMake = () => {
               </div>
               {['run', 'walk'].includes(activityTag) && (
                 <div className="activity-input-content-item">
-                  <label className="activity-input-content-item-name">Шаги</label>
+                  <label className="activity-input-content-item-name">
+                    Шаги {activityTag === 'walk' && <span style={{ color: 'red' }}>*</span>}
+                  </label>
                   <input
                     className="activity-input-content-item-field"
                     type="number"
@@ -306,7 +312,12 @@ const ActivityMake = () => {
               )}
               {['pool', 'bike', 'run', 'walk'].includes(activityTag) && (
                 <div className="activity-input-content-item">
-                  <label className="activity-input-content-item-name">Дистанция</label>
+                  <label className="activity-input-content-item-name">
+                    Дистанция
+                    {['pool', 'bike', 'run'].includes(activityTag) && (
+                      <span style={{ color: 'red' }}>*</span>
+                    )}
+                  </label>
                   <input
                     className="activity-input-content-item-field"
                     type="number"
