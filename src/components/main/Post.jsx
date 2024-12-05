@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar, IconButton } from '@material-ui/core'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -10,7 +10,6 @@ import HeartDefault from '../../assets/icons/heartDefault.svg'
 import CommentFilled from '../../assets/icons/commentFilled.svg'
 import SendDefault from '../../assets/icons/sendDefault.svg'
 import SendFilled from '../../assets/icons/sendFilled.svg'
-import DeleteDefault from '../../assets/icons/deleteDefault.svg'
 import Comment from './Comment'
 
 import { link } from '../../consts.js'
@@ -98,7 +97,6 @@ const Post = ({ post }) => {
         })
         .then((response) => {
           if (response.data.status === 200) {
-            console.log(response.data.comments)
             setComments(response.data.comments)
           } else {
             console.error('Error fetching comments:', response.data.message)
@@ -123,7 +121,6 @@ const Post = ({ post }) => {
       })
       .then((response) => {
         if (response.data.status === 200) {
-          console.log(response.data.comments)
           setComments(response.data.comments)
         } else {
           console.error('Error fetching comments:', response.data.message)
@@ -147,8 +144,6 @@ const Post = ({ post }) => {
       })
       .then((response) => {
         if (response.data.status === 200) {
-          const currentDate = new Date()
-          const formattedDate = currentDate.toISOString()
           fetchComments()
           setCommentText('')
           setCommentCount(commentCount + 1)

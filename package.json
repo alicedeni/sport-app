@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.33",
-  "description": "like & activity importance",
+  "version": "1.0.34",
+  "description": "fix like update",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

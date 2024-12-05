@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { IconButton } from '@material-ui/core'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -11,6 +11,12 @@ import { link } from '../../consts.js'
 const Comment = ({ comment, onDelete }) => {
   const [isLiked, setIsLiked] = useState(comment.is_liked)
   const [likeCount, setLikeCount] = useState(comment.likeCountComment || 0)
+
+  useEffect(() => {
+    setIsLiked(comment.is_liked)
+    setLikeCount(comment.likeCountComment || 0)
+  }, [comment])
+
   const handleLikeClick = async () => {
     const likeData = { comment_id: comment.comment_id }
     const token = localStorage.getItem('token')
@@ -32,6 +38,8 @@ const Comment = ({ comment, onDelete }) => {
       console.error('Error liking comment:', error)
     }
   }
+
+  useEffect(() => {}, [])
 
   return (
     <div className="post__comment">
