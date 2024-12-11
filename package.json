@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.34",
-  "description": "fix like update",
+  "version": "1.0.35",
+  "description": "pre mobile & fix",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

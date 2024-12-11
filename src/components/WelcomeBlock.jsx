@@ -62,9 +62,13 @@ const WelcomeBlock = () => {
       .then((response) => {
         if (response.data.f_hello === false) {
           axios
-            .post(`${link}/user/update_f_hello`, {
-              headers: { Authorization: `Bearer ${token}` },
-            })
+            .post(
+              `${link}/user/update_f_hello`,
+              {},
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              },
+            )
             .then(() => {
               window.location.href = '/about'
             })

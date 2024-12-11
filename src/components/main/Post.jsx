@@ -240,12 +240,10 @@ const Post = ({ post }) => {
                     <div className="formatted-time">
                       {(() => {
                         const [hours, minutes] = post.time.split(':').map(Number)
-                        let totalHours = hours + Math.round((minutes / 60) * 2) / 2
-                        let hour = Math.floor(totalHours)
-                        if (hour !== 0) {
-                          return <span>{totalHours} часа</span>
+                        if (hours > 0) {
+                          return <span>{`${hours} ч ${minutes} мин`}</span>
                         } else {
-                          return <span>{minutes} мин</span>
+                          return <span>{`${minutes} мин`}</span>
                         }
                       })()}
                     </div>
