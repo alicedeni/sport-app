@@ -126,7 +126,7 @@ const Header = ({ currentPage }) => {
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
               {mainInfo.count}
             </span>{' '}
-            пройдено
+            км пройдено
           </div>
         </div>
       )}
