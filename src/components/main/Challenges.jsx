@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { ButtonActivity } from '../Buttons'
 import axios from 'axios'
 
 import { link } from '../../consts.js'
@@ -23,6 +24,7 @@ const Challenges = () => {
     { id: 3, name: 'Отжаться 50 раз', progress: 90, points: 50 },
 */
   ])
+  const [selectedChallengeId, setSelectedChallengeId] = useState(null)
 
   useEffect(() => {
     let isMounted = true
@@ -74,6 +76,25 @@ const Challenges = () => {
       .reduce((total, challenge) => total + challenge.points, 0)
   }
 
+  const handleChallengeClick = async (challengeId) => {
+    setSelectedChallengeId(challengeId)
+    const token = localStorage.getItem('token')
+    try {
+      const response = await axios.post(
+        `${link}/user/select-challenge`,
+        { challengeId },
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      if (response.data.status === 200) {
+        console.log('Challenge selected successfully:', response.data.message)
+      } else {
+        console.error('Error selecting challenge:', response.data.message)
+      }
+    } catch (error) {
+      console.error('Error selecting challenge:', error)
+    }
+  }
+
   return (
     <div className="challenges">
       <div className="select_pt">
@@ -119,6 +140,12 @@ const Challenges = () => {
                 <div className="progress-bar">
                   <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
                 </div>
+                <ButtonActivity
+                  className="welcome-block__btn"
+                  text="Выбрать задание"
+                  textContent={'Выбрать задание'}
+                  onClick={() => handleChallengeClick(challenge.id)}
+                ></ButtonActivity>
               </div>
             ))
           ) : (

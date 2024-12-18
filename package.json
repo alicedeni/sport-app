@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.36",
-  "description": "mobile welcome + about",
+  "version": "1.0.37",
+  "description": "challenge btn",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
