@@ -10,7 +10,7 @@ const Notification = ({ isOpen, userName, onClose }) => {
     <div className="header-notification">
       <h1 className="header-notification-title">Привет, {userName}!</h1>
       <p className="header-notification-text">
-        Рады видеть тебя в нашем спортивном челлендже. Наша глобальная цель — Прошагать 1000 км .
+        Рады видеть тебя в нашем спортивном челлендже. Наша глобальная цель — Прошагать 402 км .
         <br></br>Основное соревнование начнется со второй недели, а пока что ты можешь заполнить
         данные о себе и свои персональные цели в личном профиле.
       </p>

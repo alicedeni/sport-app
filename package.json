@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.38",
-  "description": "header km",
+  "version": "1.0.39",
+  "description": "pre version about desktop",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -177,7 +177,8 @@ const ProfileData = ({
             {bmi === null
               ? 'Индекс массы тела не определен'
               : (() => {
-                  if (bmi > 18.5 && bmi <= 25) return 'Норма'
+                  if (bmi <= 18.5) return 'Ниже нормы'
+                  else if (bmi > 18.5 && bmi <= 25) return 'Норма'
                   else return 'Выше нормы'
                 })()}
           </div>
