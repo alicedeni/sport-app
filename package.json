@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.39",
-  "description": "pre version about desktop",
+  "version": "1.0.40",
+  "description": "date for test",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

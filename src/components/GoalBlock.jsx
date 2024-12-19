@@ -129,9 +129,9 @@ const GoalBlock = () => {
       title: 'СРОКИ',
       text: (
         <>
-          Старт мероприятия: <span style={{ color: '#51B8FF' }}>ДД.ММ</span>
+          Старт мероприятия: <span style={{ color: '#51B8FF' }}>19.12</span>
           <br />
-          Подведение итогов: <span style={{ color: '#51B8FF' }}>ДД.ММ</span>
+          Подведение итогов: <span style={{ color: '#51B8FF' }}>23.12</span>
         </>
       ),
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat5d.svg',
