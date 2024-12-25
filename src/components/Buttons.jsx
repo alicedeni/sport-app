@@ -77,9 +77,8 @@ export function CButtonProfile({ children, points, onClick }) {
   return (
     <button className="button cbutton-profile" onClick={handleClick}>
       <div className="points">
-        {points}
         <svg
-          style={{ marginLeft: '10px' }}
+          style={{ marginRight: '8px', marginTop: '4.54px' }}
           width="20"
           height="26"
           viewBox="0 0 20 26"
@@ -93,6 +92,7 @@ export function CButtonProfile({ children, points, onClick }) {
             fill="white"
           />
         </svg>
+        {points}
       </div>
       {children}
     </button>

@@ -1,0 +1,74 @@
+import React, { useEffect, useState } from 'react'
+import { ButtonActivity } from '../Buttons'
+import axios from 'axios'
+import { link } from '../../consts.js'
+
+const ChallengeModal = ({ onClose }) => {
+  const [challenges, setChallenges] = useState([])
+
+  useEffect(() => {
+    const fetchChallenges = async () => {
+      const token = localStorage.getItem('token')
+      try {
+        const response = await axios.get(`${link}/user/available-challenges`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        if (response.data.status === 200) {
+          console.log(response.data)
+          setChallenges(response.data.available_challenges || [])
+        } else {
+          console.error('Error fetching challenges:', response.data.message)
+        }
+      } catch (error) {
+        console.error('Error fetching challenges:', error)
+      }
+    }
+
+    fetchChallenges()
+  }, [])
+
+  const handleSelectChallenge = async (challengeId) => {
+    const token = localStorage.getItem('token')
+    try {
+      const response = await axios.post(
+        `${link}/user/select-challenge`,
+        { challengeId },
+        { headers: { Authorization: `Bearer ${token}` } },
+      )
+      if (response.data.status === 200) {
+        console.log('Challenge selected successfully:', response.data.message)
+        onClose()
+      } else {
+        console.error('Error selecting challenge:', response.data.message)
+      }
+    } catch (error) {
+      console.error('Error selecting challenge:', error)
+    }
+  }
+
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+        <span className="close" onClick={onClose}>
+          &times;
+        </span>
+        <h2>Доступные челленджи</h2>
+        <ul>
+          {challenges.map((challenge) => (
+            <li key={challenge.id}>
+              {challenge.name} - {challenge.points} баллов
+              <ButtonActivity
+                className="welcome-block__btn"
+                text="Выбрать задание"
+                textContent={'Выбрать задание'}
+                onClick={() => handleSelectChallenge(challenge.id)}
+              ></ButtonActivity>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  )
+}
+
+export default ChallengeModal

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonActivity } from '../Buttons'
+import ChallengeModal from './ChallengeModal'
 import axios from 'axios'
 
 import { link } from '../../consts.js'
 
 const Challenges = () => {
+  const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false)
   const [selectedSide, setSelectedSide] = useState('current')
   const [currentChallenges, setCurrentChallenges] = useState([
-    /*
-    { id: 1, name: 'Пробежать 10 км', progress: 75, points: 100 },
-    { id: 2, name: 'Отжаться 100 раз', progress: 50, points: 50 },
-    { id: 3, name: 'Проплыть 1 км', progress: 90, points: 75 },
-*/
+    { id: 1, name: '', progress: 0, points: 0 },
+    { id: 2, name: '', progress: 0, points: 0 },
+    { id: 3, name: '', progress: 0, points: 0 },
   ])
   const [completedChallenges, setCompletedChallenges] = useState([
     /*
@@ -25,6 +25,7 @@ const Challenges = () => {
 */
   ])
   const [selectedChallengeId, setSelectedChallengeId] = useState(null)
+  const [selectedChallengeIndex, setSelectedChallengeIndex] = useState(null)
 
   useEffect(() => {
     let isMounted = true
@@ -46,7 +47,9 @@ const Challenges = () => {
           const data = response.data
           if (data.status === 200) {
             if (selectedSide === 'current') {
-              setCurrentChallenges(data.current_challenges || [])
+              if (data.current_challenges) {
+                setCurrentChallenges(fillChallenges(data.current_challenges || []))
+              }
             } else {
               setCompletedChallenges(data.completed_challenges || [])
               setIncompletedChallenges(data.incompleted_challenges || [])
@@ -66,8 +69,17 @@ const Challenges = () => {
       isMounted = false
     }
   }, [selectedSide])
+
   const handleClick = (side) => {
     setSelectedSide(side)
+  }
+
+  const fillChallenges = (challenges, maxLength = 3) => {
+    const emptyChallenge = { id: null, name: '', progress: 0, points: 0 }
+    while (challenges.length < maxLength) {
+      challenges.push({ ...emptyChallenge, id: challenges.length + 1 })
+    }
+    return challenges
   }
 
   const calculateCompletedPoints = () => {
@@ -93,6 +105,11 @@ const Challenges = () => {
     } catch (error) {
       console.error('Error selecting challenge:', error)
     }
+  }
+
+  const handleOpenModal = (index) => {
+    setSelectedChallengeIndex(index)
+    setIsChallengeModalOpen(true)
   }
 
   return (
@@ -124,6 +141,9 @@ const Challenges = () => {
 
       {selectedSide === 'current' ? (
         <div className="current-challenges">
+          {isChallengeModalOpen && (
+            <ChallengeModal onClose={() => setIsChallengeModalOpen(false)} />
+          )}
           <div className="metrics">
             Выбрано{' '}
             <span style={{ color: '#51B8FF' }}>
@@ -131,21 +151,31 @@ const Challenges = () => {
             </span>
           </div>
           {currentChallenges.length > 0 ? (
-            currentChallenges.map((challenge) => (
+            currentChallenges.map((challenge, index) => (
               <div key={challenge.id} className="challenge-item">
-                <div className="challenge-item-text">
-                  <h3 className="challenge-item-text-name">{challenge.name}</h3>
-                  <div className="challenge-item-text-points">{challenge.points} баллов</div>
-                </div>
-                <div className="progress-bar">
-                  <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
-                </div>
-                <ButtonActivity
-                  className="welcome-block__btn"
-                  text="Выбрать задание"
-                  textContent={'Выбрать задание'}
-                  onClick={() => handleChallengeClick(challenge.id)}
-                ></ButtonActivity>
+                {challenge.name ? (
+                  <>
+                    <div className="challenge-item-text">
+                      <h3 className="challenge-item-text-name">{challenge.name}</h3>
+                      <div className="challenge-item-text-points">{challenge.points} баллов</div>
+                    </div>
+                    <div className="progress-bar">
+                      <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="empty-challenge">
+                      <p>Задание не выбрано</p>
+                      <ButtonActivity
+                        className="welcome-block__btn"
+                        text="Выбрать задание"
+                        textContent={'Выбрать задание'}
+                        onClick={() => handleOpenModal(index)}
+                      ></ButtonActivity>
+                    </div>
+                  </>
+                )}
               </div>
             ))
           ) : (
