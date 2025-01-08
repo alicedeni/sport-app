@@ -14,7 +14,6 @@ const ChallengeModal = ({ onClose }) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (response.data.status === 200) {
-          console.log(response.data)
           setChallenges(response.data.available_challenges || [])
         } else {
           console.error('Error fetching challenges:', response.data.message)

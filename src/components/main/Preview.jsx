@@ -159,15 +159,16 @@ const Preview = () => {
               {activityData && activityData.duration && (
                 <div className="post__points__point">
                   Время
-                  <div className={`post__metric ${activityData.type}-metric`}>
+                  <div className={`post__metric`}>
                     <div className="formatted-time">
                       {(() => {
                         const [hours, minutes] = activityData.time.split(':').map(Number)
-                        let totalHours = hours + Math.round((minutes / 60) * 2) / 2
-                        if (totalHours !== 0) {
-                          return <span>{totalHours} часа</span>
+                        if (minutes === 0) {
+                          return <span>{`${hours} ч`}</span>
+                        } else if (hours > 0) {
+                          return <span>{`${hours} ч ${minutes} мин`}</span>
                         } else {
-                          return <span>{minutes} мин</span>
+                          return <span>{`${minutes} мин`}</span>
                         }
                       })()}
                     </div>
@@ -177,29 +178,25 @@ const Preview = () => {
               {activityData && activityData.calories && (
                 <div className="post__points__point">
                   Калории
-                  <div className={`post__metric ${activityData.type}-metric`}>
-                    {activityData.calories} ккал
-                  </div>
+                  <div className={`post__metric`}>{activityData.calories} ккал</div>
                 </div>
               )}
               {activityData && activityData.step && (
                 <div className="post__points__point">
                   Шаги
-                  <div className={`post__metric ${activityData.type}-metric`}>
-                    {activityData.step} шагов
-                  </div>
+                  <div className={`post__metric`}>{activityData.step} шагов</div>
                 </div>
               )}
               {activityData && activityData.distance && (
                 <div className="post__points__point">
                   Дистанция
-                  <div className={`post__metric ${activityData.type}-metric`}>
+                  <div className={`post__metric`}>
                     {activityData.distance} {activityData.type === 'pool' ? 'м' : 'км'}
                   </div>
                 </div>
               )}
             </div>
-            <div className="post__line"></div>
+            {activityData && activityData.text && <div className="post__line"></div>}
             {activityData && <div className="post__text">{activityData.description}</div>}
           </div>
         </div>

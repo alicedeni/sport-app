@@ -98,6 +98,7 @@
     &__points {
       margin: 20px 0px;
       display: flex;
+      flex-wrap: wrap;
       gap: 20px;
       &__point {
         display: flex;
@@ -111,12 +112,41 @@
 
     &__title {
       display: flex;
+      gap: 20px;
+      &-fire {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: $gradient;
+        border-radius: 24px;
+        padding: 2px;
+        height: 49px;
+
+        & > div {
+          background: white;
+          padding: 0 10px 0 20px;
+          border-radius: 24px;
+          height: 44px;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        &-count {
+          font-size: 24px;
+          font-weight: bold;
+          background-image: $gradient;
+          margin-right: 5px;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      }
     }
     &__line {
       width: 100%;
       height: 1px;
       background-color: $grey1;
-
     }
   
     &__time {
@@ -153,56 +183,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      
-      &.pool-metric {
-        color: $blue;
-        border: 2px solid $blue;
-      }
-      
-      &.cardio-metric {
-        color: $yellow;
-        border: 2px solid $yellow;
-      }
-      
-      &.run-metric {
-        color: $green;
-        border: 2px solid $green;
-      }
-      
-      &.power-metric {
-        color: $pink;
-        border: 2px solid $pink;
-      }
-      
-      &.bike-metric {
-        color: $purple2;
-        border: 2px solid $purple2;
-      }
-      
-      &.yoga-metric {
-        color: $turquoise;
-        border: 2px solid $turquoise;
-      }
-
-      &.walk-metric {
-        color: $orange;
-        border: 2px solid $orange;
-      }
-
-      &.game-metric {
-        color: $dark-blue;
-        border: 2px solid $dark-blue;
-      }
-      
-      &.dance-metric {
-        color: $purple1;
-        border: 2px solid $purple1;
-      }
-      
-      &.other-metric {
-        color: $grey4;
-        border: 2px solid $grey4;
-      }
+      color: $grey4;
+      border: 2px solid $grey1;
     }
   
     &__actions {
