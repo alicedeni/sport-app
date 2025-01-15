@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../components/main/Header'
-import MobileHeader from '../components/main/MobileHeader'
+import MobileHeader from '@components/mobile/MobileHeader'
 import Activity from '../components/main/Activity'
+import MobileFooter from '@components/mobile/MobileFooter'
 
 const ActivityPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
@@ -21,6 +22,7 @@ const ActivityPage = () => {
       <div className="main">
         <Activity />
       </div>
+      {isMobile && <MobileFooter />}
     </div>
   )
 }

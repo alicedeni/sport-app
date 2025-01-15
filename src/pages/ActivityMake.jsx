@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../components/main/Header'
-import MobileHeader from '../components/main/MobileHeader'
+import MobileHeader from '@components/mobile/MobileHeader'
+import MobileFooter from '@components/mobile/MobileFooter'
 import ActivityMake from '../components/main/ActivityMake'
 
 const ActivityMakePage = () => {
@@ -21,6 +22,7 @@ const ActivityMakePage = () => {
       <div className="main">
         <ActivityMake />
       </div>
+      {isMobile && <MobileFooter />}
     </div>
   )
 }

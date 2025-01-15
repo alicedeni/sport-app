@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import ProfileBlock from '../components/ProfileBlock'
 import axios from 'axios'
 import Header from '../components/main/Header'
-import MobileHeader from '../components/main/MobileHeader'
+import MobileHeader from '@components/mobile/MobileHeader'
 import { link } from '../consts.js'
+import MobileFooter from '@components/mobile/MobileFooter'
 
 const Profile = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
@@ -53,6 +54,7 @@ const Profile = () => {
       <div className="main" style={{ marginTop: '100px' }}>
         <ProfileBlock user={user} setUser={setUser} />
       </div>
+      {isMobile && <MobileFooter />}
     </div>
   )
 }

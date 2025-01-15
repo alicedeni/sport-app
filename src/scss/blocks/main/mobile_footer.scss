@@ -1,0 +1,56 @@
+.mobile-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: $gradient;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  border-radius: 20px 20px 0 0 ;
+
+  &__icon {
+    width: 36px;
+    height: 36px;
+    transition: opacity 0.3s ease;
+  }
+
+  &__list {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    &-item {
+      text-align: center;
+      padding: 10px;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+      }
+    }
+    &-link {
+      color: $white2;
+      font-size: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .filled {
+        display: none;
+      }
+
+      &:hover .default {
+        display: none;
+      }
+
+      &:hover .filled {
+        display: block;
+      }
+    }
+  }
+}

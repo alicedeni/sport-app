@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Header from '../components/main/Header'
-import MobileHeader from '../components/main/MobileHeader'
+import MobileHeader from '@components/mobile/MobileHeader'
 import Ratings from '../components/main/Ratings'
+import MobileFooter from '@components/mobile/MobileFooter'
 
 const RatingsPage = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
@@ -21,6 +22,7 @@ const RatingsPage = () => {
       <div className="main">
         <Ratings />
       </div>
+      {isMobile && <MobileFooter />}
     </div>
   )
 }

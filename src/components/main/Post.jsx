@@ -26,6 +26,7 @@ const Post = ({ post }) => {
   const [commentCount, setCommentCount] = useState(post.commentCount || 0)
   const [sendIcon, setSendIcon] = useState('SendDefault')
   const hasImage = post && post.image
+  console.log(post)
 
   const handleLikeClick = () => {
     const likeData = {
@@ -231,7 +232,7 @@ const Post = ({ post }) => {
             </div>
             <div className="post__title-fire">
               <div>
-                <div className="post__title-fire-count">{post.fireCount}</div>
+                <div className="post__title-fire-count">{post.postfireCount}</div>
                 <svg
                   width="32"
                   height="32"
@@ -264,6 +265,14 @@ const Post = ({ post }) => {
             </div>
           </div>
           <div className="post__points">
+            {post && post.timestamp && (
+              <div className="post__points__point">
+                Дата
+                <div className={`post__metric`}>
+                  {format(new Date(post.timestamp), 'd MMM, HH:mm', { locale: ru })}
+                </div>
+              </div>
+            )}
             {post && post.time && (
               <div className="post__points__point">
                 Время
