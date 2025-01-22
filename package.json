@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.45",
-  "description": "distance dot",
+  "version": "1.0.46",
+  "description": "preview connect",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

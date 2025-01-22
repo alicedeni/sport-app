@@ -287,7 +287,7 @@ const ActivityMake = () => {
               </div>
               <div className="activity-input-content-item">
                 <label className="activity-input-content-item-name">
-                  Время начала <span style={{ color: 'red' }}>*</span>
+                  Время начала (чч:мм)<span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                   className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}
@@ -298,7 +298,7 @@ const ActivityMake = () => {
               </div>
               <div className="activity-input-content-item">
                 <label className="activity-input-content-item-name">
-                  Длительность
+                  Длительность (чч:мм)
                   {['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) && (
                     <span style={{ color: 'red' }}>*</span>
                   )}

@@ -492,11 +492,13 @@ const ProfileBlock = ({ user }) => {
           textContent={'Выйти из аккаунта'}
           onClick={handleExit}
         />
+        {/*
         <ButtonDelete
           text="Удалить аккаунт"
           textContent={'Удалить аккаунт'}
           onClick={handleDelete}
         />
+        */}
       </div>
     </div>
   )
