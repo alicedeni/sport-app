@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.44",
-  "description": "ratings & errors",
+  "version": "1.0.45",
+  "description": "distance dot",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

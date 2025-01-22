@@ -95,8 +95,8 @@ const ActivityMake = () => {
     setActivityStep(step)
   }
 
-  const handleActivityDistanceChange = (step) => {
-    setActivityDistance(step)
+  const handleActivityDistanceChange = (distance) => {
+    setActivityDistance(distance)
   }
 
   const getImgKeys = async () => {
@@ -165,7 +165,7 @@ const ActivityMake = () => {
   }
 
   const handleKeyPress = (event) => {
-    if (!/[0-9]/.test(event.key)) {
+    if (!/[0-9,.]/.test(event.key)) {
       event.preventDefault()
     }
   }
@@ -340,6 +340,7 @@ const ActivityMake = () => {
                     onChange={(e) => handleActivityDistanceChange(e.target.value)}
                     onKeyPress={handleKeyPress}
                     min="1"
+                    step="0.01"
                   />
                   <label className="calories-label">{activityTag === 'pool' ? 'м' : 'км'}</label>
                 </div>
