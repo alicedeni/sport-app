@@ -33,6 +33,25 @@ const Preview = () => {
       })
   }
 
+  const handlePreview = () => {
+    if (!activityData) {
+      console.error('Данные активности отсутствуют')
+      return
+    }
+
+    const token = localStorage.getItem('token')
+    axios
+      .post(`${link}/user/preview_post`, activityData, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  }
+
   useEffect(() => {
     console.log(activityData)
     getUserData()
@@ -42,6 +61,8 @@ const Preview = () => {
         }
       })
       .catch((error) => console.error(error))
+
+    handlePreview()
     return () => {
       isMounted.current = false
     }

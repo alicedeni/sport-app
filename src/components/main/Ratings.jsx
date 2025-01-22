@@ -106,6 +106,12 @@ const Ratings = () => {
     setSelectedTeam(null)
   }
 
+  const teamGradients = [
+    'linear-gradient(to right, rgba(255, 204, 56, 0.3) 10%, white 25%)',
+    'linear-gradient(to right, rgba(0, 120, 212, 0.3) 10%, white 25%)',
+    'linear-gradient(to right, rgba(255, 61, 117, 0.3) 10%, white 25%)',
+  ]
+
   return (
     <div className="ratings">
       <div className="ratings-select_pt">
@@ -129,7 +135,7 @@ const Ratings = () => {
 
       {selectedSide === 'left' ? (
         <div className="ratings-participants-list">
-          <div className="ratings-participants-leagues">
+          {/* <div className="ratings-participants-leagues">
             {leagues.map((league, index) => (
               <div
                 key={league.id}
@@ -149,6 +155,7 @@ const Ratings = () => {
               </div>
             ))}
           </div>
+          */}
           <table>
             <thead>
               <tr>
@@ -161,6 +168,7 @@ const Ratings = () => {
             <tbody>
               {selectedLeague.includes(1) ? (
                 <>
+                  {/*
                   <tr>
                     <th
                       colSpan="4"
@@ -175,6 +183,7 @@ const Ratings = () => {
                       {leagues.find((l) => l.id === 2)?.name}
                     </th>
                   </tr>
+                  */}
                   {filteredParticipants
                     .filter((participant) => participant.league.toLowerCase() === 'gold')
                     .map((participant, index) => (
@@ -187,6 +196,7 @@ const Ratings = () => {
                         <td>{participant.progress}</td>
                       </tr>
                     ))}
+                  {/*
                   <tr>
                     <th
                       colSpan="4"
@@ -201,6 +211,7 @@ const Ratings = () => {
                       {leagues.find((l) => l.id === 3)?.name}
                     </th>
                   </tr>
+                  */}
                   {filteredParticipants
                     .filter((participant) => participant.league.toLowerCase() === 'silver')
                     .map((participant, index) => (
@@ -213,6 +224,7 @@ const Ratings = () => {
                         <td>{participant.progress}</td>
                       </tr>
                     ))}
+                  {/*
                   <tr>
                     <th
                       colSpan="4"
@@ -227,6 +239,7 @@ const Ratings = () => {
                       {leagues.find((l) => l.id === 4)?.name}
                     </th>
                   </tr>
+                  */}
                   {filteredParticipants
                     .filter((participant) => participant.league.toLowerCase() === 'bronze')
                     .map((participant, index) => (
@@ -289,8 +302,16 @@ const Ratings = () => {
               key={team.id}
               className="ratings-teams-list-team-item"
               onClick={() => handleTeamClick(team)}
+              style={{
+                background: teamGradients[index] || 'white',
+              }}
             >
               <div className="ratings-teams-list-team-item-team-num">{index + 1}</div>
+              <img
+                src="https://storage.yandexcloud.net/team2go/users/base/cat1.svg"
+                alt="Team Icon"
+                className="team-icon"
+              />
               <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
               <div className="ratings-teams-list-team-item-team-members">
                 {team.members} участников

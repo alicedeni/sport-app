@@ -265,11 +265,15 @@ const Post = ({ post }) => {
             </div>
           </div>
           <div className="post__points">
-            {post && post.timestamp && (
+            {post && post.activityDate && post.timeBeginning && (
               <div className="post__points__point">
                 Дата
                 <div className={`post__metric`}>
-                  {format(new Date(post.timestamp), 'd MMM, HH:mm', { locale: ru })}
+                  {format(
+                    new Date(`${post.activityDate}T${post.timeBeginning}:00`),
+                    'd MMM, HH:mm',
+                    { locale: ru },
+                  )}
                 </div>
               </div>
             )}

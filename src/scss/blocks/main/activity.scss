@@ -234,6 +234,9 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            &.error {
+              border: 2px solid red;
+            }
             &-other{
               width: auto;
               height: 50px;

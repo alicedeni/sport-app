@@ -5,7 +5,6 @@ import photoPost from '../../assets/icons/photoPost.svg'
 import axios from 'axios'
 
 import { link } from '../../consts.js'
-import { act } from 'react-dom/test-utils'
 
 const ActivityMake = () => {
   const location = useLocation()
@@ -26,6 +25,14 @@ const ActivityMake = () => {
   const [activityImage, setActivityImage] = useState(null)
   const [activityDescription, setActivityDescription] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [requiredFields, setRequiredFields] = useState({
+    activityTag: false,
+    activityStartDate: false,
+    activityStartTime: false,
+    activityDuration: false,
+    activityStep: false,
+    activityDistance: false,
+  })
   const navigate = useNavigate()
 
   const formatDateToInput = (date) => {
@@ -166,15 +173,23 @@ const ActivityMake = () => {
   const handleSaveActivity = (event) => {
     event.preventDefault()
 
-    if (
-      !activityTag ||
-      !activityStartDate ||
-      !activityStartTime ||
-      (['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
-        !activityDuration) ||
-      (activityType === 'walk' && !activityStep) ||
-      (['bike', 'pool', 'run'].includes(activityTag) && !activityDistance)
-    ) {
+    const newRequiredFields = {
+      activityTag: !activityTag,
+      activityStartDate: !activityStartDate,
+      activityStartTime: !activityStartTime,
+      activityDuration:
+        ['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
+        !activityDuration,
+      activityStep: activityType === 'walk' && !activityStep,
+      activityDistance: ['bike', 'pool', 'run'].includes(activityTag) && !activityDistance,
+    }
+
+    setRequiredFields((prevFields) => ({
+      ...prevFields,
+      ...newRequiredFields,
+    }))
+
+    if (Object.values(newRequiredFields).some((field) => field)) {
       alert('Пожалуйста, заполните все обязательные поля')
       return
     }
@@ -264,7 +279,7 @@ const ActivityMake = () => {
                   Дата начала <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
-                  className="activity-input-content-item-field"
+                  className={`activity-input-content-item-field ${requiredFields.activityStartDate ? 'error' : ''}`}
                   type="date"
                   value={activityStartDate}
                   onChange={(e) => setActivityStartDate(e.target.value)}
@@ -275,7 +290,7 @@ const ActivityMake = () => {
                   Время начала <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
-                  className="activity-input-content-item-field"
+                  className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}
                   type="time"
                   value={activityStartTime}
                   onChange={(e) => handleActivityStartTimeChange(e.target.value)}
@@ -289,7 +304,7 @@ const ActivityMake = () => {
                   )}
                 </label>
                 <input
-                  className="activity-input-content-item-field"
+                  className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}
                   type="time"
                   value={activityDuration}
                   onChange={(e) => handleActivityDurationChange(e.target.value)}
@@ -301,7 +316,7 @@ const ActivityMake = () => {
                     Шаги {activityTag === 'walk' && <span style={{ color: 'red' }}>*</span>}
                   </label>
                   <input
-                    className="activity-input-content-item-field"
+                    className={`activity-input-content-item-field ${requiredFields.activityStep ? 'error' : ''}`}
                     type="number"
                     value={activityStep}
                     onChange={(e) => handleActivityStepChange(e.target.value)}
@@ -319,7 +334,7 @@ const ActivityMake = () => {
                     )}
                   </label>
                   <input
-                    className="activity-input-content-item-field"
+                    className={`activity-input-content-item-field ${requiredFields.activityDistance ? 'error' : ''}`}
                     type="number"
                     value={activityDistance}
                     onChange={(e) => handleActivityDistanceChange(e.target.value)}

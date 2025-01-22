@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.43",
-  "description": "mobile header & footer first version",
+  "version": "1.0.44",
+  "description": "ratings & errors",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
