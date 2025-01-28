@@ -17,7 +17,6 @@ const WelcomeBlock = () => {
       setError('Пожалуйста, введите корректный email.')
     } else {
       setError('')
-      console.log({ email, password })
       const token = localStorage.getItem('token')
       axios
         .post(
@@ -35,7 +34,7 @@ const WelcomeBlock = () => {
             checkHelloStatus()
           } else {
             console.error(error)
-            setError('Произошла ошибка при входе.')
+            setError('Введен неверный логин или пароль.')
           }
         })
         .catch((error) => {

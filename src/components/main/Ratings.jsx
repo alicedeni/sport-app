@@ -112,6 +112,12 @@ const Ratings = () => {
     'linear-gradient(to right, rgba(255, 61, 117, 0.3) 10%, white 25%)',
   ]
 
+  const participantColors = [
+    'rgba(255, 204, 56, 0.5)',
+    'rgba(0, 120, 212, 0.5)',
+    'rgba(255, 61, 117, 0.5)',
+  ]
+
   return (
     <div className="ratings">
       <div className="ratings-select_pt">
@@ -244,7 +250,13 @@ const Ratings = () => {
                     .filter((participant) => participant.league.toLowerCase() === 'bronze')
                     .map((participant, index) => (
                       <tr key={participant.id}>
-                        <td>{index + 1}</td>
+                        <td
+                          style={{
+                            color: participantColors[index],
+                          }}
+                        >
+                          {index + 1}
+                        </td>
                         <td>
                           {participant.lastName} {participant.firstName}
                         </td>
@@ -306,13 +318,37 @@ const Ratings = () => {
                 background: teamGradients[index] || 'white',
               }}
             >
-              <div className="ratings-teams-list-team-item-team-num">{index + 1}</div>
-              <img
-                src="https://storage.yandexcloud.net/team2go/users/base/cat1.svg"
-                alt="Team Icon"
-                className="team-icon"
-              />
-              <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
+              <div className="ratings-teams-list-team-item-team">
+                <div className="ratings-teams-list-team-item-team-num">
+                  {index === 0 ? (
+                    <img
+                      src="https://storage.yandexcloud.net/team2go/users/base/1.svg"
+                      alt="Gold Medal"
+                      className="medal-icon"
+                    />
+                  ) : index === 1 ? (
+                    <img
+                      src="https://storage.yandexcloud.net/team2go/users/base/2.svg"
+                      alt="Silver Medal"
+                      className="medal-icon"
+                    />
+                  ) : index === 2 ? (
+                    <img
+                      src="https://storage.yandexcloud.net/team2go/users/base/3.svg"
+                      alt="Bronze Medal"
+                      className="medal-icon"
+                    />
+                  ) : (
+                    index + 1
+                  )}
+                </div>
+                <img
+                  src="https://storage.yandexcloud.net/team2go/users/base/cat1.svg"
+                  alt="Team Icon"
+                  className="team-icon"
+                />
+                <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
+              </div>
               <div className="ratings-teams-list-team-item-team-members">
                 {team.members} участников
               </div>

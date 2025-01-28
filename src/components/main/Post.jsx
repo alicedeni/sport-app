@@ -11,6 +11,7 @@ import CommentFilled from '../../assets/icons/commentFilled.svg'
 import SendDefault from '../../assets/icons/sendDefault.svg'
 import SendFilled from '../../assets/icons/sendFilled.svg'
 import Comment from './Comment'
+import ImageModal from './ImageModal'
 
 import { link } from '../../consts.js'
 
@@ -26,7 +27,8 @@ const Post = ({ post }) => {
   const [commentCount, setCommentCount] = useState(post.commentCount || 0)
   const [sendIcon, setSendIcon] = useState('SendDefault')
   const hasImage = post && post.image
-  console.log(post)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [enlargedImageUrl, setEnlargedImageUrl] = useState('')
 
   const handleLikeClick = () => {
     const likeData = {
@@ -166,6 +168,11 @@ const Post = ({ post }) => {
     setSendIcon(isHovered ? 'SendFilled' : 'SendDefault')
   }
 
+  const handleImageClick = () => {
+    setEnlargedImageUrl(post.image)
+    setIsModalOpen(true)
+  }
+
   return (
     <div className="post">
       <div className="post__header">
@@ -216,7 +223,12 @@ const Post = ({ post }) => {
         <div className={`post__image-container ${hasImage ? '' : 'post__image-container-svg'}`}>
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
           {hasImage ? (
-            <img className="post__image" src={post.image} alt="Post image" />
+            <img
+              className="post__image"
+              src={post.image}
+              alt="Post image"
+              onClick={handleImageClick}
+            />
           ) : (
             <img
               className="post__image"
@@ -380,6 +392,12 @@ const Post = ({ post }) => {
           </div>
         )}
       </div>
+      {isModalOpen && (
+        <ImageModal
+          imageUrl={enlargedImageUrl}
+          onClose={() => setIsModalOpen(false)} // Close handler
+        />
+      )}
     </div>
   )
 }

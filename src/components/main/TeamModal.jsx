@@ -10,7 +10,13 @@ const TeamModal = ({ team, onClose, participants }) => {
           &times;
         </span>
         <div className="profile-block-content-comands-items-rect"></div>
-        <div className="profile-block-content-comands-items-circle"></div>
+        <div className="profile-block-content-comands-items-circle">
+          <img
+            src="https://storage.yandexcloud.net/team2go/users/base/cat1.svg"
+            alt="Team Icon"
+            className="team-icon"
+          />
+        </div>
         <h2 className="modal-content__title">{team.name}</h2>
         <div className="modal-content__description">
           <div className="modal-content__description-info">

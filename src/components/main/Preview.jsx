@@ -49,7 +49,6 @@ const Preview = () => {
       })
       .then((response) => {
         const enrichedData = response.data.preview_data
-        console.log(enrichedData)
         const allData = {
           ...activityData,
           ...enrichedData,

@@ -27,7 +27,6 @@ const ProfileData = ({
   // Расчет ИМТ
   const calculateBMI = () => {
     const { height, weight } = tempUser
-    console.log(weight, height)
     if (!height || !weight || height === '0' || weight === '0') {
       return null
     }
@@ -35,7 +34,6 @@ const ProfileData = ({
   }
 
   const bmi = calculateBMI()
-  console.log(bmi)
 
   return (
     <div className="profile-block-content-data">
