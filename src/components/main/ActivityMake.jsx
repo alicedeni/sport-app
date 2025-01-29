@@ -339,7 +339,7 @@ const ActivityMake = () => {
                     value={activityDistance}
                     onChange={(e) => handleActivityDistanceChange(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    min="1"
+                    min="0"
                     step="0.01"
                   />
                   <label className="calories-label">{activityTag === 'pool' ? 'м' : 'км'}</label>

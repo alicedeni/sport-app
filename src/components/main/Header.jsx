@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Notification from './Notification'
 import { CButtonProfile } from '../Buttons'
 import axios from 'axios'
@@ -18,6 +18,23 @@ const Header = ({ currentPage }) => {
     participants: 0,
     count: 0,
   })
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response && error.response.status === 401) {
+          navigate('/')
+        }
+        return Promise.reject(error)
+      },
+    )
+
+    return () => {
+      axios.interceptors.response.eject(interceptor)
+    }
+  }, [navigate])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -38,6 +55,9 @@ const Header = ({ currentPage }) => {
       })
       .catch((error) => {
         console.error(error)
+        if (error.response && error.response.status === 401) {
+          navigate('/')
+        }
       })
       .finally(() => setLoadingUser(false))
   }, [])

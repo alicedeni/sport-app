@@ -49,9 +49,11 @@ const Preview = () => {
       })
       .then((response) => {
         const enrichedData = response.data.preview_data
+        const { distance, ...restOfEnrichedData } = enrichedData
         const allData = {
           ...activityData,
-          ...enrichedData,
+          ...restOfEnrichedData,
+          distance_info: distance,
         }
         setActivityData(allData)
       })
@@ -61,7 +63,6 @@ const Preview = () => {
   }
 
   useEffect(() => {
-    console.log(activityData)
     getUserData()
       .then((data) => {
         if (data && data.profile) {
@@ -230,13 +231,13 @@ const Preview = () => {
                   </div>
                 </div>
               )}
-              {activityData && activityData.duration && (
+              {activityData && activityData.duration_hours && (
                 <div className="post__points__point">
                   Время
                   <div className={`post__metric`}>
                     <div className="formatted-time">
                       {(() => {
-                        const [hours, minutes] = activityData.time.split(':').map(Number)
+                        const [hours, minutes] = activityData.duration_hours.split(':').map(Number)
                         if (minutes === 0) {
                           return <span>{`${hours} ч`}</span>
                         } else if (hours > 0) {
@@ -261,11 +262,11 @@ const Preview = () => {
                   <div className={`post__metric`}>{activityData.step} шагов</div>
                 </div>
               )}
-              {activityData && activityData.distance && (
+              {activityData && activityData.distance_info && (
                 <div className="post__points__point">
                   Дистанция
                   <div className={`post__metric`}>
-                    {activityData.distance} {activityData.type === 'pool' ? 'м' : 'км'}
+                    {activityData.distance_info} {activityData.type === 'pool' ? 'м' : 'км'}
                   </div>
                 </div>
               )}
