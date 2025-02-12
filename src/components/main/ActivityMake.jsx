@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonEnter } from '../Buttons'
+import ErrorModal from './ErrorModal'
 import { useNavigate, useLocation } from 'react-router-dom'
 import photoPost from '../../assets/icons/photoPost.svg'
 import axios from 'axios'
@@ -33,6 +34,8 @@ const ActivityMake = () => {
     activityStep: false,
     activityDistance: false,
   })
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
+  const [modalErrorMessage, setModalErrorMessage] = useState('')
   const navigate = useNavigate()
 
   const formatDateToInput = (date) => {
@@ -190,7 +193,8 @@ const ActivityMake = () => {
     }))
 
     if (Object.values(newRequiredFields).some((field) => field)) {
-      alert('Пожалуйста, заполните все обязательные поля')
+      setModalErrorMessage('Пожалуйста, заполните все обязательные поля')
+      setIsErrorModalOpen(true)
       return
     }
     const finalTag = otherActivityTag ? otherActivityTag : activityType
@@ -200,7 +204,8 @@ const ActivityMake = () => {
     const now = new Date()
 
     if (startDateTime > now) {
-      alert('Дата и время начала не могут быть в будущем.')
+      setModalErrorMessage('Дата и время начала не могут быть в будущем.')
+      setIsErrorModalOpen(true)
       return
     }
 
@@ -398,6 +403,9 @@ const ActivityMake = () => {
           ></ButtonEnter>
         </div>
       </form>
+      {isErrorModalOpen && (
+        <ErrorModal message={modalErrorMessage} onClose={() => setIsErrorModalOpen(false)} />
+      )}
     </div>
   )
 }

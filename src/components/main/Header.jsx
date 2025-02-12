@@ -13,35 +13,15 @@ const Header = ({ currentPage }) => {
   const [points, setPoints] = useState(0)
   const [goal, setGoal] = useState(0)
   const [loadingUser, setLoadingUser] = useState(true)
-  const [mainInfo, setMainInfo] = useState({
-    teams: 0,
-    participants: 0,
-    count: 0,
-  })
+  const [mainInfo, setMainInfo] = useState({ teams: 0, participants: 0, count: 0 })
+  const [showTooltip, setShowTooltip] = useState(false)
+
   const navigate = useNavigate()
-
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response && error.response.status === 401) {
-          navigate('/')
-        }
-        return Promise.reject(error)
-      },
-    )
-
-    return () => {
-      axios.interceptors.response.eject(interceptor)
-    }
-  }, [navigate])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
     axios
-      .get(`${link}/main`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .get(`${link}/main`, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => {
         setUserName(response.data.name)
         setAvatar(response.data.avatar)
@@ -53,18 +33,23 @@ const Header = ({ currentPage }) => {
           count: response.data.count,
         })
       })
-      .catch((error) => {
-        console.error(error)
-        if (error.response && error.response.status === 401) {
+      .catch(() => navigate('/'))
+      .finally(() => setLoadingUser(false))
+
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
           navigate('/')
         }
-      })
-      .finally(() => setLoadingUser(false))
-  }, [])
+        return Promise.reject(error)
+      },
+    )
 
-  const handlePageNotification = () => {
-    setIsNotificationOpen(false)
-  }
+    return () => axios.interceptors.response.eject(interceptor)
+  }, [navigate])
+
+  const handlePageNotification = () => setIsNotificationOpen(false)
 
   if (loadingUser) {
     return (
@@ -110,7 +95,6 @@ const Header = ({ currentPage }) => {
           </Link>
         </div>
       </nav>
-
       {currentPage === 'feed' && isNotificationOpen && (
         <Notification
           isOpen={isNotificationOpen}
@@ -118,16 +102,19 @@ const Header = ({ currentPage }) => {
           onClose={handlePageNotification}
         />
       )}
-
       {(currentPage === 'challenges' || (currentPage === 'feed' && !isNotificationOpen)) && (
         <div className="goal-status">
           <div className="goal-text">Наша цель — Прошагать 402 км.</div>
-          <div className="goal-bar">
+          <div
+            className="goal-bar"
+            onMouseEnter={() => setShowTooltip(true)}
+            onMouseLeave={() => setShowTooltip(false)}
+            style={{ position: 'relative' }}
+          >
             <div className="goal" style={{ width: `${goal}%` }}></div>
           </div>
         </div>
       )}
-
       {currentPage === 'feed' && !isNotificationOpen && (
         <div className="goal-info">
           <div className="goal-info__metrics">

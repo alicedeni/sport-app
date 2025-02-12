@@ -118,7 +118,7 @@
           justify-content: center;
         }
       }
-      
+
       &-content {
         margin-left: 60px;
         display: flex;
@@ -126,7 +126,7 @@
         flex-wrap: wrap;
         gap: 20px;
 
-      
+
         &-description {
           border-radius: 10px;
           border: 2px solid $grey1;
@@ -134,7 +134,7 @@
           padding: 20px;
           resize: none;
         }
-      
+
         &-image {
           background: $grey3;
           width: 20%;
@@ -148,13 +148,13 @@
           cursor: pointer;
           position: relative;
           overflow: hidden;
-      
+
           & label {
             color: $grey2;
             cursor: pointer;
             z-index: 1;
           }
-      
+
           & input[type="file"] {
             position: absolute;
             top: 0;
@@ -174,7 +174,7 @@
             align-items: center;
           }
         }
-      
+
         &-verification {
           background: $grey3;
           width: 400px;
@@ -187,13 +187,13 @@
           cursor: pointer;
           position: relative;
           overflow: hidden;
-      
+
           & label {
             color: $grey2;
             cursor: pointer;
             z-index: 1;
           }
-      
+
           & input[type="file"] {
             position: absolute;
             top: 0;
@@ -257,11 +257,11 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 input[type="date"] {
   -webkit-appearance: none;
-  appearance: none; 
+  appearance: none;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none; 
+  display: none;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator,
@@ -278,7 +278,7 @@ input[type="date"]::-webkit-outer-spin-button {
   margin-left: 10px;
   font-size: 20px;
   color: $blue;
-  background: $blue-20p; 
+  background: $blue-20p;
   padding: 0px 5px;
   border-radius: 50px;
 }
@@ -312,4 +312,42 @@ input[type="date"]::-webkit-outer-spin-button {
   .select_time{
     flex-direction: column;
   }
+}
+
+.error-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  z-index: 1000;
+}
+
+.error-modal-content {
+  background-color: white;
+  height: 150px;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.error-modal-content p {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.error-modal-content button {
+  padding: 0 20px;
+  height: 40px;
+  background-color: $blue;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
 }
