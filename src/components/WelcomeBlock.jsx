@@ -12,7 +12,7 @@ const WelcomeBlock = () => {
   const handleLogin = (event) => {
     event.preventDefault()
     if (email.trim() === '' || password.trim() === '') {
-      setError('Пожалуйста, введите email и пароль.')
+      setError('Пожалуйста, введите логин и пароль.')
     } else if (!validateEmail(email)) {
       setError('Пожалуйста, введите корректный email.')
     } else {

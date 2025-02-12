@@ -112,6 +112,11 @@ const Preview = () => {
     }
   }
 
+  const handleImageClick = () => {
+    setEnlargedImageUrl(post.image)
+    setIsModalOpen(true)
+  }
+
   return (
     <div className="preview">
       <div className="preview-return">
@@ -165,8 +170,8 @@ const Preview = () => {
             <div className="post__timestamp">Предпросмотр</div>
           </div>
         </div>
-        <div className={`post__content ${hasImage ? '' : 'post__content-svg'}`}>
-          <div className={`post__image-container ${hasImage ? '' : 'post__image-container-svg'}`}>
+        <div className={`post__content`}>
+          <div className={`post__image-container`}>
             {hasImage ? (
               <img className="post__image" src={activityData.image} alt="Post image" />
             ) : (

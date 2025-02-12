@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.48",
-  "description": "fix preview & redirect",
+  "version": "1.0.49",
+  "description": "fix post pic & logout",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -232,9 +232,13 @@ const ProfileBlock = ({ user }) => {
   const handleExit = () => {
     const token = localStorage.getItem('token')
     axios
-      .post(`${link}/logout`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      .post(
+        `${link}/logout`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
       .then((response) => {
         if (response.data.status === 200) {
           window.location.href = `main`

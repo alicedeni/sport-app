@@ -29,6 +29,8 @@ const Post = ({ post }) => {
   const hasImage = post && post.image
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [enlargedImageUrl, setEnlargedImageUrl] = useState('')
+  const [isHovered, setIsHovered] = useState(false)
+  const [isButtonHovered, setIsButtonHovered] = useState(false)
 
   const handleLikeClick = () => {
     const likeData = {
@@ -219,16 +221,39 @@ const Post = ({ post }) => {
           </div>
         </div>
       </div>
-      <div className={`post__content ${hasImage ? '' : 'post__content-svg'}`}>
-        <div className={`post__image-container ${hasImage ? '' : 'post__image-container-svg'}`}>
+      <div className={`post__content`}>
+        <div className={`post__image-container`}>
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
           {hasImage ? (
-            <img
-              className="post__image"
-              src={post.image}
-              alt="Post image"
-              onClick={handleImageClick}
-            />
+            <div
+              className="post__image-wrapper"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <img
+                className="post__image"
+                src={post.image}
+                alt="Post image"
+                onClick={handleImageClick}
+              />
+              {isHovered && (
+                <div
+                  className="post__zoom-button"
+                  onMouseEnter={() => setIsButtonHovered(true)}
+                  onMouseLeave={() => setIsButtonHovered(false)}
+                  onClick={handleImageClick}
+                >
+                  <img
+                    src={
+                      isButtonHovered
+                        ? 'https://storage.yandexcloud.net/team2go/users/base/zoomHover.svg'
+                        : 'https://storage.yandexcloud.net/team2go/users/base/zoomDefault.svg'
+                    }
+                    alt="Zoom"
+                  />
+                </div>
+              )}
+            </div>
           ) : (
             <img
               className="post__image"
