@@ -231,6 +231,11 @@ const ProfileBlock = ({ user }) => {
   }
   const handleExit = () => {
     const token = localStorage.getItem('token')
+    if (!token) {
+      console.error('Токен не найден. Пользователь уже не авторизован.')
+      window.location.href = '/'
+      return
+    }
     axios
       .post(
         `${link}/logout`,
@@ -241,7 +246,8 @@ const ProfileBlock = ({ user }) => {
       )
       .then((response) => {
         if (response.data.status === 200) {
-          window.location.href = `main`
+          localStorage.removeItem('token')
+          window.location.href = ``
           console.log('Выход из аккаунта выполнен успешно')
         } else {
           console.error('Ошибка при выходе из аккаунта:', response.data.error)
@@ -249,6 +255,8 @@ const ProfileBlock = ({ user }) => {
       })
       .catch((error) => {
         console.error('Ошибка при выходе из аккаунта:', error)
+        localStorage.removeItem('token')
+        window.location.href = ``
       })
   }
 

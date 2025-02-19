@@ -78,12 +78,15 @@
     text-align: left;
     color: $blue;
   }
+  &-participants-list th:nth-child(4){
+    text-align: center;
+  }
 
   &-participants-list td:first-child {
     color: $blue-20p;
   }
 
-  &-participants-list td:nth-child(3) { 
+  &-participants-list td:nth-child(3) {
     color: $grey4;
   }
 
@@ -94,6 +97,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     width: 20%;
+    text-align: center;
   }
 
   &-teams-list {
@@ -111,11 +115,11 @@
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
       padding: 0 50px;
       align-items: center;
       text-align: center;
       cursor: pointer;
+      gap: 20%;
       transition: box-shadow 0.3s ease;
       &:hover {
         box-shadow: 0 4px 10px rgba(0, 0, 0, .2);
@@ -126,12 +130,13 @@
         align-items: center;
         justify-content: flex-start;
       }
-  
+
       &-team-name {
         font-size: 24px;
         font-weight: bold;
         margin-bottom: 10px;
         text-decoration: none;
+        width: 50%;
         &:hover {
           text-decoration: underline;
         }
@@ -144,8 +149,9 @@
         color: transparent;
         -webkit-text-stroke: 4px $blue-20p;
         text-stroke: 4px $blue-20p;
+        width: 85px;
       }
-  
+
       &-team-members {
         font-size: 20px;
         margin-bottom: 10px;
@@ -164,7 +170,7 @@
   }
 }
 
-  
+
 
 .ratings-participants-list table th {
   border-bottom: 3px solid transparent;

@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.50",
-  "description": "add message modal",
+  "version": "1.0.51",
+  "description": "fix btn out & ratings & post",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
