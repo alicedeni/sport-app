@@ -31,6 +31,7 @@ const Ratings = () => {
   ])
   const [showModal, setShowModal] = useState(false)
   const [selectedTeam, setSelectedTeam] = useState(null)
+  const [teamColor, setTeamColor] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,8 +97,9 @@ const Ratings = () => {
     }
   })
 
-  const handleTeamClick = (team) => {
+  const handleTeamClick = (team, index) => {
     setSelectedTeam(team)
+    setTeamColor(participantColors[index] || 'white')
     setShowModal(true)
   }
 
@@ -106,17 +108,23 @@ const Ratings = () => {
     setSelectedTeam(null)
   }
 
+  const getParticipantsText = (count) => {
+    if (count % 10 === 1 && count % 100 !== 11) {
+      return `${count} участник`
+    } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
+      return `${count} участника`
+    } else {
+      return `${count} участников`
+    }
+  }
+
   const teamGradients = [
     'linear-gradient(to right, rgba(255, 204, 56, 0.3) 10%, white 25%)',
     'linear-gradient(to right, rgba(0, 120, 212, 0.3) 10%, white 25%)',
     'linear-gradient(to right, rgba(255, 61, 117, 0.3) 10%, white 25%)',
   ]
 
-  const participantColors = [
-    'rgba(255, 204, 56, 0.5)',
-    'rgba(0, 120, 212, 0.5)',
-    'rgba(255, 61, 117, 0.5)',
-  ]
+  const participantColors = ['#f4dd84', '#82ade0', '#e891ac']
 
   return (
     <div className="ratings">
@@ -313,7 +321,7 @@ const Ratings = () => {
             <div
               key={team.id}
               className="ratings-teams-list-team-item"
-              onClick={() => handleTeamClick(team)}
+              onClick={() => handleTeamClick(team, index)}
               style={{
                 background: teamGradients[index] || 'white',
               }}
@@ -350,7 +358,7 @@ const Ratings = () => {
                 <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
               </div>
               <div className="ratings-teams-list-team-item-team-members">
-                {team.members} участников
+                {getParticipantsText(team.members)}
               </div>
               <div className="ratings-teams-list-team-item-team-progress">{team.totalProgress}</div>
             </div>
@@ -358,7 +366,12 @@ const Ratings = () => {
         </div>
       )}
       {showModal && (
-        <TeamModal team={selectedTeam} onClose={handleCloseModal} participants={participants} />
+        <TeamModal
+          team={selectedTeam}
+          onClose={handleCloseModal}
+          participants={participants}
+          teamColor={teamColor}
+        />
       )}
     </div>
   )

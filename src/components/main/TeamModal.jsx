@@ -1,16 +1,35 @@
 import React from 'react'
 
-const TeamModal = ({ team, onClose, participants }) => {
+const TeamModal = ({ team, onClose, participants, teamColor }) => {
   if (!team) return null
+
+  const getParticipantsText = (count) => {
+    if (count % 10 === 1 && count % 100 !== 11) {
+      return `${count} участник`
+    } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
+      return `${count} участника`
+    } else {
+      return `${count} участников`
+    }
+  }
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <span className="close" onClick={onClose}>
-          &times;
+          <img
+            src="https://storage.yandexcloud.net/team2go/users/base/closeDefault.svg"
+            className="close-img"
+          />
         </span>
-        <div className="profile-block-content-comands-items-rect"></div>
-        <div className="profile-block-content-comands-items-circle">
+        <div
+          className="profile-block-content-comands-items-rect"
+          style={{ background: teamColor }}
+        ></div>
+        <div
+          className="profile-block-content-comands-items-circle"
+          style={{ background: teamColor }}
+        >
           <img
             src="https://storage.yandexcloud.net/team2go/users/base/cat1.svg"
             alt="Team Icon"
@@ -20,7 +39,9 @@ const TeamModal = ({ team, onClose, participants }) => {
         <h2 className="modal-content__title">{team.name}</h2>
         <div className="modal-content__description">
           <div className="modal-content__description-info">
-            <p className="modal-content__description-info-part">{team.members} участников</p>
+            <p className="modal-content__description-info-part">
+              {getParticipantsText(team.members)}
+            </p>
             <div className="modal-content__description-info-fire">
               <div>
                 <div className="modal-content__description-info-fire-count">

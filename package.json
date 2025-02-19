@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.52",
-  "description": "fix post height",
+  "version": "1.0.53",
+  "description": "ratings & modal views",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
