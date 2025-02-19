@@ -21,6 +21,29 @@ const Preview = () => {
   const hasImage = activityData && activityData.image
   const isMounted = useRef(true)
 
+  const imageContainerRef = useRef(null)
+  const infoContainerRef = useRef(null)
+
+  const updateImageHeight = () => {
+    if (infoContainerRef.current && imageContainerRef.current) {
+      const infoHeight = infoContainerRef.current.offsetHeight
+      imageContainerRef.current.style.height = `${infoHeight}px`
+    }
+  }
+
+  useEffect(() => {
+    const updateHeightWithDelay = () => {
+      setTimeout(updateImageHeight, 50) // 50ms delay
+    }
+
+    updateHeightWithDelay()
+    window.addEventListener('resize', updateImageHeight)
+
+    return () => {
+      window.removeEventListener('resize', updateImageHeight)
+    }
+  }, [])
+
   const getUserData = () => {
     const token = localStorage.getItem('token')
     return axios
@@ -171,7 +194,7 @@ const Preview = () => {
           </div>
         </div>
         <div className={`post__content`}>
-          <div className={`post__image-container`}>
+          <div className={`post__image-container`} ref={imageContainerRef}>
             {hasImage ? (
               <img className="post__image" src={activityData.image} alt="Post image" />
             ) : (
@@ -182,10 +205,10 @@ const Preview = () => {
               />
             )}
           </div>
-          <div className="post__info">
+          <div className="post__info" ref={infoContainerRef}>
             <div className="post__title">
               {activityData && (
-                <div id={activityData.type} className={`activity-btn ${activityData.type}-bold`}>
+                <div id={activityData.type} className={`activity-tags ${activityData.type}-L`}>
                   {activityData.tag.toUpperCase()}
                 </div>
               )}

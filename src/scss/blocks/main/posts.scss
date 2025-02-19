@@ -61,19 +61,16 @@
       margin-bottom: 10px;
       background: $white2;
       min-height: 285px;
-      max-height: 400px;
+      max-height: 500px;
       border-radius: 10px;
-      align-items: stretch;
+      overflow: hidden;
+      align-items: flex-start;
     }
 
     &__image-container {
       width: 285px;
       margin-right: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      max-height: inherit;
+      overflow: hidden;
     }
 
     &__image {
@@ -87,11 +84,11 @@
       width: 70%;
       padding: 40px;
       min-height: 285px;
-      max-height: 400px;
-      flex-grow: 1;
+      max-height: 500px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      height: fit-content;
       &__without-photo{
         width: auto;
         padding: 40px;
@@ -367,6 +364,7 @@
 .image-modal-image {
   height: 60vh;
   width: auto;
+  border-radius: 15px;
 }
 
 .post__image-wrapper {

@@ -246,8 +246,8 @@ const ProfileBlock = ({ user }) => {
       )
       .then((response) => {
         if (response.data.status === 200) {
+          window.location.href = '/'
           localStorage.removeItem('token')
-          window.location.href = ``
           console.log('Выход из аккаунта выполнен успешно')
         } else {
           console.error('Ошибка при выходе из аккаунта:', response.data.error)
@@ -255,8 +255,8 @@ const ProfileBlock = ({ user }) => {
       })
       .catch((error) => {
         console.error('Ошибка при выходе из аккаунта:', error)
+        window.location.href = '/'
         localStorage.removeItem('token')
-        window.location.href = ``
       })
   }
 

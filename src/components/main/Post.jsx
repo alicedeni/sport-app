@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Avatar, IconButton } from '@material-ui/core'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -31,6 +31,29 @@ const Post = ({ post }) => {
   const [enlargedImageUrl, setEnlargedImageUrl] = useState('')
   const [isHovered, setIsHovered] = useState(false)
   const [isButtonHovered, setIsButtonHovered] = useState(false)
+
+  const imageContainerRef = useRef(null)
+  const infoContainerRef = useRef(null)
+
+  const updateImageHeight = () => {
+    if (infoContainerRef.current && imageContainerRef.current) {
+      const infoHeight = infoContainerRef.current.offsetHeight
+      imageContainerRef.current.style.height = `${infoHeight}px`
+    }
+  }
+
+  useEffect(() => {
+    const updateHeightWithDelay = () => {
+      setTimeout(updateImageHeight, 50) // 50ms delay
+    }
+
+    updateHeightWithDelay()
+    window.addEventListener('resize', updateImageHeight)
+
+    return () => {
+      window.removeEventListener('resize', updateImageHeight)
+    }
+  }, [])
 
   const handleLikeClick = () => {
     const likeData = {
@@ -222,7 +245,7 @@ const Post = ({ post }) => {
         </div>
       </div>
       <div className={`post__content`}>
-        <div className={`post__image-container`}>
+        <div className={`post__image-container`} ref={imageContainerRef}>
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
           {hasImage ? (
             <div
@@ -262,7 +285,7 @@ const Post = ({ post }) => {
             />
           )}
         </div>
-        <div className="post__info">
+        <div className="post__info" ref={infoContainerRef}>
           <div className="post__title">
             <div id={post.tag} className={`activity-tags ${post.tag}-L`}>
               {post.type && post.type.toUpperCase()}
