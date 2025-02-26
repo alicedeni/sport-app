@@ -46,6 +46,41 @@ const ActivityMake = () => {
     return `${year}-${month}-${day}`
   }
 
+  const validateFields = () => {
+    let errors = {
+      activityTag: !activityTag,
+      activityStartDate: !activityStartDate,
+      activityStartTime: !activityStartTime,
+      activityDuration:
+        ['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
+        !activityDuration,
+      activityStep: activityType === 'walk' && !activityStep,
+      activityDistance: ['bike', 'pool', 'run'].includes(activityTag) && !activityDistance,
+    }
+
+    const startDateTime = new Date(`${activityStartDate}T${activityStartTime}`)
+    const now = new Date()
+
+    if (startDateTime > now) {
+      errors.activityStartTime = true
+      errors.activityStartDate = true
+      setModalErrorMessage('Дата и время начала не могут быть в будущем.')
+      setIsErrorModalOpen(true)
+    }
+
+    setRequiredFields(errors)
+    return !Object.values(errors).some((field) => field)
+  }
+
+  const handleInputChange = (field, value) => {
+    setRequiredFields((prev) => ({ ...prev, [field]: false }))
+    if (field === 'activityStartDate') setActivityStartDate(value)
+    if (field === 'activityStartTime') setActivityStartTime(value)
+    if (field === 'activityDuration') setActivityDuration(value)
+    if (field === 'activityStep') setActivityStep(value)
+    if (field === 'activityDistance') setActivityDistance(value)
+  }
+
   useEffect(() => {
     const today = new Date()
     setActivityStartDate(formatDateToInput(today))
@@ -84,22 +119,6 @@ const ActivityMake = () => {
 
   const handleFormChange = () => {
     navigate(`/activity`, { state: { page: 'activity' } })
-  }
-
-  const handleActivityStartTimeChange = (time) => {
-    setActivityStartTime(time)
-  }
-
-  const handleActivityDurationChange = (time) => {
-    setActivityDuration(time)
-  }
-
-  const handleActivityStepChange = (step) => {
-    setActivityStep(step)
-  }
-
-  const handleActivityDistanceChange = (distance) => {
-    setActivityDistance(distance)
   }
 
   const getImgKeys = async () => {
@@ -206,6 +225,11 @@ const ActivityMake = () => {
     if (startDateTime > now) {
       setModalErrorMessage('Дата и время начала не могут быть в будущем.')
       setIsErrorModalOpen(true)
+      setRequiredFields((prevFields) => ({
+        ...prevFields,
+        activityStartDate: true,
+        activityStartTime: true,
+      }))
       return
     }
 
@@ -287,7 +311,8 @@ const ActivityMake = () => {
                   className={`activity-input-content-item-field ${requiredFields.activityStartDate ? 'error' : ''}`}
                   type="date"
                   value={activityStartDate}
-                  onChange={(e) => setActivityStartDate(e.target.value)}
+                  onChange={(e) => handleInputChange('activityStartDate', e.target.value)}
+                  onBlur={validateFields}
                 />
               </div>
               <div className="activity-input-content-item">
@@ -298,7 +323,8 @@ const ActivityMake = () => {
                   className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}
                   type="time"
                   value={activityStartTime}
-                  onChange={(e) => handleActivityStartTimeChange(e.target.value)}
+                  onChange={(e) => handleInputChange('activityStartTime', e.target.value)}
+                  onBlur={validateFields}
                 />
               </div>
               <div className="activity-input-content-item">
@@ -312,7 +338,8 @@ const ActivityMake = () => {
                   className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}
                   type="time"
                   value={activityDuration}
-                  onChange={(e) => handleActivityDurationChange(e.target.value)}
+                  onChange={(e) => handleInputChange('activityDuration', e.target.value)}
+                  onBlur={validateFields}
                 />
               </div>
               {['run', 'walk'].includes(activityTag) && (
@@ -324,9 +351,10 @@ const ActivityMake = () => {
                     className={`activity-input-content-item-field ${requiredFields.activityStep ? 'error' : ''}`}
                     type="number"
                     value={activityStep}
-                    onChange={(e) => handleActivityStepChange(e.target.value)}
+                    onChange={(e) => handleInputChange('activityStep', e.target.value)}
                     onKeyPress={handleKeyPress}
                     min="1"
+                    onBlur={validateFields}
                   />
                 </div>
               )}
@@ -342,10 +370,11 @@ const ActivityMake = () => {
                     className={`activity-input-content-item-field ${requiredFields.activityDistance ? 'error' : ''}`}
                     type="number"
                     value={activityDistance}
-                    onChange={(e) => handleActivityDistanceChange(e.target.value)}
+                    onChange={(e) => handleInputChange('activityDistance', e.target.value)}
                     onKeyPress={handleKeyPress}
                     min="0"
                     step="0.01"
+                    onBlur={validateFields}
                   />
                   <label className="calories-label">{activityTag === 'pool' ? 'м' : 'км'}</label>
                 </div>

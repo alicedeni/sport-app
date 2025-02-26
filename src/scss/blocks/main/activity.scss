@@ -236,6 +236,7 @@
             text-align: center;
             &.error {
               border: 2px solid red;
+              color: red;
             }
             &-other{
               width: auto;
@@ -270,6 +271,11 @@ input[type="date"]::-webkit-outer-spin-button {
     display: none;
 }
 
+input[type="time"],
+input[type="date"],
+input[type="number"] {
+  touch-action: manipulation;
+}
 
 .calories-label{
   top: 29px;
