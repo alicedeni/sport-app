@@ -3,8 +3,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px 30px;
-  
+    padding: 75px 30px 20px 30px;
+    border-radius: 20px;
+    background: $gradient;
+
   &__title {
     font-size: 15px;
     flex-grow: 1;
@@ -68,4 +70,15 @@
     justify-content: center;
     align-items: center;
   }
+}
+
+.mobile-header-fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: $gradient;
+  padding: 20px 30px 0 30px;
+  border-radius: 0 0 20px 20px;
+  z-index: 1;
 }

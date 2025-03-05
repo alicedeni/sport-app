@@ -17,25 +17,25 @@
           color: $blue;
           border: 2px solid $blue;
         }
-        
+
         &.cardio-metric {
           width: 290px;
           color: $yellow;
           border: 2px solid $yellow;
         }
-        
+
         &.run-metric {
           width: 290px;
           color: $green;
           border: 2px solid $green;
         }
-        
+
         &.power-metric {
           width: 290px;
           color: $pink;
           border: 2px solid $pink;
         }
-        
+
         &.bike-metric {
           width: 290px;
           color: $purple2;
@@ -53,19 +53,19 @@
           color: $orange;
           border: 2px solid $orange;
         }
-        
+
         &.game-metric {
           width: 290px;
           color: $dark-blue;
           border: 2px solid $dark-blue;
         }
-        
+
         &.dance-metric {
           width: 290px;
           color: $purple1;
           border: 2px solid $purple1;
         }
-        
+
         &.other-metric {
           width: 290px;
           color: $grey4;
@@ -96,8 +96,8 @@
       width: 270px;
       height: 270px;
       border-radius: 135px;
-      border: 10px solid $white2; 
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      border: 10px solid $white2;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     &-name {
       font-size: 40px;
@@ -113,7 +113,7 @@
         display: flex;
         justify-content: space-between;
         &-list {
-          
+
           height: 50px;
 
         }
@@ -241,18 +241,18 @@
 
 
   .custom-select {
-    appearance: none; 
-    -webkit-appearance: none; 
+    appearance: none;
+    -webkit-appearance: none;
     -moz-appearance: none;
-    border-radius: 20px; 
-    height: 38px; 
-    font-size: 16px; 
+    border-radius: 20px;
+    height: 38px;
+    font-size: 16px;
     width: 100%;
     border: none;
     text-align: center;
-    cursor: pointer; 
-    outline: none; 
-    transition: border-color 0.3s ease; 
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
 
@@ -261,8 +261,8 @@
   .profile-block {
     margin-left: 10px !important;
     margin-right: 10px !important;
-    margin-top: 400px !important;
-    
+    margin-top: 200px !important;
+
     &-name {
       display: flex;
       width: 100%;
@@ -277,14 +277,14 @@
       width: 100%;
       align-items: center;
       margin: 0 auto;
-      margin-top: -300px; 
+      margin-top: -300px;
       top: 0;
       left: 0;
       width: 270px;
       height: 270px;
       border-radius: 135px;
-      border: 10px solid $white2; 
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+      border: 10px solid $white2;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     &-content {
       margin-top: 50px !important;
@@ -295,7 +295,7 @@
         align-items: center;
         gap: 40px;
         &-items{
-          width: 100% !important; 
+          width: 100% !important;
           flex-direction: column;
         }
         &-item {
@@ -317,7 +317,7 @@
         }
         &-profile {
           display: flex;
-          flex-direction: column !important; 
+          flex-direction: column !important;
           align-items: flex-start !important;
         }
       }

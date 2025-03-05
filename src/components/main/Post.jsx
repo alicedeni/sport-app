@@ -31,27 +31,58 @@ const Post = ({ post }) => {
   const [enlargedImageUrl, setEnlargedImageUrl] = useState('')
   const [isHovered, setIsHovered] = useState(false)
   const [isButtonHovered, setIsButtonHovered] = useState(false)
+  const [tagSize, setTagSize] = useState('L')
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
   const imageContainerRef = useRef(null)
   const infoContainerRef = useRef(null)
 
   const updateImageHeight = () => {
-    if (infoContainerRef.current && imageContainerRef.current) {
+    if (window.innerWidth > 768 && infoContainerRef.current && imageContainerRef.current) {
       const infoHeight = infoContainerRef.current.offsetHeight
       imageContainerRef.current.style.height = `${infoHeight}px`
     }
   }
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    setTagSize(isMobile ? 'S' : 'L')
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
+    setTagSize(isMobile ? 'S' : 'L')
+  }, [isMobile])
+
+  useEffect(() => {
     const updateHeightWithDelay = () => {
-      setTimeout(updateImageHeight, 50) // 50ms delay
+      setTimeout(() => {
+        if (window.innerWidth > 768) {
+          updateImageHeight()
+        }
+      }, 50) // 50ms delay
     }
 
     updateHeightWithDelay()
-    window.addEventListener('resize', updateImageHeight)
+
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        updateImageHeight()
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('resize', updateImageHeight)
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
 
@@ -287,7 +318,7 @@ const Post = ({ post }) => {
         </div>
         <div className="post__info" ref={infoContainerRef}>
           <div className="post__title">
-            <div id={post.tag} className={`activity-tags ${post.tag}-L`}>
+            <div id={post.tag} className={`activity-tags ${post.tag}-${tagSize}`}>
               {post.type && post.type.toUpperCase()}
             </div>
             <div className="post__title-fire">

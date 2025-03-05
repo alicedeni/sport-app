@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.54",
-  "description": "fix display errors & scroll",
+  "version": "1.0.55",
+  "description": "mobile post & ratings vers1",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -293,6 +293,7 @@
 @media (max-width: 768px) {
   .posts {
     padding: 0px 10px;
+    margin-bottom: 30px;
     justify-content: center;
     .post{
       &__mini-avatar {
@@ -301,30 +302,71 @@
         margin-right: 5px;
       }
       &__username {
-        font-size: 24px;
+        font-size: 20px;
         margin-right: 5px;
       }
       &__timestamp {
-        font-size: 16px;
+        font-size: 12px;
         color: $grey1;
       }
+      &__fire-count {
+        font-size: 20px;
+      }
       &__content {
-        flex-direction: column;
-        height: auto;
+        flex-direction: column-reverse;
+        max-height: 1000px;
       }
       &__image-container {
         width: 100%;
         margin-right: 0px;
+        height: 320px;
+      }
+      &__image {
+        height: 320px;
       }
       &__info {
         width: 100%;
         padding: 20px;
+        min-height: 80px;
+        max-height: 1000px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: fit-content;
       }
       &__title {
-        justify-content: center;
+        &-fire {
+          border-radius: 13px;
+          padding: 1px;
+          height: 26px;
+
+          & > div {
+            padding: 0 5px 0 10px;
+            border-radius: 12px;
+            height: 24px;
+          }
+
+          &-count {
+            font-size: 16px;
+          }
+        }
       }
       &__points {
-        justify-content: center;
+        margin: 10px 0;
+        gap: 10px;
+        &__point {
+          font-size: 12px;
+        }
+      }
+      &__metric {
+        font-size: 16px;
+        border-radius: 12px;
+        height: 24px;
+        padding: 0px 10px;
+      }
+      &__text {
+        font-size: 16px;
+        margin: 10px 0px;
       }
       &__comment-input {
         &-btn{
@@ -384,13 +426,13 @@
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0); /* Начальное состояние — без затемнения */
-  transition: background-color 0.3s ease; /* Плавное изменение затемнения */
-  pointer-events: none; /* Чтобы псевдоэлемент не перехватывал события мыши */
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+  pointer-events: none;
 }
 
 .post__image-wrapper:hover::before {
-  background-color: rgba(0, 0, 0, 0.5); /* Затемнение при наведении */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .post__zoom-button {

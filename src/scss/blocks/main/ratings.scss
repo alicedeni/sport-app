@@ -317,9 +317,80 @@ li {
 
 @media (max-width: 768px) {
   .ratings {
-    padding: 0px 10px;
+    padding: 0;
+    margin: 50px 10px;
     &-participants-leagues{
       flex-direction: column;
+    }
+  }
+  .ratings-participants-list table th:nth-child(3),
+  .ratings-participants-list table td:nth-child(3) {
+    display: none;
+  }
+  .ratings-participants-list td,
+  .ratings-participants-list th {
+    font-size: 18px;
+  }
+
+  .ratings-teams-list {
+    margin: 10px 0px;
+    gap: 10px;
+  }
+
+  .ratings-teams-list-team-item {
+    display: flex;
+    padding: 10px;
+    justify-content: space-between;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  .ratings-teams-list-team-item-team {
+    flex-direction: row;
+    align-items: center;
+    width: 75%;
+    gap: 20px;
+  }
+
+  .ratings-teams-list-team-item-team-name {
+    font-size: 18px;
+    width: auto;
+    text-align: center;
+  }
+
+  .ratings-teams-list-team-item-team-members {
+    display: none;
+  }
+
+  .ratings-teams-list-team-item-team-progress {
+    font-size: 16px;
+    width: auto;
+  }
+  .modal-content {
+    width: 85%;
+    max-width: 350px;
+    padding: 10px;
+    &__title {
+      font-size: 20px;
+      margin-top: 0;
+    }
+    &__description {
+      padding: 0 20px;
+      &-info {
+        flex-direction: column;
+        align-items: center;
+        &-part {
+          width: 100%;
+          margin-bottom: 10px;
+        }
+        &-fire {
+          width: 100%;
+          justify-content: center;
+          & > div {
+            padding: 0 10px;
+          }
+        }
+      }
     }
   }
 }
