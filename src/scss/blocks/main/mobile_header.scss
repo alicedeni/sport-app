@@ -3,7 +3,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 75px 30px 20px 30px;
+    padding: 100px 20px 20px 20px;
     border-radius: 20px;
     background: $gradient;
 
@@ -12,6 +12,7 @@
     flex-grow: 1;
     font-weight: lighter;
     text-align: justify;
+    text-align: center;
     letter-spacing: 3px;
     color: $white2;
   }
@@ -56,7 +57,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 10px;
+  gap: 5px;
   flex-wrap: wrap;
   &__metrics {
     height: 48px;
@@ -78,7 +79,7 @@
   left: 0;
   width: 100%;
   background: $gradient;
-  padding: 20px 30px 0 30px;
+  padding: 20px 20px 0 20px;
   border-radius: 0 0 20px 20px;
   z-index: 1;
 }
