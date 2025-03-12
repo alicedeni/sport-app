@@ -239,13 +239,14 @@
       }
       &-container {
         display: flex;
+        align-items: center;
         flex-direction: row;
+        justify-content: center;
       }
       &-count {
         font-size: 24px;
         font-weight: bold;
         background-image: $gradient;
-        margin-top: 15px;
         margin-right: -7px;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -290,92 +291,6 @@
     }
   }
 
-@media (max-width: 768px) {
-  .posts {
-    padding: 0px 10px;
-    margin-bottom: 30px;
-    justify-content: center;
-    .post{
-      &__mini-avatar {
-        width: 40px;
-        height: 40px;
-        margin-right: 5px;
-      }
-      &__username {
-        font-size: 20px;
-        margin-right: 5px;
-      }
-      &__timestamp {
-        font-size: 12px;
-        color: $grey1;
-      }
-      &__fire-count {
-        font-size: 20px;
-      }
-      &__content {
-        flex-direction: column-reverse;
-        max-height: 1000px;
-      }
-      &__image-container {
-        width: 100%;
-        margin-right: 0px;
-        height: 320px;
-      }
-      &__image {
-        height: 320px;
-      }
-      &__info {
-        width: 100%;
-        padding: 20px;
-        min-height: 80px;
-        max-height: 1000px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: fit-content;
-      }
-      &__title {
-        &-fire {
-          border-radius: 13px;
-          padding: 1px;
-          height: 26px;
-
-          & > div {
-            padding: 0 5px 0 10px;
-            border-radius: 12px;
-            height: 24px;
-          }
-
-          &-count {
-            font-size: 16px;
-          }
-        }
-      }
-      &__points {
-        margin: 10px 0;
-        gap: 10px;
-        &__point {
-          font-size: 12px;
-        }
-      }
-      &__metric {
-        font-size: 16px;
-        border-radius: 12px;
-        height: 24px;
-        padding: 0px 10px;
-      }
-      &__text {
-        font-size: 16px;
-        margin: 10px 0px;
-      }
-      &__comment-input {
-        &-btn{
-          left: 85%;
-        }
-      }
-    }
-  }
-}
 
 .image-modal-overlay {
   position: fixed;
@@ -451,4 +366,138 @@
 
 .post__zoom-button:hover {
   background-color: rgba(255, 255, 255, 1);
+}
+
+@media (max-width: 768px) {
+  .posts {
+    padding: 0px 10px;
+    margin-bottom: 30px;
+    justify-content: center;}
+  .post{
+    margin-bottom: 20px;
+    &__mini-avatar {
+      width: 40px;
+      height: 40px;
+      margin-right: 5px;
+    }
+    &__svg-icon {
+      width: 24px;
+      height: 24px;
+    }
+    &__username {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+    &__timestamp {
+      font-size: 12px;
+      color: $grey1;
+    }
+    &__comment-timestamp {
+      font-size: 12px;
+    }
+    &__fire-count {
+      font-size: 20px;
+    }
+    &__actions {
+      gap: 5px;
+    }
+    &__like-count {
+      font-size: 16px;
+    }
+    &__comment-count {
+      font-size: 16px;
+    }
+    &__icon-action {
+      width: 24px;
+      height: 24px;
+      &-com {
+        width: 18px;
+        height: 18px;
+      }
+    }
+    &__like-count-comments {
+      font-size: 14px;
+    }
+    &__comment-start {
+      font-size: 16px;
+    }
+    &__comment-input {
+      width: 100%;
+      border: 1px solid #ccc;
+      overflow-y: hidden;
+      border-radius: 15px;
+      margin-top: 5px;
+      font-size: 16px;
+      height: 50px;
+      resize: none;
+      &-btn{
+        position: relative;
+        top: -63px;
+        left: 85%;
+      }
+    }
+    &__content {
+      flex-direction: column-reverse;
+      max-height: 1000px;
+    }
+    &__image-container {
+      width: 100%;
+      margin-right: 0px;
+      height: 320px;
+    }
+    &__image {
+      height: 320px;
+    }
+    &__info {
+      width: 100%;
+      padding: 20px;
+      min-height: 80px;
+      max-height: 1000px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: fit-content;
+    }
+    &__title {
+      &-fire {
+        border-radius: 13px;
+        padding: 1px;
+        height: 26px;
+
+        & > div {
+          padding: 0 5px 0 10px;
+          border-radius: 12px;
+          height: 24px;
+        }
+
+        &-count {
+          font-size: 16px;
+        }
+      }
+    }
+    &__points {
+      margin: 10px 0;
+      gap: 10px;
+      &__point {
+        font-size: 12px;
+      }
+    }
+    &__metric {
+      font-size: 16px;
+      border-radius: 12px;
+      height: 24px;
+      padding: 0px 10px;
+    }
+    &__text {
+      font-size: 16px;
+      margin: 10px 0px;
+    }
+  }
+
+  .image-modal-image {
+    width: 70vw;
+    height: auto;
+    max-height: 80vh;
+  }
+
 }

@@ -243,6 +243,7 @@ const Post = ({ post }) => {
             <svg
               width="32"
               height="32"
+              className="post__svg-icon"
               viewBox="0 0 32 32"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -330,6 +331,7 @@ const Post = ({ post }) => {
                   viewBox="0 0 32 32"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
+                  className="post__svg-icon"
                 >
                   <path
                     fillRule="evenodd"
@@ -420,9 +422,9 @@ const Post = ({ post }) => {
           <div className="post__like-count">{likeCount}</div>
           <IconButton onClick={handleLikeClick}>
             {isLiked ? (
-              <img src={HeartFilled} alt="Liked" />
+              <img className="post__icon-action" src={HeartFilled} alt="Liked" />
             ) : (
-              <img src={HeartDefault} alt="Not Liked" />
+              <img className="post__icon-action" src={HeartDefault} alt="Not Liked" />
             )}
           </IconButton>
         </div>
@@ -430,9 +432,9 @@ const Post = ({ post }) => {
           <div className="post__comment-count">{commentCount}</div>
           <IconButton onClick={handleCommentClick}>
             {isCommentOpen ? (
-              <img src={CommentFilled} alt="Commented" />
+              <img className="post__icon-action" src={CommentFilled} alt="Commented" />
             ) : (
-              <img src={CommentDefault} alt="Not Commented" />
+              <img className="post__icon-action" src={CommentDefault} alt="Not Commented" />
             )}
           </IconButton>
         </div>
@@ -463,9 +465,9 @@ const Post = ({ post }) => {
               onMouseLeave={() => handleSendIconHover(false)}
             >
               {sendIcon === 'SendDefault' ? (
-                <img src={SendDefault} alt="Send" />
+                <img className="post__icon-action" src={SendDefault} alt="Send" />
               ) : (
-                <img src={SendFilled} alt="Send" />
+                <img className="post__icon-action" src={SendFilled} alt="Send" />
               )}
             </IconButton>
           </div>

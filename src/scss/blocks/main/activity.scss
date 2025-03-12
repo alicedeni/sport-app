@@ -294,9 +294,15 @@ input[type="number"] {
     padding: 0px 10px;
     justify-content: center !important;
     align-items: center !important;
+    &-total {
+      font-size: 16px;
+    }
     &-input {
       height: 100%;
       padding: 10px;
+      &-title {
+        font-size: 20px;
+      }
       &-content {
         margin-left: 60px;
         display: flex;
@@ -313,11 +319,18 @@ input[type="number"] {
         }
       }
     }
+    .select_time{
+      &-variant {
+        font-size: 16px;
+      }
+    }
+    &-return {
+      font-size: 24px;
+      gap: 10px;
+    }
   }
 
-  .select_time{
-    flex-direction: column;
-  }
+
 }
 
 .error-modal-overlay {

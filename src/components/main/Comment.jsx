@@ -54,7 +54,12 @@ const Comment = ({ comment, onDelete }) => {
         {comment.is_current_user && (
           <div className="post__like-container-comments">
             <IconButton onClick={() => onDelete(comment.comment_id)}>
-              <img src={DeleteDefault} alt="" style={{ width: '24px' }} />
+              <img
+                className="post__icon-action-com"
+                src={DeleteDefault}
+                alt=""
+                style={{ width: '24px' }}
+              />
             </IconButton>
           </div>
         )}
@@ -62,9 +67,19 @@ const Comment = ({ comment, onDelete }) => {
           <div className="post__like-count-comments">{likeCount}</div>
           <IconButton onClick={handleLikeClick}>
             {isLiked ? (
-              <img src={HeartFilled} alt="Liked" style={{ width: '24px' }} />
+              <img
+                className="post__icon-action-com"
+                src={HeartFilled}
+                alt="Liked"
+                style={{ width: '24px' }}
+              />
             ) : (
-              <img src={HeartDefault} alt="Not Liked" style={{ width: '24px' }} />
+              <img
+                className="post__icon-action-com"
+                src={HeartDefault}
+                alt="Not Liked"
+                style={{ width: '24px' }}
+              />
             )}
           </IconButton>
         </div>

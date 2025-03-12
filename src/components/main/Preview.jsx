@@ -20,30 +20,60 @@ const Preview = () => {
   const [user, setUser] = useState({})
   const hasImage = activityData && activityData.image
   const isMounted = useRef(true)
+  const [tagSize, setTagSize] = useState('L')
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
 
   const imageContainerRef = useRef(null)
   const infoContainerRef = useRef(null)
 
   const updateImageHeight = () => {
-    if (infoContainerRef.current && imageContainerRef.current) {
+    if (window.innerWidth > 768 && infoContainerRef.current && imageContainerRef.current) {
       const infoHeight = infoContainerRef.current.offsetHeight
       imageContainerRef.current.style.height = `${infoHeight}px`
     }
   }
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    setTagSize(isMobile ? 'S' : 'L')
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isMobile])
+
+  useEffect(() => {
+    setTagSize(isMobile ? 'S' : 'L')
+  }, [isMobile])
+
+  useEffect(() => {
     const updateHeightWithDelay = () => {
-      setTimeout(updateImageHeight, 50) // 50ms delay
+      setTimeout(() => {
+        if (window.innerWidth > 768) {
+          updateImageHeight()
+        }
+      }, 50) // 50ms delay
     }
 
     updateHeightWithDelay()
-    window.addEventListener('resize', updateImageHeight)
+
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        updateImageHeight()
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
 
     return () => {
-      window.removeEventListener('resize', updateImageHeight)
+      window.removeEventListener('resize', handleResize)
     }
   }, [])
-
   const getUserData = () => {
     const token = localStorage.getItem('token')
     return axios
@@ -166,6 +196,7 @@ const Preview = () => {
                 viewBox="0 0 32 32"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                className="post__svg-icon"
               >
                 <path
                   fillRule="evenodd"
@@ -208,7 +239,10 @@ const Preview = () => {
           <div className="post__info" ref={infoContainerRef}>
             <div className="post__title">
               {activityData && (
-                <div id={activityData.type} className={`activity-tags ${activityData.type}-L`}>
+                <div
+                  id={activityData.type}
+                  className={`activity-tags ${activityData.type}-${tagSize}`}
+                >
                   {activityData.tag.toUpperCase()}
                 </div>
               )}
@@ -221,6 +255,7 @@ const Preview = () => {
                     viewBox="0 0 32 32"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    className="post__svg-icon"
                   >
                     <path
                       fillRule="evenodd"
