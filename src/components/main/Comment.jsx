@@ -11,6 +11,7 @@ import { link } from '../../consts.js'
 const Comment = ({ comment, onDelete }) => {
   const [isLiked, setIsLiked] = useState(comment.is_liked)
   const [likeCount, setLikeCount] = useState(comment.likeCountComment || 0)
+  const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
     setIsLiked(comment.is_liked)
@@ -39,10 +40,12 @@ const Comment = ({ comment, onDelete }) => {
     }
   }
 
-  useEffect(() => {}, [])
-
   return (
-    <div className="post__comment">
+    <div
+      className="post__comment"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="post__comment-start">
         <strong>{comment.is_current_user ? 'Вы' : `${comment.surname} ${comment.name}`}</strong>
         <div>{comment.text}</div>
@@ -50,6 +53,7 @@ const Comment = ({ comment, onDelete }) => {
           {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
         </div>
       </div>
+
       <div className="post__like-container-all">
         {comment.is_current_user && (
           <div className="post__like-container-comments">
@@ -63,25 +67,22 @@ const Comment = ({ comment, onDelete }) => {
             </IconButton>
           </div>
         )}
+
         <div className="post__like-container-comments">
-          <div className="post__like-count-comments">{likeCount}</div>
-          <IconButton onClick={handleLikeClick}>
-            {isLiked ? (
+          {likeCount > 0 && <div className="post__like-count-comments">{likeCount}</div>}
+
+          {likeCount > 0 || isHovered ? (
+            <IconButton onClick={handleLikeClick}>
               <img
                 className="post__icon-action-com"
-                src={HeartFilled}
-                alt="Liked"
+                src={isLiked ? HeartFilled : HeartDefault}
+                alt={isLiked ? 'Liked' : 'Not Liked'}
                 style={{ width: '24px' }}
               />
-            ) : (
-              <img
-                className="post__icon-action-com"
-                src={HeartDefault}
-                alt="Not Liked"
-                style={{ width: '24px' }}
-              />
-            )}
-          </IconButton>
+            </IconButton>
+          ) : (
+            <div style={{ height: '32px' }}></div>
+          )}
         </div>
       </div>
     </div>
