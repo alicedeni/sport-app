@@ -135,7 +135,6 @@
       &-team-name {
         font-size: 24px;
         font-weight: bold;
-        margin-bottom: 10px;
         text-decoration: none;
         width: 40%;
         text-align: left;
@@ -152,11 +151,21 @@
         -webkit-text-stroke: 4px $blue-20p;
         text-stroke: 4px $blue-20p;
         width: 85px;
+
+        &-s {
+          font-size: 74px;
+          font-weight: bold;
+          margin-top: 15px;
+          margin-bottom: 15px;
+          color: transparent;
+          -webkit-text-stroke: 4px $blue-20p;
+          text-stroke: 4px $blue-20p;
+          width: 85px;
+        }
       }
 
       &-team-members {
         font-size: 20px;
-        margin-bottom: 10px;
         width: 20%;
       }
       &-team-progress {
@@ -166,7 +175,6 @@
         background-image: $gradient;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-bottom: 10px;
         margin-right: 30px;
         text-align: center;
         width: 5%;
@@ -332,6 +340,10 @@ li {
     font-size: 18px;
   }
 
+  .ratings-select_pt-variant {
+    font-size: 18px;
+  }
+
   .ratings-teams-list {
     margin: 10px 0px;
     gap: 10px;
@@ -355,6 +367,7 @@ li {
   .ratings-teams-list-team-item-team-name {
     font-size: 18px;
     width: auto;
+    align-items: center;
     text-align: center;
   }
 

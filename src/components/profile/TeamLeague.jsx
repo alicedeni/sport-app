@@ -37,7 +37,7 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
         <div className="profile-block-content-comands-items-circle"></div>
         <div className="profile-block-content-comands-item">
           <p className="profile-block-content-comands-item-text">Моя команда</p>
-          <p className="profile-block-content-data-title-name">{tempUser.team}</p>
+          <p className="profile-block-content-data-title-name">Команда {tempUser.team}</p>
           <div className="team-members-count" onClick={toggleMembersVisibility}>
             {teamMembers.length} участников
             <span className={`arrow ${isMembersVisible ? 'arrow-up' : 'arrow-down'}`}></span>

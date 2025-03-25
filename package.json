@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.57",
-  "description": "comment hover",
+  "version": "1.0.58",
+  "description": "comment mobile & fix",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

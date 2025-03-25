@@ -11,6 +11,7 @@ import CommentFilled from '../../assets/icons/commentFilled.svg'
 import SendDefault from '../../assets/icons/sendDefault.svg'
 import SendFilled from '../../assets/icons/sendFilled.svg'
 import Comment from './Comment'
+import CommentDrawer from './CommentDrawer'
 import ImageModal from './ImageModal'
 
 import { link } from '../../consts.js'
@@ -439,8 +440,22 @@ const Post = ({ post }) => {
           </IconButton>
         </div>
       </div>
-      <div className="post__comment-containerinput">
-        {isCommentOpen && (
+
+      {isMobile && (
+        <CommentDrawer
+          isOpen={isCommentOpen}
+          onClose={() => setIsCommentOpen(false)}
+          comments={comments}
+          commentText={commentText}
+          onCommentChange={(e) => setCommentText(e.target.value)}
+          onSubmit={handleCommentSubmit}
+          onDelete={handleDeleteClick}
+          commentCount={commentCount}
+        />
+      )}
+
+      {!isMobile && isCommentOpen && (
+        <div className="post__comment-containerinput">
           <div className="post__comment-section">
             {comments.length > 0 && (
               <div className="post__comments">
@@ -454,15 +469,14 @@ const Post = ({ post }) => {
               placeholder="Написать комментарий..."
               style={{ marginTop: '20px' }}
               value={commentText}
-              onChange={handleCommentChange}
+              onChange={(e) => setCommentText(e.target.value)}
               maxLength={250}
-              onKeyPress={handleKeyPress}
             />
             <IconButton
               className="post__comment-input-btn"
               onClick={handleCommentSubmit}
-              onMouseEnter={() => handleSendIconHover(true)}
-              onMouseLeave={() => handleSendIconHover(false)}
+              onMouseEnter={() => setSendIcon('SendFilled')}
+              onMouseLeave={() => setSendIcon('SendDefault')}
             >
               {sendIcon === 'SendDefault' ? (
                 <img className="post__icon-action" src={SendDefault} alt="Send" />
@@ -471,8 +485,8 @@ const Post = ({ post }) => {
               )}
             </IconButton>
           </div>
-        )}
-      </div>
+        </div>
+      )}
       {isModalOpen && (
         <ImageModal
           imageUrl={enlargedImageUrl}

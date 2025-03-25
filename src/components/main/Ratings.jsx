@@ -327,29 +327,33 @@ const Ratings = () => {
               }}
             >
               <div className="ratings-teams-list-team-item-team">
-                <div className="ratings-teams-list-team-item-team-num">
-                  {index === 0 ? (
+                {index === 0 ? (
+                  <div className="ratings-teams-list-team-item-team-num">
                     <img
                       src="https://storage.yandexcloud.net/team2go/users/base/1.svg"
                       alt="Gold Medal"
                       className="medal-icon"
                     />
-                  ) : index === 1 ? (
+                  </div>
+                ) : index === 1 ? (
+                  <div className="ratings-teams-list-team-item-team-num">
                     <img
                       src="https://storage.yandexcloud.net/team2go/users/base/2.svg"
                       alt="Silver Medal"
                       className="medal-icon"
                     />
-                  ) : index === 2 ? (
+                  </div>
+                ) : index === 2 ? (
+                  <div className="ratings-teams-list-team-item-team-num">
                     <img
                       src="https://storage.yandexcloud.net/team2go/users/base/3.svg"
                       alt="Bronze Medal"
                       className="medal-icon"
                     />
-                  ) : (
-                    index + 1
-                  )}
-                </div>
+                  </div>
+                ) : (
+                  <div className="ratings-teams-list-team-item-team-num-s">{index + 1}</div>
+                )}
                 <img
                   src="https://storage.yandexcloud.net/team2go/users/base/cat1.svg"
                   alt="Team Icon"

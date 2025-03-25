@@ -1,5 +1,5 @@
 @use './base/variables';
-@import "./base/variables"; 
+@import "./base/variables";
 
 *{
   margin: 0;
@@ -8,7 +8,7 @@
   scroll-behavior: smooth;
   box-sizing: border-box;
   font-family: "IngoStem";
-} 
+}
 
 @font-face {
   font-family: "IngoStem";
@@ -89,6 +89,7 @@ body {
 @import "./blocks/main/activity";
 @import "./blocks/main/ratings";
 @import "./blocks/main/challenges";
+@import "./blocks/main/comment";
 @import "./blocks/main/view";
 @import "./blocks/main/mobile_header";
 @import "./blocks/main/mobile_footer";
