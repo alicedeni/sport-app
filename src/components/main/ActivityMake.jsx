@@ -37,6 +37,16 @@ const ActivityMake = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
   const [modalErrorMessage, setModalErrorMessage] = useState('')
   const navigate = useNavigate()
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const formatDateToInput = (date) => {
     const d = new Date(date)
@@ -274,7 +284,7 @@ const ActivityMake = () => {
               <div
                 key={activity.type}
                 id={activity.tag}
-                className={`activity-btn ${
+                className={`activity-btn${isMobile && `-mobile`} ${
                   activityTag === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
                 }`}
                 onClick={() => handleActivityTypeChange(activity)}

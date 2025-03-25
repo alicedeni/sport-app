@@ -21,6 +21,30 @@
     &.other-light { @extend .other-normal; }
   }
 }
+
+.activity-btn-mobile {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 32px;
+  border-radius: 18px;
+  font-size: 18px;
+  cursor: pointer;
+
+  &:hover {
+    &.pool-light { @extend .pool-normal; }
+    &.cardio-light { @extend .cardio-normal; }
+    &.run-light { @extend .run-normal; }
+    &.power-light { @extend .power-normal; }
+    &.bike-light { @extend .bike-normal; }
+    &.yoga-light { @extend .yoga-normal; }
+    &.walk-light { @extend .walk-normal; }
+    &.game-light { @extend .game-normal; }
+    &.dance-light { @extend .dance-normal; }
+    &.other-light { @extend .other-normal; }
+  }
+}
   // light
   .pool-light {
     color: $blue;
@@ -36,7 +60,7 @@
   }
   .power-light {
     color: $pink;
-    border: 1px solid $pink; 
+    border: 1px solid $pink;
   }
   .bike-light {
     color: $purple2;
@@ -82,7 +106,7 @@
   .power-normal {
     color: $pink;
     background: $pink-20p;
-    border: 1px solid $pink; 
+    border: 1px solid $pink;
   }
   .bike-normal {
     color: $purple2;
