@@ -284,7 +284,7 @@ const ActivityMake = () => {
               <div
                 key={activity.type}
                 id={activity.tag}
-                className={`activity-btn${isMobile && `-mobile`} ${
+                className={`activity-btn${isMobile ? `-mobile` : ``} ${
                   activityTag === activity.tag ? `${activity.tag}-bold` : `${activity.tag}-light`
                 }`}
                 onClick={() => handleActivityTypeChange(activity)}
