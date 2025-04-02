@@ -8,9 +8,9 @@ const Welcome = () => {
 
   return (
     <div className="welcome">
-      <FullWidthText text={welcomeText} />
+      <FullWidthText text={welcomeText} className="top" />
       <WelcomeBlock />
-      <FullWidthText text={welcomeText} />
+      <FullWidthText text={welcomeText} className="bottom" />
     </div>
   )
 }

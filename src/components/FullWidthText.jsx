@@ -1,7 +1,7 @@
 import React from 'react'
 
-const FullWidthText = ({ text }) => {
-  return <div className="full-width-text">{text}</div>
+const FullWidthText = ({ text, className }) => {
+  return <div className={`full-width-text ${className}`}>{text}</div>
 }
 
 export default FullWidthText

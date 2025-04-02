@@ -45,7 +45,7 @@ a{
     &:hover {
       background: $gradient;
     }
-    
+
   }
   &-profile {
     background-color: $blue;
@@ -93,7 +93,7 @@ a{
   justify-content: space-between;
   padding: 0px 0px 0px 10px;
   gap: 10px;
-  top: 30px; 
+  top: 30px;
   right: 100px;
   &_text{
     font-weight: bold;
@@ -101,19 +101,26 @@ a{
   }
 }
 
-@media (max-width: 500px) {
-  .button {
-    &-enter{
-      width: 300px;
-    }
-  }
-}
-
-
-@media (max-width: 320px) {
+@media (max-width: 820px) {
   .button {
     &-enter{
       width: 250px;
+      height: 40px;
+      border-radius: 16px;
+    }
+    &-reg {
+      width: 250px;
+    }
+    &_text {
+      font-size: 16px;
+    }
+    &-profile {
+      height: 40px;
+      border-radius: 20px;
+    }
+    &-exit {
+      height: 40px;
+      border-radius: 20px;
     }
   }
 }

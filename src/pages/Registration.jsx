@@ -8,9 +8,9 @@ const Registration = () => {
 
   return (
     <div className="welcome">
-      <FullWidthText text={welcomeText} />
+      <FullWidthText text={welcomeText} className="top" />
       <RegistrationBlock />
-      <FullWidthText text={welcomeText} />
+      <FullWidthText text={welcomeText} className="bottom" />
     </div>
   )
 }

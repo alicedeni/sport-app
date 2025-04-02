@@ -298,6 +298,9 @@ input[type="number"] {
     padding: 0px 10px;
     justify-content: center !important;
     align-items: center !important;
+    .select_time {
+      margin-top: 20px;
+    }
     &-total {
       font-size: 16px;
     }
@@ -336,12 +339,19 @@ input[type="number"] {
         }
       }
     }
-    &-list-item {
-      padding: 30px 15px;
-      height: 170px;
-      &-time {
-        font-size: 20px;
+    &-list {
+      margin-top: 20px;
+      &-item {
+        padding: 30px 15px;
+        height: 170px;
+        &-time {
+          font-size: 20px;
+        }
       }
+    }
+    &-submit_btn {
+      display: flex;
+      justify-content: center;
     }
     .select_time{
       &-variant {
