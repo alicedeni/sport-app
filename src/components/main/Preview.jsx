@@ -21,13 +21,13 @@ const Preview = () => {
   const hasImage = activityData && activityData.image
   const isMounted = useRef(true)
   const [tagSize, setTagSize] = useState('L')
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
 
   const imageContainerRef = useRef(null)
   const infoContainerRef = useRef(null)
 
   const updateImageHeight = () => {
-    if (window.innerWidth > 768 && infoContainerRef.current && imageContainerRef.current) {
+    if (window.innerWidth > 820 && infoContainerRef.current && imageContainerRef.current) {
       const infoHeight = infoContainerRef.current.offsetHeight
       imageContainerRef.current.style.height = `${infoHeight}px`
     }
@@ -35,7 +35,7 @@ const Preview = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 820)
     }
 
     window.addEventListener('resize', handleResize)
@@ -54,7 +54,7 @@ const Preview = () => {
   useEffect(() => {
     const updateHeightWithDelay = () => {
       setTimeout(() => {
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 820) {
           updateImageHeight()
         }
       }, 50) // 50ms delay
@@ -63,7 +63,7 @@ const Preview = () => {
     updateHeightWithDelay()
 
     const handleResize = () => {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 820) {
         updateImageHeight()
       }
     }

@@ -9,7 +9,7 @@ import { link } from '../consts.js'
 
 const Feed = () => {
   const [posts, setPosts] = useState([])
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
 
   const getPostData = () => {
     const token = localStorage.getItem('token')
@@ -36,7 +36,7 @@ const Feed = () => {
       .catch((error) => console.error(error))
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 820)
     }
 
     window.addEventListener('resize', handleResize)

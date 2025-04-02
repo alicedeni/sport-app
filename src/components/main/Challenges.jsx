@@ -114,141 +114,141 @@ const Challenges = () => {
 
   return (
     <div className="challenges">
-      <div className="select_pt">
-        <div
-          className="select_pt-variant"
-          style={{
-            color: selectedSide === 'current' ? '#51B8FF' : '#808080',
-            fontSize: selectedSide === 'current' ? '40px' : '32px',
-            borderBottom: selectedSide === 'current' ? '2px solid #51B8FF' : 'none',
-          }}
-          onClick={() => handleClick('current')}
-        >
-          Текущие челленджи
-        </div>
-        <div
-          className="select_pt-variant"
-          style={{
-            color: selectedSide === 'completed' ? '#51B8FF' : '#808080',
-            fontSize: selectedSide === 'completed' ? '40px' : '32px',
-            borderBottom: selectedSide === 'completed' ? '2px solid #51B8FF' : 'none',
-          }}
-          onClick={() => handleClick('completed')}
-        >
-          Выполненные челленджи
-        </div>
-      </div>
-
-      {selectedSide === 'current' ? (
-        <div className="current-challenges">
-          {isChallengeModalOpen && (
-            <ChallengeModal onClose={() => setIsChallengeModalOpen(false)} />
-          )}
-          <div className="metrics">
-            Выбрано{' '}
-            <span style={{ color: '#51B8FF' }}>
-              {currentChallenges.length}/{currentChallenges.length}
-            </span>
-          </div>
-          {currentChallenges.length > 0 ? (
-            currentChallenges.map((challenge, index) => (
-              <div key={challenge.id} className="challenge-item">
-                {challenge.name ? (
-                  <>
-                    <div className="challenge-item-text">
-                      <h3 className="challenge-item-text-name">{challenge.name}</h3>
-                      <div className="challenge-item-text-points">{challenge.points} баллов</div>
-                    </div>
-                    <div className="progress-bar">
-                      <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="empty-challenge">
-                      <p>Задание не выбрано</p>
-                      <ButtonActivity
-                        className="welcome-block__btn"
-                        text="Выбрать задание"
-                        textContent={'Выбрать задание'}
-                        onClick={() => handleOpenModal(index)}
-                      ></ButtonActivity>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))
-          ) : (
-            <div>No current challenges</div>
-          )}
-        </div>
-      ) : (
-        <div className="completed-challenges">
-          <div className="metrics">
-            Выполненные: <span style={{ color: '#51B8FF' }}>{completedChallenges.length}</span>
-          </div>
-          <div className="metrics">
-            Незавершенные: <span style={{ color: '#51B8FF' }}>{incompletedChallenges.length}</span>
-          </div>
-          <div className="metrics">
-            Заработано баллов:{' '}
-            <span style={{ color: '#51B8FF' }}>{calculateCompletedPoints()}</span>
-          </div>
-          {completedChallenges.length > 0 ? (
-            completedChallenges.map((challenge) => (
-              <div key={challenge.id} className="challenge-item">
-                <div className="challenge-item-text">
-                  <h3 className="challenge-item-text-name">{challenge.name}</h3>
-                  <div
-                    className="challenge-item-text-points"
-                    style={{
-                      color: '#51B8FF',
-                      backgroundColor: 'rgba(81, 184, 255, 0.2)',
-                    }}
-                  >
-                    {challenge.points} баллов
-                  </div>
-                </div>
-                <div className="progress-bar">
-                  <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div>No completed challenges</div>
-          )}
-          <div className="challenge-line"></div>
-          {incompletedChallenges.length > 0 ? (
-            incompletedChallenges.map((challenge) => (
-              <div key={challenge.id} className="challenge-item">
-                <div className="challenge-item-text" style={{ opacity: 0.7 }}>
-                  <h3 className="challenge-item-text-name" style={{ opacity: 0.7 }}>
-                    {challenge.name}
-                  </h3>
-                  <div
-                    className="challenge-item-text-points"
-                    style={{
-                      color: '#FF4D53',
-                      backgroundColor: 'rgba(255, 77, 83, 0.2)',
-                      opacity: 0.7,
-                    }}
-                  >
-                    {challenge.points} баллов
-                  </div>
-                </div>
-                <div className="progress-bar" style={{ opacity: 0.7 }}>
-                  <div
-                    className="progress"
-                    style={{ width: `${challenge.progress}%`, opacity: 0.7 }}
-                  ></div>
-                </div>
-              </div>
-            ))
-          ) : (
-            <div></div>
-          )}
-        </div>
-      )}
+      <div className="metrics">Будет доступно позднее!</div>
+      {/*<div className="select_pt">*/}
+      {/*  <div*/}
+      {/*    className="select_pt-variant"*/}
+      {/*    style={{*/}
+      {/*      color: selectedSide === 'current' ? '#51B8FF' : '#808080',*/}
+      {/*      fontSize: selectedSide === 'current' ? '40px' : '32px',*/}
+      {/*      borderBottom: selectedSide === 'current' ? '2px solid #51B8FF' : 'none',*/}
+      {/*    }}*/}
+      {/*    onClick={() => handleClick('current')}*/}
+      {/*  >*/}
+      {/*    Текущие челленджи*/}
+      {/*  </div>*/}
+      {/*  <div*/}
+      {/*    className="select_pt-variant"*/}
+      {/*    style={{*/}
+      {/*      color: selectedSide === 'completed' ? '#51B8FF' : '#808080',*/}
+      {/*      fontSize: selectedSide === 'completed' ? '40px' : '32px',*/}
+      {/*      borderBottom: selectedSide === 'completed' ? '2px solid #51B8FF' : 'none',*/}
+      {/*    }}*/}
+      {/*    onClick={() => handleClick('completed')}*/}
+      {/*  >*/}
+      {/*    Выполненные челленджи*/}
+      {/*  </div>*/}
+      {/*</div>*/}
+      {/*{selectedSide === 'current' ? (*/}
+      {/*  <div className="current-challenges">*/}
+      {/*    {isChallengeModalOpen && (*/}
+      {/*      <ChallengeModal onClose={() => setIsChallengeModalOpen(false)} />*/}
+      {/*    )}*/}
+      {/*    <div className="metrics">*/}
+      {/*      Выбрано{' '}*/}
+      {/*      <span style={{ color: '#51B8FF' }}>*/}
+      {/*        {currentChallenges.length}/{currentChallenges.length}*/}
+      {/*      </span>*/}
+      {/*    </div>*/}
+      {/*    {currentChallenges.length > 0 ? (*/}
+      {/*      currentChallenges.map((challenge, index) => (*/}
+      {/*        <div key={challenge.id} className="challenge-item">*/}
+      {/*          {challenge.name ? (*/}
+      {/*            <>*/}
+      {/*              <div className="challenge-item-text">*/}
+      {/*                <h3 className="challenge-item-text-name">{challenge.name}</h3>*/}
+      {/*                <div className="challenge-item-text-points">{challenge.points} баллов</div>*/}
+      {/*              </div>*/}
+      {/*              <div className="progress-bar">*/}
+      {/*                <div className="progress" style={{ width: `${challenge.progress}%` }}></div>*/}
+      {/*              </div>*/}
+      {/*            </>*/}
+      {/*          ) : (*/}
+      {/*            <>*/}
+      {/*              <div className="empty-challenge">*/}
+      {/*                <p>Задание не выбрано</p>*/}
+      {/*                <ButtonActivity*/}
+      {/*                  className="welcome-block__btn"*/}
+      {/*                  text="Выбрать задание"*/}
+      {/*                  textContent={'Выбрать задание'}*/}
+      {/*                  onClick={() => handleOpenModal(index)}*/}
+      {/*                ></ButtonActivity>*/}
+      {/*              </div>*/}
+      {/*            </>*/}
+      {/*          )}*/}
+      {/*        </div>*/}
+      {/*      ))*/}
+      {/*    ) : (*/}
+      {/*      <div>No current challenges</div>*/}
+      {/*    )}*/}
+      {/*  </div>*/}
+      {/*) : (*/}
+      {/*  <div className="completed-challenges">*/}
+      {/*    <div className="metrics">*/}
+      {/*      Выполненные: <span style={{ color: '#51B8FF' }}>{completedChallenges.length}</span>*/}
+      {/*    </div>*/}
+      {/*    <div className="metrics">*/}
+      {/*      Незавершенные: <span style={{ color: '#51B8FF' }}>{incompletedChallenges.length}</span>*/}
+      {/*    </div>*/}
+      {/*    <div className="metrics">*/}
+      {/*      Заработано баллов:{' '}*/}
+      {/*      <span style={{ color: '#51B8FF' }}>{calculateCompletedPoints()}</span>*/}
+      {/*    </div>*/}
+      {/*    {completedChallenges.length > 0 ? (*/}
+      {/*      completedChallenges.map((challenge) => (*/}
+      {/*        <div key={challenge.id} className="challenge-item">*/}
+      {/*          <div className="challenge-item-text">*/}
+      {/*            <h3 className="challenge-item-text-name">{challenge.name}</h3>*/}
+      {/*            <div*/}
+      {/*              className="challenge-item-text-points"*/}
+      {/*              style={{*/}
+      {/*                color: '#51B8FF',*/}
+      {/*                backgroundColor: 'rgba(81, 184, 255, 0.2)',*/}
+      {/*              }}*/}
+      {/*            >*/}
+      {/*              {challenge.points} баллов*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*          <div className="progress-bar">*/}
+      {/*            <div className="progress" style={{ width: `${challenge.progress}%` }}></div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      ))*/}
+      {/*    ) : (*/}
+      {/*      <div>No completed challenges</div>*/}
+      {/*    )}*/}
+      {/*    <div className="challenge-line"></div>*/}
+      {/*    {incompletedChallenges.length > 0 ? (*/}
+      {/*      incompletedChallenges.map((challenge) => (*/}
+      {/*        <div key={challenge.id} className="challenge-item">*/}
+      {/*          <div className="challenge-item-text" style={{ opacity: 0.7 }}>*/}
+      {/*            <h3 className="challenge-item-text-name" style={{ opacity: 0.7 }}>*/}
+      {/*              {challenge.name}*/}
+      {/*            </h3>*/}
+      {/*            <div*/}
+      {/*              className="challenge-item-text-points"*/}
+      {/*              style={{*/}
+      {/*                color: '#FF4D53',*/}
+      {/*                backgroundColor: 'rgba(255, 77, 83, 0.2)',*/}
+      {/*                opacity: 0.7,*/}
+      {/*              }}*/}
+      {/*            >*/}
+      {/*              {challenge.points} баллов*/}
+      {/*            </div>*/}
+      {/*          </div>*/}
+      {/*          <div className="progress-bar" style={{ opacity: 0.7 }}>*/}
+      {/*            <div*/}
+      {/*              className="progress"*/}
+      {/*              style={{ width: `${challenge.progress}%`, opacity: 0.7 }}*/}
+      {/*            ></div>*/}
+      {/*          </div>*/}
+      {/*        </div>*/}
+      {/*      ))*/}
+      {/*    ) : (*/}
+      {/*      <div></div>*/}
+      {/*    )}*/}
+      {/*  </div>*/}
+      {/*)}*/}
     </div>
   )
 }

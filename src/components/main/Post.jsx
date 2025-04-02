@@ -33,13 +33,13 @@ const Post = ({ post }) => {
   const [isHovered, setIsHovered] = useState(false)
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [tagSize, setTagSize] = useState('L')
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
 
   const imageContainerRef = useRef(null)
   const infoContainerRef = useRef(null)
 
   const updateImageHeight = () => {
-    if (window.innerWidth > 768 && infoContainerRef.current && imageContainerRef.current) {
+    if (window.innerWidth > 820 && infoContainerRef.current && imageContainerRef.current) {
       const infoHeight = infoContainerRef.current.offsetHeight
       imageContainerRef.current.style.height = `${infoHeight}px`
     }
@@ -47,7 +47,7 @@ const Post = ({ post }) => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 820)
     }
 
     window.addEventListener('resize', handleResize)
@@ -66,7 +66,7 @@ const Post = ({ post }) => {
   useEffect(() => {
     const updateHeightWithDelay = () => {
       setTimeout(() => {
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 820) {
           updateImageHeight()
         }
       }, 50) // 50ms delay
@@ -75,7 +75,7 @@ const Post = ({ post }) => {
     updateHeightWithDelay()
 
     const handleResize = () => {
-      if (window.innerWidth > 768) {
+      if (window.innerWidth > 820) {
         updateImageHeight()
       }
     }
@@ -361,7 +361,7 @@ const Post = ({ post }) => {
           <div className="post__points">
             {post && post.activityDate && post.timeBeginning && (
               <div className="post__points__point">
-                Дата
+                Дата активности
                 <div className={`post__metric`}>
                   {format(
                     new Date(`${post.activityDate}T${post.timeBeginning}:00`),

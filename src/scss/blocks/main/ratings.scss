@@ -81,6 +81,9 @@
   &-participants-list th:nth-child(4){
     text-align: center;
   }
+  &-participants-list th:nth-child(5){
+    text-align: center;
+  }
 
   &-participants-list td:first-child {
     color: $blue-20p;
@@ -97,6 +100,10 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     width: 20%;
+    text-align: center;
+  }
+
+  &-participants-list td:nth-child(5) {
     text-align: center;
   }
 
@@ -323,7 +330,16 @@ li {
   transform: translateX(-100%);
 }
 
-@media (max-width: 768px) {
+.league-badge {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  position: relative;
+}
+
+
+@media (max-width: 820px) {
   .ratings {
     padding: 0;
     margin: 50px 10px;
@@ -337,7 +353,8 @@ li {
   }
   .ratings-participants-list td,
   .ratings-participants-list th {
-    font-size: 18px;
+    font-size: 16px;
+    padding: 5px;
   }
 
   .ratings-select_pt-variant {

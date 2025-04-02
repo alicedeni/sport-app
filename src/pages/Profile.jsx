@@ -7,7 +7,7 @@ import { link } from '../consts.js'
 import MobileFooter from '@components/mobile/MobileFooter'
 
 const Profile = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
   const [user, setUser] = useState({})
   const [loadingUser, setLoadingUser] = useState(true)
 
@@ -37,7 +37,7 @@ const Profile = () => {
       .catch((error) => console.error(error))
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 820)
     }
 
     window.addEventListener('resize', handleResize)

@@ -3,11 +3,11 @@ import GoalBlock from '@components/GoalBlock'
 import MobileGoalBlock from '@components/mobile/MobileGoalBlock'
 
 const GlobalGoal = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 820)
     }
 
     window.addEventListener('resize', handleResize)

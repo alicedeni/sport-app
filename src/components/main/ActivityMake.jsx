@@ -37,11 +37,11 @@ const ActivityMake = () => {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false)
   const [modalErrorMessage, setModalErrorMessage] = useState('')
   const navigate = useNavigate()
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 820)
     }
 
     window.addEventListener('resize', handleResize)

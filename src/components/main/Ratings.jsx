@@ -6,22 +6,8 @@ import { link } from '../../consts.js'
 
 const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left')
-  const [participants, setParticipants] = useState([
-    /*
-    { id: 1, firstName: 'Иван', lastName: 'Иванов', team: 'Команда 1', progress: 500, league: 'gold' },
-    { id: 2, firstName: 'Алиса', lastName: 'Денисова', team: 'Команда 3', progress: 470, league: 'gold' },
-    { id: 3, firstName: 'Петр', lastName: 'Петров', team: 'Команда 2', progress: 400, league: 'silver' },
-    { id: 4, firstName: 'Сидор', lastName: 'Сидоров', team: 'Команда 1', progress: 200, league: 'bronze' },
-*/
-  ])
-  const [teams, setTeams] = useState([
-    /*
-    { id: 1, name: 'Команда 1', members: 10, totalProgress: 5000 },
-    { id: 2, name: 'Команда 3', members: 8, totalProgress: 4200 },
-    { id: 3, name: 'Команда 2', members: 12, totalProgress: 3500 },
-    { id: 4, name: 'Команда 4', members: 2, totalProgress: 2000 },
-*/
-  ])
+  const [participants, setParticipants] = useState([])
+  const [teams, setTeams] = useState([])
   const [selectedLeague, setSelectedLeague] = useState([1])
   const [leagues, setLeagues] = useState([
     { id: 1, name: 'ВСЕ УЧАСТНИКИ', color: '#51B8FF', ind: 'ВСЕ УЧАСТНИКИ' },
@@ -177,141 +163,35 @@ const Ratings = () => {
                 <th>Участник</th>
                 <th>Команда</th>
                 <th>Прогресс</th>
+                <th>Лига</th>
               </tr>
             </thead>
             <tbody>
-              {selectedLeague.includes(1) ? (
-                <>
-                  {/*
-                  <tr>
-                    <th
-                      colSpan="4"
-                      className="league-title"
+              {filteredParticipants.map((participant, index) => (
+                <tr key={participant.id}>
+                  <td>{index + 1}</td>
+                  <td>
+                    {participant.lastName} {participant.firstName}
+                  </td>
+                  <td>{participant.team}</td>
+                  <td>{participant.progress}</td>
+                  <td>
+                    <span
+                      className="league-badge"
                       style={{
-                        backgroundColor: 'transparent',
-                        color: leagues.find((l) => l.id === 2)?.color,
-                        textAlign: 'left',
-                        padding: '10px',
+                        backgroundColor:
+                          participant.league.toLowerCase() === 'gold'
+                            ? '#f4dd84'
+                            : participant.league.toLowerCase() === 'silver'
+                              ? '#82ade0'
+                              : participant.league.toLowerCase() === 'bronze'
+                                ? '#e891ac'
+                                : 'white',
                       }}
-                    >
-                      {leagues.find((l) => l.id === 2)?.name}
-                    </th>
-                  </tr>
-                  */}
-                  {filteredParticipants
-                    .filter((participant) => participant.league.toLowerCase() === 'gold')
-                    .map((participant, index) => (
-                      <tr key={participant.id}>
-                        <td>{index + 1}</td>
-                        <td>
-                          {participant.lastName} {participant.firstName}
-                        </td>
-                        <td>{participant.team}</td>
-                        <td>{participant.progress}</td>
-                      </tr>
-                    ))}
-                  {/*
-                  <tr>
-                    <th
-                      colSpan="4"
-                      className="league-title"
-                      style={{
-                        backgroundColor: 'transparent',
-                        color: leagues.find((l) => l.id === 3)?.color,
-                        textAlign: 'left',
-                        padding: '10px',
-                      }}
-                    >
-                      {leagues.find((l) => l.id === 3)?.name}
-                    </th>
-                  </tr>
-                  */}
-                  {filteredParticipants
-                    .filter((participant) => participant.league.toLowerCase() === 'silver')
-                    .map((participant, index) => (
-                      <tr key={participant.id}>
-                        <td>{index + 1}</td>
-                        <td>
-                          {participant.lastName} {participant.firstName}
-                        </td>
-                        <td>{participant.team}</td>
-                        <td>{participant.progress}</td>
-                      </tr>
-                    ))}
-                  {/*
-                  <tr>
-                    <th
-                      colSpan="4"
-                      className="league-title"
-                      style={{
-                        backgroundColor: 'transparent',
-                        color: leagues.find((l) => l.id === 4)?.color,
-                        textAlign: 'left',
-                        padding: '10px',
-                      }}
-                    >
-                      {leagues.find((l) => l.id === 4)?.name}
-                    </th>
-                  </tr>
-                  */}
-                  {filteredParticipants
-                    .filter((participant) => participant.league.toLowerCase() === 'bronze')
-                    .map((participant, index) => (
-                      <tr key={participant.id}>
-                        <td
-                          style={{
-                            color: participantColors[index],
-                          }}
-                        >
-                          {index + 1}
-                        </td>
-                        <td>
-                          {participant.lastName} {participant.firstName}
-                        </td>
-                        <td>{participant.team}</td>
-                        <td>{participant.progress}</td>
-                      </tr>
-                    ))}
-                </>
-              ) : (
-                leagues
-                  .filter((league) => selectedLeague.includes(league.id))
-                  .map((league) => (
-                    <React.Fragment key={league.id}>
-                      <tr>
-                        <th
-                          colSpan="4"
-                          className="league-title"
-                          style={{
-                            backgroundColor: 'transparent',
-                            color: league.color,
-                            textAlign: 'left',
-                            padding: '10px',
-                          }}
-                        >
-                          {league.name}
-                        </th>
-                      </tr>
-                      {filteredParticipants
-                        .filter(
-                          (participant) =>
-                            leagues.find(
-                              (l) => l.ind.toLowerCase() === participant.league.toLowerCase(),
-                            )?.id === league.id,
-                        )
-                        .map((participant, index) => (
-                          <tr key={participant.id}>
-                            <td>{index + 1}</td>
-                            <td>
-                              {participant.lastName} {participant.firstName}
-                            </td>
-                            <td>{participant.team}</td>
-                            <td>{participant.progress}</td>
-                          </tr>
-                        ))}
-                    </React.Fragment>
-                  ))
-              )}
+                    ></span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

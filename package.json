@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.59",
-  "description": "add mobile activity",
+  "version": "1.0.60",
+  "description": "fix mobile & add ratings",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

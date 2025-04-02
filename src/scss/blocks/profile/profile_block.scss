@@ -257,7 +257,11 @@
 
 
 
-@media (max-width: 768px) {
+@media (max-width: 820px) {
+  .profile-block__activity-list-item-time {
+    font-size: 16px;
+    margin: 10px;
+  }
   .profile-block {
     margin-left: 10px !important;
     margin-right: 10px !important;

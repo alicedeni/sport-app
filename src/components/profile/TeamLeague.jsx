@@ -30,6 +30,16 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
     setIsMembersVisible(!isMembersVisible)
   }
 
+  const getParticipantsText = (count) => {
+    if (count % 10 === 1 && count % 100 !== 11) {
+      return `${count} участник`
+    } else if (count % 10 >= 2 && count % 10 <= 4 && (count % 100 < 10 || count % 100 >= 20)) {
+      return `${count} участника`
+    } else {
+      return `${count} участников`
+    }
+  }
+
   return (
     <div className="profile-block-content-comands">
       <div className="profile-block-content-comands-items">
@@ -39,7 +49,7 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
           <p className="profile-block-content-comands-item-text">Моя команда</p>
           <p className="profile-block-content-data-title-name">Команда {tempUser.team}</p>
           <div className="team-members-count" onClick={toggleMembersVisibility}>
-            {teamMembers.length} участников
+            {getParticipantsText(teamMembers.length)}
             <span className={`arrow ${isMembersVisible ? 'arrow-up' : 'arrow-down'}`}></span>
           </div>
           {isMembersVisible && (
