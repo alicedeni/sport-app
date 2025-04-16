@@ -55,9 +55,12 @@ const Comment = ({ comment, onDelete }) => {
       </div>
 
       <div className="post__like-container-all">
-        {comment.is_current_user && (
+        {comment.is_current_user && isHovered ? (
           <div className="post__like-container-comments">
-            <IconButton onClick={() => onDelete(comment.comment_id)}>
+            <IconButton
+              style={{ padding: '2px 12px' }}
+              onClick={() => onDelete(comment.comment_id)}
+            >
               <img
                 className="post__icon-action-com"
                 src={DeleteDefault}
@@ -66,23 +69,21 @@ const Comment = ({ comment, onDelete }) => {
               />
             </IconButton>
           </div>
+        ) : (
+          <div style={{ height: '32px' }}></div>
         )}
 
         <div className="post__like-container-comments">
           {likeCount > 0 && <div className="post__like-count-comments">{likeCount}</div>}
 
-          {likeCount > 0 || isHovered ? (
-            <IconButton onClick={handleLikeClick}>
-              <img
-                className="post__icon-action-com"
-                src={isLiked ? HeartFilled : HeartDefault}
-                alt={isLiked ? 'Liked' : 'Not Liked'}
-                style={{ width: '24px' }}
-              />
-            </IconButton>
-          ) : (
-            <div style={{ height: '32px' }}></div>
-          )}
+          <IconButton style={{ padding: '2px 12px' }} onClick={handleLikeClick}>
+            <img
+              className="post__icon-action-com"
+              src={isLiked ? HeartFilled : HeartDefault}
+              alt={isLiked ? 'Liked' : 'Not Liked'}
+              style={{ width: '24px' }}
+            />
+          </IconButton>
         </div>
       </div>
     </div>

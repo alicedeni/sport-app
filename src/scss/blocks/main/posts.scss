@@ -125,7 +125,7 @@
         & > div {
           background: white;
           padding: 0 10px 0 20px;
-          border-radius: 24px;
+          border-radius: 22px;
           height: 44px;
           width: 100%;
           display: flex;
@@ -201,7 +201,7 @@
       &-all {
         display: flex;
         align-items: flex-end;
-        justify-content: flex-end;
+        justify-content: space-between;
         flex-direction: column;
       }
       &-comments {
@@ -219,7 +219,6 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       &-comments {
-        font-size: 24px;
         font-weight: bold;
         background-image: $gradient;
         margin-right: -7px;
@@ -236,6 +235,8 @@
       &-start {
         display: flex;
         flex-direction: column;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
       &-container {
         display: flex;
@@ -278,6 +279,7 @@
       &-timestamp{
         color: $grey1;
         font-size: 16px;
+        margin-top: auto;
       }
 
     }
@@ -364,9 +366,51 @@
   transition: background-color 0.3s ease;
 }
 
+
+
 .post__zoom-button:hover {
   background-color: rgba(255, 255, 255, 1);
 }
+
+.posts__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.posts__add-button {
+  background-color: transparent;
+  color: white;
+  border: none;
+  margin-right: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.posts__add-button img {
+  height: 50px;
+  width: 50px;
+}
+
+.posts__filter {
+  display: flex;
+  overflow-x: auto; /* Прокрутка при переполнении */
+  gap: 10px;
+  padding-bottom: 8px;
+  white-space: nowrap; /* Запрет переноса элементов */
+}
+
+.posts__filter-item {
+  flex-shrink: 0; /* Запрет сжатия кнопок */
+}
+
+
+.posts__filter-item.active {
+  background-color: #567FE3;
+  color: white;
+}
+
 
 @media (max-width: 820px) {
   .posts {

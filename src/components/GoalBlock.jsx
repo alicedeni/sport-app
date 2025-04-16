@@ -31,7 +31,7 @@ const GoalBlock = () => {
         'Ходьба, бег, плавание, велоспорт, лыжи — каждый километр ваших тренировок принесёт вам баллы (🔥), которые пойдут в общий зачёт.\n' +
         'Баллы (🔥) — это внутренняя валюта челленджа. Все активности, которые вы добавляете, пересчитываются в баллы.',
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat2d.svg',
-      imagePosition: { bottom: '10px', right: '30px' },
+      imagePosition: { bottom: '-40px', right: '30px' },
     },
     {
       title: 'ПРИЗЫ',
@@ -40,7 +40,7 @@ const GoalBlock = () => {
         'Следите за достижениями коллег, получайте отчеты о собственной активности и приведите команду на первую позицию. \n' +
         'Вперед к достижениям! ❤️',
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat3d.svg',
-      imagePosition: { bottom: '0', right: '200px' },
+      imagePosition: { bottom: '0', right: '50px' },
     },
     {
       title: 'ЗАДАЧИ',

@@ -69,7 +69,7 @@ const Post = ({ post }) => {
         if (window.innerWidth > 820) {
           updateImageHeight()
         }
-      }, 50) // 50ms delay
+      }, 100)
     }
 
     updateHeightWithDelay()
@@ -409,7 +409,12 @@ const Post = ({ post }) => {
               <div className="post__points__point">
                 Дистанция
                 <div className={`post__metric`}>
-                  {post.distance} {post.tag === 'pool' ? 'м' : 'км'}
+                  {isNaN(Number(post.distance))
+                    ? '-'
+                    : Number.isInteger(Number(post.distance))
+                      ? Number(post.distance)
+                      : Number(post.distance).toFixed(1)}{' '}
+                  {post.tag === 'pool' ? 'м' : 'км'}
                 </div>
               </div>
             )}
@@ -419,16 +424,6 @@ const Post = ({ post }) => {
         </div>
       </div>
       <div className="post__actions">
-        <div className="post__like-container">
-          <div className="post__like-count">{likeCount}</div>
-          <IconButton onClick={handleLikeClick}>
-            {isLiked ? (
-              <img className="post__icon-action" src={HeartFilled} alt="Liked" />
-            ) : (
-              <img className="post__icon-action" src={HeartDefault} alt="Not Liked" />
-            )}
-          </IconButton>
-        </div>
         <div className="post__comment-container">
           <div className="post__comment-count">{commentCount}</div>
           <IconButton onClick={handleCommentClick}>
@@ -436,6 +431,16 @@ const Post = ({ post }) => {
               <img className="post__icon-action" src={CommentFilled} alt="Commented" />
             ) : (
               <img className="post__icon-action" src={CommentDefault} alt="Not Commented" />
+            )}
+          </IconButton>
+        </div>
+        <div className="post__like-container" style={{ marginRight: '-12px' }}>
+          <div className="post__like-count">{likeCount}</div>
+          <IconButton onClick={handleLikeClick}>
+            {isLiked ? (
+              <img className="post__icon-action" src={HeartFilled} alt="Liked" />
+            ) : (
+              <img className="post__icon-action" src={HeartDefault} alt="Not Liked" />
             )}
           </IconButton>
         </div>
@@ -488,10 +493,7 @@ const Post = ({ post }) => {
         </div>
       )}
       {isModalOpen && (
-        <ImageModal
-          imageUrl={enlargedImageUrl}
-          onClose={() => setIsModalOpen(false)} // Close handler
-        />
+        <ImageModal imageUrl={enlargedImageUrl} onClose={() => setIsModalOpen(false)} />
       )}
     </div>
   )

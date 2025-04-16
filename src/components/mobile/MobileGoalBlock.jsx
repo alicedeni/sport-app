@@ -149,9 +149,9 @@ const MobileGoalBlock = () => {
       <div className="mobile-goal-block__body">
         <p className="mobile-goal-block__text">{pages[currentPage].text}</p>
         {pages[currentPage].listItems && (
-          <ul className="task-list">
+          <ul className="mobile-task-list">
             {pages[currentPage].listItems.map((item, index) => (
-              <li key={index} className="task-list__item">
+              <li key={index} className="mobile-task-list__item">
                 <span dangerouslySetInnerHTML={{ __html: item.svgIcon }} />
                 {item.text}
               </li>

@@ -38,6 +38,7 @@ const ActivityMake = () => {
   const [modalErrorMessage, setModalErrorMessage] = useState('')
   const navigate = useNavigate()
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
+  const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
@@ -309,14 +310,12 @@ const ActivityMake = () => {
         <div className="activity-input">
           <div className="activity-input-title">
             <div className="activity-input-title-number">2</div>
-            Введите данные об активности
+            Введите данные об активности <span style={{ color: 'red' }}>*</span>
           </div>
           <div className="activity-input-content" style={{ flexDirection: 'colunmn' }}>
             <div className="activity-input-content" style={{ marginLeft: '0px' }}>
               <div className="activity-input-content-item">
-                <label className="activity-input-content-item-name">
-                  Дата начала <span style={{ color: 'red' }}>*</span>
-                </label>
+                <label className="activity-input-content-item-name">Дата начала</label>
                 <input
                   className={`activity-input-content-item-field ${requiredFields.activityStartDate ? 'error' : ''}`}
                   type="date"
@@ -326,9 +325,7 @@ const ActivityMake = () => {
                 />
               </div>
               <div className="activity-input-content-item">
-                <label className="activity-input-content-item-name">
-                  Время начала (чч:мм)<span style={{ color: 'red' }}>*</span>
-                </label>
+                <label className="activity-input-content-item-name">Время начала (чч:мм)</label>
                 <input
                   className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}
                   type="time"
@@ -337,26 +334,22 @@ const ActivityMake = () => {
                   onBlur={validateFields}
                 />
               </div>
-              <div className="activity-input-content-item">
-                <label className="activity-input-content-item-name">
-                  Длительность (чч:мм)
-                  {['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) && (
-                    <span style={{ color: 'red' }}>*</span>
-                  )}
-                </label>
-                <input
-                  className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}
-                  type="time"
-                  value={activityDuration}
-                  onChange={(e) => handleInputChange('activityDuration', e.target.value)}
-                  onBlur={validateFields}
-                />
-              </div>
-              {['run', 'walk'].includes(activityTag) && (
+              {['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) && (
                 <div className="activity-input-content-item">
-                  <label className="activity-input-content-item-name">
-                    Шаги {activityTag === 'walk' && <span style={{ color: 'red' }}>*</span>}
-                  </label>
+                  <label className="activity-input-content-item-name">Длительность (чч:мм)</label>
+                  <input
+                    className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}
+                    type="time"
+                    value={activityDuration}
+                    onFocus={() => setIsFocused(true)}
+                    onChange={(e) => handleInputChange('activityDuration', e.target.value)}
+                    onBlur={validateFields}
+                  />
+                </div>
+              )}
+              {['walk'].includes(activityTag) && (
+                <div className="activity-input-content-item">
+                  <label className="activity-input-content-item-name">Шаги</label>
                   <input
                     className={`activity-input-content-item-field ${requiredFields.activityStep ? 'error' : ''}`}
                     type="number"
@@ -368,14 +361,9 @@ const ActivityMake = () => {
                   />
                 </div>
               )}
-              {['pool', 'bike', 'run', 'walk'].includes(activityTag) && (
+              {['pool', 'bike', 'run'].includes(activityTag) && (
                 <div className="activity-input-content-item">
-                  <label className="activity-input-content-item-name">
-                    Дистанция
-                    {['pool', 'bike', 'run'].includes(activityTag) && (
-                      <span style={{ color: 'red' }}>*</span>
-                    )}
-                  </label>
+                  <label className="activity-input-content-item-name">Дистанция</label>
                   <input
                     className={`activity-input-content-item-field ${requiredFields.activityDistance ? 'error' : ''}`}
                     type="number"
