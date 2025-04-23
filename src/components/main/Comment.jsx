@@ -5,12 +5,15 @@ import { ru } from 'date-fns/locale'
 import HeartFilled from '../../assets/icons/heartFilled.svg'
 import HeartDefault from '../../assets/icons/heartDefault.svg'
 import DeleteDefault from '../../assets/icons/deleteDefault.svg'
+import DeleteFilled from '../../assets/icons/deleteFilled.svg'
 import axios from 'axios'
 import { link } from '../../consts.js'
 
 const Comment = ({ comment, onDelete }) => {
   const [isLiked, setIsLiked] = useState(comment.is_liked)
   const [likeCount, setLikeCount] = useState(comment.likeCountComment || 0)
+  const [likeIcon, setLikeIcon] = useState('LikeDefault')
+  const [delIcon, setDelIcon] = useState('DelDefault')
   const [isHovered, setIsHovered] = useState(false)
 
   useEffect(() => {
@@ -60,13 +63,24 @@ const Comment = ({ comment, onDelete }) => {
             <IconButton
               style={{ padding: '2px 12px' }}
               onClick={() => onDelete(comment.comment_id)}
+              onMouseEnter={() => setDelIcon('DelFilled')}
+              onMouseLeave={() => setDelIcon('DelDefault')}
             >
-              <img
-                className="post__icon-action-com"
-                src={DeleteDefault}
-                alt=""
-                style={{ width: '24px' }}
-              />
+              {delIcon === 'DelFilled' ? (
+                <img
+                  className="post__icon-action-com"
+                  src={DeleteFilled}
+                  alt="del"
+                  style={{ width: '24px' }}
+                />
+              ) : (
+                <img
+                  className="post__icon-action-com"
+                  src={DeleteDefault}
+                  alt="del"
+                  style={{ width: '24px' }}
+                />
+              )}
             </IconButton>
           </div>
         ) : (
@@ -76,13 +90,27 @@ const Comment = ({ comment, onDelete }) => {
         <div className="post__like-container-comments">
           {likeCount > 0 && <div className="post__like-count-comments">{likeCount}</div>}
 
-          <IconButton style={{ padding: '2px 12px' }} onClick={handleLikeClick}>
-            <img
-              className="post__icon-action-com"
-              src={isLiked ? HeartFilled : HeartDefault}
-              alt={isLiked ? 'Liked' : 'Not Liked'}
-              style={{ width: '24px' }}
-            />
+          <IconButton
+            style={{ padding: '2px 12px' }}
+            onClick={handleLikeClick}
+            onMouseEnter={() => setLikeIcon('LikeFilled')}
+            onMouseLeave={() => setLikeIcon('LikeDefault')}
+          >
+            {isLiked || likeIcon === 'LikeFilled' ? (
+              <img
+                className="post__icon-action-com"
+                src={HeartFilled}
+                alt="Liked"
+                style={{ width: '24px' }}
+              />
+            ) : (
+              <img
+                className="post__icon-action-com"
+                src={HeartDefault}
+                alt="Not Liked"
+                style={{ width: '24px' }}
+              />
+            )}
           </IconButton>
         </div>
       </div>

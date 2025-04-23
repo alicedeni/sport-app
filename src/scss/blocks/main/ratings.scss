@@ -247,6 +247,15 @@
     text-align: center;
     margin-top: -20px;
   }
+  &__activity {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    &__title {
+    }
+  }
   &__description {
     padding: 0 40px;
     &-info {
@@ -403,6 +412,14 @@ li {
     &__title {
       font-size: 20px;
       margin-top: 0;
+    }
+    &__activity {
+      &-title {
+        font-size: 20px;
+      }
+      p {
+        font-size: 12px;
+      }
     }
     &__description {
       padding: 0 20px;

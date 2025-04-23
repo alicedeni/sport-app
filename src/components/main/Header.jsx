@@ -23,6 +23,7 @@ const Header = ({ currentPage }) => {
     axios
       .get(`${link}/main`, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => {
+        console.log(response.data)
         setUserName(response.data.name)
         setAvatar(response.data.avatar)
         setPoints(response.data.points)
@@ -32,6 +33,7 @@ const Header = ({ currentPage }) => {
           participants: response.data.participants,
           count: response.data.count,
         })
+        setIsNotificationOpen(response.data.show_welcome)
       })
       .catch(() => navigate('/'))
       .finally(() => setLoadingUser(false))
@@ -49,7 +51,16 @@ const Header = ({ currentPage }) => {
     return () => axios.interceptors.response.eject(interceptor)
   }, [navigate])
 
-  const handlePageNotification = () => setIsNotificationOpen(false)
+  const handlePageNotification = () => {
+    setIsNotificationOpen(false)
+    const token = localStorage.getItem('token')
+    axios
+      .post(`${link}/hide_welcome`, {}, { headers: { Authorization: `Bearer ${token}` } })
+      .then(() => {})
+      .catch((error) => {
+        console.error('Ошибка при скрытии подсказки:', error)
+      })
+  }
 
   if (loadingUser) {
     return (

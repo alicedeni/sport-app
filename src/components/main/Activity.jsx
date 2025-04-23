@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonActivity, ButtonEnter } from '../Buttons'
+import WarningModal from './WarningModal'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
@@ -8,7 +9,12 @@ import { link } from '../../consts.js'
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week')
   const [activities, setActivities] = useState([])
+  const [showModal, setShowModal] = useState(false)
+  const [profile, setProfile] = useState(null)
   const navigate = useNavigate()
+
+  const openModal = () => setShowModal(true)
+  const closeModal = () => setShowModal(false)
 
   useEffect(() => {
     const fetchActivities = async () => {
@@ -36,12 +42,39 @@ const Activity = () => {
     fetchActivities()
   }, [selectedSide])
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem('token')
+        const response = await axios.get(`${link}/profile`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        setProfile(response.data.profile)
+      } catch (error) {
+        console.error('Error fetching profile:', error)
+        setProfile(null)
+      }
+    }
+    fetchProfile()
+  }, [])
+
   const handleClick = (side) => {
     setSelectedSide(side)
   }
 
   const handleFormChange = () => {
-    navigate(`/activity_make`, { state: { page: 'activity' } })
+    // Проверяем наличие и валидность height и weight
+    if (
+      !profile ||
+      !profile.height ||
+      !profile.weight ||
+      Number(profile.height) === 0 ||
+      Number(profile.weight) === 0
+    ) {
+      openModal()
+    } else {
+      navigate(`/activity_make`, { state: { page: 'activity' } })
+    }
   }
 
   const parseTimeToMinutes = (timeStr) => {
@@ -134,6 +167,7 @@ const Activity = () => {
           </div>
         ))}
       </div>
+      {showModal && <WarningModal onClose={closeModal} />}
     </div>
   )
 }

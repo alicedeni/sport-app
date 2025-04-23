@@ -4,6 +4,7 @@ import ErrorModal from './ErrorModal'
 import { useNavigate, useLocation } from 'react-router-dom'
 import photoPost from '../../assets/icons/photoPost.svg'
 import axios from 'axios'
+import CustomTimePicker from './CustomTimePicker'
 
 import { link } from '../../consts.js'
 
@@ -64,7 +65,7 @@ const ActivityMake = () => {
       activityStartTime: !activityStartTime,
       activityDuration:
         ['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
-        !activityDuration,
+        (!activityDuration || activityDuration === '00:00'),
       activityStep: activityType === 'walk' && !activityStep,
       activityDistance: ['bike', 'pool', 'run'].includes(activityTag) && !activityDistance,
     }
@@ -212,7 +213,7 @@ const ActivityMake = () => {
       activityStartTime: !activityStartTime,
       activityDuration:
         ['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
-        !activityDuration,
+        (!activityDuration || activityDuration === '00:00'),
       activityStep: activityType === 'walk' && !activityStep,
       activityDistance: ['bike', 'pool', 'run'].includes(activityTag) && !activityDistance,
     }
@@ -326,24 +327,36 @@ const ActivityMake = () => {
               </div>
               <div className="activity-input-content-item">
                 <label className="activity-input-content-item-name">Время начала (чч:мм)</label>
-                <input
-                  className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}
-                  type="time"
+                {/*<input*/}
+                {/*  className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}*/}
+                {/*  type="time"*/}
+                {/*  value={activityStartTime}*/}
+                {/*  onChange={(e) => handleInputChange('activityStartTime', e.target.value)}*/}
+                {/*  onBlur={validateFields}*/}
+                {/*/>*/}
+                <CustomTimePicker
                   value={activityStartTime}
-                  onChange={(e) => handleInputChange('activityStartTime', e.target.value)}
+                  onChange={(value) => handleInputChange('activityStartTime', value)}
                   onBlur={validateFields}
+                  error={requiredFields.activityStartTime}
                 />
               </div>
               {['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) && (
                 <div className="activity-input-content-item">
                   <label className="activity-input-content-item-name">Длительность (чч:мм)</label>
-                  <input
-                    className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}
-                    type="time"
+                  {/*<input*/}
+                  {/*  className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}*/}
+                  {/*  type="time"*/}
+                  {/*  value={activityDuration}*/}
+                  {/*  onFocus={() => setIsFocused(true)}*/}
+                  {/*  onChange={(e) => handleInputChange('activityDuration', e.target.value)}*/}
+                  {/*  onBlur={validateFields}*/}
+                  {/*/>*/}
+                  <CustomTimePicker
                     value={activityDuration}
-                    onFocus={() => setIsFocused(true)}
-                    onChange={(e) => handleInputChange('activityDuration', e.target.value)}
+                    onChange={(value) => handleInputChange('activityDuration', value)}
                     onBlur={validateFields}
+                    error={requiredFields.activityDuration}
                   />
                 </div>
               )}

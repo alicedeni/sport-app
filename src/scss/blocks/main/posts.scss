@@ -503,6 +503,8 @@
       height: fit-content;
     }
     &__title {
+      gap: 10px;
+      flex-wrap: wrap;
       &-fire {
         border-radius: 13px;
         padding: 1px;

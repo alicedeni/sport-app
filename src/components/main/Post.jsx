@@ -27,6 +27,8 @@ const Post = ({ post }) => {
   const [comments, setComments] = useState(post.comments || [])
   const [commentCount, setCommentCount] = useState(post.commentCount || 0)
   const [sendIcon, setSendIcon] = useState('SendDefault')
+  const [likeIcon, setLikeIcon] = useState('LikeDefault')
+  const [comIcon, setComIcon] = useState('ComDefault')
   const hasImage = post && post.image
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [enlargedImageUrl, setEnlargedImageUrl] = useState('')
@@ -426,8 +428,12 @@ const Post = ({ post }) => {
       <div className="post__actions">
         <div className="post__comment-container">
           <div className="post__comment-count">{commentCount}</div>
-          <IconButton onClick={handleCommentClick}>
-            {isCommentOpen ? (
+          <IconButton
+            onClick={handleCommentClick}
+            onMouseEnter={() => setComIcon('ComFilled')}
+            onMouseLeave={() => setComIcon('ComDefault')}
+          >
+            {isCommentOpen || comIcon === 'ComFilled' ? (
               <img className="post__icon-action" src={CommentFilled} alt="Commented" />
             ) : (
               <img className="post__icon-action" src={CommentDefault} alt="Not Commented" />
@@ -436,8 +442,12 @@ const Post = ({ post }) => {
         </div>
         <div className="post__like-container" style={{ marginRight: '-12px' }}>
           <div className="post__like-count">{likeCount}</div>
-          <IconButton onClick={handleLikeClick}>
-            {isLiked ? (
+          <IconButton
+            onClick={handleLikeClick}
+            onMouseEnter={() => setLikeIcon('LikeFilled')}
+            onMouseLeave={() => setLikeIcon('LikeDefault')}
+          >
+            {isLiked || likeIcon === 'LikeFilled' ? (
               <img className="post__icon-action" src={HeartFilled} alt="Liked" />
             ) : (
               <img className="post__icon-action" src={HeartDefault} alt="Not Liked" />

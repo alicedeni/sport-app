@@ -187,7 +187,7 @@ const Preview = () => {
           )}
           <div className="post__user-info">
             <div className="post__svg-fire-container">
-              <div className="preview-post__username">
+              <div className="post__username">
                 {user.lastName} {user.firstName}
               </div>
               <svg

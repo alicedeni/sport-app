@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.62",
-  "description": "fix comments & activity info & test filter",
+  "version": "1.0.63",
+  "description": "fix about & hovers & time input & design",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

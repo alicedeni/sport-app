@@ -337,6 +337,9 @@
           &-value {
             font-size: 16px !important;
           }
+          &-oval-input {
+            font-size: 16px !important;
+          }
         }
         &-profile {
           display: flex;
@@ -355,6 +358,14 @@
             }
           }
         }
+        &-btn-save {
+          font-size: 16px  !important;
+          height: 40px  !important;
+        }
+        &-btn-cancel {
+          font-size: 16px !important;
+          height: 40px !important;
+        }
       }
     }
     &-btn {
@@ -369,6 +380,9 @@
   .profile-block-content-data-item-oval {
     height: 30px !important;
     border-radius: 15px !important;
+  }
+  .profile-block-content-data-profile-column-i {
+    margin: 0;
   }
 
   .profile-label {
