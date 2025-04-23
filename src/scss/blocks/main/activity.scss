@@ -518,3 +518,26 @@ input[type="number"] {
   scrollbar-width: none;
   scrollbar-color: rgba(0, 64, 128, 0.3) transparent;
 }
+
+@media (max-width: 820px) {
+  .custom-timepicker {
+    input {
+      height: 30px;
+      border-radius: 15px;
+      font-size: 18px;
+    }
+    .dropdown {
+      height: 100px;
+      border-radius: 15px;
+      ul{
+        li {
+          padding: 2px 7px;
+          cursor: pointer;
+          color: $blue;
+          user-select: none;
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}
