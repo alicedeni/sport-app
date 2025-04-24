@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.64",
-  "description": "mobile time input",
+  "version": "1.0.65",
+  "description": "return vers for challenges",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
