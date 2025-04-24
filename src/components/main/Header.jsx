@@ -92,16 +92,28 @@ const Header = ({ currentPage }) => {
       <hr style={{ width: '100%', color: '$white', backgroundColor: '$white', height: '1px' }} />
       <nav className="header-nav">
         <div className="header-nav-list">
-          <Link to={`/main`} className="header-nav-list-item">
+          <Link
+            to={`/main`}
+            className={`header-nav-list-item ${currentPage === 'feed' ? 'active' : ''}`}
+          >
             ЛЕНТА
           </Link>
-          <Link to={`/challenges`} className="header-nav-list-item">
+          <Link
+            to={`/challenges`}
+            className={`header-nav-list-item ${currentPage === 'challenges' ? 'active' : ''}`}
+          >
             ЧЕЛЛЕНДЖИ
           </Link>
-          <Link to={`/ratings`} className="header-nav-list-item">
+          <Link
+            to={`/ratings`}
+            className={`header-nav-list-item ${currentPage === 'ratings' ? 'active' : ''}`}
+          >
             РЕЙТИНГИ
           </Link>
-          <Link to={`/activity`} className="header-nav-list-item">
+          <Link
+            to={`/activity`}
+            className={`header-nav-list-item ${currentPage === 'activity' ? 'active' : ''}`}
+          >
             АКТИВНОСТЬ
           </Link>
         </div>

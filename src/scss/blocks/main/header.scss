@@ -91,6 +91,9 @@
         &:hover {
           border-bottom: 2px solid $white;
         }
+        &.active {
+          border-bottom: 2px solid $white;
+        }
       }
     }
   }
