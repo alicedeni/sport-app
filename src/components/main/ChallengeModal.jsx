@@ -49,22 +49,27 @@ const ChallengeModal = ({ onClose }) => {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <span className="close" onClick={onClose}>
-          &times;
+          <img
+            src="https://storage.yandexcloud.net/team2go/users/base/closeDefault.svg"
+            className="close-img"
+          />
         </span>
-        <h2>Доступные челленджи</h2>
-        <ul>
-          {challenges.map((challenge) => (
-            <li key={challenge.id}>
-              {challenge.name} - {challenge.points} баллов
-              <ButtonActivity
-                className="welcome-block__btn"
-                text="Выбрать задание"
-                textContent={'Выбрать задание'}
-                onClick={() => handleSelectChallenge(challenge.id)}
-              ></ButtonActivity>
-            </li>
-          ))}
-        </ul>
+        <div className="content-challenge">
+          <h2>Доступные челленджи</h2>
+          <ul>
+            {challenges.map((challenge) => (
+              <li key={challenge.id}>
+                {challenge.name} - {challenge.points} баллов
+                <ButtonActivity
+                  className="welcome-block__btn"
+                  text="Выбрать задание"
+                  textContent={'Выбрать задание'}
+                  onClick={() => handleSelectChallenge(challenge.id)}
+                ></ButtonActivity>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   )

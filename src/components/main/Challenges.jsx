@@ -37,6 +37,19 @@ const Challenges = () => {
               if (data.current_challenges) {
                 setCurrentChallenges(fillChallenges(data.current_challenges || []))
               }
+              setCurrentChallenges((prevChallenges) => [
+                ...prevChallenges,
+                {
+                  id: 101,
+                  name: 'Ежедневный бег 5 км',
+                  description:
+                    'Пробегайте 5 километров каждый день в течение недели, чтобы улучшить свою выносливость и здоровье.',
+                  progress: 40,
+                  points: 150,
+                  image:
+                    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=200&q=80',
+                },
+              ])
             } else {
               setCompletedChallenges(data.completed_challenges || [])
               setIncompletedChallenges(data.incompleted_challenges || [])
@@ -157,22 +170,39 @@ const Challenges = () => {
             </span>
           </div>
           {currentChallenges.length > 0 ? (
-            currentChallenges.map((challenge, index) => (
-              <div key={challenge.id} className="challenge-item">
-                {challenge.name ? (
-                  <>
-                    <div className="challenge-item-text">
-                      <h3 className="challenge-item-text-name">{challenge.name}</h3>
-                      <div className="challenge-item-text-points">{challenge.points} баллов</div>
+            currentChallenges.map((challenge, index) =>
+              challenge.name ? (
+                <>
+                  <div key={challenge.id} className="challenge-item__current">
+                    <div className="challenge-items">
+                      <div className="challenge-items__left">
+                        <img className="post__image" src={`${challenge.image}`} alt="challenge" />
+                      </div>
+                      <div className="challenge-items__right">
+                        <div className="challenge-item-text">
+                          <h3 className="challenge-item-text-name">{challenge.name}</h3>
+                          <div className="challenge-item-text-points">
+                            {challenge.points} баллов
+                          </div>
+                        </div>
+                        <div className="progress-bar">
+                          <div
+                            className="progress"
+                            style={{ width: `${challenge.progress}%` }}
+                          ></div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="progress-bar">
-                      <div className="progress" style={{ width: `${challenge.progress}%` }}></div>
-                    </div>
-                  </>
-                ) : (
-                  <>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div key={challenge.id} className="challenge-item">
                     <div className="empty-challenge">
-                      <p>Задание не выбрано</p>
+                      <div className="empty-challenge__text">
+                        <p className="empty-challenge__text-p">Задание не выбрано</p>
+                        <p className="empty-challenge__text-p">Доступно 6/6</p>
+                      </div>
                       <ButtonActivity
                         className="welcome-block__btn"
                         text="Выбрать задание"
@@ -180,10 +210,10 @@ const Challenges = () => {
                         onClick={() => handleOpenModal(index)}
                       ></ButtonActivity>
                     </div>
-                  </>
-                )}
-              </div>
-            ))
+                  </div>
+                </>
+              ),
+            )
           ) : (
             <div>No current challenges</div>
           )}

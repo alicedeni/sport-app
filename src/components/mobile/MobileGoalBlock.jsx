@@ -23,7 +23,7 @@ const MobileGoalBlock = () => {
         'Это тестовое командное состязание в честь запуска нашего приложения.\n' +
         'Цель состязания — собрать активностей на 402 км, что равнозначно достижению высоты орбиты МКС.',
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat1.svg',
-      imagePosition: { top: '150px', right: '0' },
+      imagePosition: { top: '75px', right: '0' },
     },
     {
       title: 'БАЛЛЫ',
@@ -31,7 +31,7 @@ const MobileGoalBlock = () => {
         'Ходьба, бег, плавание, велоспорт, лыжи — каждый километр ваших тренировок принесёт вам баллы (🔥), которые пойдут в общий зачёт.\n' +
         'Баллы (🔥) — это внутренняя валюта челленджа. Все активности, которые вы добавляете, пересчитываются в баллы.',
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat2.svg',
-      imagePosition: { top: '280px', right: '30px' },
+      imagePosition: { top: '150px', right: '30px' },
     },
     {
       title: 'ПРИЗЫ',
@@ -39,8 +39,6 @@ const MobileGoalBlock = () => {
         'Активный образ жизни — уже награда. Команду победителей ждут специальные призы. Топ-3 лидера состязания в персональном зачёте также получат специальный приз.\n' +
         'Следите за достижениями коллег, получайте отчеты о собственной активности и приведите команду на первую позицию. \n' +
         'Вперед к достижениям! ❤️',
-      imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat3.svg',
-      imagePosition: { top: '-240px', right: '0px' },
     },
     {
       title: 'ЗАДАЧИ',
@@ -136,7 +134,7 @@ const MobileGoalBlock = () => {
       ),
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat5.svg',
       buttonText: 'Поехали!',
-      imagePosition: { top: '140px', right: '70px' },
+      imagePosition: { top: '40px', right: '0px' },
     },
   ]
 
