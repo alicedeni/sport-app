@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ButtonActivity } from '../Buttons'
+import { ButtonChallenge } from '../Buttons'
 import axios from 'axios'
 import { link } from '../../consts.js'
 
@@ -56,16 +56,27 @@ const ChallengeModal = ({ onClose }) => {
         </span>
         <div className="content-challenge">
           <h2>Доступные челленджи</h2>
-          <ul>
-            {challenges.map((challenge) => (
-              <li key={challenge.id}>
-                {challenge.name} - {challenge.points} баллов
-                <ButtonActivity
+          <ul className="challenge-list">
+            {challenges.map((challenge, index) => (
+              <li
+                key={challenge.id}
+                className={`challenge-list-item ${
+                  index !== challenges.length - 1 ? 'with-divider' : ''
+                }`}
+              >
+                <div className="challenge-info">
+                  <div className="challenge-index">{index + 1}</div>
+                  <div className="challenge-text">
+                    <p className="challenge-name">{challenge.name}</p>
+                    <p className="challenge-points">{challenge.points} баллов</p>
+                  </div>
+                </div>
+                <ButtonChallenge
                   className="welcome-block__btn"
                   text="Выбрать задание"
-                  textContent={'Выбрать задание'}
+                  textContent="Выбрать задание"
                   onClick={() => handleSelectChallenge(challenge.id)}
-                ></ButtonActivity>
+                />
               </li>
             ))}
           </ul>

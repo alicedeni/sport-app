@@ -65,6 +65,16 @@ export function ButtonActivity({ src, onClick, textContent }) {
   )
 }
 
+export function ButtonChallenge({ src, onClick, textContent }) {
+  return (
+    <a className="welcome-block__challenge" onClick={onClick}>
+      <button className={`button button-challenge`}>
+        <span className="button_text">{textContent}</span>
+      </button>
+    </a>
+  )
+}
+
 export function CButtonProfile({ children, points, onClick }) {
   const navigate = useNavigate()
 

@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ButtonEnter } from '../Buttons'
 
 const MobileGoalBlock = () => {
   const [currentPage, setCurrentPage] = useState(0)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
   const handlePrevPage = () => {
     setCurrentPage(currentPage === 0 ? 4 : currentPage - 1)
@@ -138,6 +139,10 @@ const MobileGoalBlock = () => {
     },
   ]
 
+  useEffect(() => {
+    setIsImageLoaded(false)
+  }, [currentPage])
+
   return (
     <div className="mobile-goal-block">
       <div className="mobile-goal-block__header">
@@ -159,9 +164,11 @@ const MobileGoalBlock = () => {
         {pages[currentPage].imageUrl && (
           <img
             className="mobile-goal__image"
+            key={pages[currentPage].imageUrl}
             src={pages[currentPage].imageUrl}
             alt={`cat ${currentPage + 1}`}
             style={{ position: 'absolute', ...pages[currentPage].imagePosition }}
+            onLoad={() => setIsImageLoaded(true)}
           />
         )}
         <div>

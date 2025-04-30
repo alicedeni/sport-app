@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.67",
-  "description": "fix challenges & goal mobile",
+  "version": "1.0.68",
+  "description": "fix goals & modal challenge",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -70,7 +70,7 @@
   justify-content: space-between;
   height: calc(100vh - 200px);
   position: relative;
-  padding: 20px 30px;
+  padding: 0 30px;
   font-size: 20px;
   overflow: hidden;
 }
@@ -94,6 +94,8 @@
   display: flex;
   justify-content: space-between;
   gap: 30px;
+  width: 100%;
+  padding: 0 50px;
 }
 
 .mobile-goal-block__arrow {

@@ -134,7 +134,9 @@ const Header = ({ currentPage }) => {
             onMouseLeave={() => setShowTooltip(false)}
             style={{ position: 'relative' }}
           >
-            <div className="goal" style={{ width: `${goal}%` }}></div>
+            <div className="goal" style={{ width: `${goal}%` }}>
+              {goal > 8 && <span className="goal-percentage">{goal.toFixed(0)}%</span>}
+            </div>
           </div>
         </div>
       )}

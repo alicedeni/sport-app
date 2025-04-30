@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ButtonEnter, ButtonActivity } from './Buttons'
 
 const GoalBlock = () => {
   const [currentPage, setCurrentPage] = useState(0)
+  const [isImageLoaded, setIsImageLoaded] = useState(false)
 
   const handlePrevPage = () => {
     setCurrentPage(currentPage === 0 ? 4 : currentPage - 1)
@@ -140,6 +141,10 @@ const GoalBlock = () => {
     },
   ]
 
+  useEffect(() => {
+    setIsImageLoaded(false)
+  }, [currentPage])
+
   return (
     <div className="goal-block">
       <div className="goal-block__header">
@@ -147,53 +152,54 @@ const GoalBlock = () => {
       </div>
       <div className="goal-block__content">
         <div className="goal-block__content-arrows">
-          {currentPage !== 0 && (
-            <button
-              className="goal-block__prev"
-              onClick={handlePrevPage}
-              style={{ visibility: currentPage === 0 ? 'hidden' : 'visible' }}
-            >
-              &lt;
-            </button>
-          )}
-          <h1 className="goal-block__title">{pages[currentPage].title}</h1>
-          {currentPage !== 4 && (
-            <button
-              className="goal-block__next"
-              onClick={handleNextPage}
-              style={{ visibility: currentPage === 4 ? 'hidden' : 'visible' }}
-            >
-              &gt;
-            </button>
-          )}
+          <button
+            className="goal-block__prev"
+            onClick={handlePrevPage}
+            style={{ visibility: currentPage === 0 ? 'hidden' : 'visible' }}
+          >
+            &lt;
+          </button>
+
+          <div className="goal-block__content">
+            <h1 className="goal-block__title">{pages[currentPage].title}</h1>
+            <p className="goal-block__text">{pages[currentPage].text}</p>
+            {pages[currentPage].listItems && (
+              <ul className="goal-block__task-list">
+                {pages[currentPage].listItems.map((item, index) => (
+                  <li key={index} className="goal-block__task-list__item">
+                    <span dangerouslySetInnerHTML={{ __html: item.svgIcon }} />
+                    {item.text}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {pages[currentPage].imageUrl && (
+              <img
+                className="mobile-goal__image"
+                key={pages[currentPage].imageUrl}
+                src={pages[currentPage].imageUrl}
+                alt={`cat ${currentPage + 1}`}
+                style={{ position: 'absolute', ...pages[currentPage].imagePosition }}
+                onLoad={() => setIsImageLoaded(true)}
+              />
+            )}
+            {currentPage === 4 && (
+              <ButtonEnter
+                className="welcome-block__btn"
+                text="Поехали!"
+                textContent={'Поехали!'}
+                onClick={handleGoToMain}
+              ></ButtonEnter>
+            )}
+          </div>
+          <button
+            className="goal-block__next"
+            onClick={handleNextPage}
+            style={{ visibility: currentPage === pages.length - 1 ? 'hidden' : 'visible' }}
+          >
+            &gt;
+          </button>
         </div>
-        <p className="goal-block__text">{pages[currentPage].text}</p>
-        {pages[currentPage].listItems && (
-          <ul className="goal-block__task-list">
-            {pages[currentPage].listItems.map((item, index) => (
-              <li key={index} className="goal-block__task-list__item">
-                <span dangerouslySetInnerHTML={{ __html: item.svgIcon }} />
-                {item.text}
-              </li>
-            ))}
-          </ul>
-        )}
-        {pages[currentPage].imageUrl && (
-          <img
-            className="mobile-goal__image"
-            src={pages[currentPage].imageUrl}
-            alt={`cat ${currentPage + 1}`}
-            style={{ position: 'absolute', ...pages[currentPage].imagePosition }}
-          />
-        )}
-        {currentPage === 4 && (
-          <ButtonEnter
-            className="welcome-block__btn"
-            text="Поехали!"
-            textContent={'Поехали!'}
-            onClick={handleGoToMain}
-          ></ButtonEnter>
-        )}
       </div>
     </div>
   )

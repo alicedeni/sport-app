@@ -46,8 +46,7 @@ const Challenges = () => {
                     'Пробегайте 5 километров каждый день в течение недели, чтобы улучшить свою выносливость и здоровье.',
                   progress: 40,
                   points: 150,
-                  image:
-                    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=200&q=80',
+                  image: 'https://storage.yandexcloud.net/team2go/users/base/testChallenge.png',
                 },
               ])
             } else {
@@ -176,7 +175,11 @@ const Challenges = () => {
                   <div key={challenge.id} className="challenge-item__current">
                     <div className="challenge-items">
                       <div className="challenge-items__left">
-                        <img className="post__image" src={`${challenge.image}`} alt="challenge" />
+                        <img
+                          className="challenge-items-image"
+                          src={`${challenge.image}`}
+                          alt="challenge"
+                        />
                       </div>
                       <div className="challenge-items__right">
                         <div className="challenge-item-text">
