@@ -13,7 +13,7 @@ const GlobalGoal = () => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
-  return <div className="goal">{isMobile ? <MobileGoalBlock /> : <GoalBlock />}</div>
+  return <div className="goal_page">{isMobile ? <MobileGoalBlock /> : <GoalBlock />}</div>
 }
 
 export default GlobalGoal
