@@ -15,7 +15,6 @@ import Registration from './pages/Registration'
 import ErrorPage404 from './pages/ErrorPage404'
 import GlobalGoal from './pages/GlobalGoal'
 import { BeatLoader } from 'react-spinners'
-import ProtectedRoute from './components/ProtectedRoute'
 
 import './scss/main.scss'
 
@@ -35,51 +34,27 @@ const router = createBrowserRouter([
   },
   {
     path: '/main',
-    element: (
-      <ProtectedRoute>
-        <Feed />
-      </ProtectedRoute>
-    ),
+    element: <Feed />,
   },
   {
     path: '/challenges',
-    element: (
-      <ProtectedRoute>
-        <ChallengesPage />
-      </ProtectedRoute>
-    ),
+    element: <ChallengesPage />,
   },
   {
     path: '/ratings',
-    element: (
-      <ProtectedRoute>
-        <RatingsPage />
-      </ProtectedRoute>
-    ),
+    element: <RatingsPage />,
   },
   {
     path: '/activity',
-    element: (
-      <ProtectedRoute>
-        <ActivityPage />
-      </ProtectedRoute>
-    ),
+    element: <ActivityPage />,
   },
   {
     path: '/activity_make',
-    element: (
-      <ProtectedRoute>
-        <ActivityMakePage />
-      </ProtectedRoute>
-    ),
+    element: <ActivityMakePage />,
   },
   {
     path: '/preview',
-    element: (
-      <ProtectedRoute>
-        <PreviewPage />
-      </ProtectedRoute>
-    ),
+    element: <PreviewPage />,
   },
   {
     path: '/registration',
@@ -87,11 +62,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/profile',
-    element: (
-      <ProtectedRoute>
-        <Profile />
-      </ProtectedRoute>
-    ),
+    element: <Profile />,
   },
 ])
 

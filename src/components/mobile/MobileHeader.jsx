@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { link } from '../../consts'
 
@@ -9,6 +10,7 @@ const MobileHeader = () => {
     participants: 0,
     count: 0,
   })
+  const navigate = useNavigate()
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -24,10 +26,19 @@ const MobileHeader = () => {
           count: response.data.count,
         })
       })
-      .catch((error) => {
-        console.error(error)
-      })
-  }, [])
+      .catch(() => navigate('/'))
+    const interceptor = axios.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.status === 401) {
+          navigate('/')
+        }
+        return Promise.reject(error)
+      },
+    )
+
+    return () => axios.interceptors.response.eject(interceptor)
+  }, [navigate])
 
   return (
     <div>
