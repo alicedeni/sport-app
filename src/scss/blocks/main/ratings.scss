@@ -397,6 +397,7 @@ li {
     justify-content: space-between;
     text-align: center;
     border-radius: 10px;
+    height: 150px;
   }
 
   .ratings-teams-list-team-item-team {
@@ -455,5 +456,9 @@ li {
         }
       }
     }
+  }
+  .team-icon {
+    width: 30px;
+    height: 30px;
   }
 }

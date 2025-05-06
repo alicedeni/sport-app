@@ -280,7 +280,10 @@ const Post = ({ post }) => {
         </div>
       </div>
       <div className={`post__content`}>
-        <div className={`post__image-container`} ref={imageContainerRef}>
+        <div
+          className={`post__image-container ${post.tag} ${!hasImage && 'no_img'}`}
+          ref={imageContainerRef}
+        >
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
           {hasImage ? (
             <div
@@ -314,8 +317,8 @@ const Post = ({ post }) => {
             </div>
           ) : (
             <img
-              className="post__image"
-              src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}.svg`}
+              className={`post__image ${!hasImage && 'no_img'}`}
+              src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}${isMobile ? '-mobile' : ''}.svg`}
               alt={`${post.tag} activity`}
             />
           )}

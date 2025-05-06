@@ -135,7 +135,8 @@ const Challenges = () => {
 
   return (
     <div className="challenges">
-      <div className="select_pt">
+      <p>Будет доступно позднее</p>
+      {/*<div className="select_pt">
         <div
           className="select_pt-variant"
           style={{
@@ -287,7 +288,7 @@ const Challenges = () => {
             <div></div>
           )}
         </div>
-      )}
+      )}*/}
     </div>
   )
 }

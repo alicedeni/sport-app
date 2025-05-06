@@ -35,20 +35,7 @@ const Header = ({ currentPage }) => {
         })
         setIsNotificationOpen(response.data.show_welcome)
       })
-      .catch(() => navigate('/'))
       .finally(() => setLoadingUser(false))
-
-    const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          navigate('/')
-        }
-        return Promise.reject(error)
-      },
-    )
-
-    return () => axios.interceptors.response.eject(interceptor)
   }, [navigate])
 
   const handlePageNotification = () => {

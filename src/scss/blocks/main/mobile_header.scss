@@ -8,7 +8,7 @@
     background: $gradient;
 
   &__title {
-    font-size: 15px;
+    font-size: 13px;
     flex-grow: 1;
     font-weight: lighter;
     text-align: justify;
@@ -58,10 +58,9 @@
   flex-direction: row;
   justify-content: space-between;
   gap: 5px;
-  flex-wrap: wrap;
   &__metrics {
     height: 48px;
-    width: 100px;
+    width: 100%;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 8px;
     color: $white2;

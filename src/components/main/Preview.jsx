@@ -225,13 +225,16 @@ const Preview = () => {
           </div>
         </div>
         <div className={`post__content`}>
-          <div className={`post__image-container`} ref={imageContainerRef}>
+          <div
+            className={`post__image-container ${activityData.type} ${!hasImage && 'no_img'}`}
+            ref={imageContainerRef}
+          >
             {hasImage ? (
               <img className="post__image" src={activityData.image} alt="Post image" />
             ) : (
               <img
-                className="post__image"
-                src={`https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.svg`}
+                className={`post__image ${!hasImage && 'no_img'}`}
+                src={`https://storage.yandexcloud.net/team2go/users/base/${activityData.type}${isMobile ? '-mobile' : ''}.svg`}
                 alt={`${activityData.type} activity`}
               />
             )}

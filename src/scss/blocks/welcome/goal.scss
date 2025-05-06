@@ -89,6 +89,12 @@
   height: auto;
   z-index: 0;
   overflow: hidden;
+
+  &-mob {
+    z-index: 0;
+    overflow: hidden;
+    height: 50%;
+  }
 }
 .goal-block__content-arrows {
   display: flex;
@@ -151,6 +157,18 @@
 .mobile-task-list__item{
   display: flex;
   gap: 10px;
-  font-size: 16px;
+  font-size: 12px;
+
 }
 
+@media (max-width: 820px) {
+  .mobile-goal-block__text {
+    font-size: 12px !important;
+  }
+}
+
+.mobile-task-list__item-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}

@@ -488,9 +488,30 @@
       width: 100%;
       margin-right: 0px;
       height: 320px;
+      &.no_img {
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      &.pool {background: $blue-50p;}
+      &.cardio {background: $yellow-50p;}
+      &.run {background: $green-50p;}
+      &.power {background: $pink-50p;}
+      &.bike {background: $purple2-50p;}
+      &.yoga {background: $turquoise-50p;}
+      &.walk {background: $orange-50p;}
+      &.game {background: $dark-blue-50p;}
+      &.dance {background: $purple1-50p;}
+      &.other {background: $grey4-50p;}
     }
     &__image {
       height: 320px;
+      &.no_img {
+        height: 100px;
+        width: auto;
+      }
     }
     &__info {
       width: 100%;

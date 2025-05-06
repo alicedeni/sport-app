@@ -206,6 +206,7 @@ const AccountSection = ({
                     padding: '0 10px',
                     boxSizing: 'border-box',
                   }}
+                  className="profile-block-content-data-item-value-input"
                   type="text"
                   value={tempUser.firstName}
                   onChange={(event) => handleInputChange(event, 'firstName')}
