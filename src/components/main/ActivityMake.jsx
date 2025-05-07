@@ -15,7 +15,7 @@ const ActivityMake = () => {
   const [activityType, setActivityType] = useState('')
   const [activityTag, setActivityTag] = useState('')
   const [otherActivityTag, setOtherActivityTag] = useState('')
-  const [activityStartDate, setActivityStartDate] = useState()
+  const [activityStartDate, setActivityStartDate] = useState('')
   const [activityEndDate, setActivityEndDate] = useState('')
   const [activityStep, setActivityStep] = useState('')
   const [activityStartTime, setActivityStartTime] = useState('')
@@ -59,6 +59,7 @@ const ActivityMake = () => {
   }
 
   const validateFields = () => {
+    console.log('1', activityStep, activityTag, activityTag, activityStartTime, activityEndTime)
     let errors = {
       activityTag: !activityTag,
       activityStartDate: !activityStartDate,
@@ -66,9 +67,12 @@ const ActivityMake = () => {
       activityDuration:
         ['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
         (!activityDuration || activityDuration === '00:00'),
-      activityStep: activityType === 'walk' && !activityStep,
-      activityDistance: ['bike', 'pool', 'run'].includes(activityTag) && !activityDistance,
+      activityStep: activityTag === 'walk' && !activityStep,
+      activityDistance:
+        ['bike', 'pool', 'run'].includes(activityTag) &&
+        (!activityDistance || activityDistance === '0'),
     }
+    console.log(errors)
 
     const startDateTime = new Date(`${activityStartDate}T${activityStartTime}`)
     const now = new Date()
@@ -81,6 +85,7 @@ const ActivityMake = () => {
     }
 
     setRequiredFields(errors)
+    console.log(requiredFields)
     return !Object.values(errors).some((field) => field)
   }
 
@@ -196,6 +201,11 @@ const ActivityMake = () => {
     if (activity.tag !== 'other') {
       setOtherActivityTag('')
     }
+    setActivityStep('')
+    setActivityEndTime('')
+    setActivityDuration('')
+    setActivityDistance('')
+    setActivityCalories('')
   }
 
   const handleKeyPress = (event) => {
@@ -214,8 +224,10 @@ const ActivityMake = () => {
       activityDuration:
         ['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) &&
         (!activityDuration || activityDuration === '00:00'),
-      activityStep: activityType === 'walk' && !activityStep,
-      activityDistance: ['bike', 'pool', 'run'].includes(activityTag) && !activityDistance,
+      activityStep: activityTag === 'walk' && !activityStep,
+      activityDistance:
+        ['bike', 'pool', 'run'].includes(activityTag) &&
+        (!activityDistance || activityDistance === '0'),
     }
 
     setRequiredFields((prevFields) => ({

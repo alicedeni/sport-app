@@ -18,6 +18,14 @@ import { BeatLoader } from 'react-spinners'
 
 import './scss/main.scss'
 
+if (process.env.NODE_ENV === 'development') {
+  console.log = () => {}
+  console.warn = () => {}
+  console.error = () => {}
+  console.info = () => {}
+  console.debug = () => {}
+}
+
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
   {

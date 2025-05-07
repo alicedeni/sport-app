@@ -326,7 +326,7 @@ const Post = ({ post }) => {
         <div className="post__info" ref={infoContainerRef}>
           <div className="post__title">
             <div id={post.tag} className={`activity-tags ${post.tag}-${tagSize}`}>
-              {post.type && post.type.toUpperCase()}
+              {post.type === '' ? 'ДРУГОЕ' : post.type.toUpperCase()}
             </div>
             <div className="post__title-fire">
               <div>

@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.70",
-  "description": "fix consoles & modals",
+  "version": "1.0.71",
+  "description": "fix styles",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
@@ -71,6 +71,7 @@
     "react-router-dom": "^6.22.3",
     "react-spinners": "^0.13.8",
     "react-transition-group": "^4.4.5",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "terser-webpack-plugin": "^5.3.14"
   }
 }

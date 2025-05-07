@@ -69,7 +69,7 @@ const Preview = () => {
     }
 
     window.addEventListener('resize', handleResize)
-
+    console.log(activityData)
     return () => {
       window.removeEventListener('resize', handleResize)
     }
@@ -315,25 +315,31 @@ const Preview = () => {
                   </div>
                 </div>
               )}
-              {activityData && activityData.calories_burned && (
+              {activityData && activityData.calories_burned ? (
                 <div className="post__points__point">
                   Калории
                   <div className={`post__metric`}>{activityData.calories_burned} ккал</div>
                 </div>
+              ) : (
+                ''
               )}
-              {activityData && activityData.step && (
+              {activityData && activityData.step ? (
                 <div className="post__points__point">
                   Шаги
                   <div className={`post__metric`}>{activityData.step} шагов</div>
                 </div>
+              ) : (
+                ''
               )}
-              {activityData && activityData.distance_info && (
+              {activityData && activityData.distance_info ? (
                 <div className="post__points__point">
                   Дистанция
                   <div className={`post__metric`}>
                     {activityData.distance_info} {activityData.type === 'pool' ? 'м' : 'км'}
                   </div>
                 </div>
+              ) : (
+                ''
               )}
             </div>
             {activityData && activityData.text && <div className="post__line"></div>}

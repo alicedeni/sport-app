@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin')
 const express = require('express')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = ({ mode }) => {
   const isProduction = mode === 'production'
@@ -19,6 +20,18 @@ module.exports = ({ mode }) => {
       publicPath: '/',
     },
     devtool: isProduction ? 'source-map' : 'eval-source-map',
+    optimization: {
+      minimize: isProduction,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+            },
+          },
+        }),
+      ],
+    },
     devServer: {
       host: '0.0.0.0',
       allowedHosts: 'team2go.ru',

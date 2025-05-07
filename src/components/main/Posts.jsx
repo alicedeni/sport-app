@@ -8,6 +8,7 @@ const Posts = ({ posts }) => {
   const navigate = useNavigate()
   const [selectedType, setSelectedType] = useState(null)
   const [userId, setUserId] = useState({})
+  console.log(posts)
 
   const getUserData = () => {
     const token = localStorage.getItem('token')
