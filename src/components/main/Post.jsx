@@ -281,7 +281,7 @@ const Post = ({ post }) => {
       </div>
       <div className={`post__content`}>
         <div
-          className={`post__image-container ${post.tag} ${!hasImage && 'no_img'}`}
+          className={`post__image-container ${post.tag} ${!hasImage ? 'no_img' : ''}`}
           ref={imageContainerRef}
         >
           {/* <img className="post__image" src={post.image} alt="Post image" /> */}
@@ -292,7 +292,7 @@ const Post = ({ post }) => {
               onMouseLeave={() => setIsHovered(false)}
             >
               <img
-                className="post__image"
+                className={`post__image`}
                 src={post.image}
                 alt="Post image"
                 onClick={handleImageClick}
@@ -317,7 +317,7 @@ const Post = ({ post }) => {
             </div>
           ) : (
             <img
-              className={`post__image ${!hasImage && 'no_img'}`}
+              className={`post__image ${!hasImage ? 'no_img' : ''}`}
               src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}${isMobile ? '-mobile' : ''}.svg`}
               alt={`${post.tag} activity`}
             />

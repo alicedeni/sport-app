@@ -304,7 +304,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .image-modal-content {
@@ -484,10 +484,18 @@
       flex-direction: column-reverse;
       max-height: 1000px;
     }
+    &__image-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     &__image-container {
       width: 100%;
       margin-right: 0px;
       height: 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       &.no_img {
         height: 150px;
         display: flex;
@@ -508,6 +516,7 @@
     }
     &__image {
       height: 320px;
+      width: auto;
       &.no_img {
         height: 100px;
         width: auto;

@@ -27,9 +27,7 @@ const WelcomeBlock = () => {
           },
         )
         .then((response) => {
-          console.log(response.data)
           if (response.data.status === 200) {
-            console.log(response.data.token)
             localStorage.setItem('token', response.data.token)
             checkHelloStatus()
           } else {

@@ -147,7 +147,6 @@ const ProfileBlock = ({ user }) => {
           }))
           setEditModeProfile(false)
           handleProgress()
-          console.log('1')
         } else {
           console.error('Ошибка при отправке данных на сервер:', response.data.error)
         }
@@ -175,7 +174,6 @@ const ProfileBlock = ({ user }) => {
           }))
           setEditModeProgress(false)
           handleProgress()
-          console.log('2')
         } else {
           console.error('Ошибка при отправке данных на сервер:', response.data.error)
         }
@@ -202,7 +200,6 @@ const ProfileBlock = ({ user }) => {
             ...tempUser,
           }))
           setEditModeProgress(false)
-          console.log('3')
         } else {
           console.error('Ошибка при отправке данных на сервер:', response.data.error)
         }
@@ -248,7 +245,6 @@ const ProfileBlock = ({ user }) => {
         if (response.data.status === 200) {
           window.location.href = '/'
           localStorage.removeItem('token')
-          console.log('Выход из аккаунта выполнен успешно')
         } else {
           console.error('Ошибка при выходе из аккаунта:', response.data.error)
         }
@@ -266,7 +262,6 @@ const ProfileBlock = ({ user }) => {
       .then((response) => {
         if (response.data.status === 200) {
           window.location.href = `main`
-          console.log('Аккаунт успешно удален')
         } else {
           console.error('Ошибка при удалении аккаунта:', response.data.error)
         }

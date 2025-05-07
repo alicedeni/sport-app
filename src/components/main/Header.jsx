@@ -23,7 +23,6 @@ const Header = ({ currentPage }) => {
     axios
       .get(`${link}/main`, { headers: { Authorization: `Bearer ${token}` } })
       .then((response) => {
-        console.log(response.data)
         setUserName(response.data.name)
         setAvatar(response.data.avatar)
         setPoints(response.data.points)

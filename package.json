@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.69",
-  "description": "fix mobile & redirect",
+  "version": "1.0.70",
+  "description": "fix consoles & modals",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

@@ -146,7 +146,6 @@ const Preview = () => {
       })
       .then((response) => {
         if (response.data.status === 200) {
-          console.log('Активность успешно опубликована')
           window.location.href = `/main`
         } else {
           console.error('Ошибка при публикации активности:', response.data.error)
@@ -226,14 +225,14 @@ const Preview = () => {
         </div>
         <div className={`post__content`}>
           <div
-            className={`post__image-container ${activityData.type} ${!hasImage && 'no_img'}`}
+            className={`post__image-container ${activityData.type} ${!hasImage ? 'no_img' : ''}`}
             ref={imageContainerRef}
           >
             {hasImage ? (
               <img className="post__image" src={activityData.image} alt="Post image" />
             ) : (
               <img
-                className={`post__image ${!hasImage && 'no_img'}`}
+                className={`post__image ${!hasImage ? 'no_img' : ''}`}
                 src={`https://storage.yandexcloud.net/team2go/users/base/${activityData.type}${isMobile ? '-mobile' : ''}.svg`}
                 alt={`${activityData.type} activity`}
               />

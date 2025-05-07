@@ -37,7 +37,6 @@ const Posts = ({ posts }) => {
   const filteredPosts = selectedType
     ? posts.filter((post) => {
         if (selectedType === 'my_activities') {
-          console.log(post.id, userId)
           return post.id === userId
         }
         return post.type === selectedType

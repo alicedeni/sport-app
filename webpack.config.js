@@ -25,6 +25,11 @@ module.exports = ({ mode }) => {
       static: './dist',
       hot: false,
       port: 3000,
+      client: {
+        logging: 'none',
+        overlay: false,
+        reconnect: false,
+      },
       historyApiFallback: true,
       headers: {
         'Access-Control-Allow-Origin': '*',
