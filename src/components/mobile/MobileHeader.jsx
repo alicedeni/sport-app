@@ -10,7 +10,16 @@ const MobileHeader = () => {
     participants: 0,
     count: 0,
   })
+  const [borderRadius, setBorderRadius] = useState('14px')
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (goal > 3 && goal < 7) {
+      setBorderRadius('50%')
+    } else {
+      setBorderRadius('14px')
+    }
+  }, [goal])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -50,7 +59,10 @@ const MobileHeader = () => {
         <div className="mobile-header__goal-status">
           <div className="mobile-header__goal-text">Наша цель — Прошагать 402 км.</div>
           <div className="mobile-header__goal-bar">
-            <div className="mobile-header__goal" style={{ width: `${goal}%` }}></div>
+            <div
+              className="mobile-header__goal"
+              style={{ width: goal > 3 ? `${goal}%` : '0', borderRadius: borderRadius }}
+            ></div>
           </div>
         </div>
 

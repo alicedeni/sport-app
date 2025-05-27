@@ -15,8 +15,17 @@ const Header = ({ currentPage }) => {
   const [loadingUser, setLoadingUser] = useState(true)
   const [mainInfo, setMainInfo] = useState({ teams: 0, participants: 0, count: 0 })
   const [showTooltip, setShowTooltip] = useState(false)
+  const [borderRadius, setBorderRadius] = useState('28px')
 
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (goal > 0 && goal < 5) {
+      setBorderRadius('50%')
+    } else {
+      setBorderRadius('28px')
+    }
+  }, [goal])
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -133,7 +142,13 @@ const Header = ({ currentPage }) => {
             onMouseLeave={() => setShowTooltip(false)}
             style={{ position: 'relative' }}
           >
-            <div className="goal" style={{ width: `${goal}%` }}>
+            <div
+              className="goal"
+              style={{
+                width: goal > 0 ? `${goal}%` : '0',
+                borderRadius: borderRadius,
+              }}
+            >
               {goal > 8 && <span className="goal-percentage">{goal.toFixed(0)}%</span>}
             </div>
           </div>

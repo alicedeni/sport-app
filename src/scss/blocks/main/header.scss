@@ -126,12 +126,12 @@
 .goal {
   height: 56px;
   background-color: $blue;
-  border-radius: 28px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
   padding-right: 15px;
   user-select: none;
+  transition: width 0.3s ease, border-radius 0.3s ease;
 }
 .goal-percentage {
   white-space: nowrap;

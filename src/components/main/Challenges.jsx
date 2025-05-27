@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { ButtonActivity } from '../Buttons'
 import ChallengeModal from './ChallengeModal'
+import ChallengeImage from '../../assets/challenge.png'
 import axios from 'axios'
 
 import { link } from '../../consts.js'
@@ -134,8 +135,12 @@ const Challenges = () => {
   }
 
   return (
-    <div className="challenges">
-      <p>Будет доступно позднее</p>
+    <div className="challenges empty-state">
+      <img src={ChallengeImage} alt="Скоро" className="empty-state__image" />
+      <h2 className="empty-state__title">Раздел скоро будет доступен</h2>
+      <p className="empty-state__text">
+        Мы работаем над этим и он появится здесь. Следите за обновлениями!
+      </p>
       {/*<div className="select_pt">
         <div
           className="select_pt-variant"
