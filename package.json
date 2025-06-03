@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.73",
-  "description": "add challenge & fix progress",
+  "version": "1.0.74",
+  "description": "fix height",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
