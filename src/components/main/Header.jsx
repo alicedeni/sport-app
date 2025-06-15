@@ -70,6 +70,28 @@ const Header = ({ currentPage }) => {
       })
   }
 
+  const getDeclension = (count, wordType) => {
+    const words = {
+      participant: ['участник', 'участника', 'участников'],
+      team: ['команда', 'команды', 'команд'],
+    }
+
+    if (!words[wordType]) {
+      return ''
+    }
+
+    const cases = [2, 0, 1, 1, 1, 2]
+    const mod100 = count % 100
+
+    if (mod100 >= 11 && mod100 <= 14) {
+      return words[wordType][2]
+    }
+
+    const mod10 = count % 10
+
+    return words[wordType][cases[mod10 < 5 ? mod10 : 5]]
+  }
+
   if (loadingUser) {
     return (
       <div
@@ -147,6 +169,7 @@ const Header = ({ currentPage }) => {
               style={{
                 width: goal > 0 ? `${goal}%` : '0',
                 borderRadius: borderRadius,
+                display: goal === 0 ? 'none' : undefined,
               }}
             >
               {goal > 8 && <span className="goal-percentage">{goal.toFixed(0)}%</span>}
@@ -160,13 +183,13 @@ const Header = ({ currentPage }) => {
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
               {mainInfo.teams}
             </span>{' '}
-            команды
+            {getDeclension(mainInfo.participants, 'team')}
           </div>
           <div className="goal-info__metrics">
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
               {mainInfo.participants}
             </span>{' '}
-            участников
+            {getDeclension(mainInfo.participants, 'participant')}
           </div>
           <div className="goal-info__metrics">
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
