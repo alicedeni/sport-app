@@ -13,6 +13,21 @@ const GlobalGoal = () => {
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
   }, [])
+
+  useEffect(() => {
+    const setAppHeight = () => {
+      const appHeight = window.innerHeight
+      document.documentElement.style.setProperty('--app-height', `${appHeight}px`)
+    }
+
+    setAppHeight()
+    window.addEventListener('resize', setAppHeight)
+
+    return () => {
+      window.removeEventListener('resize', setAppHeight)
+    }
+  }, [])
+
   return <div className="goal_page">{isMobile ? <MobileGoalBlock /> : <GoalBlock />}</div>
 }
 

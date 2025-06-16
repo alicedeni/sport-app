@@ -128,9 +128,9 @@ const MobileGoalBlock = () => {
       title: 'СРОКИ',
       text: (
         <>
-          Старт мероприятия: <span style={{ color: '#51B8FF' }}>19.12</span>
+          Старт мероприятия: <span style={{ color: '#51B8FF' }}>17.06</span>
           <br />
-          Подведение итогов: <span style={{ color: '#51B8FF' }}>23.12</span>
+          Подведение итогов: <span style={{ color: '#51B8FF' }}>08.07</span>
         </>
       ),
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat5.svg',
@@ -150,20 +150,22 @@ const MobileGoalBlock = () => {
         <h1 className="mobile-goal-block__title">{pages[currentPage].title}</h1>
       </div>
       <div className="mobile-goal-block__body">
-        <p className="mobile-goal-block__text">{pages[currentPage].text}</p>
-        {pages[currentPage].listItems && (
-          <ul className="mobile-task-list">
-            {pages[currentPage].listItems.map((item, index) => (
-              <li key={index} className="mobile-task-list__item">
-                <span
-                  className="mobile-task-list__item-icon"
-                  dangerouslySetInnerHTML={{ __html: item.svgIcon }}
-                />
-                {item.text}
-              </li>
-            ))}
-          </ul>
-        )}
+        <div>
+          <p className="mobile-goal-block__text">{pages[currentPage].text}</p>
+          {pages[currentPage].listItems && (
+            <ul className="mobile-task-list">
+              {pages[currentPage].listItems.map((item, index) => (
+                <li key={index} className="mobile-task-list__item">
+                  <span
+                    className="mobile-task-list__item-icon"
+                    dangerouslySetInnerHTML={{ __html: item.svgIcon }}
+                  />
+                  {item.text}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         {pages[currentPage].imageUrl && (
           <img
             className="mobile-goal__image-mob"
