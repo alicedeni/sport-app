@@ -14,6 +14,7 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (response.data.status === 200) {
+          console.log(response.data)
           setTeamMembers(response.data.teamMembers)
         } else {
           console.error('Ошибка при загрузке участников команды:', response.data.message)
@@ -47,7 +48,7 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
         <div className="profile-block-content-comands-items-circle"></div>
         <div className="profile-block-content-comands-item">
           <p className="profile-block-content-comands-item-text">Моя команда</p>
-          <p className="profile-block-content-data-title-name">Команда {tempUser.team}</p>
+          <p className="profile-block-content-data-title-name">{tempUser.team}</p>
           <div className="team-members-count" onClick={toggleMembersVisibility}>
             {getParticipantsText(teamMembers.length)}
             <span className={`arrow ${isMembersVisible ? 'arrow-up' : 'arrow-down'}`}></span>
