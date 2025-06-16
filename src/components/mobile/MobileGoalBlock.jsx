@@ -135,7 +135,7 @@ const MobileGoalBlock = () => {
       ),
       imageUrl: 'https://storage.yandexcloud.net/team2go/users/base/cat5.svg',
       buttonText: 'Поехали!',
-      imagePosition: { top: '0px', right: '0px' },
+      imagePosition: { top: '70px', right: '50px' },
     },
   ]
 
