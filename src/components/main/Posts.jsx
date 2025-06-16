@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react' // Импортируйте useRef
 import Post from './Post'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
@@ -10,6 +10,8 @@ const Posts = ({ posts }) => {
   const [userId, setUserId] = useState({})
   console.log(posts)
 
+  const isMounted = useRef(true)
+
   const getUserData = () => {
     const token = localStorage.getItem('token')
     return axios
@@ -17,7 +19,9 @@ const Posts = ({ posts }) => {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setUserId(response.data.profile.id)
+        if (isMounted.current) {
+          setUserId(response.data.profile.id)
+        }
       })
       .catch((error) => {
         console.error(error)
@@ -26,11 +30,19 @@ const Posts = ({ posts }) => {
   }
 
   useEffect(() => {
+    isMounted.current = true
     getUserData()
       .then((data) => {
         return data
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        if (isMounted.current) {
+          console.error(error)
+        }
+      })
+    return () => {
+      isMounted.current = false
+    }
   }, [])
 
   const uniqueTypes = Array.from(new Set(posts.map((post) => post.type).filter(Boolean)))

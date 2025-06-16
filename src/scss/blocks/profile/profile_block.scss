@@ -189,9 +189,9 @@
         }
         &-profile {
           display: flex;
-          flex-direction: column !important;
+          flex-direction: row !important;
           align-items: flex-start !important;
-          justify-content: center;
+          justify-content: space-between;
           margin-top: 30px;
           margin-right: 30px;
           &-column {
@@ -283,6 +283,11 @@
   }
   .profile-block-content-data-title-name {
     font-size: 24px !important;
+  }
+
+  .profile-block-content-data-profile {
+    flex-direction: column !important;
+    justify-content: center !important;
   }
 }
 

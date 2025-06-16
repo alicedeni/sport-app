@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Header from '../components/main/Header'
 import MobileHeader from '@components/mobile/MobileHeader'
 import MobileFooter from '@components/mobile/MobileFooter'
@@ -10,6 +10,7 @@ import { link } from '../consts.js'
 const Feed = () => {
   const [posts, setPosts] = useState([])
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
+  const isMounted = useRef(true) // флаг монтирования
 
   const getPostData = () => {
     const token = localStorage.getItem('token')
@@ -27,20 +28,32 @@ const Feed = () => {
   }
 
   useEffect(() => {
+    isMounted.current = true
+
     getPostData()
       .then((data) => {
-        if (data && data.posts) {
+        if (isMounted.current && data && data.posts) {
           setPosts(data.posts)
         }
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        if (isMounted.current) {
+          console.error(error)
+        }
+      })
 
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 820)
+      if (isMounted.current) {
+        setIsMobile(window.innerWidth <= 820)
+      }
     }
 
     window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
+
+    return () => {
+      isMounted.current = false
+      window.removeEventListener('resize', handleResize)
+    }
   }, [])
 
   return (
