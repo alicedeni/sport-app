@@ -13,8 +13,6 @@ const WelcomeBlock = () => {
     event.preventDefault()
     if (email.trim() === '' || password.trim() === '') {
       setError('Пожалуйста, введите логин и пароль.')
-    } else if (!validateEmail(email)) {
-      setError('Пожалуйста, введите корректный email.')
     } else {
       setError('')
       const token = localStorage.getItem('token')
@@ -81,11 +79,6 @@ const WelcomeBlock = () => {
         console.error('Error checking hello status', error)
         setError('Произошла ошибка при проверке статуса.')
       })
-  }
-
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/
-    return re.test(email)
   }
 
   return (
