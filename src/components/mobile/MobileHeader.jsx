@@ -57,7 +57,7 @@ const MobileHeader = () => {
       </div>
       <div className="mobile-header">
         <div className="mobile-header__goal-status">
-          <div className="mobile-header__goal-text">Наша цель — Прошагать 402 км.</div>
+          <div className="mobile-header__goal-text">Наша цель — Прошагать 10 562 км.</div>
           <div className="mobile-header__goal-bar">
             <div
               className="mobile-header__goal"
