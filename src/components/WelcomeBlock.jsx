@@ -95,7 +95,7 @@ const WelcomeBlock = () => {
         <input
           className="welcome-block__input"
           type="email"
-          placeholder="Email"
+          placeholder="Логин"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />

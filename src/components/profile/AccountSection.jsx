@@ -240,7 +240,7 @@ const AccountSection = ({
         </div>
         <div className="profile-block-content-data-profile-column">
           <div className="profile-block-content-data-profile-column-i">
-            <p className="profile-block-content-data-item-text">Электронная почта</p>
+            <p className="profile-block-content-data-item-text">Логин</p>
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
