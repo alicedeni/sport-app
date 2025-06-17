@@ -251,7 +251,7 @@ const AccountSection = ({
                     padding: '0 10px',
                     boxSizing: 'border-box',
                   }}
-                  type="email"
+                  type="text"
                   value={tempUser.email}
                   onChange={(event) => handleInputChange(event, 'email')}
                 />

@@ -94,7 +94,7 @@ const WelcomeBlock = () => {
       <form onSubmit={handleLogin}>
         <input
           className="welcome-block__input"
-          type="email"
+          type="text"
           placeholder="Логин"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
