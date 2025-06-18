@@ -52,7 +52,7 @@ const MobileHeader = () => {
   return (
     <div>
       <div className="mobile-header-fixed">
-        <div className="mobile-header__title">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ</div>
+        <div className="mobile-header__title">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ</div>
         <div className="mobile-header__line"></div>
       </div>
       <div className="mobile-header">

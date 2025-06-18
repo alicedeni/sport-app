@@ -155,7 +155,7 @@ const GoalBlock = () => {
   return (
     <div className="goal-block">
       <div className="goal-block__header">
-        <p>СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ</p>
+        <p>СПОРТИВНЫЙ ЧЕЛЛЕНДЖ</p>
       </div>
       <div className="goal-block__content">
         <div className="goal-block__content-arrows">

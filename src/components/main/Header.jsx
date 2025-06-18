@@ -110,7 +110,7 @@ const Header = ({ currentPage }) => {
       }}
     >
       <div className="header-title">
-        СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ
+        СПОРТИВНЫЙ ЧЕЛЛЕНДЖ
         <CButtonProfile points={points}>
           {avatar ? (
             <img src={`${avatar}`} alt="User Avatar" className="avatar" />

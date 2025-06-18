@@ -149,7 +149,7 @@ const MobileGoalBlock = () => {
   return (
     <div className="mobile-goal-block">
       <div className="mobile-goal-block__header">
-        <p className="mobile-goal-block__subtitle">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ ДИТ</p>
+        <p className="mobile-goal-block__subtitle">СПОРТИВНЫЙ ЧЕЛЛЕНДЖ</p>
         <h1 className="mobile-goal-block__title">{pages[currentPage].title}</h1>
       </div>
       <div className="mobile-goal-block__body">

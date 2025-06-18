@@ -110,11 +110,6 @@ const WelcomeBlock = () => {
           textContent={'Войти'}
         ></ButtonEnter>
       </form>
-      <ButtonReg
-        className="welcome-block__btn"
-        text="Зарегистрироваться"
-        textContent={'Зарегистрироваться'}
-      ></ButtonReg>
     </div>
   )
 }
