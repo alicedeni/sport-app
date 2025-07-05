@@ -20,24 +20,44 @@ const FeedMobile = () => {
   const mainRef = useRef(null)
   const offsetRef = useRef(offset)
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
+  const [filters, setFilters] = useState({
+    activity: '',
+    username: '',
+    team: '',
+    my_posts: false,
+  })
 
+  // Обновляем ref при изменении offset
   useEffect(() => {
     offsetRef.current = offset
   }, [offset])
 
-  const getPostData = useCallback(async (currentOffset) => {
+  // Функция загрузки постов с учетом offset и фильтров
+  const getPostData = useCallback(async (currentOffset, currentFilters) => {
     const token = localStorage.getItem('token')
     setLoading(true)
     try {
+      const params = {
+        offset: currentOffset,
+        limit: LIMIT,
+        ...currentFilters,
+      }
+      if (params.my_posts) params.my_posts = 'true'
+      else delete params.my_posts
+
       const response = await axios.get(`${link}/user/posts`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { offset: currentOffset, limit: LIMIT },
+        params,
       })
       const newPosts = response.data.posts || []
       if (isMounted.current) {
-        setPosts((prev) => [...prev, ...newPosts])
+        if (currentOffset === 0) {
+          setPosts(newPosts)
+        } else {
+          setPosts((prev) => [...prev, ...newPosts])
+        }
         setHasMore(newPosts.length === LIMIT)
-        setOffset((prev) => prev + newPosts.length)
+        setOffset(currentOffset + newPosts.length)
       }
     } catch (error) {
       console.error('Error loading posts:', error)
@@ -46,14 +66,18 @@ const FeedMobile = () => {
     }
   }, [])
 
+  // При изменении фильтров сбрасываем offset и загружаем заново
   useEffect(() => {
     isMounted.current = true
-    getPostData(0)
+    setOffset(0)
+    setHasMore(true)
+    getPostData(0, filters)
     return () => {
       isMounted.current = false
     }
-  }, [getPostData])
+  }, [filters, getPostData])
 
+  // Обработка изменения размера окна
   useEffect(() => {
     const handleResize = () => {
       if (isMounted.current) {
@@ -64,6 +88,7 @@ const FeedMobile = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Обработчик скролла для подгрузки постов
   useEffect(() => {
     if (!hasMore || loading) return
 
@@ -76,7 +101,7 @@ const FeedMobile = () => {
       const clientHeight = container.clientHeight
 
       if (scrollTop + clientHeight >= scrollHeight - 150 && hasMore && !loading) {
-        getPostData(offsetRef.current)
+        getPostData(offsetRef.current, filters)
       }
     }, 200)
 
@@ -90,14 +115,14 @@ const FeedMobile = () => {
         const windowHeight = window.innerHeight
         const fullHeight = document.documentElement.scrollHeight
         if (scrollTop + windowHeight >= fullHeight - 150 && hasMore && !loading) {
-          getPostData(offsetRef.current)
+          getPostData(offsetRef.current, filters)
         }
       }, 200)
 
       window.addEventListener('scroll', handleWindowScroll)
       return () => window.removeEventListener('scroll', handleWindowScroll)
     }
-  }, [hasMore, loading, getPostData, isMobile])
+  }, [hasMore, loading, getPostData, isMobile, filters])
 
   return (
     <div className="container" id="root">
@@ -112,7 +137,7 @@ const FeedMobile = () => {
         }}
       >
         {isMobile && <MobileHeader />}
-        <Posts posts={posts} />
+        <Posts posts={posts} filters={filters} setFilters={setFilters} />
         {loading && (
           <div style={{ textAlign: 'center', padding: '10px', color: 'white' }}>Загрузка...</div>
         )}

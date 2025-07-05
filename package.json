@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.81",
-  "description": "fix feed",
+  "version": "1.0.82",
+  "description": "add filters",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
@@ -70,6 +70,7 @@
     "react-loader-spinner": "^6.1.6",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.22.3",
+    "react-select": "^5.10.1",
     "react-spinners": "^0.13.8",
     "react-transition-group": "^4.4.5",
     "slick-carousel": "^1.8.1",

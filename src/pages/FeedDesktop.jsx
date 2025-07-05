@@ -18,24 +18,47 @@ const FeedDesktop = () => {
   const [loading, setLoading] = useState(false)
   const offsetRef = useRef(offset)
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
+  const [filters, setFilters] = useState({
+    activity: '',
+    username: '',
+    team: '',
+    my_posts: false,
+  })
 
+  // Обновляем ref при изменении offset для доступа из обработчиков
   useEffect(() => {
     offsetRef.current = offset
   }, [offset])
 
-  const getPostData = useCallback(async (currentOffset) => {
+  // Функция загрузки постов с учетом offset и фильтров
+  const getPostData = useCallback(async (currentOffset, currentFilters) => {
     const token = localStorage.getItem('token')
     setLoading(true)
     try {
+      const params = {
+        offset: currentOffset,
+        limit: LIMIT,
+        ...currentFilters,
+      }
+      // Преобразуем булев my_posts в строку 'true' для API
+      if (params.my_posts) params.my_posts = 'true'
+      else delete params.my_posts
+
       const response = await axios.get(`${link}/user/posts`, {
         headers: { Authorization: `Bearer ${token}` },
-        params: { offset: currentOffset, limit: LIMIT },
+        params,
       })
       const newPosts = response.data.posts || []
       if (isMounted.current) {
-        setPosts((prev) => [...prev, ...newPosts])
+        if (currentOffset === 0) {
+          // При загрузке с нуля заменяем посты
+          setPosts(newPosts)
+        } else {
+          // При подгрузке добавляем новые посты
+          setPosts((prev) => [...prev, ...newPosts])
+        }
         setHasMore(newPosts.length === LIMIT)
-        setOffset((prev) => prev + newPosts.length)
+        setOffset(currentOffset + newPosts.length)
       }
     } catch (error) {
       console.error('Error loading posts:', error)
@@ -44,14 +67,18 @@ const FeedDesktop = () => {
     }
   }, [])
 
+  // При изменении фильтров сбрасываем offset и загружаем заново
   useEffect(() => {
     isMounted.current = true
-    getPostData(0)
+    setOffset(0)
+    setHasMore(true)
+    getPostData(0, filters)
     return () => {
       isMounted.current = false
     }
-  }, [getPostData])
+  }, [filters, getPostData])
 
+  // Обработка изменения размера окна для мобильного режима
   useEffect(() => {
     const handleResize = () => {
       if (isMounted.current) {
@@ -62,6 +89,7 @@ const FeedDesktop = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
+  // Обработчик скролла для подгрузки постов при достижении низа страницы
   useEffect(() => {
     if (!hasMore || loading) return
 
@@ -70,19 +98,19 @@ const FeedDesktop = () => {
       const windowHeight = window.innerHeight
       const fullHeight = document.documentElement.scrollHeight
       if (scrollTop + windowHeight >= fullHeight - 150 && hasMore && !loading) {
-        getPostData(offsetRef.current)
+        getPostData(offsetRef.current, filters)
       }
     }, 200)
 
     window.addEventListener('scroll', handleWindowScroll)
     return () => window.removeEventListener('scroll', handleWindowScroll)
-  }, [hasMore, loading, getPostData])
+  }, [hasMore, loading, getPostData, filters])
 
   return (
     <div className="container" id="root">
       {isMobile ? <MobileHeader /> : <Header currentPage="feed" />}
       <div className="main">
-        <Posts posts={posts} />
+        <Posts posts={posts} filters={filters} setFilters={setFilters} />
         {loading && (
           <div style={{ textAlign: 'center', padding: '10px', color: 'white' }}>Загрузка...</div>
         )}
