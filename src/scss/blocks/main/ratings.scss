@@ -136,14 +136,14 @@
         gap: 50px;
         align-items: center;
         justify-content: flex-start;
-        width: 40%;
+        width: 20%;
       }
 
       &-team-name {
         font-size: 24px;
         font-weight: bold;
         text-decoration: none;
-        width: 40%;
+        width: 20%;
         text-align: left;
         &:hover {
           text-decoration: underline;
@@ -173,7 +173,7 @@
 
       &-team-members {
         font-size: 20px;
-        width: 20%;
+        width: 25%;
       }
       &-team-progress {
         font-weight: bold;
@@ -398,17 +398,18 @@ li {
     text-align: center;
     border-radius: 10px;
     height: 150px;
+    gap: 10px;
   }
 
   .ratings-teams-list-team-item-team {
     flex-direction: row;
     align-items: center;
-    width: 75%;
-    gap: 20px;
+    width: 35%;
+    gap: 10px;
   }
 
   .ratings-teams-list-team-item-team-name {
-    font-size: 18px;
+    font-size: 16px;
     width: auto;
     align-items: center;
     text-align: center;
@@ -421,6 +422,7 @@ li {
   .ratings-teams-list-team-item-team-progress {
     font-size: 16px;
     width: auto;
+    margin-right: 10px;
   }
   .modal-content {
     width: 85%;
@@ -457,6 +459,23 @@ li {
       }
     }
   }
+  .ratings-teams-list-team-item-team-num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &-s {
+      display: inline-block;
+    }
+  }
+  .ratings-teams-list-team-item-team-num {
+    width: 85px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
   .team-icon {
     width: 30px;
     height: 30px;

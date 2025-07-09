@@ -239,8 +239,8 @@ const Ratings = () => {
                   alt="Team Icon"
                   className="team-icon"
                 />
-                <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
               </div>
+              <div className="ratings-teams-list-team-item-team-name">{team.name}</div>
               <div className="ratings-teams-list-team-item-team-members">
                 {getParticipantsText(team.members)}
               </div>
