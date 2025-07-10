@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.84",
-  "description": "add challenge",
+  "version": "1.0.85",
+  "description": "fix activity time picker",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",

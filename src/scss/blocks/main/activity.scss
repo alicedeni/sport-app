@@ -544,3 +544,14 @@ input[type="number"] {
     }
   }
 }
+
+input[type="time"]::-webkit-clear-button,
+input[type="time"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+input[type="time"] {
+  -moz-appearance: textfield;
+}

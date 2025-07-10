@@ -346,11 +346,17 @@ const ActivityMake = () => {
                 {/*  onChange={(e) => handleInputChange('activityStartTime', e.target.value)}*/}
                 {/*  onBlur={validateFields}*/}
                 {/*/>*/}
-                <CustomTimePicker
+                <input
+                  className={`activity-input-content-item-field ${requiredFields.activityStartTime ? 'error' : ''}`}
+                  type="time"
                   value={activityStartTime}
-                  onChange={(value) => handleInputChange('activityStartTime', value)}
+                  onChange={(e) => handleInputChange('activityStartTime', e.target.value)}
                   onBlur={validateFields}
-                  error={requiredFields.activityStartTime}
+                  style={{
+                    appearance: 'textfield',
+                    WebkitAppearance: 'none',
+                    MozAppearance: 'textfield',
+                  }}
                 />
               </div>
               {['yoga', 'power', 'dance', 'game', 'other', 'cardio'].includes(activityTag) && (
@@ -364,11 +370,17 @@ const ActivityMake = () => {
                   {/*  onChange={(e) => handleInputChange('activityDuration', e.target.value)}*/}
                   {/*  onBlur={validateFields}*/}
                   {/*/>*/}
-                  <CustomTimePicker
+                  <input
+                    className={`activity-input-content-item-field ${requiredFields.activityDuration ? 'error' : ''}`}
+                    type="time"
                     value={activityDuration}
-                    onChange={(value) => handleInputChange('activityDuration', value)}
+                    onChange={(e) => handleInputChange('activityDuration', e.target.value)}
                     onBlur={validateFields}
-                    error={requiredFields.activityDuration}
+                    style={{
+                      appearance: 'textfield',
+                      WebkitAppearance: 'none',
+                      MozAppearance: 'textfield',
+                    }}
                   />
                 </div>
               )}
