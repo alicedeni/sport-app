@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.0.83",
-  "description": "fix mobile ratings",
+  "version": "1.0.84",
+  "description": "add challenge",
   "scripts": {
     "start": "cross-env SERVE=true webpack serve",
     "build": "webpack serve --mode development",
