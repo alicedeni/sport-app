@@ -1,15 +1,17 @@
+@use '../../base/variables' as vars;
+
 .profile-block {
     &-content{
         &-data {
           padding: 30px 50px;
-          background: $white2;
+          background: vars.$white2;
           width: 100%;
           border-radius: 10px;
           margin-bottom: 20px;
           &-line {
             width: 100%;
-            color: $grey3;
-            background-color: $grey3;
+            color: vars.$grey3;
+            background-color: vars.$grey3;
             height: 2px;
             margin-top: 20px;
           }
@@ -45,7 +47,7 @@
             flex-direction: column;
             &-text {
               font-size: 16px;
-              color: $grey1;
+              color: vars.$grey1;
               margin-bottom: 5px;
             }
             &-value {
@@ -60,8 +62,8 @@
               width: 150px;
               height: 150px;
               border-radius: 75px;
-              border: 5px solid $white2; 
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+              border: 5px solid vars.$white2;
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
             &-oval {
               position: relative;
@@ -71,10 +73,10 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              border: 2px solid $blue;
+              border: 2px solid vars.$blue;
               &-text {
                 font-size: 24px;
-                color: $blue;
+                color: vars.$blue;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -82,7 +84,7 @@
               }
               &-input {
                 font-size: 24px;
-                color: $blue;
+                color: vars.$blue;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -104,8 +106,8 @@
               width: 240px;
               height: 48px;
               border-radius: 24px;
-              color: $white2;
-              background-color: $blue;
+              color: vars.$white2;
+              background-color: vars.$blue;
               border: none;
             }
             &-cancel {
@@ -114,8 +116,8 @@
               width: 240px;
               height: 48px;
               border-radius: 24px;
-              color: $grey1;
-              border: 2px solid $grey1;
+              color: vars.$grey1;
+              border: 2px solid vars.$grey1;
               background-color: transparent;
             }
           }
@@ -130,8 +132,8 @@
   position: absolute;
   margin-left: 10px;
   font-size: 20px;
-  color: $blue;
-  background: $blue-20p; 
+  color: vars.$blue;
+  background: vars.$blue-20p;
   padding: 0px 5px;
   border-radius: 50px;
 }
@@ -139,8 +141,8 @@
 
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
-    -webkit-appearance: none; 
-    margin: 0; 
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 input[type="number"] {
@@ -148,6 +150,6 @@ input[type="number"] {
   appearance: textfield;
 }
 
-input[type="number"]::-webkit-inner-spin-button { 
+input[type="number"]::-webkit-inner-spin-button {
   display: none;
 }

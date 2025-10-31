@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { ButtonEnter } from '../Buttons'
+import { ButtonEnter } from '@components/Buttons.jsx'
 
 const MobileGoalBlock = () => {
   const [currentPage, setCurrentPage] = useState(0)

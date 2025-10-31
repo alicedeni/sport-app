@@ -1,5 +1,7 @@
+@use '../../base/variables' as vars;
+
 .main {
-  background-color: $white;
+  background-color: vars.$white;
   flex: 1;
 }
 .container {

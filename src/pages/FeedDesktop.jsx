@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import throttle from 'lodash.throttle'
-import Header from '../components/main/Header'
+import Header from '@components/main/Header.jsx'
 import MobileHeader from '@components/mobile/MobileHeader'
 import MobileFooter from '@components/mobile/MobileFooter'
-import Posts from '../components/main/Posts'
+import Posts from '@components/main/Posts.jsx'
 import axios from 'axios'
 
-import { link } from '../consts.js'
+import { API_BASE_URL } from '@constants/api.js'
 
 const LIMIT = 20
 
@@ -25,12 +25,10 @@ const FeedDesktop = () => {
     my_posts: false,
   })
 
-  // Обновляем ref при изменении offset для доступа из обработчиков
   useEffect(() => {
     offsetRef.current = offset
   }, [offset])
 
-  // Функция загрузки постов с учетом offset и фильтров
   const getPostData = useCallback(async (currentOffset, currentFilters) => {
     const token = localStorage.getItem('token')
     setLoading(true)
@@ -40,21 +38,18 @@ const FeedDesktop = () => {
         limit: LIMIT,
         ...currentFilters,
       }
-      // Преобразуем булев my_posts в строку 'true' для API
       if (params.my_posts) params.my_posts = 'true'
       else delete params.my_posts
 
-      const response = await axios.get(`${link}/user/posts`, {
+      const response = await axios.get(`${API_BASE_URL}/user/posts`, {
         headers: { Authorization: `Bearer ${token}` },
         params,
       })
       const newPosts = response.data.posts || []
       if (isMounted.current) {
         if (currentOffset === 0) {
-          // При загрузке с нуля заменяем посты
           setPosts(newPosts)
         } else {
-          // При подгрузке добавляем новые посты
           setPosts((prev) => [...prev, ...newPosts])
         }
         setHasMore(newPosts.length === LIMIT)
@@ -67,7 +62,6 @@ const FeedDesktop = () => {
     }
   }, [])
 
-  // При изменении фильтров сбрасываем offset и загружаем заново
   useEffect(() => {
     isMounted.current = true
     setOffset(0)
@@ -78,7 +72,6 @@ const FeedDesktop = () => {
     }
   }, [filters, getPostData])
 
-  // Обработка изменения размера окна для мобильного режима
   useEffect(() => {
     const handleResize = () => {
       if (isMounted.current) {
@@ -89,7 +82,6 @@ const FeedDesktop = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Обработчик скролла для подгрузки постов при достижении низа страницы
   useEffect(() => {
     if (!hasMore || loading) return
 
@@ -112,10 +104,10 @@ const FeedDesktop = () => {
       <div className="main">
         <Posts posts={posts} filters={filters} setFilters={setFilters} />
         {loading && (
-          <div style={{ textAlign: 'center', padding: '10px', color: 'white' }}>Загрузка...</div>
+          <div className="loading-message">Загрузка...</div>
         )}
-        {!hasMore && !loading && (
-          <div style={{ textAlign: 'center', padding: '10px', color: 'white' }}>
+        {!hasMore && !loading && posts.length > 0 && (
+          <div className="no-more-posts">
             Больше постов нет
           </div>
         )}

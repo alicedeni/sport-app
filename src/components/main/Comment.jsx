@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { IconButton } from '@material-ui/core'
+import { IconButton } from '@mui/material'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
-import HeartFilled from '../../assets/icons/heartFilled.svg'
-import HeartDefault from '../../assets/icons/heartDefault.svg'
-import DeleteDefault from '../../assets/icons/deleteDefault.svg'
-import DeleteFilled from '../../assets/icons/deleteFilled.svg'
-import axios from 'axios'
-import { link } from '../../consts.js'
+import HeartFilled from '@assets/icons/heartFilled.svg'
+import HeartDefault from '@assets/icons/heartDefault.svg'
+import DeleteDefault from '@assets/icons/deleteDefault.svg'
+import DeleteFilled from '@assets/icons/deleteFilled.svg'
+import { postService } from '@shared/services/postService'
+import { createApiHandler, handleApiError } from '@shared/utils'
 
-const Comment = ({ comment, onDelete }) => {
+const Comment = ({ comment, onDelete, showDeleteAlways = false }) => {
   const [isLiked, setIsLiked] = useState(comment.is_liked)
   const [likeCount, setLikeCount] = useState(comment.likeCountComment || 0)
   const [likeIcon, setLikeIcon] = useState('LikeDefault')
@@ -22,15 +22,10 @@ const Comment = ({ comment, onDelete }) => {
   }, [comment])
 
   const handleLikeClick = async () => {
-    const likeData = { comment_id: comment.comment_id }
-    const token = localStorage.getItem('token')
-
     try {
-      const response = await axios.post(
-        `${link}/${isLiked ? `user/comment/${comment.comment_id}/unlike` : `user/comment/${comment.comment_id}/like`}`,
-        likeData,
-        { headers: { Authorization: `Bearer ${token}` } },
-      )
+      const response = isLiked 
+        ? await postService.unlikeComment(comment.comment_id)
+        : await postService.likeComment(comment.comment_id)
 
       if (response.data.status === 200) {
         setIsLiked(!isLiked)
@@ -39,7 +34,7 @@ const Comment = ({ comment, onDelete }) => {
         console.error('Error liking comment:', response.data.message)
       }
     } catch (error) {
-      console.error('Error liking comment:', error)
+      handleApiError(error)
     }
   }
 
@@ -58,41 +53,39 @@ const Comment = ({ comment, onDelete }) => {
       </div>
 
       <div className="post__like-container-all">
-        {comment.is_current_user && isHovered ? (
+        {comment.is_current_user && (isHovered || showDeleteAlways) ? (
           <div className="post__like-container-comments">
             <IconButton
-              style={{ padding: '2px 12px' }}
+              className="padding-2-12"
               onClick={() => onDelete(comment.comment_id)}
               onMouseEnter={() => setDelIcon('DelFilled')}
               onMouseLeave={() => setDelIcon('DelDefault')}
             >
               {delIcon === 'DelFilled' ? (
                 <img
-                  className="post__icon-action-com"
+                  className="post__icon-action-com width-24"
                   src={DeleteFilled}
                   alt="del"
-                  style={{ width: '24px' }}
                 />
               ) : (
                 <img
-                  className="post__icon-action-com"
+                  className="post__icon-action-com width-24"
                   src={DeleteDefault}
                   alt="del"
-                  style={{ width: '24px' }}
                 />
               )}
             </IconButton>
           </div>
         ) : (
-          <div style={{ height: '32px' }}></div>
+          <div className="height-32"></div>
         )}
 
         <div className="post__like-container-comments">
           {likeCount > 0 && <div className="post__like-count-comments">{likeCount}</div>}
 
           <IconButton
-            style={{ padding: '2px 12px' }}
-            onClick={handleLikeClick}
+            className="padding-2-12"
+              onClick={handleLikeClick}
             onMouseEnter={() => setLikeIcon('LikeFilled')}
             onMouseLeave={() => setLikeIcon('LikeDefault')}
           >

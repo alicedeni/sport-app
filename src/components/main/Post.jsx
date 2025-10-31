@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Avatar, IconButton } from '@material-ui/core'
+import { Avatar, IconButton } from '@mui/material'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 import ReactDOM from 'react-dom'
-import axios from 'axios'
-import CommentDefault from '../../assets/icons/commentDefault.svg'
-import HeartFilled from '../../assets/icons/heartFilled.svg'
-import HeartDefault from '../../assets/icons/heartDefault.svg'
-import CommentFilled from '../../assets/icons/commentFilled.svg'
-import SendDefault from '../../assets/icons/sendDefault.svg'
-import SendFilled from '../../assets/icons/sendFilled.svg'
-import Comment from './Comment'
-import CommentDrawer from './CommentDrawer'
-import ImageModal from './ImageModal'
-
-import { link } from '../../consts.js'
+import { postService } from '@shared/services/postService'
+import { useResponsive } from '@shared/hooks'
+import { createApiHandler, handleApiError } from '@shared/utils'
+import CommentDefault from '@assets/icons/commentDefault.svg'
+import HeartFilled from '@assets/icons/heartFilled.svg'
+import HeartDefault from '@assets/icons/heartDefault.svg'
+import CommentFilled from '@assets/icons/commentFilled.svg'
+import SendDefault from '@assets/icons/sendDefault.svg'
+import SendFilled from '@assets/icons/sendFilled.svg'
+import Comment from '@components/main/Comment.jsx'
+import CommentDrawer from '@components/main/CommentDrawer.jsx'
+import { ImageModal } from '@components/modals/index.js'
 
 ReactDOM.findDOMNode = () => {}
 ReactDOM.createPortal = () => {}
@@ -35,7 +35,7 @@ const Post = ({ post }) => {
   const [isHovered, setIsHovered] = useState(false)
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [tagSize, setTagSize] = useState('L')
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
+  const isMobile = useResponsive()
 
   const imageContainerRef = useRef(null)
   const infoContainerRef = useRef(null)
@@ -46,20 +46,6 @@ const Post = ({ post }) => {
       imageContainerRef.current.style.height = `${infoHeight}px`
     }
   }
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 820)
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    setTagSize(isMobile ? 'S' : 'L')
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [isMobile])
 
   useEffect(() => {
     setTagSize(isMobile ? 'S' : 'L')
@@ -89,53 +75,45 @@ const Post = ({ post }) => {
     }
   }, [])
 
-  const handleLikeClick = () => {
-    const likeData = {
-      post_id: post.feed_id,
+  useEffect(() => {
+    if (window.innerWidth > 820) {
+      updateImageHeight()
     }
-    const token = localStorage.getItem('token')
+  }, [post.text, comments.length, commentCount])
+
+  const handleLikeClick = () => {
     if (isLiked) {
-      axios
-        .post(`${link}/user/unlike`, likeData, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          if (response.data.status === 200) {
-            setIsLiked(false)
-            setLikeCount(likeCount - 1)
-          } else {
-            console.error('Error unliking post:', response.data.message)
-          }
-        })
-        .catch((error) => {
-          console.error('Error unliking post:', error)
-        })
+      postService
+        .unlikePost(post.feed_id)
+        .then(
+          createApiHandler(
+            () => {
+              setIsLiked(false)
+              setLikeCount(likeCount - 1)
+            },
+            (error) => console.error('Error unliking post:', error),
+          ),
+        )
+        .catch((error) => handleApiError(error))
     } else {
-      // лайк
-      axios
-        .post(`${link}/user/like`, likeData, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          if (response.data.status === 200) {
-            setIsLiked(true)
-            setLikeCount(likeCount + 1)
-          } else {
-            console.error('Error liking post:', response.data.message)
-          }
-        })
-        .catch((error) => {
-          console.error('Error liking post:', error)
-        })
+      postService
+        .likePost(post.feed_id)
+        .then(
+          createApiHandler(
+            () => {
+              setIsLiked(true)
+              setLikeCount(likeCount + 1)
+            },
+            (error) => console.error('Error liking post:', error),
+          ),
+        )
+        .catch((error) => handleApiError(error))
     }
   }
 
   const handleDeleteClick = async (commentId) => {
-    const token = localStorage.getItem('token')
     try {
-      const response = await axios.delete(`${link}/user/delete_comment/${commentId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const response = await postService.deleteComment(post.feed_id, commentId)
 
       if (response.data.status === 200) {
         setComments((prevComments) =>
@@ -152,21 +130,15 @@ const Post = ({ post }) => {
 
   const handleCommentClick = () => {
     if (!isCommentOpen) {
-      const token = localStorage.getItem('token')
-      axios
-        .get(`${link}/get_comments/${post.feed_id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          if (response.data.status === 200) {
-            setComments(response.data.comments)
-          } else {
-            console.error('Error fetching comments:', response.data.message)
-          }
-        })
-        .catch((error) => {
-          console.error('Error fetching comments:', error)
-        })
+      postService
+        .getComments(post.feed_id)
+        .then(
+          createApiHandler(
+            (data) => setComments(data.comments),
+            (error) => console.error('Error fetching comments:', error),
+          ),
+        )
+        .catch((error) => handleApiError(error))
     }
     setIsCommentOpen(!isCommentOpen)
   }
@@ -176,44 +148,35 @@ const Post = ({ post }) => {
   }
 
   const fetchComments = () => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${link}/get_comments/${post.feed_id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setComments(response.data.comments)
-        } else {
-          console.error('Error fetching comments:', response.data.message)
-        }
-      })
-      .catch((error) => {
-        console.error('Error fetching comments:', error)
-      })
+    postService
+      .getComments(post.feed_id)
+      .then(
+        createApiHandler(
+          (data) => setComments(data.comments),
+          (error) => console.error('Error fetching comments:', error),
+        ),
+      )
+      .catch((error) => handleApiError(error))
   }
 
   const handleCommentSubmit = () => {
     if (commentText.trim() === '') return
     const commentData = {
-      post_id: post.feed_id,
       comment_text: commentText,
     }
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${link}/user/comment`, commentData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          fetchComments()
-          setCommentText('')
-          setCommentCount(commentCount + 1)
-        } else {
-          console.error('Error commenting on post:', response.data.message)
-        }
-      })
-      .catch((error) => console.error('Error commenting on post:', error))
+    postService
+      .addComment(post.feed_id, commentData)
+      .then(
+        createApiHandler(
+          () => {
+            fetchComments()
+            setCommentText('')
+            setCommentCount(commentCount + 1)
+          },
+          (error) => console.error('Error commenting on post:', error),
+        ),
+      )
+      .catch((error) => handleApiError(error))
   }
 
   const handleKeyPress = (event) => {
@@ -296,6 +259,7 @@ const Post = ({ post }) => {
                 src={post.image}
                 alt="Post image"
                 onClick={handleImageClick}
+                onLoad={updateImageHeight}
               />
               {isHovered && (
                 <div
@@ -443,7 +407,7 @@ const Post = ({ post }) => {
             )}
           </IconButton>
         </div>
-        <div className="post__like-container" style={{ marginRight: '-12px' }}>
+        <div className="post__like-container margin-right-negative-12">
           <div className="post__like-count">{likeCount}</div>
           <IconButton
             onClick={handleLikeClick}
@@ -483,9 +447,8 @@ const Post = ({ post }) => {
               </div>
             )}
             <textarea
-              className="post__comment-input"
+              className="post__comment-input margin-top-20"
               placeholder="Написать комментарий..."
-              style={{ marginTop: '20px' }}
               value={commentText}
               onChange={(e) => setCommentText(e.target.value)}
               maxLength={250}

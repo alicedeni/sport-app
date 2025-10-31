@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import { link } from '../../consts.js'
+import api from '@shared/services/api'
 
 const TeamAndLeague = ({ tempUser, leagueColor }) => {
   const [teamMembers, setTeamMembers] = useState([])
@@ -9,12 +8,8 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
   useEffect(() => {
     const fetchTeamMembers = async () => {
       try {
-        const token = localStorage.getItem('token')
-        const response = await axios.get(`${link}/user/team_members`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const response = await api.get('/user/team_members')
         if (response.data.status === 200) {
-          console.log(response.data)
           setTeamMembers(response.data.teamMembers)
         } else {
           console.error('Ошибка при загрузке участников команды:', response.data.message)
@@ -41,6 +36,19 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
     }
   }
 
+  const getLeagueName = (league) => {
+    if (!league) return ''
+
+    const leagueMap = {
+      bronze: 'Бронзовая лига',
+      silver: 'Серебряная лига',
+      gold: 'Золотая лига',
+    }
+
+    const lowerLeague = league.toLowerCase()
+    return leagueMap[lowerLeague] || league.charAt(0).toUpperCase() + league.slice(1).toLowerCase()
+  }
+
   return (
     <div className="profile-block-content-comands">
       <div className="profile-block-content-comands-items">
@@ -51,21 +59,37 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
           <p className="profile-block-content-data-title-name">{tempUser.team}</p>
           <div className="team-members-count" onClick={toggleMembersVisibility}>
             {getParticipantsText(teamMembers.length)}
-            <span className={`arrow ${isMembersVisible ? 'arrow-up' : 'arrow-down'}`}></span>
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className={`team-arrow ${isMembersVisible ? 'team-arrow-up' : 'team-arrow-down'}`}
+            >
+              <path d="M6 9L2 5H10L6 9Z" fill="currentColor" />
+            </svg>
           </div>
           {isMembersVisible && (
-            <ul className="team-members-list">
+            <div className="profile-team-members-list">
               {teamMembers.length > 0 ? (
                 teamMembers.map((member, index) => (
-                  // <li key={index} className="team-member-item">{member.name || member}</li>\
-                  <li key={index} className="team-members-item">
-                    {member.surname} {member.name}
-                  </li>
+                  <div key={index} className="profile-team-member-item">
+                    <div className="profile-team-member-info">
+                      <div className="profile-team-member-name">
+                        {member.surname} {member.name}
+                      </div>
+                    </div>
+                  </div>
                 ))
               ) : (
-                <li className="team-members-item">Участников нет</li>
+                <div className="profile-team-member-item">
+                  <div className="profile-team-member-info">
+                    <div className="profile-team-member-name">Участников нет</div>
+                  </div>
+                </div>
               )}
-            </ul>
+            </div>
           )}
         </div>
         <div className="profile-block-content-comands-list"></div>
@@ -81,10 +105,10 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
         ></div>
         <div className="profile-block-content-comands-item">
           <p className="profile-block-content-comands-item-text">Моя лига</p>
-          <p className="profile-block-content-data-title-name">{tempUser.league}</p>
+          <p className="profile-block-content-data-title-name">{getLeagueName(tempUser.league)}</p>
         </div>
         <p className="profile-block-content-comands-position">
-          Вы на {tempUser.place_league} месте в {tempUser.league} лиге!
+          Вы на {tempUser.place_league} месте!
         </p>
       </div>
     </div>

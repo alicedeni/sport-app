@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
-import { link } from '../../consts.js'
+import api from '@shared/services/api'
 
 const Checkmark = () => (
   <svg
@@ -19,7 +17,6 @@ const Checkmark = () => (
 )
 
 const Challenges = () => {
-  const [isChallengeModalOpen, setIsChallengeModalOpen] = useState(false)
   const [selectedSide, setSelectedSide] = useState('current')
   const [currentChallenges, setCurrentChallenges] = useState([])
   const [completedChallenges, setCompletedChallenges] = useState([])
@@ -56,18 +53,11 @@ const Challenges = () => {
   const handleParticipate = async (challengeId) => {
     if (!user) return
 
-    const token = localStorage.getItem('token')
     try {
-      const response = await axios.post(
-        `${link}/api/user_challenge_statuses/participate`,
-        {
-          user_id: user.id,
-          challenge_id: challengeId,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
+      const response = await api.post('/api/user_challenge_statuses/participate', {
+        user_id: user.id,
+        challenge_id: challengeId,
+      })
 
       if (response.data.status === 200) {
         setStatuses((prev) => ({
@@ -81,17 +71,11 @@ const Challenges = () => {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) return
-
-    axios
-      .get(`${link}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    api
+      .get('/profile')
       .then((res) => {
         if (res.data && res.data.profile) {
           setUser(res.data.profile)
-          console.log(res.data.profile)
         }
       })
       .catch(console.error)
@@ -100,10 +84,8 @@ const Challenges = () => {
   useEffect(() => {
     if (!user) return
 
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${link}/api/user_challenge_statuses`, {
-        headers: { Authorization: `Bearer ${token}` },
+    api
+      .get('/api/user_challenge_statuses', {
         params: { user_id: user.id },
       })
       .then((res) => {
@@ -123,7 +105,7 @@ const Challenges = () => {
     switch (status) {
       case 'участвует':
         return (
-          <div className="participating-status" style={{ color: '#2196f3' }}>
+          <div className="participating-status blue-text">
             Участвую!
           </div>
         )

@@ -1,3 +1,5 @@
+@use '../../base/variables' as vars;
+
 .posts {
     display: flex;
     flex-direction: column;
@@ -20,9 +22,15 @@
     }
 
     &__mini-avatar {
-      width: 70px;
-      height: 70px;
-      margin-right: 10px;
+      width: 70px !important;
+      height: 70px !important;
+      margin-right: 10px !important;
+
+      &.MuiAvatar-root {
+        width: 70px !important;
+        height: 70px !important;
+        margin-right: 10px !important;
+      }
     }
 
     &__user-info {
@@ -37,8 +45,9 @@
     }
 
     &__timestamp {
+      margin-top: -8px;
       font-size: 24px;
-      color: $grey1;
+      color: vars.$grey1;
     }
 
     &__svg-fire-container {
@@ -48,9 +57,10 @@
     }
 
     &__fire-count {
+      margin-top: 5px;
       font-size: 24px;
       font-weight: bold;
-      background-image: $gradient;
+      background-image: vars.$gradient;
       margin-right: 10px;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -59,7 +69,7 @@
     &__content {
       display: flex;
       margin-bottom: 10px;
-      background: $white2;
+      background: vars.$white2;
       min-height: 285px;
       max-height: 500px;
       border-radius: 10px;
@@ -71,13 +81,18 @@
       width: 285px;
       margin-right: 20px;
       overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 285px;
     }
 
     &__image {
-      width: 100%;
-      height: 100%;
+    width: 100%;
+    height: 100%;
       object-fit: cover;
       border-radius: 10px;
+    display: block;
     }
 
     &__info {
@@ -105,7 +120,7 @@
         flex-direction: column;
         align-items: center;
         text-align: center;
-        color: $grey1;
+        color: vars.$grey1;
         font-size: 16px;
       }
     }
@@ -117,7 +132,7 @@
         position: relative;
         display: flex;
         align-items: center;
-        background: $gradient;
+        background: vars.$gradient;
         border-radius: 24px;
         padding: 2px;
         height: 48px;
@@ -136,7 +151,7 @@
         &-count {
           font-size: 24px;
           font-weight: bold;
-          background-image: $gradient;
+          background-image: vars.$gradient;
           margin-right: 5px;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -146,13 +161,13 @@
     &__line {
       width: 100%;
       height: 1px;
-      background-color: $grey1;
+      background-color: vars.$grey1;
     }
 
     &__time {
-      border: 2px solid $blue;
+      border: 2px solid vars.$blue;
       font-size: 24px;
-      color: $blue;
+      color: vars.$blue;
       border-radius: 20px;
       height: 40px;
       padding: 0px 20px;
@@ -161,10 +176,63 @@
     &__calories {
       padding: 0px 20px;
       font-size: 24px;
-      color: $blue;
-      border: 2px solid $blue;
+      color: vars.$blue;
+      border: 2px solid vars.$blue;
       border-radius: 20px;
       height: 40px;
+    }
+
+    &__line {
+      width: 100%;
+      height: 1px;
+      background: vars.$grey2;
+      margin: 20px 0px;
+    }
+
+    &__actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    &__comment-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 60px;
+      justify-content: flex-end;
+    }
+
+    &__like-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 60px;
+      justify-content: flex-end;
+    }
+
+    &__like-count {
+      font-size: 24px;
+      font-weight: bold;
+      background-image: vars.$gradient;
+      margin-right: -7px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      min-width: 30px;
+      text-align: right;
+    }
+
+    &__comment-count {
+      font-size: 24px;
+      font-weight: bold;
+      background-image: vars.$gradient;
+      margin-right: -7px;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      min-width: 30px;
+      text-align: right;
     }
 
     &__text {
@@ -183,16 +251,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: $grey4;
-      border: 2px solid $grey1;
+      color: vars.$grey4;
+      border: 2px solid vars.$grey1;
     }
 
-    &__actions {
-      display: flex;
-      justify-content: end;
-      align-items: center;
-      gap: 15px;
-    }
+
 
     &__like-container {
       display: flex;
@@ -214,13 +277,13 @@
     &__like-count {
       font-size: 24px;
       font-weight: bold;
-      background-image: $gradient;
+      background-image: vars.$gradient;
       margin-right: -7px;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       &-comments {
         font-weight: bold;
-        background-image: $gradient;
+        background-image: vars.$gradient;
         margin-right: -7px;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -231,7 +294,7 @@
       display: flex;
       justify-content: space-between;
       padding-bottom: 10px;
-      border-bottom: 1px solid $grey1;
+      border-bottom: 1px solid vars.$grey1;
       &-start {
         display: flex;
         flex-direction: column;
@@ -247,7 +310,7 @@
       &-count {
         font-size: 24px;
         font-weight: bold;
-        background-image: $gradient;
+        background-image: vars.$gradient;
         margin-right: -7px;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -277,7 +340,7 @@
         }
       }
       &-timestamp{
-        color: $grey1;
+        color: vars.$grey1;
         font-size: 16px;
         margin-top: auto;
       }
@@ -288,7 +351,7 @@
       display: block;
       height: 1px;
       width: 100%;
-      background-color: $grey1;
+      background-color: vars.$grey1;
       margin-top: 20px;
     }
   }
@@ -429,15 +492,18 @@
   padding: 8px 24px;
   border: none;
   border-radius: 20px;
-  background: $grey1;
+  background: vars.$grey1;
   color: white;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 180px;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .posts__my-posts-button.active {
-  background-color: $blue;
+  background-color: vars.$blue;
 }
 
 .posts__filter-group {
@@ -446,27 +512,32 @@
   min-width: 180px;
 }
 
-.posts__filter-group label {
-  margin-bottom: 6px;
-  margin-left: 8px;
-  font-weight: 600;
-  font-size: 14px;
-}
-
 .posts__filter-group select,
 .posts__filter-group input[type='text'] {
   padding: 8px 12px;
   border-radius: 20px;
-  border: 2px solid $blue;
+  border: 2px solid vars.$blue;
   color: white;
   font-size: 14px;
   outline: none;
   transition: border-color 0.2s ease;
 }
 
+.posts__username-input {
+  width: 100%;
+  height: 40px;
+  padding-left: 10px;
+  border-radius: 20px;
+  border: 2px solid #51B8FF;
+  font-size: 16px;
+  outline: none;
+  color: #000;
+  background-color: #fff;
+}
+
 .posts__filter-group select:focus,
 .posts__filter-group input[type='text']:focus {
-  border-color: $blue;
+  border-color: vars.$blue;
 }
 
 .posts__no-results {
@@ -490,9 +561,15 @@
   .post{
     margin-bottom: 20px;
     &__mini-avatar {
-      width: 40px;
-      height: 40px;
-      margin-right: 5px;
+      width: 40px !important;
+      height: 40px !important;
+      margin-right: 5px !important;
+
+      &.MuiAvatar-root {
+        width: 40px !important;
+        height: 40px !important;
+        margin-right: 5px !important;
+      }
     }
     &__svg-icon {
       width: 24px;
@@ -503,23 +580,36 @@
       margin-right: 5px;
     }
     &__timestamp {
+      margin-top: -5px;
       font-size: 12px;
-      color: $grey1;
+      color: vars.$grey1;
     }
     &__comment-timestamp {
       font-size: 12px;
     }
     &__fire-count {
-      font-size: 20px;
+      font-size: 18px;
+      margin-top: 0;
     }
     &__actions {
       gap: 5px;
+      margin-top: 5px;
+    }
+    &__comment-container {
+      min-width: 50px;
+    }
+    &__like-container {
+      min-width: 50px;
     }
     &__like-count {
       font-size: 16px;
+      min-width: 25px;
+      text-align: right;
     }
     &__comment-count {
       font-size: 16px;
+      min-width: 25px;
+      text-align: right;
     }
     &__icon-action {
       width: 24px;
@@ -566,26 +656,29 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      min-height: auto;
       &.no_img {
         height: 150px;
         display: flex;
         justify-content: center;
         align-items: center;
+        min-height: 150px;
       }
 
-      &.pool {background: $blue-50p;}
-      &.cardio {background: $yellow-50p;}
-      &.run {background: $green-50p;}
-      &.power {background: $pink-50p;}
-      &.bike {background: $purple2-50p;}
-      &.yoga {background: $turquoise-50p;}
-      &.walk {background: $orange-50p;}
-      &.game {background: $dark-blue-50p;}
-      &.dance {background: $purple1-50p;}
-      &.other {background: $grey4-50p;}
+      &.pool {background: vars.$blue-50p;}
+      &.cardio {background: vars.$yellow-50p;}
+      &.run {background: vars.$green-50p;}
+      &.power {background: vars.$pink-50p;}
+      &.bike {background: vars.$purple2-50p;}
+      &.yoga {background: vars.$turquoise-50p;}
+      &.walk {background: vars.$orange-50p;}
+      &.game {background: vars.$dark-blue-50p;}
+      &.dance {background: vars.$purple1-50p;}
+      &.other {background: vars.$grey4-50p;}
     }
     &__image {
-      height: 320px;
+      max-height: 320px;
+      height: auto;
       width: auto;
       &.no_img {
         height: 100px;
@@ -671,16 +764,16 @@
   padding: 12px 28px;
   border: none;
   border-radius: 24px;
-  background: $grey4;
-  color: $white2;
+  background: vars.$grey4;
+  color: vars.$white2;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .posts__my-posts-button.active {
-  background-color: $blue;
+  background-color: vars.$blue;
 }
 
 .posts__filter-group {
@@ -692,19 +785,19 @@
 
 .posts__filter-group label {
   margin-bottom: 4px;
-  margin-left: 6px;
+  text-align: center;
   font-weight: 600;
-  font-size: 13px;
-  color: $black;
+  font-size: 16px;
+  color: vars.$grey4;
 }
 
 .posts__filter-group select,
 .posts__filter-group input[type='text'] {
-  padding: 7px 12px;
+  padding: 2px 8px;
   border-radius: 20px;
-  border: 2px solid $blue;
-  background: $white2;
-  color: $black;
+  border: 2px solid vars.$blue;
+  background: vars.$white2;
+  color: vars.$black;
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s;
@@ -712,7 +805,7 @@
 
 .posts__no-results {
   text-align: center;
-  color: $grey1;
+        color: vars.$grey1;
   padding: 40px 0;
   font-size: 16px;
 }
@@ -724,6 +817,7 @@
     gap: 8px;
     padding: 10px 4px;
     border-radius: 12px;
+    margin-bottom: 40px;
   }
   .posts__button-wrapper {
     margin-bottom: 4px;
@@ -734,6 +828,8 @@
     border-radius: 20px;
     padding: inherit;
     font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
   }
   .posts__filter-group {
     flex: 1 1 100%;

@@ -1,3 +1,5 @@
+@use '../../base/variables' as vars;
+
 .preview {
   display: flex;
   flex-direction: column;
@@ -18,7 +20,7 @@
       font-size: 42px;
       cursor: pointer;
       transition: color 0.3s;
-      color: $blue;
+      color: vars.$blue;
     }
   }
   &-submit_btn{

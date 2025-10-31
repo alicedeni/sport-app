@@ -1,5 +1,35 @@
-@use './base/variables';
-@import "./base/variables";
+@use './base/variables' as vars;
+@use './base/utilities';
+@use "./base/buttons";
+@use "./base/activity-tags";
+@use "./base/activity-btn";
+@use "./blocks/welcome/form";
+@use "./blocks/welcome/background_text";
+@use "./blocks/welcome/goal";
+@use "./blocks/main/header";
+@use "./blocks/main/posts";
+@use "./blocks/main/main";
+@use "./blocks/main/activity";
+@use "./blocks/main/ratings";
+@use "./blocks/main/challenges";
+@use "./blocks/main/comment";
+@use "./blocks/main/view";
+@use "./blocks/main/mobile_header";
+@use "./blocks/main/mobile_footer";
+@use "./blocks/profile/profile_block";
+@use "./blocks/profile/profile_data";
+@use "./blocks/profile/team_league";
+@use "./blocks/profile/profile_account";
+@use "./blocks/profile/password_modal";
+@use "./blocks/admin/admin_panel";
+@use "./blocks/admin/user_management";
+@use "./blocks/admin/challenge_management";
+@use "./blocks/admin/statistics";
+@use "./blocks/admin/error_monitoring";
+@use "./blocks/admin/global_settings";
+@use "./blocks/admin/common_styles";
+@use "./blocks/modals/public_profile_modal";
+
 
 *{
   margin: 0;
@@ -12,32 +42,32 @@
 
 @font-face {
   font-family: "IngoStem";
-  src: url("../fonts/IngoStem-Medium.otf") format("opentype");
-  font-weight: bolder;
+  src: url("../assets/fonts/IngoStem-Medium.otf") format("opentype");
+  font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: "IngoStem";
-  src: url("../fonts/IngoStem-Bold.otf") format("opentype");
+  src: url("../assets/fonts/IngoStem-Bold.otf") format("opentype");
   font-weight: bold;
 }
 
 @font-face {
   font-family: "IngoStem";
-  src: url("../fonts/IngoStem-Light.otf") format("opentype");
+  src: url("../assets/fonts/IngoStem-Light.otf") format("opentype");
   font-weight: lighter;
 }
 
 @font-face {
   font-family: "IngoStem";
-  src: url("../fonts/IngoStem-Regular.otf") format("opentype");
+  src: url("../assets/fonts/IngoStem-Regular.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
 body {
-  background: $gradient;
+  background: vars.$gradient;
   font-family: sans-serif;
   margin: 0;
   padding: 0;
@@ -55,13 +85,13 @@ body {
 
 .fade-enter {
   opacity: 0;
-  transform: translateY(-20px); /* Начальная позиция */
+  transform: translateY(-20px);
 }
 
 .fade-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms ease-in, transform 300ms ease-in; /* Плавный переход */
+  transition: opacity 300ms ease-in, transform 300ms ease-in;
 }
 
 .fade-exit {
@@ -88,27 +118,21 @@ body {
     flex-direction: column;
   }
 
+  .MuiAvatar-root {
+    &.post__mini-avatar {
+      margin-top: 10px;
+      width: 70px !important;
+      height: 70px !important;
+      margin-right: 10px !important;
+
+      @media (max-width: 820px) {
+        width: 40px !important;
+        height: 40px !important;
+        margin-right: 5px !important;
+        margin-top: 0;
+      }
+    }
+  }
+
 }
 
-
-
-@import "./base/buttons";
-@import "./base/activity-tags";
-@import "./base/activity-btn";
-@import "./blocks/welcome/form";
-@import "./blocks/welcome/background_text";
-@import "./blocks/welcome/goal";
-@import "./blocks/main/header";
-@import "./blocks/main/posts";
-@import "./blocks/main/main";
-@import "./blocks/main/activity";
-@import "./blocks/main/ratings";
-@import "./blocks/main/challenges";
-@import "./blocks/main/comment";
-@import "./blocks/main/view";
-@import "./blocks/main/mobile_header";
-@import "./blocks/main/mobile_footer";
-@import "./blocks/profile/profile_block";
-@import "./blocks/profile/profile_data";
-@import "./blocks/profile/team_league";
-@import "./blocks/profile/profile_account";

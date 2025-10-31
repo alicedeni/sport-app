@@ -1,3 +1,5 @@
+@use '../../base/variables' as vars;
+
 .team-members {
   &-list {
     list-style-type: none;
@@ -17,7 +19,7 @@
     text-align: center;
     cursor: pointer;
     &:hover {
-      background: $purple2-20p;
+      background: vars.$purple2-20p;
     }
   }
 
@@ -28,24 +30,109 @@
     cursor: pointer;
     height: 44px;
     border-radius: 22px;
+    color: #9393FF;
+    background: rgba(147, 147, 255, 0.2);
     width: 80%;
   }
 }
 
-  .arrow {
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    margin-left: 5px;
+  .team-members-count {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #9393FF;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #7a7aff;
+    }
   }
 
-  .arrow-up {
-    border-bottom: 5px solid #333;
+  .team-arrow {
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    color: inherit;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
   }
 
-  .arrow-down {
-    border-top: 5px solid #333;
+  .team-arrow-up {
+    transform: rotate(180deg);
   }
+
+  .team-arrow-down {
+    transform: rotate(0deg);
+  }
+
+
+.profile-team-members-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  width: 80%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.profile-team-member-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  background: rgba(81, 184, 255, 0.05);
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: rgba(81, 184, 255, 0.1);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.profile-team-member-info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.profile-team-member-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: vars.$black;
+  line-height: 1.3;
+}
+
+@media (max-width: 820px) {
+  .profile-team-members-list {
+    max-height: 150px;
+    margin-top: 8px;
+    padding: 6px;
+  }
+
+  .profile-team-member-item {
+    padding: 6px 10px;
+    margin-bottom: 3px;
+  }
+
+  .profile-team-member-name {
+    font-size: 13px;
+  }
+}
 
 

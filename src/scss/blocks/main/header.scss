@@ -1,8 +1,10 @@
+@use '../../base/variables' as vars;
+
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: $gradient;
+  background: vars.$gradient;
   width: 100%;
   padding: 0 100px;
   // &-title {
@@ -13,25 +15,29 @@
   // }
   &-title {
     font-size: 32px;
-    color: $white2;
+    color: vars.$white2;
     padding: 30px;
     font-weight: lighter;
     img {
       border-radius: 50%;
       width: 42px;
       height: 42px;
-      border: 2px solid $white2;
+      border: 2px solid vars.$white2;
     }
     .avatar-default{
       border-radius: 50%;
       width: 42px;
       height: 42px;
-      background: $purple2;
+      background: vars.$purple2;
       font-size: 26px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 42px;
     }
     .avatar-placeholder {
       justify-content: center;
-      color: $white2;
+      color: vars.$white2;
       border-radius: 50%;
       width: 40px;
       height: 40px;
@@ -41,14 +47,14 @@
   }
   .points {
     font-size: 24px;
-    color: $white2;
+    color: vars.$white2;
     display: flex;
     justify-content: center;
   }
   &-notification {
     width: 100%;
     height: auto;
-    background: $white2;
+    background: vars.$white2;
     border-radius: 30px;
     padding: 60px;
     position: relative;
@@ -84,15 +90,15 @@
       &-item {
         font-size: 24px;
         padding-bottom: 10px;
-        color: $white2;
+        color: vars.$white2;
         cursor: pointer;
         text-align: center;
         text-decoration: none;
         &:hover {
-          border-bottom: 2px solid $white;
+          border-bottom: 2px solid vars.$white;
         }
         &.active {
-          border-bottom: 2px solid $white;
+          border-bottom: 2px solid vars.$white;
         }
       }
     }
@@ -100,14 +106,14 @@
 }
 
 .white-rectangle {
-  background: $white2;
+  background: vars.$white2;
   width: 100%;
   height: 48px;
 }
 
 .goal-bar {
   width: 100%;
-  background-color: $white2;
+  background-color: vars.$white2;
   border-radius: 36px;
   height: 72px;
   overflow: hidden;
@@ -118,14 +124,14 @@
 
 .goal_page {
   height: 56px;
-  background-color: $blue;
+  background-color: vars.$blue;
   border-radius: 28px;
 
 }
 
 .goal {
   height: 56px;
-  background-color: $blue;
+  background-color: vars.$blue;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -135,7 +141,7 @@
 }
 .goal-percentage {
   white-space: nowrap;
-  color: $white2;
+        color: vars.$white2;
   font-size: 24px;
   font-weight: bold;
 }
@@ -147,7 +153,7 @@
 .goal-text {
   font-size: 32px;
   font-weight: bold;
-  color: $white2;
+        color: vars.$white2;
   margin-bottom: 20px;
 }
 
@@ -163,7 +169,7 @@
     width: 100%;
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 15px;
-    color: $white2;
+    color: vars.$white2;
     font-size: 24px;
     display: flex;
     justify-content: center;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import Select from 'react-select'
-import Post from './Post'
+import Post from '@components/main/Post.jsx'
+import api from '@shared/services/api'
 
 const ACTIVITY_OPTIONS = [
   { label: 'Ходьба', value: 'walk' },
@@ -21,13 +22,10 @@ const Posts = ({ posts, filters, setFilters }) => {
 
   useEffect(() => {
     isMounted.current = true
-    // Получаем id пользователя для фильтра "Мои посты"
-    const token = localStorage.getItem('token')
-    fetch('/profile', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    api
+      .get('/profile')
+      .then((res) => {
+        const data = res.data
         if (isMounted.current && data.profile) {
           setUserId(data.profile.id)
         }
@@ -39,7 +37,6 @@ const Posts = ({ posts, filters, setFilters }) => {
     }
   }, [])
 
-  // Локальная фильтрация (если нужно)
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
       if (filters.activity && filters.activity !== '') {
@@ -59,7 +56,6 @@ const Posts = ({ posts, filters, setFilters }) => {
     })
   }, [posts, filters, userId])
 
-  // Обработчики изменения фильтров
   const onActivityChange = (selected) => {
     setFilters((prev) => ({ ...prev, activity: selected ? selected.value : '' }))
   }
@@ -87,8 +83,8 @@ const Posts = ({ posts, filters, setFilters }) => {
           </button>
         </div>
 
-        <div className="posts__filter-group" style={{ minWidth: 180 }}>
-          <label htmlFor="activityTypeSelect">Вид активности:</label>
+        <div className="posts__filter-group min-width-180">
+          <label htmlFor="activityTypeSelect">Вид активности</label>
           <Select
             inputId="activityTypeSelect"
             options={selectOptions}
@@ -111,17 +107,17 @@ const Posts = ({ posts, filters, setFilters }) => {
               placeholder: (base) => ({
                 ...base,
                 color: '#BDBDBD',
-                fontSize: 15,
+                fontSize: 16,
               }),
               singleValue: (base) => ({
                 ...base,
                 color: '#000',
-                fontSize: 15,
+                fontSize: 16,
               }),
               input: (base) => ({
                 ...base,
                 color: '#000',
-                fontSize: 15,
+                fontSize: 16,
                 margin: 0,
                 padding: 0,
               }),
@@ -175,23 +171,14 @@ const Posts = ({ posts, filters, setFilters }) => {
         </div>
 
         <div className="posts__filter-group">
-          <label htmlFor="usernameFilterInput">Имя пользователя:</label>
+          <label htmlFor="usernameFilterInput">Имя пользователя</label>
           <input
             id="usernameFilterInput"
             type="text"
             placeholder="Поиск по имени"
             value={filters.username}
             onChange={onUsernameChange}
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              borderRadius: 20,
-              border: '2px solid #51B8FF',
-              fontSize: 15,
-              outline: 'none',
-              color: '#000',
-              backgroundColor: '#fff',
-            }}
+            className="posts__username-input"
           />
         </div>
       </div>

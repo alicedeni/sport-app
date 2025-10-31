@@ -1,47 +1,45 @@
 import React, { useState, useEffect } from 'react'
-import ProfileBlock from '../components/ProfileBlock'
-import axios from 'axios'
-import Header from '../components/main/Header'
+import ProfileBlock from '@components/ProfileBlock.jsx'
+import Header from '@components/main/Header.jsx'
 import MobileHeader from '@components/mobile/MobileHeader'
-import { link } from '../consts.js'
 import MobileFooter from '@components/mobile/MobileFooter'
+import { useResponsive, useAppHeight, useUser } from '@shared/hooks'
+import { createApiHandler, handleApiError } from '@shared/utils'
+import api from '@shared/services/api'
 
 const Profile = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
+  const isMobile = useResponsive()
+  useAppHeight()
+  const { updateUserData } = useUser()
+
   const [user, setUser] = useState({})
   const [loadingUser, setLoadingUser] = useState(true)
 
-  const getUserData = () => {
-    const token = localStorage.getItem('token')
-    return axios
-      .get(`${link}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        return response.data
-      })
-      .catch((error) => {
-        console.error(error)
-        throw error
-      })
-      .finally(() => setLoadingUser(false))
-  }
-
   useEffect(() => {
-    getUserData()
-      .then((data) => {
-        if (data && data.profile) {
-          setUser(data.profile)
-        }
+    api
+      .get('/profile')
+      .then(
+        createApiHandler(
+          (data) => {
+            if (data && data.profile) {
+              setUser(data.profile)
+              updateUserData({
+                name: data.profile.name || data.profile.firstName || '',
+                avatar: data.profile.avatar || '',
+              })
+            }
+            setLoadingUser(false)
+          },
+          (error) => {
+            console.error('Error loading profile:', error)
+            setLoadingUser(false)
+          },
+        ),
+      )
+      .catch((error) => {
+        handleApiError(error)
+        setLoadingUser(false)
       })
-      .catch((error) => console.error(error))
-
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 820)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
   if (loadingUser) {
@@ -51,7 +49,7 @@ const Profile = () => {
   return (
     <div className="container">
       {isMobile ? <MobileHeader /> : <Header isFeedPage={false} />}
-      <div className="main" style={{ marginTop: '100px' }}>
+      <div className="main profile-main-margin">
         <ProfileBlock user={user} setUser={setUser} />
       </div>
       {isMobile && <MobileFooter />}

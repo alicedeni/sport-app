@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { ButtonActivity, ButtonEnter } from '../Buttons'
-import WarningModal from './WarningModal'
+import { ButtonActivity, ButtonEnter } from '@components/Buttons'
+import { WarningModal } from '@components/modals'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-
-import { link } from '../../consts.js'
+import api from '@shared/services/api'
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week')
@@ -20,19 +18,12 @@ const Activity = () => {
     const fetchActivities = async () => {
       try {
         let response
-        const token = localStorage.getItem('token')
         if (selectedSide === 'week') {
-          response = await axios.get(`${link}/user/activities/week`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+          response = await api.get('/user/activities/week')
         } else if (selectedSide === 'month') {
-          response = await axios.get(`${link}/user/activities/month`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+          response = await api.get('/user/activities/month')
         } else {
-          response = await axios.get(`${link}/user/activities/all`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+          response = await api.get('/user/activities/all')
         }
         setActivities(response.data.activities)
       } catch (error) {
@@ -45,10 +36,7 @@ const Activity = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const token = localStorage.getItem('token')
-        const response = await axios.get(`${link}/profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const response = await api.get('/profile')
         setProfile(response.data.profile)
       } catch (error) {
         console.error('Error fetching profile:', error)
@@ -63,7 +51,6 @@ const Activity = () => {
   }
 
   const handleFormChange = () => {
-    // Проверяем наличие и валидность height и weight
     if (
       !profile ||
       !profile.height ||
@@ -83,9 +70,11 @@ const Activity = () => {
   }
 
   const formatMinutesToHours = (totalMinutes) => {
-    const hours = Math.floor(totalMinutes / 60)
-    const minutes = totalMinutes % 60
-    return `${hours}:${minutes}`
+    const safe = Math.max(0, Math.floor(totalMinutes))
+    const hours = Math.floor(safe / 60)
+    const minutes = safe % 60
+    const minutesStr = minutes < 10 ? `0${minutes}` : String(minutes)
+    return `${hours}:${minutesStr}`
   }
 
   const getTotalTime = () => {
@@ -119,26 +108,19 @@ const Activity = () => {
       ></ButtonActivity>
       <div className="select_time">
         <div
-          className="select_time-variant"
-          style={{ backgroundColor: selectedSide === 'week' ? 'rgba(81, 184, 255, 0.2)' : 'white' }}
+          className={`select_time-variant ${selectedSide === 'week' ? 'active' : ''}`}
           onClick={() => handleClick('week')}
         >
           За неделю
         </div>
         <div
-          className="select_time-variant"
-          style={{
-            backgroundColor: selectedSide === 'month' ? 'rgba(81, 184, 255, 0.2)' : 'white',
-          }}
+          className={`select_time-variant ${selectedSide === 'month' ? 'active' : ''}`}
           onClick={() => handleClick('month')}
         >
           За месяц
         </div>
         <div
-          className="select_time-variant"
-          style={{
-            backgroundColor: selectedSide === 'week && month' ? 'rgba(81, 184, 255, 0.2)' : 'white',
-          }}
+          className={`select_time-variant ${selectedSide === 'week && month' ? 'active' : ''}`}
           onClick={() => handleClick('week && month')}
         >
           За все время

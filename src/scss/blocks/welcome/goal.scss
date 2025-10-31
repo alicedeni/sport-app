@@ -1,7 +1,9 @@
+@use '../../base/variables' as vars;
+
 .goal-block {
     width: 100%;
     min-height: 100vh;
-    background: $white;
+    background: vars.$white;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -11,13 +13,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: $gradient;
+      background: vars.$gradient;
       width: 100%;
       min-height: 100px;
 
     p {
         font-size: 32px;
-        color: $white2;
+        color: vars.$white2;
         padding: 15px;
         font-weight: lighter;
       }
@@ -47,7 +49,7 @@
         color: transparent;
         -webkit-background-clip: text;
         background-clip: text;
-        background-image: $gradient;
+        background-image: vars.$gradient;
         margin-bottom: 50px;
       }
 
@@ -56,7 +58,7 @@
 
 .mobile-goal-block {
   height: var(--app-height);
-  background: $white;
+  background: vars.$white;
 }
 
 .mobile-goal-block__header {
@@ -65,8 +67,8 @@
   justify-content: space-between;
   height: 200px;
   border-radius: 0 0 20px 20px;
-  background: $gradient;
-  color: $white2;
+  background: vars.$gradient;
+  color: vars.$white2;
   padding: 10px 30px 40px 30px;
 }
 
@@ -83,7 +85,7 @@
 
 .mobile-goal-block__title {
   font-size: 26px;
-  font-weight: bolder;
+  font-weight: bold;
 }
 
 .mobile-goal-block__subtitle{
@@ -124,7 +126,7 @@
   font-size: 72px;
   cursor: pointer;
   transition: color 0.3s;
-  color: $blue;
+  color: vars.$blue;
   z-index: 100;
 }
 
@@ -139,14 +141,14 @@
   height: 10px;
   border-radius: 50%;
   background-color: transparent;
-  border: solid $blue;
+  border: solid vars.$blue;
   margin-right: 5px;
   cursor:pointer;
   transition:.3s;
 }
 
 .indicator.active {
-  background-color:$blue;
+  background-color: vars.$blue;
 }
 
 .task-list__item{

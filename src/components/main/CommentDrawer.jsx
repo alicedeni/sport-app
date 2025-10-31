@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react'
-import Comment from './Comment'
-import SendDefault from '../../assets/icons/sendDefault.svg'
-import SendFilled from '../../assets/icons/sendFilled.svg'
+import Comment from '@components/main/Comment.jsx'
+import { getDeclension } from '@shared/utils'
+import SendDefault from '@assets/icons/sendDefault.svg'
+import SendFilled from '@assets/icons/sendFilled.svg'
 
 const CommentDrawer = ({
   isOpen,
@@ -48,12 +49,8 @@ const CommentDrawer = ({
 
   return (
     <div
-      className={`comment-drawer ${isOpen ? 'open' : ''}`}
+      className={`comment-drawer ${isOpen ? 'open' : ''} ${startY !== null ? 'no-transition' : ''}`}
       ref={drawerRef}
-      style={{
-        transform: isOpen ? 'translateY(0)' : 'translateY(100%)',
-        transition: startY === null ? 'transform 0.3s ease-in-out' : 'none',
-      }}
     >
       <div
         className="drag-handle"
@@ -65,8 +62,10 @@ const CommentDrawer = ({
       </div>
       <div className="header-comment">
         <div className="header-comment__title">Комментарии</div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div className="header-comment__comment-count">{commentCount} комментариев</div>
+        <div className="header-comment__header-row">
+          <div className="header-comment__comment-count">
+            {commentCount} {getDeclension(commentCount, 'comment')}
+          </div>
           <button className="header-comment__close-button" onClick={onClose}>
             ×
           </button>
@@ -78,7 +77,7 @@ const CommentDrawer = ({
           <div className="comment-list__no-comments">Тут пока нет комментариев</div>
         ) : (
           comments.map((comment, index) => (
-            <Comment key={index} comment={comment} onDelete={onDelete} />
+            <Comment key={index} comment={comment} onDelete={onDelete} showDeleteAlways />
           ))
         )}
       </div>

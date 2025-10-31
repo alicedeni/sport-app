@@ -1,3 +1,5 @@
+@use './variables' as vars;
+
 .league-btn {
   text-align: center;
   display: flex;
@@ -10,8 +12,8 @@
 }
 // light
 .pool-light {
-  color: $blue;
-  border: 2px solid $blue;
+  color: vars.$blue;
+  border: 2px solid vars.$blue;
 }
 .cardio-light {
   color: $yellow;

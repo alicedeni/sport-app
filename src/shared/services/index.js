@@ -1,0 +1,8 @@
+export { default as api } from '@shared/services/api.js'
+export { userService } from '@shared/services/userService.js'
+export { postService } from '@shared/services/postService.js'
+export { challengeService } from '@shared/services/challengeService.js'
+export { activityService } from '@shared/services/activityService.js'
+export { authService } from '@shared/services/authService.js'
+export { adminService } from '@shared/services/adminService.js'
+export { default as uploadService, getPresignedFields, uploadToStorage } from '@shared/services/uploadService.js'

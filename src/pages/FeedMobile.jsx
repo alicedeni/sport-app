@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import throttle from 'lodash.throttle'
-import Header from '../components/main/Header'
+import Header from '@components/main/Header.jsx'
 import MobileHeader from '@components/mobile/MobileHeader'
 import FixedHeader from '@components/mobile/FixedHeader'
 import MobileFooter from '@components/mobile/MobileFooter'
-import Posts from '../components/main/Posts'
+import Posts from '@components/main/Posts.jsx'
 import axios from 'axios'
 
-import { link } from '../consts.js'
+import { API_BASE_URL } from '@constants/api.js'
 
 const LIMIT = 20
 
@@ -27,12 +27,10 @@ const FeedMobile = () => {
     my_posts: false,
   })
 
-  // Обновляем ref при изменении offset
   useEffect(() => {
     offsetRef.current = offset
   }, [offset])
 
-  // Функция загрузки постов с учетом offset и фильтров
   const getPostData = useCallback(async (currentOffset, currentFilters) => {
     const token = localStorage.getItem('token')
     setLoading(true)
@@ -45,7 +43,7 @@ const FeedMobile = () => {
       if (params.my_posts) params.my_posts = 'true'
       else delete params.my_posts
 
-      const response = await axios.get(`${link}/user/posts`, {
+      const response = await axios.get(`${API_BASE_URL}/user/posts`, {
         headers: { Authorization: `Bearer ${token}` },
         params,
       })
@@ -66,7 +64,6 @@ const FeedMobile = () => {
     }
   }, [])
 
-  // При изменении фильтров сбрасываем offset и загружаем заново
   useEffect(() => {
     isMounted.current = true
     setOffset(0)
@@ -77,7 +74,6 @@ const FeedMobile = () => {
     }
   }, [filters, getPostData])
 
-  // Обработка изменения размера окна
   useEffect(() => {
     const handleResize = () => {
       if (isMounted.current) {
@@ -88,7 +84,6 @@ const FeedMobile = () => {
     return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Обработчик скролла для подгрузки постов
   useEffect(() => {
     if (!hasMore || loading) return
 
@@ -109,7 +104,6 @@ const FeedMobile = () => {
       container.addEventListener('scroll', handleScroll)
       return () => container.removeEventListener('scroll', handleScroll)
     } else {
-      // Для десктопа слушаем скролл окна
       const handleWindowScroll = throttle(() => {
         const scrollTop = window.scrollY || window.pageYOffset
         const windowHeight = window.innerHeight
@@ -128,21 +122,16 @@ const FeedMobile = () => {
     <div className="container" id="root">
       {isMobile ? <FixedHeader /> : <Header currentPage="feed" />}
       <div
-        className="main"
+        className={isMobile ? 'main mobile-main-container' : 'main desktop-main-container'}
         ref={mainRef}
-        style={{
-          overflowY: isMobile ? 'auto' : 'visible',
-          overflowX: 'hidden',
-          height: isMobile ? '100vh' : 'auto',
-        }}
       >
         {isMobile && <MobileHeader />}
         <Posts posts={posts} filters={filters} setFilters={setFilters} />
         {loading && (
-          <div style={{ textAlign: 'center', padding: '10px', color: 'white' }}>Загрузка...</div>
+          <div className="loading-message">Загрузка...</div>
         )}
-        {!hasMore && !loading && (
-          <div style={{ textAlign: 'center', padding: '10px', color: 'white' }}>
+        {!hasMore && !loading && posts.length > 0 && (
+          <div className="no-more-posts">
             Больше постов нет
           </div>
         )}

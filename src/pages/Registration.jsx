@@ -1,24 +1,13 @@
-import React, { useEffect } from 'react'
-import RegistrationBlock from '../components/RegistrationBlock'
-import FullWidthText from '../components/FullWidthText'
+import React from 'react'
+import RegistrationBlock from '@components/RegistrationBlock.jsx'
+import FullWidthText from '@components/FullWidthText.jsx'
+import { useAppHeight } from '@shared/hooks'
 
 const Registration = () => {
+  useAppHeight()
+  
   const welcomeText =
     'СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ СПОРТИВНЫЙ ЧЕЛЛЕНДЖ'
-
-  useEffect(() => {
-    const setAppHeight = () => {
-      const appHeight = window.innerHeight
-      document.documentElement.style.setProperty('--app-height', `${appHeight}px`)
-    }
-
-    setAppHeight()
-    window.addEventListener('resize', setAppHeight)
-
-    return () => {
-      window.removeEventListener('resize', setAppHeight)
-    }
-  }, [])
 
   return (
     <div className="welcome">

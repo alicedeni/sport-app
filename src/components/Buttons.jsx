@@ -1,10 +1,18 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export function ButtonEnter({ src, onClick, textContent }) {
+export function ButtonEnter({ src, onClick, textContent, disabled = false }) {
+  const handleClick = (e) => {
+    if (disabled) {
+      e.preventDefault()
+      return
+    }
+    if (onClick) onClick(e)
+  }
+
   return (
-    <a className="welcome-block__link-forward" onClick={onClick}>
-      <button className={`button button-enter`}>
+    <a className="welcome-block__link-forward" onClick={handleClick}>
+      <button className={`button button-enter ${disabled ? 'disabled' : ''}`} disabled={disabled}>
         <span className="button button-enter_text">{textContent}</span>
       </button>
     </a>
@@ -88,7 +96,7 @@ export function CButtonProfile({ children, points, onClick }) {
     <button className="button cbutton-profile" onClick={handleClick}>
       <div className="points">
         <svg
-          style={{ marginRight: '8px', marginTop: '4.54px' }}
+          className="svg-icon-spacing"
           width="20"
           height="26"
           viewBox="0 0 20 26"

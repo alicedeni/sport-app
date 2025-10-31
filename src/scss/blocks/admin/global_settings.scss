@@ -1,0 +1,169 @@
+@use '../../base/variables' as vars;
+
+.admin-settings {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 700;
+    color: vars.$black;
+    margin: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__tabs {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    padding: 4px;
+    margin-bottom: 24px;
+    overflow-x: auto;
+  }
+
+  &__tab {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: vars.$grey2;
+    }
+
+    &--active {
+      background: vars.$blue;
+      color: white;
+
+      .admin-settings__tab-icon,
+      .admin-settings__tab-label {
+        color: white;
+      }
+    }
+  }
+
+  &__tab-icon {
+    font-size: 16px;
+    margin-right: 8px;
+    color: vars.$grey4;
+  }
+
+  &__tab-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: vars.$black;
+  }
+
+  &__content {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.admin-settings-section {
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: vars.$black;
+    margin: 0 0 20px 0;
+  }
+}
+
+.admin-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.admin-setting {
+  &__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: vars.$black;
+    margin-bottom: 8px;
+  }
+
+  &__checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: vars.$black;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+  }
+}
+
+.admin-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid vars.$grey2;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+
+  &:focus {
+    outline: none;
+    border-color: vars.$blue;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .admin-settings {
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__actions {
+      flex-direction: column;
+    }
+
+    &__tabs {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &__tab {
+      justify-content: center;
+    }
+  }
+
+  .admin-settings-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

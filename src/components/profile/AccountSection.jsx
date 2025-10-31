@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
+import api from '@shared/services/api'
+import { uploadToStorage } from '@shared/services/uploadService'
 import '@aws-amplify/ui-react/styles.css'
-import { link } from '../../consts.js'
 import { FaUpload } from 'react-icons/fa'
 
 const AccountSection = ({
@@ -12,64 +12,23 @@ const AccountSection = ({
   handleSaveClickAccount,
   handleEditClickAccount,
   handleUpdateUser,
+  handlePasswordChange,
 }) => {
   const [imageFile, setImageFile] = useState(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState(tempUser.avatar)
   const [file, setFile] = useState(null)
 
-  const getImgKeys = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const response = await axios.get(`${link}/img_keys`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      return response.data
-    } catch (error) {
-      console.error(error)
-      throw error
-    }
-  }
+  useEffect(() => {
+    setUploadedImageUrl(tempUser.avatar)
+  }, [tempUser.avatar])
 
   const handleImageUpload = async (event) => {
     const selectedFile = event.target.files[0]
     if (selectedFile) {
       setImageFile(selectedFile)
-      const uploadedUrl = await uploadFile(selectedFile)
+      const uploadedUrl = await uploadToStorage('users/uploads/profile/', selectedFile)
+      setUploadedImageUrl(uploadedUrl)
       handleInputChange({ target: { value: uploadedUrl } }, 'avatar')
-    }
-  }
-
-  const uploadFile = async (file) => {
-    const presignedFields = await getImgKeys()
-    const token = localStorage.getItem('token')
-    const userId = token
-    const timestamp = Date.now()
-    const fileExtension = file.name.split('.').pop()
-    const fileName = `${userId}_${timestamp}.${fileExtension}`
-
-    const formData = new FormData()
-    formData.append('key', `users/uploads/profile/${fileName}`)
-    formData.append('X-Amz-Credential', presignedFields['fields']['x-amz-credential'])
-    formData.append('acl', 'public-read')
-    formData.append('X-Amz-Algorithm', 'AWS4-HMAC-SHA256')
-    formData.append('X-Amz-Date', presignedFields['fields']['x-amz-date'])
-    formData.append('policy', presignedFields['fields']['policy'])
-    formData.append('X-Amz-Signature', presignedFields['fields']['x-amz-signature'])
-    formData.append('file', file)
-
-    try {
-      const response = await axios.post('https://storage.yandexcloud.net/team2go', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      setUploadedImageUrl(
-        `https://storage.yandexcloud.net/team2go/users/uploads/profile/${fileName}`,
-      )
-      return `https://storage.yandexcloud.net/team2go/users/uploads/profile/${fileName}`
-    } catch (error) {
-      console.error('Ошибка при загрузке файла:', error)
-      throw error
     }
   }
 
@@ -77,7 +36,7 @@ const AccountSection = ({
     if (imageFile) {
       try {
         setImageFile(imageFile)
-        const uploadedUrl = await uploadFile(imageFile)
+        const uploadedUrl = await uploadToStorage('users/uploads/profile/', imageFile)
         setUploadedImageUrl(uploadedUrl)
         handleInputChange({ target: { value: uploadedUrl } }, 'avatar')
       } catch (error) {
@@ -109,7 +68,7 @@ const AccountSection = ({
                   d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z"
                   fill="url(#paint0_linear_580_1299)"
                   stroke="url(#paint1_linear_580_1299)"
-                  stroke-width="2"
+                  strokeWidth="2"
                 />
                 <defs>
                   <linearGradient
@@ -169,8 +128,8 @@ const AccountSection = ({
           <div className="profile-block-content-data-item-value">
             <img
               src={
-                tempUser.avatar
-                  ? tempUser.avatar
+                uploadedImageUrl || tempUser.avatar
+                  ? uploadedImageUrl || tempUser.avatar
                   : 'https://www.shutterstock.com/image-vector/avatar-photo-default-user-icon-600nw-2345549599.jpg'
               }
               alt={tempUser.name}
@@ -199,14 +158,7 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
-                  style={{
-                    borderRadius: '20px',
-                    height: '38px',
-                    fontSize: '16px',
-                    padding: '0 10px',
-                    boxSizing: 'border-box',
-                  }}
-                  className="profile-block-content-data-item-value-input"
+                  className="profile-input"
                   type="text"
                   value={tempUser.firstName}
                   onChange={(event) => handleInputChange(event, 'firstName')}
@@ -221,13 +173,7 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
-                  style={{
-                    borderRadius: '20px',
-                    height: '38px',
-                    fontSize: '16px',
-                    padding: '0 10px',
-                    boxSizing: 'border-box',
-                  }}
+                  className="profile-input"
                   type="text"
                   value={tempUser.lastName}
                   onChange={(event) => handleInputChange(event, 'lastName')}
@@ -244,13 +190,7 @@ const AccountSection = ({
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
                 <input
-                  style={{
-                    borderRadius: '20px',
-                    height: '38px',
-                    fontSize: '16px',
-                    padding: '0 10px',
-                    boxSizing: 'border-box',
-                  }}
+                  className="profile-input"
                   type="text"
                   value={tempUser.email}
                   onChange={(event) => handleInputChange(event, 'email')}
@@ -264,24 +204,34 @@ const AccountSection = ({
             <p className="profile-block-content-data-item-text">Пароль</p>
             <div className="profile-block-content-data-item-value">
               {editModeAccount ? (
-                <input
-                  className="profile-block-content-data-item-value-input"
-                  type="password"
-                  value={tempUser.password}
-                  onChange={(event) => handleInputChange(event, 'password')}
-                  style={{
-                    borderRadius: '20px',
-                    height: '38px',
-                    fontSize: '16px',
-                    padding: '0 10px',
-                    boxSizing: 'border-box',
-                  }}
-                />
+                <button
+                  onClick={handlePasswordChange}
+                  className="profile-block-content-data-btn-change-password"
+                >
+                  Изменить пароль
+                </button>
               ) : (
                 <p>*******</p>
               )}
             </div>
           </div>
+          {/*<div className="profile-block-content-data-profile-column-i">
+            <p className="profile-block-content-data-item-text">Статус</p>
+            <div className="profile-block-content-data-item-value">
+              {editModeAccount ? (
+                <input
+                  className="profile-input"
+                  type="text"
+                  value={tempUser.status || ''}
+                  onChange={(event) => handleInputChange(event, 'status')}
+                  placeholder="Введите статус"
+                  maxLength={120}
+                />
+              ) : (
+                <p>{tempUser.status || '-'}</p>
+              )}
+            </div>
+          </div>*/}
         </div>
       </div>
       {editModeAccount && (

@@ -1,0 +1,7 @@
+export { default as ChallengeModal } from '@components/modals/ChallengeModal.jsx'
+export { default as ErrorModal } from '@components/modals/ErrorModal.jsx'
+export { default as ImageModal } from '@components/modals/ImageModal.jsx'
+export { default as TeamModal } from '@components/modals/TeamModal.jsx'
+export { default as WarningModal } from '@components/modals/WarningModal.jsx'
+export { default as PasswordChangeModal } from '@components/modals/PasswordChangeModal.jsx'
+export { default as PublicProfileModal } from '@components/modals/PublicProfileModal.jsx'

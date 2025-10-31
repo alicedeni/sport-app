@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { link } from '../../consts'
+import api from '@shared/services/api'
+import { getProgressBarBorderRadius } from '@shared/utils'
 
 const MobileHeader = () => {
   const [goal, setGoal] = useState(0)
@@ -14,19 +14,12 @@ const MobileHeader = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (goal > 3 && goal < 7) {
-      setBorderRadius('50%')
-    } else {
-      setBorderRadius('14px')
-    }
+    setBorderRadius(getProgressBarBorderRadius(goal, true))
   }, [goal])
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${link}/main`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    api
+      .get('/main')
       .then((response) => {
         setGoal(response.data.goal)
         setMainInfo({
@@ -36,17 +29,6 @@ const MobileHeader = () => {
         })
       })
       .catch(() => navigate('/'))
-    const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          navigate('/')
-        }
-        return Promise.reject(error)
-      },
-    )
-
-    return () => axios.interceptors.response.eject(interceptor)
   }, [navigate])
 
   return (
@@ -61,7 +43,7 @@ const MobileHeader = () => {
           <div className="mobile-header__goal-bar">
             <div
               className="mobile-header__goal"
-              style={{ width: goal > 3 ? `${goal}%` : '0', borderRadius: borderRadius }}
+              style={{ width: goal > 0 ? `${Math.max(goal, 3)}%` : '0', borderRadius: borderRadius }}
             ></div>
           </div>
         </div>

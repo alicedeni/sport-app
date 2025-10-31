@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonProfile } from '../Buttons'
+import { ButtonProfile } from '@components/Buttons.jsx'
 
 const Notification = ({ isOpen, userName, onClose }) => {
   if (!isOpen) {

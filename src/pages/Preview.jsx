@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import Header from '../components/main/Header'
+import React from 'react'
+import Header from '@components/main/Header.jsx'
 import MobileHeader from '@components/mobile/MobileHeader'
-import Preview from '../components/main/Preview'
+import Preview from '@components/main/Preview.jsx'
 import MobileFooter from '@components/mobile/MobileFooter'
+import { useResponsive } from '@shared/hooks'
 
 const PreviewPage = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 820)
-    }
-
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isMobile = useResponsive()
 
   return (
     <div className="container" id="root">

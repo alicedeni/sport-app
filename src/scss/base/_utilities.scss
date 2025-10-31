@@ -1,0 +1,166 @@
+@use './variables' as vars;
+
+.loading-message {
+  text-align: center;
+  padding: 10px;
+  color: vars.$white2;
+}
+
+.no-more-posts {
+  text-align: center;
+  padding: 10px;
+  color: #BDBDBD;
+}
+
+.error-text {
+  color: red;
+}
+
+.error-text-red {
+  color: red;
+}
+
+.required-asterisk {
+  color: red;
+}
+
+.flex-center-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.flex-center-vertical {
+  display: flex;
+  align-items: center;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+.margin-right-negative-12 {
+  margin-right: -12px;
+}
+
+.margin-top-0 {
+  margin-top: 0;
+}
+
+.padding-2-12 {
+  padding: 2px 12px;
+}
+
+.width-24 {
+  width: 24px;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.min-width-180 {
+  min-width: 180px;
+}
+
+.height-32 {
+  height: 32px;
+}
+
+.height-40 {
+  height: 40px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.position-relative {
+  position: relative;
+}
+
+.bg-team-color {
+}
+
+.bmi-normal-bg {
+  background-color: rgba(5, 232, 117, 0.2);
+  border-color: rgb(5, 232, 117);
+}
+
+.bmi-normal-text {
+  color: rgb(5, 232, 117);
+}
+
+.bmi-abnormal-bg {
+  background-color: rgba(255, 204, 56, 0.2);
+  border-color: rgb(255, 204, 56);
+}
+
+.bmi-abnormal-text {
+  color: rgb(255, 204, 56);
+}
+
+.bmi-undefined-bg {
+  background-color: #B0B0B0;
+  border-color: #B0B0B0;
+}
+
+.bmi-undefined-text {
+  color: #B0B0B0;
+}
+
+.active-blue-bg {
+  background-color: rgba(81, 184, 255, 0.2);
+}
+
+.active-white-bg {
+  background-color: white;
+}
+
+.progress-dynamic {
+}
+
+.drawer-open-transform {
+  transform: translateY(0);
+}
+
+.drawer-closed-transform {
+  transform: translateY(100%);
+}
+
+.activity-percentage-bar {
+}
+
+.mobile-main-container {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100vh;
+}
+
+.desktop-main-container {
+  overflow-y: visible;
+  overflow-x: hidden;
+  height: auto;
+}
+
+.profile-main-margin {
+  margin-top: 100px;
+}
+
+.svg-icon-spacing {
+  margin-right: 8px;
+  margin-top: 4.54px;
+}
+
+@media (max-width: 820px) {
+  .mobile-main-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100vh;
+  }
+
+  .profile-main-margin {
+    margin-top: 100px;
+  }
+}

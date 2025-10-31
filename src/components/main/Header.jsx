@@ -1,105 +1,42 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Notification from './Notification'
-import { CButtonProfile } from '../Buttons'
-import axios from 'axios'
-import { link } from '../../consts.js'
-import { TailSpin } from 'react-loader-spinner'
+import Notification from '@components/main/Notification.jsx'
+import { CButtonProfile } from '@components/Buttons.jsx'
+import LoadingSpinner from '@components/ui/LoadingSpinner.jsx'
+import { useUser } from '@shared/hooks'
+import {
+  getDeclension,
+  getAvatarBorderRadius,
+  getInitials,
+  getProgressBarBorderRadius,
+} from '@shared/utils'
+import { ROUTE_NAMES } from '@constants'
 
 const Header = ({ currentPage }) => {
-  const [isNotificationOpen, setIsNotificationOpen] = useState(true)
-  const [userName, setUserName] = useState('')
-  const [avatar, setAvatar] = useState('')
-  const [points, setPoints] = useState(0)
-  const [goal, setGoal] = useState(0)
-  const [loadingUser, setLoadingUser] = useState(true)
-  const [mainInfo, setMainInfo] = useState({ teams: 0, participants: 0, count: 0 })
   const [showTooltip, setShowTooltip] = useState(false)
-  const [borderRadius, setBorderRadius] = useState('28px')
-
+  const { userData, loading: loadingUser, hideWelcome } = useUser()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (goal > 0 && goal < 5) {
-      setBorderRadius('50%')
-    } else {
-      setBorderRadius('28px')
-    }
-  }, [goal])
+  const {
+    name: userName,
+    avatar,
+    points,
+    goal,
+    teams,
+    participants,
+    count,
+    showWelcome: isNotificationOpen,
+  } = userData
 
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${link}/main`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((response) => {
-        setUserName(response.data.name)
-        setAvatar(response.data.avatar)
-        setPoints(response.data.points)
-        setGoal(response.data.goal)
-        setMainInfo({
-          teams: response.data.teams,
-          participants: response.data.participants,
-          count: response.data.count,
-        })
-        setIsNotificationOpen(response.data.show_welcome)
-      })
-      .catch(() => navigate('/'))
-      .finally(() => setLoadingUser(false))
-
-    const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          navigate('/')
-        }
-        return Promise.reject(error)
-      },
-    )
-
-    return () => axios.interceptors.response.eject(interceptor)
-  }, [navigate])
+  const borderRadius = getAvatarBorderRadius(goal)
+  const progressBorderRadius = getProgressBarBorderRadius(goal, false)
 
   const handlePageNotification = () => {
-    setIsNotificationOpen(false)
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${link}/hide_welcome`, {}, { headers: { Authorization: `Bearer ${token}` } })
-      .then(() => {})
-      .catch((error) => {
-        console.error('Ошибка при скрытии подсказки:', error)
-      })
-  }
-
-  const getDeclension = (count, wordType) => {
-    const words = {
-      participant: ['участник', 'участника', 'участников'],
-      team: ['команда', 'команды', 'команд'],
-    }
-
-    if (!words[wordType]) {
-      return ''
-    }
-
-    const cases = [2, 0, 1, 1, 1, 2]
-    const mod100 = count % 100
-
-    if (mod100 >= 11 && mod100 <= 14) {
-      return words[wordType][2]
-    }
-
-    const mod10 = count % 10
-
-    return words[wordType][cases[mod10 < 5 ? mod10 : 5]]
+    hideWelcome()
   }
 
   if (loadingUser) {
-    return (
-      <div
-        style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}
-      >
-        <TailSpin height="80" width="80" color="white" ariaLabel="loading" />
-      </div>
-    )
+    return <LoadingSpinner fullScreen />
   }
 
   return (
@@ -115,7 +52,7 @@ const Header = ({ currentPage }) => {
           {avatar ? (
             <img src={`${avatar}`} alt="User Avatar" className="avatar" />
           ) : (
-            <div className="avatar-default">{userName ? userName.charAt(0) : ''}</div>
+            <div className="avatar-default">{getInitials(userName)}</div>
           )}
         </CButtonProfile>
       </div>
@@ -124,38 +61,39 @@ const Header = ({ currentPage }) => {
         <div className="header-nav-list">
           <Link
             to={`/main`}
-            className={`header-nav-list-item ${currentPage === 'feed' ? 'active' : ''}`}
+            className={`header-nav-list-item ${currentPage === ROUTE_NAMES.FEED ? 'active' : ''}`}
           >
             ЛЕНТА
           </Link>
           <Link
             to={`/challenges`}
-            className={`header-nav-list-item ${currentPage === 'challenges' ? 'active' : ''}`}
+            className={`header-nav-list-item ${currentPage === ROUTE_NAMES.CHALLENGES ? 'active' : ''}`}
           >
             ЧЕЛЛЕНДЖИ
           </Link>
           <Link
             to={`/ratings`}
-            className={`header-nav-list-item ${currentPage === 'ratings' ? 'active' : ''}`}
+            className={`header-nav-list-item ${currentPage === ROUTE_NAMES.RATINGS ? 'active' : ''}`}
           >
             РЕЙТИНГИ
           </Link>
           <Link
             to={`/activity`}
-            className={`header-nav-list-item ${currentPage === 'activity' ? 'active' : ''}`}
+            className={`header-nav-list-item ${currentPage === ROUTE_NAMES.ACTIVITY ? 'active' : ''}`}
           >
             АКТИВНОСТЬ
           </Link>
         </div>
       </nav>
-      {currentPage === 'feed' && isNotificationOpen && (
+      {currentPage === ROUTE_NAMES.FEED && isNotificationOpen && (
         <Notification
           isOpen={isNotificationOpen}
           userName={userName}
           onClose={handlePageNotification}
         />
       )}
-      {(currentPage === 'challenges' || (currentPage === 'feed' && !isNotificationOpen)) && (
+      {(currentPage === ROUTE_NAMES.CHALLENGES ||
+        (currentPage === ROUTE_NAMES.FEED && !isNotificationOpen)) && (
         <div className="goal-status">
           <div className="goal-text">Наша цель — Прошагать 10 562 км.</div>
           <div
@@ -168,7 +106,7 @@ const Header = ({ currentPage }) => {
               className="goal"
               style={{
                 width: goal > 0 ? `${goal}%` : '0',
-                borderRadius: borderRadius,
+                borderRadius: progressBorderRadius,
                 display: goal === 0 ? 'none' : undefined,
               }}
             >
@@ -177,23 +115,23 @@ const Header = ({ currentPage }) => {
           </div>
         </div>
       )}
-      {currentPage === 'feed' && !isNotificationOpen && (
+      {currentPage === ROUTE_NAMES.FEED && !isNotificationOpen && (
         <div className="goal-info">
           <div className="goal-info__metrics">
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
-              {mainInfo.teams}
+              {teams}
             </span>{' '}
-            {getDeclension(mainInfo.participants, 'team')}
+            {getDeclension(teams, 'team')}
           </div>
           <div className="goal-info__metrics">
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
-              {mainInfo.participants}
+              {participants}
             </span>{' '}
-            {getDeclension(mainInfo.participants, 'participant')}
+            {getDeclension(participants, 'participant')}
           </div>
           <div className="goal-info__metrics">
             <span style={{ fontSize: '30px', fontWeight: 'bold', marginRight: '10px' }}>
-              {mainInfo.count}
+              {count}
             </span>{' '}
             км пройдено
           </div>

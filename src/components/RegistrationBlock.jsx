@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { ButtonEnter, ButtonToEnter, ButtonNext } from './Buttons'
+import { ButtonEnter, ButtonToEnter, ButtonNext } from '@components/Buttons.jsx'
 
-import { link } from '../consts.js'
+import { API_BASE_URL } from '@constants/api.js'
 
 const RegistrationBlock = () => {
   const [formState, setFormState] = useState('registration')
@@ -25,7 +25,7 @@ const RegistrationBlock = () => {
       const token = localStorage.getItem('token')
       axios
         .post(
-          `${link}/register`,
+          `${API_BASE_URL}/register`,
           { name, surname, patronymic, email, password },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -104,11 +104,13 @@ const RegistrationBlock = () => {
               onChange={(e) => setPasswordCheck(e.target.value)}
               required
             />
-            {error && (
-              <p className="error" style={{ color: 'red' }}>
-                {error}
-              </p>
-            )}
+            <div className="welcome-block__error">
+              {error && (
+                <p className="error error-text">
+                  {error}
+                </p>
+              )}
+            </div>
             <ButtonEnter
               className="welcome-block__btn"
               text="Зарегистрироваться"

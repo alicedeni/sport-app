@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ButtonEnter, ButtonActivity } from './Buttons'
+import { ButtonEnter, ButtonActivity } from '@components/Buttons.jsx'
 
 const GoalBlock = () => {
   const [currentPage, setCurrentPage] = useState(0)

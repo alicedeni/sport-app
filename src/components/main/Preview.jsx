@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { ButtonEnter } from '../Buttons'
-import { Avatar } from '@material-ui/core'
-import axios from 'axios'
+import { ButtonEnter } from '@components/Buttons.jsx'
+import { Avatar } from '@mui/material'
+import api from '@shared/services/api'
 import ReactDOM from 'react-dom'
-
-import { link } from '../../consts.js'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 
@@ -18,6 +16,7 @@ const Preview = () => {
   const [activityData, setActivityData] = useState(initialActivityData)
   const navigate = useNavigate()
   const [user, setUser] = useState({})
+  const [isPublishing, setIsPublishing] = useState(false)
   const hasImage = activityData && activityData.image
   const isMounted = useRef(true)
   const [tagSize, setTagSize] = useState('L')
@@ -57,7 +56,7 @@ const Preview = () => {
         if (window.innerWidth > 820) {
           updateImageHeight()
         }
-      }, 50) // 50ms delay
+      }, 50)
     }
 
     updateHeightWithDelay()
@@ -69,17 +68,13 @@ const Preview = () => {
     }
 
     window.addEventListener('resize', handleResize)
-    console.log(activityData)
     return () => {
       window.removeEventListener('resize', handleResize)
     }
   }, [])
   const getUserData = () => {
-    const token = localStorage.getItem('token')
-    return axios
-      .get(`${link}/profile`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    return api
+      .get('/profile')
       .then((response) => {
         return response.data
       })
@@ -95,11 +90,8 @@ const Preview = () => {
       return
     }
 
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${link}/user/preview_post`, activityData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    api
+      .post('/user/preview_post', activityData)
       .then((response) => {
         const enrichedData = response.data.preview_data
         const { distance, ...restOfEnrichedData } = enrichedData
@@ -109,6 +101,11 @@ const Preview = () => {
           distance_info: distance,
         }
         setActivityData(allData)
+        setTimeout(() => {
+          if (window.innerWidth > 820) {
+            updateImageHeight()
+          }
+        }, 0)
       })
       .catch((error) => {
         console.error(error)
@@ -131,28 +128,34 @@ const Preview = () => {
   }, [])
 
   const handlePublish = () => {
+    if (isPublishing) {
+      return
+    }
+
     if (!activityData) {
       console.error('Данные активности отсутствуют')
       return
     }
+
+    setIsPublishing(true)
+
     /*
     if (!activityData.image) {
       activityData.image = `https://storage.yandexcloud.net/team2go/users/base/${activityData.type}.png`;
     }*/
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${link}/user/activities`, activityData, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+    api
+      .post('/user/activities', activityData)
       .then((response) => {
         if (response.data.status === 200) {
           window.location.href = `/main`
         } else {
           console.error('Ошибка при публикации активности:', response.data.error)
+          setIsPublishing(false)
         }
       })
       .catch((error) => {
         console.error(error)
+        setIsPublishing(false)
       })
   }
 
@@ -229,7 +232,12 @@ const Preview = () => {
             ref={imageContainerRef}
           >
             {hasImage ? (
-              <img className="post__image" src={activityData.image} alt="Post image" />
+              <img
+                className="post__image"
+                src={activityData.image}
+                alt="Post image"
+                onLoad={updateImageHeight}
+              />
             ) : (
               <img
                 className={`post__image ${!hasImage ? 'no_img' : ''}`}
@@ -342,8 +350,10 @@ const Preview = () => {
                 ''
               )}
             </div>
-            {activityData && activityData.text && <div className="post__line"></div>}
-            {activityData && <div className="post__text">{activityData.description}</div>}
+            {activityData && activityData.description && <div className="post__line"></div>}
+            {activityData && activityData.description && (
+              <div className="post__text">{activityData.description}</div>
+            )}
           </div>
         </div>
       </div>
@@ -351,10 +361,11 @@ const Preview = () => {
       <div className="preview-submit_btn">
         <ButtonEnter
           className="welcome-block__btn"
-          text="Опубликовать"
+          text={isPublishing ? 'Публикуется...' : 'Опубликовать'}
           type="submit"
-          textContent={'Опубликовать'}
+          textContent={isPublishing ? 'Публикуется...' : 'Опубликовать'}
           onClick={handlePublish}
+          disabled={isPublishing}
         />
       </div>
     </div>

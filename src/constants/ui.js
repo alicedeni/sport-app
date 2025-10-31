@@ -1,0 +1,13 @@
+export const UI_CONSTANTS = {
+  BREAKPOINTS: {
+    MOBILE: 820,
+  },
+  GOAL: {
+    TARGET: 10562,
+    TARGET_PERCENTAGE: 100,
+  },
+  NOTIFICATIONS: {
+    DURATION: 3000,
+  },
+}
+

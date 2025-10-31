@@ -1,0 +1,268 @@
+@use '../../base/variables' as vars;
+
+.modal-content {
+  max-width: 500px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.public-profile-modal {
+  &__header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid vars.$grey2;
+    position: relative;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 600;
+    color: vars.$black;
+    margin: 0;
+  }
+
+
+  &__body {
+    padding: 24px;
+  }
+
+  &__avatar-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__avatar {
+    width: 80px !important;
+    height: 80px !important;
+    border: none;
+  }
+
+  &__user-info {
+    flex: 1;
+    &-title {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .post__fire-count {
+    font-size: 24px;
+    font-weight: bold;
+    background-image: vars.$gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-left: 8px;
+  }
+
+  &__username {
+    font-size: 24px;
+    line-height: 26px;
+    font-weight: 600;
+    color: vars.$black;
+    margin-right: 20px;
+  }
+
+  &__status {
+    font-size: 16px;
+    color: vars.$grey4;
+  }
+
+  &__stats {
+    margin-bottom: 20px;
+  }
+
+  &__progress {
+    margin-bottom: 24px;
+  }
+
+  &__achievements {
+    border-top: 1px solid vars.$grey2;
+    padding-top: 20px;
+  }
+
+  &__achievements-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: vars.$black;
+    margin: 0 0 12px 0;
+  }
+
+  &__achievements-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+
+.public-profile-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid rgba(81, 184, 255, 0.2);
+  overflow: hidden;
+
+  tr {
+    border-bottom: 1px solid rgba(81, 184, 255, 0.2);
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  &__label {
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: vars.$blue;
+    background: rgba(81, 184, 255, 0.1);
+    border-right: 1px solid rgba(81, 184, 255, 0.2);
+    width: 40%;
+    vertical-align: middle;
+  }
+
+  &__value {
+    padding: 16px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: vars.$black;
+    background: rgba(255, 255, 255, 0.8);
+    vertical-align: middle;
+  }
+}
+
+.public-profile-progress {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(81, 184, 255, 0.1) 0%, rgba(81, 184, 255, 0.05) 100%);
+  border: 1px solid rgba(81, 184, 255, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(81, 184, 255, 0.15);
+
+  &__icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  &__content {
+    flex: 1;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 600;
+    color: vars.$blue;
+    margin-bottom: 4px;
+  }
+
+  &__value {
+    font-size: 24px;
+    font-weight: bold;
+    background-image: vars.$gradient;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+  }
+}
+
+.public-profile-achievement {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: vars.$grey2;
+  border-radius: 6px;
+
+  &__icon {
+    font-size: 16px;
+  }
+
+  &__text {
+    font-size: 14px;
+    color: vars.$black;
+  }
+}
+
+@media (max-width: 820px) {
+  .public-profile-table {
+    &__label {
+      padding: 12px 16px;
+      font-size: 11px;
+      width: 35%;
+    }
+
+    &__value {
+      padding: 12px 16px;
+      font-size: 12px;
+    }
+  }
+
+  .public-profile-modal {
+    padding: 10px;
+
+    &__content {
+      max-width: 100%;
+    }
+
+    &__header {
+      padding: 16px 20px 12px;
+    }
+
+    &__title {
+      font-size: 18px;
+    }
+
+    &__body {
+      padding: 10px;
+    }
+
+    &__stats {
+      margin-bottom: 0;
+    }
+
+    &__avatar-section {
+      flex-direction: column;
+      text-align: center;
+      gap: 12px;
+    }
+
+    &__avatar {
+      width: 60px !important;
+      height: 60px !important;
+    }
+
+    &__username {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .post__fire-count {
+      font-size: 20px;
+      margin-left: 6px;
+    }
+
+    .public-profile-progress {
+      padding: 12px 16px;
+      gap: 10px;
+
+      &__icon {
+        font-size: 20px;
+      }
+
+      &__label {
+        font-size: 13px;
+      }
+
+      &__value {
+        font-size: 20px;
+      }
+    }
+  }
+}

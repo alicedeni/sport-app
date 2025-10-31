@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import axios from 'axios'
-import { ButtonEnter, ButtonReg } from './Buttons'
+import { ButtonEnter, ButtonReg } from '@components/Buttons.jsx'
 
-import { link } from '../consts.js'
+import { API_BASE_URL } from '@constants/api.js'
 
 const WelcomeBlock = () => {
   const [email, setEmail] = useState('')
@@ -18,7 +18,7 @@ const WelcomeBlock = () => {
       const token = localStorage.getItem('token')
       axios
         .post(
-          `${link}/login`,
+          `${API_BASE_URL}/login`,
           { email, password },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -51,14 +51,14 @@ const WelcomeBlock = () => {
   const checkHelloStatus = () => {
     const token = localStorage.getItem('token')
     axios
-      .get(`${link}/user/get_hello_status`, {
+      .get(`${API_BASE_URL}/user/get_hello_status`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         if (response.data.f_hello === false) {
           axios
             .post(
-              `${link}/user/update_f_hello`,
+              `${API_BASE_URL}/user/update_f_hello`,
               {},
               {
                 headers: { Authorization: `Bearer ${token}` },
@@ -99,17 +99,20 @@ const WelcomeBlock = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {error && (
-          <p className="error" style={{ color: 'red' }}>
-            {error}
-          </p>
-        )}
+        <div className="welcome-block__error">
+          {error && <p className="error error-text">{error}</p>}
+        </div>
         <ButtonEnter
           className="welcome-block__btn"
           text="Войти"
           textContent={'Войти'}
         ></ButtonEnter>
       </form>
+      <ButtonReg
+        className="welcome-block__btn"
+        text="Зарегистрироваться"
+        textContent={'Зарегистрироваться'}
+      ></ButtonReg>
     </div>
   )
 }

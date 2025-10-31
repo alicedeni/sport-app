@@ -1,0 +1,282 @@
+@use '../../base/variables' as vars;
+
+.admin-statistics {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  &__title {
+    font-size: 28px;
+    font-weight: 700;
+    color: vars.$black;
+    margin: 0;
+  }
+
+  &__controls {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  &__card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+    overflow: hidden;
+  }
+
+  &__card-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: vars.$black;
+    margin: 0 0 16px 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+}
+
+.admin-select {
+  padding: 8px 12px;
+  border: 1px solid vars.$grey2;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+
+  &:focus {
+    outline: none;
+    border-color: vars.$blue;
+  }
+}
+
+.admin-team-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+}
+
+.admin-team-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: vars.$grey2;
+  border-radius: 8px;
+  gap: 12px;
+
+  &__rank {
+    font-size: 18px;
+    font-weight: 700;
+    color: vars.$blue;
+    min-width: 30px;
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: vars.$black;
+    margin-bottom: 2px;
+  }
+
+  &__members {
+    font-size: 12px;
+    color: vars.$grey4;
+  }
+
+  &__stats {
+    text-align: right;
+  }
+
+  &__points {
+    font-weight: 600;
+    color: vars.$black;
+    margin-bottom: 2px;
+  }
+
+  &__avg {
+    font-size: 12px;
+    color: vars.$grey4;
+  }
+}
+
+.admin-activity-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: auto;
+}
+
+.admin-activity-item {
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  &__type {
+    font-weight: 600;
+    color: vars.$black;
+  }
+
+  &__percentage {
+    font-weight: 600;
+    color: vars.$blue;
+  }
+
+  &__bar {
+    height: 8px;
+    background: vars.$grey2;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  &__bar-fill {
+    height: 100%;
+    background: vars.$gradient;
+    transition: width 0.3s ease;
+  }
+
+  &__stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: vars.$grey4;
+  }
+}
+
+.admin-user-leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: auto;
+}
+
+.admin-leaderboard-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background: vars.$grey2;
+  border-radius: 8px;
+  gap: 12px;
+
+  &__rank {
+    font-size: 18px;
+    font-weight: 700;
+    color: vars.$blue;
+    min-width: 30px;
+  }
+
+  &__info {
+    flex: 1;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: vars.$black;
+    margin-bottom: 2px;
+  }
+
+  &__team {
+    font-size: 12px;
+    color: vars.$grey4;
+  }
+
+  &__stats {
+    text-align: right;
+  }
+
+  &__points {
+    font-weight: 600;
+    color: vars.$black;
+    margin-bottom: 2px;
+  }
+
+  &__activities {
+    font-size: 12px;
+    color: vars.$grey4;
+  }
+}
+
+.admin-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.admin-overview-stat {
+  text-align: center;
+  padding: 16px;
+  background: vars.$grey2;
+  border-radius: 8px;
+
+  &__value {
+    font-size: 24px;
+    font-weight: 700;
+    color: vars.$blue;
+    margin-bottom: 4px;
+  }
+
+  &__label {
+    font-size: 12px;
+    color: vars.$grey4;
+  }
+}
+
+@media (max-width: 820px) {
+  .admin-statistics {
+    &__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    &__controls {
+      flex-direction: column;
+    }
+
+    &__grid {
+      grid-template-columns: 1fr;
+    }
+
+    &__actions {
+      flex-direction: column;
+    }
+  }
+
+  .admin-overview-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-team-item,
+  .admin-leaderboard-item {
+    flex-direction: column;
+    text-align: center;
+
+    &__stats {
+      text-align: center;
+    }
+  }
+}
+

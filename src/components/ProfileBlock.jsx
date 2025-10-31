@@ -1,53 +1,29 @@
 import React, { useState, useEffect } from 'react'
-import { ButtonDelete, ButtonExit } from './Buttons'
-import ProfileData from './profile/ProfileData'
-import TeamAndLeague from './profile/TeamLeague'
-import AccountSection from './profile/AccountSection'
+import { ButtonDelete, ButtonExit } from '@components/Buttons.jsx'
+import ProfileData from '@components/profile/ProfileData.jsx'
+import TeamAndLeague from '@components/profile/TeamLeague.jsx'
+import AccountSection from '@components/profile/AccountSection.jsx'
+import { PasswordChangeModal } from '@components/modals/index.js'
 import axios from 'axios'
 
-import { link } from '../consts.js'
+import { API_BASE_URL } from '@constants/api.js'
 
-const ProfileBlock = ({ user }) => {
+const ProfileBlock = ({ user, setUser }) => {
   const [editMode, setEditMode] = useState(false)
   const [editModeProfile, setEditModeProfile] = useState(false)
   const [editModeProgress, setEditModeProgress] = useState(false)
   const [editModeAccount, setEditModeAccount] = useState(false)
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
   const [weightGoal, setWeightGoal] = useState('lose')
   const [currentWeight, setCurrentWeight] = useState('')
   const [progressData, setProgressData] = useState(60)
-  const [activities, setActivities] = useState([
-    /*
-    {
-      type: 'Бассейн',
-      tag: 'pool',
-      time: 16,
-      calories: 2387,
-    },
-    {
-      type: 'велотренировка',
-      tag: 'bike',
-      time: 4,
-      calories: 2387
-    },
-    {
-      type: 'Бассейн',
-      tag: 'pool',
-      time: 16,
-      calories: 2387
-    },
-    {
-      type: 'Бассейн',
-      tag: 'pool',
-      time: 16,
-    },
-  */
-  ])
+  const [activities, setActivities] = useState([])
 
   const [tempUser, setTempUser] = useState(user)
   const handleProgress = () => {
     const token = localStorage.getItem('token')
     axios
-      .get(`${link}/user/progress`, {
+      .get(`${API_BASE_URL}/user/progress`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -69,7 +45,7 @@ const ProfileBlock = ({ user }) => {
   useEffect(() => {
     const token = localStorage.getItem('token')
     axios
-      .get(`${link}/user/activities/all`, {
+      .get(`${API_BASE_URL}/user/activities/all`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -84,7 +60,7 @@ const ProfileBlock = ({ user }) => {
       })
 
     axios
-      .get(`${link}/user/progress`, {
+      .get(`${API_BASE_URL}/user/progress`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -126,7 +102,17 @@ const ProfileBlock = ({ user }) => {
   }
   const handleUpdateUser = (updatedUser) => {
     setTempUser(updatedUser)
-    setUser(updatedUser)
+    if (setUser) {
+      setUser(updatedUser)
+    }
+  }
+
+  const handlePasswordChange = () => {
+    setIsPasswordModalOpen(true)
+  }
+
+  const handlePasswordModalClose = () => {
+    setIsPasswordModalOpen(false)
   }
 
   const handleSave = () => {
@@ -136,7 +122,7 @@ const ProfileBlock = ({ user }) => {
     }
     const token = localStorage.getItem('token')
     axios
-      .post(`${link}/edit_person_data`, tempUser, {
+      .post(`${API_BASE_URL}/edit_person_data`, tempUser, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -163,7 +149,7 @@ const ProfileBlock = ({ user }) => {
     }
     const token = localStorage.getItem('token')
     axios
-      .post(`${link}/user/set_goal`, tempUser, {
+      .post(`${API_BASE_URL}/user/set_goal`, tempUser, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -190,7 +176,7 @@ const ProfileBlock = ({ user }) => {
     }
     const token = localStorage.getItem('token')
     axios
-      .post(`${link}/edit_fio_data`, tempUser, {
+      .post(`${API_BASE_URL}/edit_fio_data`, tempUser, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -235,7 +221,7 @@ const ProfileBlock = ({ user }) => {
     }
     axios
       .post(
-        `${link}/logout`,
+        `${API_BASE_URL}/logout`,
         {},
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -258,7 +244,7 @@ const ProfileBlock = ({ user }) => {
 
   const handleDelete = () => {
     axios
-      .delete(`${link}/delete_account`)
+      .delete(`${API_BASE_URL}/delete_account`)
       .then((response) => {
         if (response.data.status === 200) {
           window.location.href = `main`
@@ -324,6 +310,11 @@ const ProfileBlock = ({ user }) => {
         className="profile-block-avatar"
       />
       <span className="profile-block-name">{`${tempUser.lastName} ${tempUser.firstName}`}</span>
+      {tempUser.status && (
+        <div className="profile-block-status" title={tempUser.status}>
+          {tempUser.status}
+        </div>
+      )}
 
       <div className="profile-block-content">
         <TeamAndLeague tempUser={tempUser} leagueColor={leagueColor} />
@@ -345,14 +336,12 @@ const ProfileBlock = ({ user }) => {
               {activities.map((activity, index) => (
                 <div
                   key={index}
-                  className={`profile-block__activity-list-item ${activity.tag}-metric`}
-                  style={{ position: 'relative' }}
+                  className={`profile-block__activity-list-item ${activity.tag}-metric position-relative`}
                 >
                   <div
                     key={activity.type}
                     id={activity.tag}
-                    className={`activity-tags ${activity.tag}-S`}
-                    style={{ width: '100%' }}
+                    className={`activity-tags ${activity.tag}-S width-100`}
                   >
                     {activity.type.toUpperCase()}
                   </div>
@@ -386,7 +375,7 @@ const ProfileBlock = ({ user }) => {
                       d="M15.3845 2.53553C16.5561 1.36396 18.4556 1.36396 19.6272 2.53553C20.7988 3.70711 20.7988 5.6066 19.6272 6.77817L13.9703 12.435L8.44099 17.9644C8.00189 18.4035 7.46659 18.7343 6.87747 18.9307L1.40933 20.7534L3.23522 15.2757C3.4295 14.6929 3.75682 14.1633 4.19124 13.7288L15.3845 2.53553Z"
                       fill="url(#paint0_linear_580_1299)"
                       stroke="url(#paint1_linear_580_1299)"
-                      stroke-width="2"
+                      strokeWidth="2"
                     />
                     <defs>
                       <linearGradient
@@ -462,7 +451,7 @@ const ProfileBlock = ({ user }) => {
           <p className="profile-block-content-data-title-name-small">
             Прогресс от начального веса к желаемому
           </p>
-          <div className="progress-bar" style={{ marginTop: '20px' }}>
+          <div className="progress-bar progress-bar-margin-top">
             <div className="progress" style={{ width: `${progressData}%` }}></div>
           </div>
 
@@ -491,6 +480,7 @@ const ProfileBlock = ({ user }) => {
           handleSaveClickAccount={handleSaveClickAccount}
           handleEditClickAccount={handleEditClickAccount}
           handleUpdateUser={handleUpdateUser}
+          handlePasswordChange={handlePasswordChange}
         />
       </div>
       <div className="profile-block-btn">
@@ -507,6 +497,10 @@ const ProfileBlock = ({ user }) => {
         />
         */}
       </div>
+
+      {isPasswordModalOpen && (
+        <PasswordChangeModal isOpen={isPasswordModalOpen} onClose={handlePasswordModalClose} />
+      )}
     </div>
   )
 }

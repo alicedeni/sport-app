@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import FeedDesktop from './FeedDesktop'
-import FeedMobile from './FeedMobile'
+import React from 'react'
+import FeedDesktop from '@pages/FeedDesktop.jsx'
+import FeedMobile from '@pages/FeedMobile.jsx'
+import { useResponsive } from '@shared/hooks'
+import { UI_CONSTANTS } from '@constants'
 
 const Feed = () => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 820)
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 820)
-    }
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener('resize', handleResize)
-  }, [])
+  const isMobile = useResponsive(UI_CONSTANTS.BREAKPOINTS.MOBILE)
 
   return isMobile ? <FeedMobile /> : <FeedDesktop />
 }

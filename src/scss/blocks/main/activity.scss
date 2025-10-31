@@ -1,3 +1,6 @@
+@use '../../base/variables' as vars;
+@use "sass:color";
+
 .activity {
     display: flex;
     flex-direction: column;
@@ -10,7 +13,7 @@
         flex-direction: row;
         align-items: center;
         width: 100%;
-        border: 2px solid $blue;
+        border: 2px solid vars.$blue;
         border-radius: 5px;
         text-align: center;
         &-variant {
@@ -23,7 +26,15 @@
           height: 60px;
           font-size: 20px;
           font-weight: bold;
-          color: $blue;
+          color: vars.$blue;
+          
+          &.active {
+            background-color: rgba(81, 184, 255, 0.2);
+          }
+          
+          &:not(.active) {
+            background-color: white;
+          }
         }
       }
     &-return {
@@ -41,12 +52,12 @@
         font-size: 42px;
         cursor: pointer;
         transition: color 0.3s;
-        color: $blue;
+        color: vars.$blue;
       }
     }
     &-total{
       margin: 20px 0px;
-      color: $grey1;
+      color: vars.$grey1;
       width: 100%;
       font-size: 18px;
       font-weight: bold;
@@ -63,7 +74,7 @@
         padding: 60px 30px;
         width: 340px;
         height: 270px;
-        background-color: $white2;
+        background-color: vars.$white2;
         border-radius: 15px;
         display: flex;
         flex-direction: column;
@@ -75,19 +86,19 @@
           text-align: center;
           margin: 20px;
         }
-        .pool {color: $blue;}
-        .cardio {color: $yellow;}
-        .run {color: $green;}
-        .power {color: $pink;}
-        .bike {color: $purple2;}
-        .yoga {color: $turquoise;}
-        .walk {color: $orange;}
-        .game {color: $dark-blue;}
-        .dance {color: $purple1;}
-        .other {color: $grey4;}
+        .pool {color: vars.$blue;}
+        .cardio {color: vars.$yellow;}
+        .run {color: vars.$green;}
+        .power {color: vars.$pink;}
+        .bike {color: vars.$purple2;}
+        .yoga {color: vars.$turquoise;}
+        .walk {color: vars.$orange;}
+        .game {color: vars.$dark-blue;}
+        .dance {color: vars.$purple1;}
+        .other {color: vars.$grey4;}
         &-average {
           font-size: 16px;
-          color: $grey1;
+          color: vars.$grey1;
           text-align: center;
         }
       }
@@ -98,7 +109,7 @@
       justify-content: end;
     }
     &-input {
-      background: $white2;
+      background: vars.$white2;
       display: flex;
       flex-direction: column;
       margin-bottom: 30px;
@@ -116,8 +127,8 @@
           width: 48px;
           height: 48px;
           border-radius: 24px;
-          color: $white2;
-          background: $blue-20p;
+          color: vars.$white2;
+          background: vars.$blue-20p;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -130,18 +141,26 @@
         flex-direction: row;
         flex-wrap: wrap;
         gap: 20px;
+        
+        &.flex-column {
+          flex-direction: column;
+        }
+        
+        &.margin-left-0 {
+          margin-left: 0px;
+        }
 
 
         &-description {
           border-radius: 10px;
-          border: 2px solid $grey1;
+          border: 2px solid vars.$grey1;
           width: 75%;
           padding: 20px;
           resize: none;
         }
 
         &-image {
-          background: $grey3;
+          background: vars.$grey3;
           width: 20%;
           height: 210px;
           display: flex;
@@ -155,7 +174,7 @@
           overflow: hidden;
 
           & label {
-            color: $grey2;
+            color: vars.$grey2;
             cursor: pointer;
             z-index: 1;
           }
@@ -181,7 +200,7 @@
         }
 
         &-verification {
-          background: $grey3;
+          background: vars.$grey3;
           width: 400px;
           height: 210px;
           display: flex;
@@ -194,7 +213,7 @@
           overflow: hidden;
 
           & label {
-            color: $grey2;
+            color: vars.$grey2;
             cursor: pointer;
             z-index: 1;
           }
@@ -226,19 +245,26 @@
           position: relative;
           &-name {
             font-size: 16px;
-            color: $grey4;
+            color: vars.$grey4;
           }
           &-field {
             width: 200px;
             height: 40px;
             border-radius: 20px;
-            border: 2px solid $blue;
-            color: $blue;
+            border: 2px solid vars.$blue;
+            color: vars.$blue;
             font-size: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
+            
+            &.no-appearance {
+              appearance: textfield;
+              -webkit-appearance: none;
+              -moz-appearance: textfield;
+            }
+            
             &.error {
               border: 2px solid red;
               color: red;
@@ -247,7 +273,7 @@
               width: auto;
               height: 50px;
               border-radius: 25px;
-              border: 2px solid $grey2;
+              border: 2px solid vars.$grey2;
               padding: 20px;
             }
           }
@@ -284,8 +310,8 @@ input[type="number"] {
   position: absolute;
   margin-left: 10px;
   font-size: 20px;
-  color: $blue;
-  background: $blue-20p;
+  color: vars.$blue;
+  background: vars.$blue-20p;
   padding: 0px 5px;
   border-radius: 50px;
 }
@@ -419,7 +445,7 @@ input[type="number"] {
 .error-modal-content button {
   padding: 0 20px;
   height: 40px;
-  background-color: $blue;
+  background-color: vars.$blue;
   color: white;
   border: none;
   border-radius: 20px;
@@ -434,9 +460,9 @@ input[type="number"] {
     padding: 10px 15px;
     font-size: 24px;
     font-weight: 500;
-    color: $blue;
-    background: $white2;
-    border: 2px solid $blue;
+    color: vars.$blue;
+    background: vars.$white2;
+    border: 2px solid vars.$blue;
     border-radius: 20px;
     outline: none;
     cursor: text;
@@ -460,9 +486,9 @@ input[type="number"] {
     left: 0;
     right: 0;
     display: flex;
-    border: 2px solid $blue;
+    border: 2px solid vars.$blue;
     border-radius: 20px;
-    background: $white2;
+    background: vars.$white2;
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -475,7 +501,7 @@ input[type="number"] {
       padding: 0;
       list-style: none;
       overflow-y: auto;
-      border-right: 1px solid $blue;
+      border-right: 1px solid vars.$blue;
       -webkit-overflow-scrolling: touch;
 
       &:last-child {
@@ -485,16 +511,16 @@ input[type="number"] {
       li {
         padding: 10px 15px;
         cursor: pointer;
-        color: $blue;
+        color: vars.$blue;
         user-select: none;
         font-size: 20px;
 
         &:hover {
-          background: lighten($blue, 40%);
+          background: color.adjust(vars.$blue, $lightness: 40%);;
         }
 
         &.selected {
-          background: $blue-20p;
+          background: vars.$blue-20p;
           font-weight: bold;
         }
       }
@@ -536,7 +562,7 @@ input[type="number"] {
         li {
           padding: 2px 7px;
           cursor: pointer;
-          color: $blue;
+          color: vars.$blue;
           user-select: none;
           font-size: 18px;
         }

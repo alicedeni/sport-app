@@ -1,4 +1,4 @@
-@import "./variables";
+@use "./variables" as vars;
 a{
   text-decoration: none;
 }
@@ -7,20 +7,20 @@ a{
   align-items: center;
   justify-content: center;
   border: none;
-  color:$white2;
+  color: vars.$white2;
   cursor: pointer;
   padding: 15px 15px;
   &-delete {
-    background-color: $red;
+    background-color: vars.$red;
     width: 360px;
     height: 60px;
     border-radius: 30px;
     margin: 20px 0px;
   }
   &-exit {
-    border: 2px solid $red;
+    border: 2px solid vars.$red;
     background: transparent;
-    color: $red;
+    color: vars.$red;
     width: 360px;
     height: 60px;
     border-radius: 30px;
@@ -28,7 +28,7 @@ a{
   }
   &-enter {
     margin: 0 auto;
-    background-color: $blue;
+    background-color: vars.$blue;
     width: 510px;
     height: 60px;
     border-radius: 30px;
@@ -43,12 +43,19 @@ a{
       z-index: 2;
     }
     &:hover {
-      background: $gradient;
+      background: vars.$gradient;
     }
-
+    &.disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: vars.$grey2;
+      &:hover {
+        background-color: vars.$grey2;
+      }
+    }
   }
   &-profile {
-    background-color: $blue;
+    background-color: vars.$blue;
     width: 360px;
     height: 60px;
     border-radius: 30px;
@@ -63,11 +70,11 @@ a{
       z-index: 2;
     }
     &:hover {
-      background: $gradient;
+      background: vars.$gradient;
     }
   }
   &-challenge {
-    background-color: $blue;
+    background-color: vars.$blue;
     width: 220px;
     height: 44px;
     border-radius: 22px;
@@ -77,7 +84,7 @@ a{
   }
   &-reg{
     background-color: rgba(255, 255, 255, 0);
-    color: $grey1;
+    color: vars.$grey1;
     width: 400px;
     padding: 0px;
   }
@@ -96,7 +103,7 @@ a{
   width: auto;
   border-radius: 21px;
   background: transparent;
-  color: $white;
+  color: vars.$white;
   position: absolute;
   display: flex;
   justify-content: space-between;

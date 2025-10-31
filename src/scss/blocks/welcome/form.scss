@@ -1,3 +1,5 @@
+@use '../../base/variables' as vars;
+
 .welcome-block {
   text-align: center;
   background: white;
@@ -13,8 +15,8 @@
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
   z-index: 10;
   &__input {
-    border: 1px solid $grey2;
-    box-shadow: 0.25px 0.25px 0.25px 0.25px $grey2, 0 4px 4px rgba($grey2, 0.5);
+    border: 1px solid vars.$grey2;
+    box-shadow: 0.25px 0.25px 0.25px 0.25px vars.$grey2, 0 4px 4px rgba(vars.$grey2, 0.5);
     width: 510px;
     height: 60px;
     border-radius: 10px;
@@ -23,10 +25,25 @@
     margin: 5px 0;
   }
   &__text {
-    color: $black;
+    color: vars.$black;
     font-size: 32px;
     font-weight: bold;
     margin-bottom: 20px;
+  }
+  
+  &__error {
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px 0;
+    
+    .error {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
   }
 }
 .infinite-text {
@@ -34,7 +51,7 @@
   width: 100%;
   text-align: center;
   font-size: 24px;
-  color: $grey1;
+  color: vars.$grey1;
 }
 
 .top {
@@ -59,6 +76,15 @@
     &__text {
       font-size: 20px;
       margin-bottom: 20px;
+    }
+    
+    &__error {
+      min-height: 20px;
+      margin: 3px 0;
+      
+      .error {
+        font-size: 12px;
+      }
     }
   }
 }
