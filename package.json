@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.1.0",
-  "description": "restart",
+  "version": "1.1.1",
+  "description": "fix admin panel",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

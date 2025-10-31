@@ -9,14 +9,7 @@ const PostModeration = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [editingPost, setEditingPost] = useState(null)
   const [editForm, setEditForm] = useState({
-    activity_id: '',
-    distance: '',
-    duration: '',
-    calories: '',
     points: '',
-    steps: '',
-    description: '',
-    status: 'visible',
   })
   const [formErrors, setFormErrors] = useState({})
   const [saving, setSaving] = useState(false)
@@ -108,14 +101,7 @@ const PostModeration = () => {
     setEditingPost(post)
     setFormErrors({})
     setEditForm({
-      activity_id: post.activityId ?? '',
-      distance: post.distance ?? '',
-      duration: post.duration ?? '',
-      calories: post.calories ?? '',
       points: post.points ?? '',
-      steps: post.steps ?? '',
-      description: post.description ?? '',
-      status: post.status || 'visible',
     })
   }
 
@@ -123,14 +109,7 @@ const PostModeration = () => {
     setEditingPost(null)
     setFormErrors({})
     setEditForm({
-      activity_id: '',
-      distance: '',
-      duration: '',
-      calories: '',
       points: '',
-      steps: '',
-      description: '',
-      status: 'visible',
     })
   }
 
@@ -143,21 +122,7 @@ const PostModeration = () => {
     const errs = {}
     const isNumIn = (v, min, max) =>
       v === '' || (Number.isFinite(Number(v)) && Number(v) >= min && Number(v) <= max)
-
-    if (editForm.activity_id !== '' && !isNumIn(editForm.activity_id, 0, 100))
-      errs.activity_id = '0-100'
-    if (!isNumIn(editForm.distance, 0, 10000)) errs.distance = '0-10000 км'
-    if (editForm.duration) {
-      const re = /^\d{1,3}:(?:[0-5]\d)$/
-      if (!re.test(editForm.duration)) errs.duration = 'Формат HH:MM'
-    }
-    if (!isNumIn(editForm.calories, 0, 100000)) errs.calories = '0-100000'
     if (!isNumIn(editForm.points, 0, 100000)) errs.points = '0-100000'
-    if (!isNumIn(editForm.steps, 0, 100000)) errs.steps = '0-100000'
-    if (editForm.description && editForm.description.length > 500)
-      errs.description = 'Макс. 500 символов'
-    if (editForm.status && !['visible', 'hidden'].includes(editForm.status))
-      errs.status = 'visible/hidden'
 
     setFormErrors(errs)
     return Object.keys(errs).length === 0
@@ -169,21 +134,7 @@ const PostModeration = () => {
     if (!validateEdit()) return
     setSaving(true)
     try {
-      const dataToSend = {}
-      ;[
-        'activity_id',
-        'distance',
-        'duration',
-        'calories',
-        'points',
-        'steps',
-        'description',
-        'status',
-      ].forEach((k) => {
-        const v = editForm[k]
-        if (v !== '' && v !== null && v !== undefined)
-          dataToSend[k] = k === 'activity_id' ? Number(v) : v
-      })
+      const dataToSend = { points: Number(editForm.points) }
       const res = await adminService.updatePost(editingPost.id, dataToSend)
       if (res.data.status === 200) {
         closeEdit()
@@ -360,63 +311,6 @@ const PostModeration = () => {
               <form onSubmit={handleSaveEdit}>
                 <div className="admin-form-grid">
                   <div>
-                    <label className="admin-setting__label">Активность (ID)</label>
-                    <input
-                      className="admin-input"
-                      name="activity_id"
-                      type="number"
-                      value={editForm.activity_id}
-                      onChange={onEditChange}
-                      placeholder="0-100"
-                    />
-                    {formErrors.activity_id && (
-                      <div className="admin-field-error">{formErrors.activity_id}</div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="admin-setting__label">Дистанция (км)</label>
-                    <input
-                      className="admin-input"
-                      name="distance"
-                      type="number"
-                      step="0.01"
-                      value={editForm.distance}
-                      onChange={onEditChange}
-                      placeholder="0-10000"
-                    />
-                    {formErrors.distance && (
-                      <div className="admin-field-error">{formErrors.distance}</div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="admin-setting__label">Длительность (HH:MM)</label>
-                    <input
-                      className="admin-input"
-                      name="duration"
-                      type="text"
-                      value={editForm.duration}
-                      onChange={onEditChange}
-                      placeholder="например 01:30"
-                    />
-                    {formErrors.duration && (
-                      <div className="admin-field-error">{formErrors.duration}</div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="admin-setting__label">Калории</label>
-                    <input
-                      className="admin-input"
-                      name="calories"
-                      type="number"
-                      value={editForm.calories}
-                      onChange={onEditChange}
-                      placeholder="0-100000"
-                    />
-                    {formErrors.calories && (
-                      <div className="admin-field-error">{formErrors.calories}</div>
-                    )}
-                  </div>
-                  <div>
                     <label className="admin-setting__label">Баллы</label>
                     <input
                       className="admin-input"
@@ -428,50 +322,6 @@ const PostModeration = () => {
                     />
                     {formErrors.points && (
                       <div className="admin-field-error">{formErrors.points}</div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="admin-setting__label">Шаги</label>
-                    <input
-                      className="admin-input"
-                      name="steps"
-                      type="number"
-                      value={editForm.steps}
-                      onChange={onEditChange}
-                      placeholder="0-100000"
-                    />
-                    {formErrors.steps && (
-                      <div className="admin-field-error">{formErrors.steps}</div>
-                    )}
-                  </div>
-                  <div style={{ gridColumn: '1 / -1' }}>
-                    <label className="admin-setting__label">Описание</label>
-                    <textarea
-                      className="admin-input"
-                      name="description"
-                      maxLength={500}
-                      rows={3}
-                      value={editForm.description}
-                      onChange={onEditChange}
-                      placeholder="Макс. 500 символов"
-                    />
-                    {formErrors.description && (
-                      <div className="admin-field-error">{formErrors.description}</div>
-                    )}
-                  </div>
-                  <div>
-                    <label className="admin-setting__label">Статус</label>
-                    <select
-                      className="admin-select"
-                      name="status"
-                      value={editForm.status}
-                      onChange={onEditChange}
-                    >
-                      <option value="visible">visible</option>
-                      <option value="hidden">hidden</option>
-                    </select>
-                    {formErrors.status && (
-                      <div className="admin-field-error">{formErrors.status}</div>
                     )}
                   </div>
                 </div>
