@@ -5,9 +5,9 @@ import MobileHeader from '@components/mobile/MobileHeader'
 import FixedHeader from '@components/mobile/FixedHeader'
 import MobileFooter from '@components/mobile/MobileFooter'
 import Posts from '@components/main/Posts.jsx'
-import axios from 'axios'
-
-import { API_BASE_URL } from '@constants/api.js'
+import api from '@shared/services/api'
+import { ROUTE_NAMES } from '@constants/routes.js'
+import logger from '@shared/utils/logger'
 
 const LIMIT = 20
 
@@ -32,7 +32,6 @@ const FeedMobile = () => {
   }, [offset])
 
   const getPostData = useCallback(async (currentOffset, currentFilters) => {
-    const token = localStorage.getItem('token')
     setLoading(true)
     try {
       const params = {
@@ -43,10 +42,7 @@ const FeedMobile = () => {
       if (params.my_posts) params.my_posts = 'true'
       else delete params.my_posts
 
-      const response = await axios.get(`${API_BASE_URL}/user/posts`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params,
-      })
+      const response = await api.get('/user/posts', { params })
       const newPosts = response.data.posts || []
       if (isMounted.current) {
         if (currentOffset === 0) {
@@ -58,7 +54,7 @@ const FeedMobile = () => {
         setOffset(currentOffset + newPosts.length)
       }
     } catch (error) {
-      console.error('Error loading posts:', error)
+      logger.error('Error loading posts:', error)
     } finally {
       setLoading(false)
     }
@@ -120,7 +116,7 @@ const FeedMobile = () => {
 
   return (
     <div className="container" id="root">
-      {isMobile ? <FixedHeader /> : <Header currentPage="feed" />}
+      {isMobile ? <FixedHeader /> : <Header currentPage={ROUTE_NAMES.FEED} />}
       <div
         className={isMobile ? 'main mobile-main-container' : 'main desktop-main-container'}
         ref={mainRef}

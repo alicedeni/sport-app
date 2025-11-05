@@ -1,84 +1,66 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { ButtonEnter, ButtonReg } from '@components/Buttons.jsx'
-
-import { API_BASE_URL } from '@constants/api.js'
+import { authService } from '@shared/services/authService'
+import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const WelcomeBlock = () => {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     if (email.trim() === '' || password.trim() === '') {
       setError('Пожалуйста, введите логин и пароль.')
-    } else {
-      setError('')
-      const token = localStorage.getItem('token')
-      axios
-        .post(
-          `${API_BASE_URL}/login`,
-          { email, password },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
-        .then((response) => {
-          if (response.data.status === 200) {
-            localStorage.setItem('token', response.data.token)
-            checkHelloStatus()
-          } else {
-            console.error(error)
-            setError('Введен неверный логин или пароль.')
-          }
-        })
-        .catch((error) => {
-          console.error('Ошибка Axios:', error)
-          if (error.response) {
-            console.error('Данные ответа:', error.response.data)
-            console.error('Статус ответа:', error.response.status)
-          } else if (error.request) {
-            console.error('Запрос был сделан, но ответа не получено:', error.request)
-          } else {
-            console.error('Ошибка при настройке запроса:', error.message)
-          }
-          setError('Произошла ошибка при входе.')
-        })
+      return
+    }
+    setError('')
+    try {
+      const response = await authService.login({ email, password })
+      if (response.data.status === 200) {
+        const token = response.data.token
+        if (token) {
+          localStorage.setItem('token', token)
+        }
+        await checkHelloStatus()
+      } else {
+        setError('Введен неверный логин или пароль.')
+      }
+    } catch (error) {
+      logger.error('Ошибка при входе:', error)
+      if (error.response?.status === 401 || error.response?.status === 400) {
+        setError('Введен неверный логин или пароль.')
+      } else {
+        setError('Произошла ошибка при входе.')
+      }
     }
   }
 
-  const checkHelloStatus = () => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${API_BASE_URL}/user/get_hello_status`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.f_hello === false) {
-          axios
-            .post(
-              `${API_BASE_URL}/user/update_f_hello`,
-              {},
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              },
-            )
-            .then(() => {
-              window.location.href = '/about'
-            })
-            .catch((error) => {
-              console.error('Error updating f_hello', error)
-              setError('Произошла ошибка при обновлении статуса.')
-            })
-        } else {
-          window.location.href = `/main`
+  const checkHelloStatus = async () => {
+    try {
+      const response = await api.get('/user/get_hello_status')
+      const fHello = response.data?.f_hello ?? response.data?.data?.f_hello
+      const isFirstTime = fHello === false || fHello === 0 || fHello === 'false'
+      if (isFirstTime) {
+        try {
+          const updateResponse = await api.post('/user/update_f_hello', {})
+          navigate('/about', { replace: true })
+        } catch (error) {
+          logger.error('Error updating f_hello', error)
+          setError('Произошла ошибка при обновлении статуса.')
+          navigate('/about', { replace: true })
         }
-      })
-      .catch((error) => {
-        console.error('Error checking hello status', error)
-        setError('Произошла ошибка при проверке статуса.')
-      })
+      } else {
+        navigate('/main', { replace: true })
+      }
+    } catch (error) {
+      logger.error('Error checking hello status', error)
+      setError('Произошла ошибка при проверке статуса.')
+      navigate('/main', { replace: true })
+    }
   }
 
   return (
@@ -91,6 +73,7 @@ const WelcomeBlock = () => {
           placeholder="Логин"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          autoComplete="username"
         />
         <input
           className="welcome-block__input"
@@ -98,6 +81,7 @@ const WelcomeBlock = () => {
           placeholder="Пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          autoComplete="current-password"
         />
         <div className="welcome-block__error">
           {error && <p className="error error-text">{error}</p>}

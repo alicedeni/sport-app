@@ -16,3 +16,4 @@ export {
   handleApiError,
   createApiHandler,
 } from '@shared/utils/apiResponse.js'
+export { escapeHtml, sanitizeText, sanitizeName } from '@shared/utils/sanitize.js'

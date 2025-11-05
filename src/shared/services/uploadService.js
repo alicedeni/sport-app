@@ -10,11 +10,10 @@ export const getPresignedFields = async () => {
 export const uploadToStorage = async (prefix, file) => {
   const presigned = await getPresignedFields()
 
-  const token = localStorage.getItem('token')
-  const userId = token
   const timestamp = Date.now()
+  const random = Math.random().toString(36).substring(2, 9)
   const ext = file.name.split('.').pop()
-  const fileName = `${userId}_${timestamp}.${ext}`
+  const fileName = `${timestamp}_${random}.${ext}`
   const key = `${prefix}${fileName}`
 
   const formData = new FormData()

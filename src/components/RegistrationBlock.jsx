@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { ButtonEnter, ButtonToEnter, ButtonNext } from '@components/Buttons.jsx'
-
-import { API_BASE_URL } from '@constants/api.js'
+import { authService } from '@shared/services/authService'
+import logger from '@shared/utils/logger'
 
 const RegistrationBlock = () => {
+  const navigate = useNavigate()
   const [formState, setFormState] = useState('registration')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -14,32 +15,31 @@ const RegistrationBlock = () => {
   const [patronymic, setPatronymic] = useState('')
   const [error, setError] = useState('')
 
-  const handleLogin = (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
     if (email.trim() === '' || password.trim() === '') {
       setError('Пожалуйста, введите email и пароль.')
-    } else if (!validateEmail(email)) {
+      return
+    }
+    if (!validateEmail(email)) {
       setError('Пожалуйста, введите корректный email.')
-    } else {
-      setError('')
-      const token = localStorage.getItem('token')
-      axios
-        .post(
-          `${API_BASE_URL}/register`,
-          { name, surname, patronymic, email, password },
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
-        .then((response) => {
-          if (response.data.status === 200) {
-            window.location.href = '/'
-          }
-        })
-        .catch((error) => {
-          console.error(error)
-          setError('Заполните все поля')
-        })
+      return
+    }
+    setError('')
+    try {
+      const response = await authService.register({ name, surname, patronymic, email, password })
+      if (response.data.status === 200) {
+        const token = response.data.token
+        if (token) {
+          localStorage.setItem('token', token)
+        }
+        navigate('/', { replace: true })
+      } else {
+        setError('Ошибка регистрации')
+      }
+    } catch (error) {
+      logger.error(error)
+      setError('Заполните все поля')
     }
   }
 
@@ -87,6 +87,7 @@ const RegistrationBlock = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              autoComplete="email"
             />
             <input
               className="welcome-block__input"
@@ -95,6 +96,7 @@ const RegistrationBlock = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              autoComplete="new-password"
             />
             <input
               className="welcome-block__input"
@@ -103,13 +105,10 @@ const RegistrationBlock = () => {
               value={password_check}
               onChange={(e) => setPasswordCheck(e.target.value)}
               required
+              autoComplete="new-password"
             />
             <div className="welcome-block__error">
-              {error && (
-                <p className="error error-text">
-                  {error}
-                </p>
-              )}
+              {error && <p className="error error-text">{error}</p>}
             </div>
             <ButtonEnter
               className="welcome-block__btn"
@@ -127,6 +126,7 @@ const RegistrationBlock = () => {
               value={surname}
               onChange={handleSurnameChange}
               required
+              autoComplete="family-name"
             />
             <input
               className="welcome-block__input"
@@ -135,6 +135,7 @@ const RegistrationBlock = () => {
               value={name}
               onChange={handleNameChange}
               required
+              autoComplete="given-name"
             />
             <input
               className="welcome-block__input"
@@ -143,7 +144,11 @@ const RegistrationBlock = () => {
               value={patronymic}
               onChange={handlePatronymicChange}
               required
+              autoComplete="additional-name"
             />
+            <div className="welcome-block__error">
+              {error && <p className="error error-text">{error}</p>}
+            </div>
             <ButtonNext
               className="welcome-block__btn"
               text="Далее"

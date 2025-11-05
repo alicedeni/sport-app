@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import Modal from '@shared/ui/Modal'
 import { adminService } from '@shared/services/adminService'
 import PlaceholderModal from '@components/admin/PlaceholderModal.jsx'
+import logger from '@shared/utils/logger'
 
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -46,7 +48,7 @@ const UserManagement = () => {
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Ошибка при загрузке пользователей')
-      console.error('Ошибка загрузки пользователей:', err)
+      logger.error('Ошибка загрузки пользователей:', err)
     } finally {
       setLoading(false)
     }
@@ -79,20 +81,19 @@ const UserManagement = () => {
     })
   }
 
-  const handleDeleteUser = async (userId) => {
-    if (!window.confirm('Вы уверены, что хотите удалить этого пользователя?')) {
-      return
-    }
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
 
+  const handleDeleteUser = async (userId) => {
     try {
       const response = await adminService.deleteUser(userId)
       if (response.data.status === 200) {
         await loadUsers()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка удаления пользователя')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка удаления пользователя' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при удалении пользователя')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при удалении пользователя' })
     }
   }
 
@@ -110,10 +111,10 @@ const UserManagement = () => {
         setShowAddModal(false)
         await loadUsers()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка сохранения пользователя')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка сохранения пользователя' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при сохранении пользователя')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при сохранении пользователя' })
     }
   }
 
@@ -135,10 +136,10 @@ const UserManagement = () => {
         setNewUser(initialUserForm)
         await loadUsers()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка создания пользователя')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка создания пользователя' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при создании пользователя')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при создании пользователя' })
     } finally {
       setSaving(false)
     }
@@ -161,10 +162,10 @@ const UserManagement = () => {
         setEditingUser(null)
         await loadUsers()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка сохранения пользователя')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка сохранения пользователя' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при сохранении пользователя')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при сохранении пользователя' })
     } finally {
       setSaving(false)
     }
@@ -259,7 +260,7 @@ const UserManagement = () => {
                       </button>
                       <button
                         className="admin-btn admin-btn--small admin-btn--danger"
-                        onClick={() => handleDeleteUser(user.id)}
+                        onClick={() => setConfirmDeleteId(user.id)}
                       >
                         Удалить
                       </button>
@@ -334,6 +335,7 @@ const UserManagement = () => {
                       value={newUser.email}
                       onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                       required
+                      autoComplete="email"
                     />
                   </label>
                   <label className="admin-setting__label">
@@ -345,6 +347,7 @@ const UserManagement = () => {
                       onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                       minLength={4}
                       required
+                      autoComplete="new-password"
                     />
                   </label>
                   <label className="admin-setting__label">
@@ -452,6 +455,39 @@ const UserManagement = () => {
           </div>
         </div>
       )}
+
+      <Modal
+        isOpen={!!confirmDeleteId}
+        onClose={() => setConfirmDeleteId(null)}
+        title="Удалить пользователя?"
+        size="small"
+      >
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+          <button className="admin-btn" onClick={() => setConfirmDeleteId(null)}>Отмена</button>
+          <button
+            className="admin-btn admin-btn--danger"
+            onClick={async () => {
+              const id = confirmDeleteId
+              setConfirmDeleteId(null)
+              await handleDeleteUser(id)
+            }}
+          >
+            Удалить
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={infoModal.open}
+        onClose={() => setInfoModal({ open: false, message: '' })}
+        title="Сообщение"
+        size="small"
+      >
+        <div style={{ marginBottom: 12 }}>{infoModal.message}</div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>Ок</button>
+        </div>
+      </Modal>
     </div>
   )
 }

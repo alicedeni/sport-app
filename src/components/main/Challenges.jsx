@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const Checkmark = () => (
   <svg
@@ -66,7 +67,7 @@ const Challenges = () => {
         }))
       }
     } catch (error) {
-      console.error('Ошибка при участии в челлендже', error)
+      logger.error('Ошибка при участии в челлендже', error)
     }
   }
 
@@ -78,7 +79,7 @@ const Challenges = () => {
           setUser(res.data.profile)
         }
       })
-      .catch(console.error)
+      .catch(logger.error)
   }, [])
 
   useEffect(() => {
@@ -98,7 +99,7 @@ const Challenges = () => {
           })
         }
       })
-      .catch(console.error)
+      .catch(logger.error)
   }, [user])
 
   const renderStatus = (status, challengeId) => {

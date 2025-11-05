@@ -114,6 +114,7 @@ const PasswordChangeModal = ({ isOpen, onClose }) => {
                     value={formData.oldPassword}
                     onChange={handleInputChange}
                     className={`password-modal-input ${errors.oldPassword ? 'error' : ''}`}
+                    autoComplete="current-password"
                   />
                   {errors.oldPassword && (
                     <span className="password-modal-field-error">{errors.oldPassword}</span>
@@ -127,6 +128,7 @@ const PasswordChangeModal = ({ isOpen, onClose }) => {
                     value={formData.newPassword}
                     onChange={handleInputChange}
                     className={`password-modal-input ${errors.newPassword ? 'error' : ''}`}
+                    autoComplete="new-password"
                   />
                   {errors.newPassword && (
                     <span className="password-modal-field-error">{errors.newPassword}</span>
@@ -140,6 +142,7 @@ const PasswordChangeModal = ({ isOpen, onClose }) => {
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     className={`password-modal-input ${errors.confirmPassword ? 'error' : ''}`}
+                    autoComplete="new-password"
                   />
                   {errors.confirmPassword && (
                     <span className="password-modal-field-error">{errors.confirmPassword}</span>

@@ -8,6 +8,9 @@ import DeleteDefault from '@assets/icons/deleteDefault.svg'
 import DeleteFilled from '@assets/icons/deleteFilled.svg'
 import { postService } from '@shared/services/postService'
 import { createApiHandler, handleApiError } from '@shared/utils'
+import SafeText from '@shared/components/SafeText'
+import { SafeName } from '@shared/components/SafeText'
+import logger from '@shared/utils/logger'
 
 const Comment = ({ comment, onDelete, showDeleteAlways = false }) => {
   const [isLiked, setIsLiked] = useState(comment.is_liked)
@@ -31,7 +34,7 @@ const Comment = ({ comment, onDelete, showDeleteAlways = false }) => {
         setIsLiked(!isLiked)
         setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
       } else {
-        console.error('Error liking comment:', response.data.message)
+        logger.error('Error liking comment:', response.data.message)
       }
     } catch (error) {
       handleApiError(error)
@@ -45,8 +48,16 @@ const Comment = ({ comment, onDelete, showDeleteAlways = false }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="post__comment-start">
-        <strong>{comment.is_current_user ? 'Вы' : `${comment.surname} ${comment.name}`}</strong>
-        <div>{comment.text}</div>
+        <strong>
+          {comment.is_current_user ? (
+            'Вы'
+          ) : (
+            <>
+              <SafeName name={comment.surname} /> <SafeName name={comment.name} />
+            </>
+          )}
+        </strong>
+        <SafeText text={comment.text} preserveLineBreaks={true} />
         <div className="post__comment-timestamp">
           {format(new Date(comment.created_at), 'd MMMM, HH:mm', { locale: ru })}
         </div>

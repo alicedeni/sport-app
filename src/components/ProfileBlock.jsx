@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ButtonDelete, ButtonExit } from '@components/Buttons.jsx'
 import ProfileData from '@components/profile/ProfileData.jsx'
 import TeamAndLeague from '@components/profile/TeamLeague.jsx'
 import AccountSection from '@components/profile/AccountSection.jsx'
 import { PasswordChangeModal } from '@components/modals/index.js'
-import axios from 'axios'
-
-import { API_BASE_URL } from '@constants/api.js'
+import { authService } from '@shared/services/authService'
+import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const ProfileBlock = ({ user, setUser }) => {
+  const navigate = useNavigate()
   const [editMode, setEditMode] = useState(false)
   const [editModeProfile, setEditModeProfile] = useState(false)
   const [editModeProgress, setEditModeProgress] = useState(false)
@@ -20,22 +22,17 @@ const ProfileBlock = ({ user, setUser }) => {
   const [activities, setActivities] = useState([])
 
   const [tempUser, setTempUser] = useState(user)
-  const handleProgress = () => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${API_BASE_URL}/user/progress`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setProgressData(response.data.progress)
-        } else {
-          console.error('Error loading progress:', response.data.message)
-        }
-      })
-      .catch((error) => {
-        console.error('Error loading progress:', error)
-      })
+  const handleProgress = async () => {
+    try {
+      const response = await api.get('/user/progress')
+      if (response.data.status === 200) {
+        setProgressData(response.data.progress)
+      } else {
+        logger.error('Error loading progress:', response.data.message)
+      }
+    } catch (error) {
+      logger.error('Error loading progress:', error)
+    }
   }
 
   useEffect(() => {
@@ -43,36 +40,29 @@ const ProfileBlock = ({ user, setUser }) => {
   }, [user])
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    axios
-      .get(`${API_BASE_URL}/user/activities/all`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setActivities(response.data.activities)
-        } else {
-          console.error('Error loading activities:', response.data.message)
-        }
-      })
-      .catch((error) => {
-        console.error('Error loading activities:', error)
-      })
+    const loadData = async () => {
+      try {
+        const [activitiesResponse, progressResponse] = await Promise.all([
+          api.get('/user/activities/all'),
+          api.get('/user/progress'),
+        ])
 
-    axios
-      .get(`${API_BASE_URL}/user/progress`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setProgressData(response.data.progress)
+        if (activitiesResponse.data.status === 200) {
+          setActivities(activitiesResponse.data.activities)
         } else {
-          console.error('Error loading progress:', response.data.message)
+          logger.error('Error loading activities:', activitiesResponse.data.message)
         }
-      })
-      .catch((error) => {
-        console.error('Error loading progress:', error)
-      })
+
+        if (progressResponse.data.status === 200) {
+          setProgressData(progressResponse.data.progress)
+        } else {
+          logger.error('Error loading progress:', progressResponse.data.message)
+        }
+      } catch (error) {
+        logger.error('Error loading data:', error)
+      }
+    }
+    loadData()
   }, [])
 
   const handleEditClickProfile = () => {
@@ -115,84 +105,69 @@ const ProfileBlock = ({ user, setUser }) => {
     setIsPasswordModalOpen(false)
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!tempUser) {
-      console.error('Данные пользователя отсутствуют')
+      logger.error('Данные пользователя отсутствуют')
       return
     }
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${API_BASE_URL}/edit_person_data`, tempUser, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setTempUser((prevUser) => ({
-            ...prevUser,
-            ...tempUser,
-          }))
-          setEditModeProfile(false)
-          handleProgress()
-        } else {
-          console.error('Ошибка при отправке данных на сервер:', response.data.error)
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при отправке данных на сервер:', error)
-      })
+    try {
+      const response = await api.post('/edit_person_data', tempUser)
+      if (response.data.status === 200) {
+        setTempUser((prevUser) => ({
+          ...prevUser,
+          ...tempUser,
+        }))
+        setEditModeProfile(false)
+        handleProgress()
+      } else {
+        logger.error('Ошибка при отправке данных на сервер:', response.data.error)
+      }
+    } catch (error) {
+      logger.error('Ошибка при отправке данных на сервер:', error)
+    }
   }
 
-  const handleSaveGoal = () => {
+  const handleSaveGoal = async () => {
     if (!tempUser) {
-      console.error('Данные пользователя отсутствуют')
+      logger.error('Данные пользователя отсутствуют')
       return
     }
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${API_BASE_URL}/user/set_goal`, tempUser, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setTempUser((prevUser) => ({
-            ...prevUser,
-            ...tempUser,
-          }))
-          setEditModeProgress(false)
-          handleProgress()
-        } else {
-          console.error('Ошибка при отправке данных на сервер:', response.data.error)
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при отправке данных на сервер:', error)
-      })
+    try {
+      const response = await api.post('/user/set_goal', tempUser)
+      if (response.data.status === 200) {
+        setTempUser((prevUser) => ({
+          ...prevUser,
+          ...tempUser,
+        }))
+        setEditModeProgress(false)
+        handleProgress()
+      } else {
+        logger.error('Ошибка при отправке данных на сервер:', response.data.error)
+      }
+    } catch (error) {
+      logger.error('Ошибка при отправке данных на сервер:', error)
+    }
   }
 
-  const handleSaveInfo = () => {
+  const handleSaveInfo = async () => {
     if (!tempUser) {
-      console.error('Данные пользователя отсутствуют')
+      logger.error('Данные пользователя отсутствуют')
       return
     }
-    const token = localStorage.getItem('token')
-    axios
-      .post(`${API_BASE_URL}/edit_fio_data`, tempUser, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((response) => {
-        if (response.data.status === 200) {
-          setTempUser((prevUser) => ({
-            ...prevUser,
-            ...tempUser,
-          }))
-          setEditModeProgress(false)
-        } else {
-          console.error('Ошибка при отправке данных на сервер:', response.data.error)
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при отправке данных на сервер:', error)
-      })
+    try {
+      const response = await api.post('/edit_fio_data', tempUser)
+      if (response.data.status === 200) {
+        setTempUser((prevUser) => ({
+          ...prevUser,
+          ...tempUser,
+        }))
+        setEditModeProgress(false)
+      } else {
+        logger.error('Ошибка при отправке данных на сервер:', response.data.error)
+      }
+    } catch (error) {
+      logger.error('Ошибка при отправке данных на сервер:', error)
+    }
   }
 
   const handleSaveClickProfile = () => {
@@ -212,49 +187,29 @@ const ProfileBlock = ({ user, setUser }) => {
     setTempUser(user)
     handleSaveInfo()
   }
-  const handleExit = () => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      console.error('Токен не найден. Пользователь уже не авторизован.')
-      window.location.href = '/'
-      return
+  const handleExit = async () => {
+    try {
+      await authService.logout()
+      localStorage.removeItem('token')
+      navigate('/', { replace: true })
+    } catch (error) {
+      logger.error('Ошибка при выходе из аккаунта:', error)
+      localStorage.removeItem('token')
+      navigate('/', { replace: true })
     }
-    axios
-      .post(
-        `${API_BASE_URL}/logout`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      )
-      .then((response) => {
-        if (response.data.status === 200) {
-          window.location.href = '/'
-          localStorage.removeItem('token')
-        } else {
-          console.error('Ошибка при выходе из аккаунта:', response.data.error)
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при выходе из аккаунта:', error)
-        window.location.href = '/'
-        localStorage.removeItem('token')
-      })
   }
 
-  const handleDelete = () => {
-    axios
-      .delete(`${API_BASE_URL}/delete_account`)
-      .then((response) => {
-        if (response.data.status === 200) {
-          window.location.href = `main`
-        } else {
-          console.error('Ошибка при удалении аккаунта:', response.data.error)
-        }
-      })
-      .catch((error) => {
-        console.error('Ошибка при удалении аккаунта:', error)
-      })
+  const handleDelete = async () => {
+    try {
+      const response = await api.delete('/delete_account')
+      if (response.data.status === 200) {
+        navigate('/main', { replace: true })
+      } else {
+        logger.error('Ошибка при удалении аккаунта:', response.data.error)
+      }
+    } catch (error) {
+      logger.error('Ошибка при удалении аккаунта:', error)
+    }
   }
 
   const handleInputChange = (event, field) => {

@@ -1,8 +1,9 @@
 import { useRouteError } from 'react-router-dom'
+import logger from '@shared/utils/logger'
 
 export default function ErrorPage404() {
   const error = useRouteError()
-  console.error(error)
+  logger.error(error)
 
   return (
     <div id="error-page">

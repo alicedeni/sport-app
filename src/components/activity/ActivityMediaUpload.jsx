@@ -5,7 +5,8 @@ const ActivityMediaUpload = ({
   activityDescription,
   activityImage,
   onDescriptionChange,
-  onImageChange
+  onImageChange,
+  uploadError = ''
 }) => {
   return (
     <div className="activity-input">
@@ -30,6 +31,9 @@ const ActivityMediaUpload = ({
                 accept=".jpg, .jpeg, .png"
                 onChange={onImageChange}
               />
+              {uploadError && (
+                <div style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{uploadError}</div>
+              )}
             </>
           ) : (
             <>
@@ -44,6 +48,9 @@ const ActivityMediaUpload = ({
                 accept=".jpg, .jpeg, .png"
                 onChange={onImageChange}
               />
+              {uploadError && (
+                <div style={{ color: 'red', fontSize: '12px', marginTop: '8px' }}>{uploadError}</div>
+              )}
             </>
           )}
         </div>

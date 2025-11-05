@@ -17,6 +17,8 @@ const AccountSection = ({
   const [imageFile, setImageFile] = useState(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState(tempUser.avatar)
   const [file, setFile] = useState(null)
+  const [uploadError, setUploadError] = useState('')
+  const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     setUploadedImageUrl(tempUser.avatar)
@@ -24,27 +26,46 @@ const AccountSection = ({
 
   const handleImageUpload = async (event) => {
     const selectedFile = event.target.files[0]
-    if (selectedFile) {
+    if (!selectedFile) return
+    setUploadError('')
+    const isValidType = ['image/jpeg', 'image/png', 'image/jpg'].includes(selectedFile.type)
+    const isValidSize = selectedFile.size <= 5 * 1024 * 1024
+    if (!isValidType) {
+      setUploadError('Поддерживаются только JPG/PNG')
+      return
+    }
+    if (!isValidSize) {
+      setUploadError('Размер файла должен быть не более 5 МБ')
+      return
+    }
+    try {
       setImageFile(selectedFile)
       const uploadedUrl = await uploadToStorage('users/uploads/profile/', selectedFile)
       setUploadedImageUrl(uploadedUrl)
       handleInputChange({ target: { value: uploadedUrl } }, 'avatar')
+    } catch (e) {
+      setUploadError('Ошибка при загрузке изображения, попробуйте ещё раз')
     }
   }
 
   const handleSaveClick = async () => {
-    if (imageFile) {
-      try {
-        setImageFile(imageFile)
-        const uploadedUrl = await uploadToStorage('users/uploads/profile/', imageFile)
-        setUploadedImageUrl(uploadedUrl)
-        handleInputChange({ target: { value: uploadedUrl } }, 'avatar')
-      } catch (error) {
-        alert('Ошибка при загрузке изображения. Пожалуйста, попробуйте еще раз.')
+    if (saving) return
+    setSaving(true)
+    try {
+      if (imageFile) {
+        try {
+          setImageFile(imageFile)
+          const uploadedUrl = await uploadToStorage('users/uploads/profile/', imageFile)
+          setUploadedImageUrl(uploadedUrl)
+          handleInputChange({ target: { value: uploadedUrl } }, 'avatar')
+        } catch (error) {
+          setUploadError('Ошибка при загрузке изображения. Пожалуйста, попробуйте еще раз.')
+        }
       }
+      await handleSaveClickAccount()
+    } finally {
+      setSaving(false)
     }
-
-    await handleSaveClickAccount()
   }
 
   return (
@@ -148,6 +169,9 @@ const AccountSection = ({
                     required
                   />
                 </label>
+                {uploadError && (
+                  <div className="profile-block-content-data-item-error">{uploadError}</div>
+                )}
               </>
             )}
           </div>
@@ -239,6 +263,7 @@ const AccountSection = ({
           <button
             onClick={handleCancelClickAccount}
             className="profile-block-content-data-btn-cancel"
+            disabled={saving}
           >
             Отменить
           </button>
@@ -249,8 +274,9 @@ const AccountSection = ({
             }}
             type="submit"
             className="profile-block-content-data-btn-save"
+            disabled={saving}
           >
-            Сохранить
+            {saving ? 'Сохранение...' : 'Сохранить'}
           </button>
         </div>
       )}

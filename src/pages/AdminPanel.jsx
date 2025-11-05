@@ -13,6 +13,7 @@ import CommentModeration from '@components/admin/CommentModeration'
 import StatisticsPanel from '@components/admin/StatisticsPanel'
 import TeamsManagement from '@components/admin/TeamsManagement'
 import { adminService } from '@shared/services/adminService'
+import logger from '@shared/utils/logger'
 
 const AdminPanel = () => {
   const isMobile = useResponsive()
@@ -36,7 +37,7 @@ const AdminPanel = () => {
         if (err.response?.status === 403) {
           navigate('/main', { replace: true })
         } else {
-          console.error('Ошибка при проверке доступа к админ-панели:', err)
+          logger.error('Ошибка при проверке доступа к админ-панели:', err)
           navigate('/main', { replace: true })
         }
       } finally {

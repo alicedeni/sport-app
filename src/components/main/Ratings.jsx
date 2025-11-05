@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { TeamModal, PublicProfileModal } from '@components/modals/index.js'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const Ratings = () => {
   const [selectedSide, setSelectedSide] = useState('left')
@@ -19,31 +20,40 @@ const Ratings = () => {
   const [showPublicProfile, setShowPublicProfile] = useState(false)
   const [selectedUser, setSelectedUser] = useState(null)
 
+  const abortRef = useRef(null)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (abortRef.current) abortRef.current.abort()
+        abortRef.current = new AbortController()
         if (selectedSide === 'left') {
-          const response = await api.get('/participants-rating')
+          const response = await api.get('/participants-rating', { signal: abortRef.current.signal })
           if (Array.isArray(response.data.leaderboard)) {
             setParticipants(response.data.leaderboard)
           } else {
-            console.error('Unexpected data format for participants:', response.data)
+            logger.error('Unexpected data format for participants:', response.data)
             setParticipants([])
           }
         } else {
-          const response = await api.get('/teams-rating')
+          const response = await api.get('/teams-rating', { signal: abortRef.current.signal })
           if (Array.isArray(response.data.leaderboard)) {
             setTeams(response.data.leaderboard)
           } else {
-            console.error('Unexpected data format for teams:', response.data)
+            logger.error('Unexpected data format for teams:', response.data)
             setTeams([])
           }
         }
       } catch (error) {
-        console.error('Error fetching data:', error)
+        if (error.name !== 'CanceledError' && error.code !== 'ERR_CANCELED') {
+          logger.error('Error fetching data:', error)
+        }
       }
     }
     fetchData()
+    return () => {
+      if (abortRef.current) abortRef.current.abort()
+    }
   }, [selectedSide])
 
   const handleClick = (side) => {

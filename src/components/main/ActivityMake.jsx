@@ -11,6 +11,7 @@ import ActivityParamsForm from '@components/activity/ActivityParamsForm.jsx'
 import ActivityMediaUpload from '@components/activity/ActivityMediaUpload.jsx'
 import ActivityActions from '@components/activity/ActivityActions.jsx'
 import ActivitySubmitButton from '@components/activity/ActivitySubmitButton.jsx'
+import logger from '@shared/utils/logger'
 
 const ActivityMake = () => {
   const location = useLocation()
@@ -31,6 +32,7 @@ const ActivityMake = () => {
   const [activityImage, setActivityImage] = useState(null)
   const [activityDescription, setActivityDescription] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [uploadError, setUploadError] = useState('')
   const [requiredFields, setRequiredFields] = useState({
     activityTag: false,
     activityStartDate: false,
@@ -107,7 +109,7 @@ const ActivityMake = () => {
       .then(
         createApiHandler(
           (data) => setActivityTypes(data.activities),
-          (error) => console.error('Error loading activities:', error),
+          (error) => logger.error('Error loading activities:', error),
         ),
       )
       .catch((error) => handleApiError(error))
@@ -119,13 +121,29 @@ const ActivityMake = () => {
 
   const handleActivityImageChange = async (event) => {
     const file = event.target.files[0]
-    if (file) {
-      try {
-        const uploadedUrl = await uploadToStorage('users/uploads/activity/', file)
-        setActivityImage(uploadedUrl)
-      } catch (error) {
-        console.error('Error uploading image:', error)
-      }
+    if (!file) return
+
+    setUploadError('')
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
+    if (!allowedTypes.includes(file.type)) {
+      setUploadError('Неверный формат файла. Разрешены только JPG и PNG.')
+      return
+    }
+
+    const maxSize = 5 * 1024 * 1024
+    if (file.size > maxSize) {
+      setUploadError('Размер файла превышает 5 МБ.')
+      return
+    }
+
+    try {
+      const uploadedUrl = await uploadToStorage('users/uploads/activity/', file)
+      setActivityImage(uploadedUrl)
+      setUploadError('')
+    } catch (error) {
+      logger.error('Error uploading image:', error)
+      setUploadError('Ошибка при загрузке изображения. Пожалуйста, попробуйте еще раз.')
     }
   }
 
@@ -249,6 +267,7 @@ const ActivityMake = () => {
           activityImage={activityImage}
           onDescriptionChange={handleActivityDescriptionChange}
           onImageChange={handleActivityImageChange}
+          uploadError={uploadError}
         />
 
         <ActivitySubmitButton />

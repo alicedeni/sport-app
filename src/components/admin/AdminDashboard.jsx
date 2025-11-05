@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { adminService } from '@shared/services/adminService'
+import logger from '@shared/utils/logger'
 
 const AdminDashboard = () => {
   const [stats, setStats] = useState([
@@ -50,7 +51,7 @@ const AdminDashboard = () => {
           setRecentActivity(recentResponse.data.data.items || [])
         }
       } catch (err) {
-        console.error('Ошибка загрузки данных дашборда:', err)
+        logger.error('Ошибка загрузки данных дашборда:', err)
       } finally {
         setLoading(false)
       }

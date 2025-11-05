@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react'
 import { adminService } from '@shared/services/adminService'
+import Modal from '@shared/ui/Modal'
+import SafeText from '@shared/components/SafeText'
+import logger from '@shared/utils/logger'
 
 const PostModeration = () => {
   const [posts, setPosts] = useState([])
@@ -22,6 +25,8 @@ const PostModeration = () => {
   const [formErrors, setFormErrors] = useState({})
   const [editInitial, setEditInitial] = useState(null)
   const [saving, setSaving] = useState(false)
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
   const [filters, setFilters] = useState({
     authorId: '',
     activityId: '',
@@ -31,7 +36,10 @@ const PostModeration = () => {
     limit: 20,
   })
 
+  let lastRequestId = 0
+
   const loadPosts = async () => {
+    const requestId = ++lastRequestId
     setLoading(true)
     setError(null)
     try {
@@ -46,17 +54,19 @@ const PostModeration = () => {
       }
 
       const response = await adminService.getPosts(params)
-      if (response.data.status === 200) {
-        setPosts(response.data.data.posts || [])
-        setPagination(response.data.data.pagination || null)
-      } else {
-        setError(response.data.error || response.data.message || 'Ошибка загрузки постов')
+      if (requestId === lastRequestId) {
+        if (response.data.status === 200) {
+          setPosts(response.data.data.posts || [])
+          setPagination(response.data.data.pagination || null)
+        } else {
+          setError(response.data.error || response.data.message || 'Ошибка загрузки постов')
+        }
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Ошибка при загрузке постов')
-      console.error('Ошибка загрузки постов:', err)
+      logger.error('Ошибка загрузки постов:', err)
     } finally {
-      setLoading(false)
+      if (requestId === lastRequestId) setLoading(false)
     }
   }
 
@@ -82,27 +92,33 @@ const PostModeration = () => {
       if (response.data.status === 200) {
         await loadPosts()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка обновления статуса')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка обновления статуса' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при обновлении статуса')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при обновлении статуса' })
     }
   }
 
   const handleDeletePost = async (postId) => {
-    if (!window.confirm('Вы уверены, что хотите удалить этот пост?')) {
-      return
-    }
+    setConfirmDeleteId(postId)
+  }
 
+  const confirmDelete = async () => {
+    if (!confirmDeleteId) return
+    setSaving(true)
     try {
-      const response = await adminService.deletePost(postId)
+      const response = await adminService.deletePost(confirmDeleteId)
       if (response.data.status === 200) {
+        setInfoModal({ open: true, message: 'Пост успешно удален.' })
         await loadPosts()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка удаления поста')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка удаления поста' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при удалении поста')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при удалении поста' })
+    } finally {
+      setConfirmDeleteId(null)
+      setSaving(false)
     }
   }
 
@@ -295,7 +311,9 @@ const PostModeration = () => {
                       {post.activityName} ({post.activityTag})
                     </div>
                     {post.description && (
-                      <div className="admin-post-item__description">{post.description}</div>
+                      <div className="admin-post-item__description">
+                        <SafeText text={post.description} preserveLineBreaks={true} />
+                      </div>
                     )}
                     <div className="admin-post-item__stats">
                       <span>Дистанция: {post.distance || '-'}</span>
@@ -318,7 +336,14 @@ const PostModeration = () => {
                     </button>
                     <button
                       className="admin-btn admin-btn--small admin-btn--danger"
-                      onClick={() => handleDeletePost(post.id)}
+                      onClick={(e) => {
+                        const btn = e.currentTarget
+                        if (btn.disabled) return
+                        btn.disabled = true
+                        Promise.resolve(handleDeletePost(post.id)).finally(() => {
+                          btn.disabled = false
+                        })
+                      }}
                     >
                       Удалить
                     </button>
@@ -492,6 +517,47 @@ const PostModeration = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {confirmDeleteId && (
+        <Modal
+          isOpen={!!confirmDeleteId}
+          onClose={() => setConfirmDeleteId(null)}
+          title="Удалить пост?"
+        >
+          <p>Вы уверены, что хотите удалить этот пост?</p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 16 }}>
+            <button
+              className="admin-btn"
+              onClick={() => setConfirmDeleteId(null)}
+              disabled={saving}
+            >
+              Отмена
+            </button>
+            <button
+              className="admin-btn admin-btn--danger"
+              onClick={confirmDelete}
+              disabled={saving}
+            >
+              {saving ? 'Удаление...' : 'Удалить'}
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {infoModal.open && (
+        <Modal
+          isOpen={infoModal.open}
+          onClose={() => setInfoModal({ open: false, message: '' })}
+          title="Сообщение"
+        >
+          <p>{infoModal.message}</p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+            <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>
+              Ок
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   )

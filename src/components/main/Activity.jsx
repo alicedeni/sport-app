@@ -3,6 +3,7 @@ import { ButtonActivity, ButtonEnter } from '@components/Buttons'
 import { WarningModal } from '@components/modals'
 import { useNavigate } from 'react-router-dom'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const Activity = () => {
   const [selectedSide, setSelectedSide] = useState('week')
@@ -27,7 +28,7 @@ const Activity = () => {
         }
         setActivities(response.data.activities)
       } catch (error) {
-        console.error('Error fetching activities:', error)
+        logger.error('Error fetching activities:', error)
       }
     }
     fetchActivities()
@@ -39,7 +40,7 @@ const Activity = () => {
         const response = await api.get('/profile')
         setProfile(response.data.profile)
       } catch (error) {
-        console.error('Error fetching profile:', error)
+        logger.error('Error fetching profile:', error)
         setProfile(null)
       }
     }

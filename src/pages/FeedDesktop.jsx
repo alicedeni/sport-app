@@ -4,9 +4,9 @@ import Header from '@components/main/Header.jsx'
 import MobileHeader from '@components/mobile/MobileHeader'
 import MobileFooter from '@components/mobile/MobileFooter'
 import Posts from '@components/main/Posts.jsx'
-import axios from 'axios'
-
-import { API_BASE_URL } from '@constants/api.js'
+import api from '@shared/services/api'
+import { ROUTE_NAMES } from '@constants/routes.js'
+import logger from '@shared/utils/logger'
 
 const LIMIT = 20
 
@@ -30,7 +30,6 @@ const FeedDesktop = () => {
   }, [offset])
 
   const getPostData = useCallback(async (currentOffset, currentFilters) => {
-    const token = localStorage.getItem('token')
     setLoading(true)
     try {
       const params = {
@@ -41,10 +40,7 @@ const FeedDesktop = () => {
       if (params.my_posts) params.my_posts = 'true'
       else delete params.my_posts
 
-      const response = await axios.get(`${API_BASE_URL}/user/posts`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params,
-      })
+      const response = await api.get('/user/posts', { params })
       const newPosts = response.data.posts || []
       if (isMounted.current) {
         if (currentOffset === 0) {
@@ -56,7 +52,7 @@ const FeedDesktop = () => {
         setOffset(currentOffset + newPosts.length)
       }
     } catch (error) {
-      console.error('Error loading posts:', error)
+      logger.error('Error loading posts:', error)
     } finally {
       setLoading(false)
     }
@@ -100,7 +96,7 @@ const FeedDesktop = () => {
 
   return (
     <div className="container" id="root">
-      {isMobile ? <MobileHeader /> : <Header currentPage="feed" />}
+      {isMobile ? <MobileHeader /> : <Header currentPage={ROUTE_NAMES.FEED} />}
       <div className="main">
         <Posts posts={posts} filters={filters} setFilters={setFilters} />
         {loading && (

@@ -1,3 +1,6 @@
+import logger from './logger'
+import { ru } from 'date-fns/locale'
+
 const format = (date, formatString) => {
   const d = new Date(date)
   if (isNaN(d.getTime())) return 'Неверная дата'
@@ -27,7 +30,7 @@ export const formatDate = (date, formatString = 'dd.MM.yyyy') => {
     }
     return format(dateObj, formatString, { locale: ru })
   } catch (error) {
-    console.error('Error formatting date:', error)
+    logger.error('Error formatting date:', error)
     return 'Неверная дата'
   }
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { adminService } from '@shared/services/adminService'
+import Modal from '@shared/ui/Modal'
+import logger from '@shared/utils/logger'
 
 const GlobalSettings = () => {
   const [activeTab, setActiveTab] = useState('general')
@@ -8,6 +10,8 @@ const GlobalSettings = () => {
   const [loading, setLoading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
+  const [infoModal, setInfoModal] = useState({ open: false, message: '', type: 'info' })
+  const [confirmResetModal, setConfirmResetModal] = useState(false)
 
   const handleSettingChange = (key, value) => {
     setSettings((prev) => ({
@@ -59,7 +63,7 @@ const GlobalSettings = () => {
         }
       } catch (err) {
         setError(err.response?.data?.error || err.message || 'Ошибка загрузки настроек')
-        console.error('Ошибка загрузки настроек:', err)
+        logger.error('Ошибка загрузки настроек:', err)
       } finally {
         setLoading(false)
       }
@@ -99,22 +103,29 @@ const GlobalSettings = () => {
 
       const response = await adminService.updateSettings(apiSettings)
       if (response.data.status === 200) {
-        alert('Настройки сохранены!')
+        setInfoModal({ open: true, message: 'Настройки сохранены!', type: 'success' })
       } else {
-        setError(response.data.error || response.data.message || 'Ошибка сохранения')
+        setInfoModal({
+          open: true,
+          message: response.data.error || response.data.message || 'Ошибка сохранения',
+          type: 'error',
+        })
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Ошибка при сохранении настроек')
-      console.error('Ошибка сохранения настроек:', err)
+      logger.error('Ошибка сохранения настроек:', err)
     } finally {
       setSaving(false)
     }
   }
 
   const handleResetSettings = () => {
-    if (window.confirm('Вы уверены, что хотите сбросить все настройки?')) {
-      window.location.reload()
-    }
+    setConfirmResetModal(true)
+  }
+
+  const confirmReset = () => {
+    setConfirmResetModal(false)
+    window.location.reload()
   }
 
   const tabs = [
@@ -464,6 +475,45 @@ const GlobalSettings = () => {
       </div>
 
       <div className="admin-settings__content">{renderSettingsContent()}</div>
+
+      {infoModal.open && (
+        <Modal
+          isOpen={infoModal.open}
+          onClose={() => setInfoModal({ open: false, message: '', type: 'info' })}
+          title={infoModal.type === 'success' ? 'Успешно' : 'Сообщение'}
+        >
+          <p>{infoModal.message}</p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+            <button
+              className="admin-btn"
+              onClick={() => setInfoModal({ open: false, message: '', type: 'info' })}
+            >
+              Ок
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {confirmResetModal && (
+        <Modal
+          isOpen={confirmResetModal}
+          onClose={() => setConfirmResetModal(false)}
+          title="Сбросить настройки?"
+        >
+          <p>
+            Вы уверены, что хотите сбросить все настройки? Это действие приведет к перезагрузке
+            страницы.
+          </p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 16 }}>
+            <button className="admin-btn" onClick={() => setConfirmResetModal(false)}>
+              Отмена
+            </button>
+            <button className="admin-btn admin-btn--danger" onClick={confirmReset}>
+              Сбросить
+            </button>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

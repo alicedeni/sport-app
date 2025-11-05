@@ -135,6 +135,36 @@
   }
 }
 
+.admin-team-members-modal {
+  &__loading,
+  &__empty {
+    text-align: center;
+    padding: 12px;
+    color: #666;
+  }
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+  }
+  &__card {
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 8px;
+  }
+  &__name {
+    font-weight: 600;
+  }
+  &__email {
+    color: #6b7280;
+    font-size: 12px;
+  }
+  &__meta {
+    color: #6b7280;
+    font-size: 12px;
+  }
+}
+
 .admin-post-list,
 .admin-comment-list {
   display: flex;

@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
+import Modal from '@shared/ui/Modal'
 import { adminService } from '@shared/services/adminService'
+import SafeText from '@shared/components/SafeText'
+import logger from '@shared/utils/logger'
 
 const CommentModeration = () => {
   const [comments, setComments] = useState([])
@@ -13,18 +16,23 @@ const CommentModeration = () => {
     limit: 20,
   })
 
+  const abortRef = useRef(null)
+
   const loadComments = async () => {
     setLoading(true)
     setError(null)
     try {
+      if (abortRef.current) {
+        abortRef.current.abort()
+      }
+      abortRef.current = new AbortController()
       const params = {
         page: filters.page,
         limit: filters.limit,
         ...(filters.from && { from: filters.from }),
         ...(filters.to && { to: filters.to }),
       }
-
-      const response = await adminService.getComments(params)
+      const response = await adminService.getComments({ ...params, signal: abortRef.current.signal })
       if (response.data.status === 200) {
         setComments(response.data.data.comments || [])
         setPagination(response.data.data.pagination || null)
@@ -32,8 +40,10 @@ const CommentModeration = () => {
         setError(response.data.error || response.data.message || 'Ошибка загрузки комментариев')
       }
     } catch (err) {
-      setError(err.response?.data?.error || err.message || 'Ошибка при загрузке комментариев')
-      console.error('Ошибка загрузки комментариев:', err)
+      if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+        setError(err.response?.data?.error || err.message || 'Ошибка при загрузке комментариев')
+        logger.error('Ошибка загрузки комментариев:', err)
+      }
     } finally {
       setLoading(false)
     }
@@ -43,33 +53,32 @@ const CommentModeration = () => {
     loadComments()
   }, [filters.page, filters.from, filters.to])
 
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+
   const handleUpdateStatus = async (commentId, newStatus) => {
     try {
       const response = await adminService.updateCommentStatus(commentId, newStatus)
       if (response.data.status === 200) {
         await loadComments()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка обновления статуса')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка обновления статуса' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при обновлении статуса')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при обновлении статуса' })
     }
   }
 
   const handleDeleteComment = async (commentId) => {
-    if (!window.confirm('Вы уверены, что хотите удалить этот комментарий?')) {
-      return
-    }
-
     try {
       const response = await adminService.deleteComment(commentId)
       if (response.data.status === 200) {
         await loadComments()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка удаления комментария')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка удаления комментария' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при удалении комментария')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при удалении комментария' })
     }
   }
 
@@ -126,7 +135,9 @@ const CommentModeration = () => {
                     <div className="admin-comment-item__post">Пост ID: {comment.postId}</div>
                   </div>
                   <div className="admin-comment-item__body">
-                    <div className="admin-comment-item__text">{comment.text}</div>
+                    <div className="admin-comment-item__text">
+                      <SafeText text={comment.text} preserveLineBreaks={true} />
+                    </div>
                     <div className="admin-comment-item__stats">
                       <span>Лайки: {comment.likeCount || 0}</span>
                     </div>
@@ -134,7 +145,7 @@ const CommentModeration = () => {
                   <div className="admin-comment-item__actions">
                     <button
                       className="admin-btn admin-btn--small admin-btn--danger"
-                      onClick={() => handleDeleteComment(comment.id)}
+                      onClick={() => setConfirmDeleteId(comment.id)}
                     >
                       Удалить
                     </button>
@@ -167,8 +178,42 @@ const CommentModeration = () => {
           )}
         </>
       )}
+
+      <Modal
+        isOpen={!!confirmDeleteId}
+        onClose={() => setConfirmDeleteId(null)}
+        title="Удалить комментарий?"
+        size="small"
+      >
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+          <button className="admin-btn" onClick={() => setConfirmDeleteId(null)}>Отмена</button>
+          <button
+            className="admin-btn admin-btn--danger"
+            onClick={async () => {
+              const id = confirmDeleteId
+              setConfirmDeleteId(null)
+              await handleDeleteComment(id)
+            }}
+          >
+            Удалить
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={infoModal.open}
+        onClose={() => setInfoModal({ open: false, message: '' })}
+        title="Сообщение"
+        size="small"
+      >
+        <div style={{ marginBottom: 12 }}>{infoModal.message}</div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>Ок</button>
+        </div>
+      </Modal>
     </div>
   )
 }
 
 export default CommentModeration
+

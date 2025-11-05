@@ -84,7 +84,7 @@ export default function CustomTimePicker({
                 key={h}
                 onClick={() => setHours(h)}
                 className={h === hours ? 'selected' : ''}
-                onMouseDown={(e) => e.preventDefault()} // чтобы не потерять фокус input при клике
+                onMouseDown={(e) => e.preventDefault()}
               >
                 {pad(h)}
               </li>

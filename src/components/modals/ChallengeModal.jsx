@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { ButtonChallenge } from '@components/Buttons.jsx'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const ChallengeModal = ({ onClose }) => {
   const [challenges, setChallenges] = useState([])
@@ -12,10 +13,10 @@ const ChallengeModal = ({ onClose }) => {
         if (response.data.status === 200) {
           setChallenges(response.data.available_challenges || [])
         } else {
-          console.error('Error fetching challenges:', response.data.message)
+          logger.error('Error fetching challenges:', response.data.message)
         }
       } catch (error) {
-        console.error('Error fetching challenges:', error)
+        logger.error('Error fetching challenges:', error)
       }
     }
 
@@ -28,10 +29,10 @@ const ChallengeModal = ({ onClose }) => {
       if (response.data.status === 200) {
         onClose()
       } else {
-        console.error('Error selecting challenge:', response.data.message)
+        logger.error('Error selecting challenge:', response.data.message)
       }
     } catch (error) {
-      console.error('Error selecting challenge:', error)
+      logger.error('Error selecting challenge:', error)
     }
   }
 

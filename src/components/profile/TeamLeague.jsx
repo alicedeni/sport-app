@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const TeamAndLeague = ({ tempUser, leagueColor }) => {
   const [teamMembers, setTeamMembers] = useState([])
@@ -12,10 +13,10 @@ const TeamAndLeague = ({ tempUser, leagueColor }) => {
         if (response.data.status === 200) {
           setTeamMembers(response.data.teamMembers)
         } else {
-          console.error('Ошибка при загрузке участников команды:', response.data.message)
+          logger.error('Ошибка при загрузке участников команды:', response.data.message)
         }
       } catch (error) {
-        console.error('Ошибка при загрузке участников команды:', error)
+        logger.error('Ошибка при загрузке участников команды:', error)
       }
     }
 

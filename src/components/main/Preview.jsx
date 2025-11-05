@@ -6,6 +6,7 @@ import api from '@shared/services/api'
 import ReactDOM from 'react-dom'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import logger from '@shared/utils/logger'
 
 ReactDOM.findDOMNode = () => {}
 ReactDOM.createPortal = () => {}
@@ -79,14 +80,14 @@ const Preview = () => {
         return response.data
       })
       .catch((error) => {
-        console.error(error)
+        logger.error(error)
         throw error
       })
   }
 
   const handlePreview = () => {
     if (!activityData) {
-      console.error('Данные активности отсутствуют')
+      logger.error('Данные активности отсутствуют')
       return
     }
 
@@ -108,7 +109,7 @@ const Preview = () => {
         }, 0)
       })
       .catch((error) => {
-        console.error(error)
+        logger.error(error)
       })
   }
 
@@ -119,7 +120,7 @@ const Preview = () => {
           setUser(data.profile)
         }
       })
-      .catch((error) => console.error(error))
+      .catch((error) => logger.error(error))
 
     handlePreview()
     return () => {
@@ -133,7 +134,7 @@ const Preview = () => {
     }
 
     if (!activityData) {
-      console.error('Данные активности отсутствуют')
+      logger.error('Данные активности отсутствуют')
       return
     }
 
@@ -147,14 +148,14 @@ const Preview = () => {
       .post('/user/activities', activityData)
       .then((response) => {
         if (response.data.status === 200) {
-          window.location.href = `/main`
+          navigate('/main')
         } else {
-          console.error('Ошибка при публикации активности:', response.data.error)
+          logger.error('Ошибка при публикации активности:', response.data.error)
           setIsPublishing(false)
         }
       })
       .catch((error) => {
-        console.error(error)
+        logger.error(error)
         setIsPublishing(false)
       })
   }
@@ -163,7 +164,7 @@ const Preview = () => {
     if (activityData) {
       navigate(`/activity_make`, { state: { page: 'activity', activityData } })
     } else {
-      console.error('Данные активности отсутствуют')
+      logger.error('Данные активности отсутствуют')
     }
   }
 

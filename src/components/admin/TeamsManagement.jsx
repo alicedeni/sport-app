@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Modal from '@shared/ui/Modal'
 import { adminService } from '@shared/services/adminService'
 
 const TeamsManagement = () => {
@@ -82,6 +83,10 @@ const TeamsManagement = () => {
     return () => clearTimeout(t)
   }, [memberOps.userQuery, memberOps.teamId])
 
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+  const [membersModalTeamId, setMembersModalTeamId] = useState(null)
+
   const onCreateTeam = async (e) => {
     e.preventDefault()
     if (!newTeamName.trim()) return
@@ -92,14 +97,10 @@ const TeamsManagement = () => {
         setNewTeamName('')
         await loadTeams()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка создания команды')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка создания команды' })
       }
     } catch (err) {
-      alert(
-        err.response?.data?.error ||
-          err.message ||
-          'Ошибка при создании команды (возможно дублирование имени)',
-      )
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при создании команды (возможно дублирование имени)' })
     }
   }
 
@@ -117,28 +118,23 @@ const TeamsManagement = () => {
         setRenamingTeam(null)
         await loadTeams()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка переименования команды')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка переименования команды' })
       }
     } catch (err) {
-      alert(
-        err.response?.data?.error ||
-          err.message ||
-          'Ошибка при переименовании (возможно дублирование)',
-      )
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при переименовании (возможно дублирование)' })
     }
   }
 
   const onDeleteTeam = async (teamId) => {
-    if (!window.confirm('Удалить команду? Все участники будут отвязаны.')) return
     try {
       const res = await adminService.deleteTeam(teamId)
       if (res.data.status === 200) {
         await loadTeams()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка удаления команды')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка удаления команды' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при удалении команды')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при удалении команды' })
     }
   }
 
@@ -191,11 +187,11 @@ const TeamsManagement = () => {
     const uid = Number(memberOps.userId)
     if (!uid) return
     if (memberOps.userTeamId && Number(memberOps.userTeamId) !== Number(teamId)) {
-      alert('Пользователь уже состоит в другой команде. Сначала удалите из текущей команды.')
+      setInfoModal({ open: true, message: 'Пользователь уже состоит в другой команде. Сначала удалите из текущей команды.' })
       return
     }
     if (memberOps.userTeamId && Number(memberOps.userTeamId) === Number(teamId)) {
-      alert('Пользователь уже состоит в этой команде.')
+      setInfoModal({ open: true, message: 'Пользователь уже состоит в этой команде.' })
       return
     }
     try {
@@ -205,10 +201,10 @@ const TeamsManagement = () => {
         setUserOptions([])
         await loadTeams()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка добавления пользователя')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка добавления пользователя' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при добавлении пользователя')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при добавлении пользователя' })
     }
   }
 
@@ -222,10 +218,10 @@ const TeamsManagement = () => {
         setUserOptions([])
         await loadTeams()
       } else {
-        alert(res.data.error || res.data.message || 'Ошибка удаления пользователя')
+        setInfoModal({ open: true, message: res.data.error || res.data.message || 'Ошибка удаления пользователя' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при удалении пользователя')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при удалении пользователя' })
     }
   }
 
@@ -383,15 +379,16 @@ const TeamsManagement = () => {
                       </div>
                       <button
                         className="admin-btn admin-btn--small"
-                        onClick={() => toggleMembers(team.id)}
+                        onClick={async () => {
+                          await toggleMembers(team.id)
+                          setMembersModalTeamId(team.id)
+                        }}
                       >
-                        {membersByTeam?.[team.id]?.open
-                          ? 'Скрыть участников'
-                          : 'Показать участников'}
+                        Показать участников
                       </button>
                       <button
                         className="admin-btn admin-btn--small admin-btn--danger"
-                        onClick={() => onDeleteTeam(team.id)}
+                        onClick={() => setConfirmDeleteId(team.id)}
                       >
                         Удалить команду
                       </button>
@@ -424,56 +421,40 @@ const TeamsManagement = () => {
             </div>
           )}
 
-          {teams.map(
-            (team) =>
-              membersByTeam?.[team.id]?.open && (
-                <TeamMembersBlock
-                  key={`members-${team.id}`}
-                  team={team}
-                  state={membersByTeam[team.id]}
-                  onRefresh={async () => {
-                    setMembersByTeam((prev) => ({
-                      ...prev,
-                      [team.id]: { ...(prev[team.id] || {}), loading: true, error: null },
-                    }))
-                    try {
-                      const res = await adminService.getTeamUsers(team.id, { page: 1, limit: 100 })
-                      if (res.data.status === 200) {
-                        const users = res.data.data.users || []
-                        setMembersByTeam((prev) => ({
-                          ...prev,
-                          [team.id]: {
-                            ...(prev[team.id] || {}),
-                            users,
-                            loading: false,
-                            error: null,
-                            open: true,
-                          },
-                        }))
-                      } else {
-                        setMembersByTeam((prev) => ({
-                          ...prev,
-                          [team.id]: {
-                            ...(prev[team.id] || {}),
-                            loading: false,
-                            error: res.data.error || 'Ошибка загрузки участников',
-                          },
-                        }))
-                      }
-                    } catch (e) {
-                      setMembersByTeam((prev) => ({
-                        ...prev,
-                        [team.id]: {
-                          ...(prev[team.id] || {}),
-                          loading: false,
-                          error:
-                            e.response?.data?.error || e.message || 'Ошибка загрузки участников',
-                        },
-                      }))
-                    }
-                  }}
-                />
-              ),
+          {membersModalTeamId && (
+            <Modal
+              isOpen={!!membersModalTeamId}
+              onClose={() => setMembersModalTeamId(null)}
+              title="Участники команды"
+              size="large"
+            >
+              <div className="admin-team-members-modal">
+                {membersByTeam[membersModalTeamId]?.loading ? (
+                  <div className="admin-team-members-modal__loading">Загрузка...</div>
+                ) : membersByTeam[membersModalTeamId]?.error ? (
+                  <div className="admin-error-message">{membersByTeam[membersModalTeamId].error}</div>
+                ) : !membersByTeam[membersModalTeamId]?.users || membersByTeam[membersModalTeamId]?.users.length === 0 ? (
+                  <div className="admin-team-members-modal__empty">Пока нет участников</div>
+                ) : (
+                  <div className="admin-team-members-modal__grid">
+                    {membersByTeam[membersModalTeamId].users.map((u) => (
+                      <div key={u.id} className="admin-team-members-modal__card">
+                        <div className="admin-team-members-modal__name">
+                          {`${u.firstName || ''} ${u.lastName || ''}`.trim() || u.email}
+                        </div>
+                        <div className="admin-team-members-modal__email">{u.email}</div>
+                        {u.league && (
+                          <div className="admin-team-members-modal__meta">Лига: {u.league}</div>
+                        )}
+                        {u.points != null && (
+                          <div className="admin-team-members-modal__meta">Баллы: {u.points}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Modal>
           )}
         </>
       )}
@@ -555,6 +536,39 @@ const TeamsManagement = () => {
           </div>
         </div>
       )}
+
+      <Modal
+        isOpen={!!confirmDeleteId}
+        onClose={() => setConfirmDeleteId(null)}
+        title="Удалить команду?"
+        size="small"
+      >
+        <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
+          <button className="admin-btn" onClick={() => setConfirmDeleteId(null)}>Отмена</button>
+          <button
+            className="admin-btn admin-btn--danger"
+            onClick={async () => {
+              const id = confirmDeleteId
+              setConfirmDeleteId(null)
+              await onDeleteTeam(id)
+            }}
+          >
+            Удалить
+          </button>
+        </div>
+      </Modal>
+
+      <Modal
+        isOpen={infoModal.open}
+        onClose={() => setInfoModal({ open: false, message: '' })}
+        title="Сообщение"
+        size="small"
+      >
+        <div style={{ marginBottom: 12 }}>{infoModal.message}</div>
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>Ок</button>
+        </div>
+      </Modal>
     </div>
   )
 }

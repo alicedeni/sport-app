@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { adminService } from '@shared/services/adminService'
 import PlaceholderModal from '@components/admin/PlaceholderModal.jsx'
+import Modal from '@shared/ui/Modal'
+import logger from '@shared/utils/logger'
 
 const ChallengeManagement = () => {
   const [searchTerm, setSearchTerm] = useState('')
@@ -14,6 +16,9 @@ const ChallengeManagement = () => {
   const [pagination, setPagination] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null)
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
+  const [saving, setSaving] = useState(false)
 
   const loadChallenges = async () => {
     setLoading(true)
@@ -35,7 +40,7 @@ const ChallengeManagement = () => {
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Ошибка при загрузке челленджей')
-      console.error('Ошибка загрузки челленджей:', err)
+      logger.error('Ошибка загрузки челленджей:', err)
     } finally {
       setLoading(false)
     }
@@ -69,19 +74,25 @@ const ChallengeManagement = () => {
   }
 
   const handleDeleteChallenge = async (challengeId) => {
-    if (!window.confirm('Вы уверены, что хотите удалить этот челлендж?')) {
-      return
-    }
+    setConfirmDeleteId(challengeId)
+  }
 
+  const confirmDelete = async () => {
+    if (!confirmDeleteId) return
+    setSaving(true)
     try {
-      const response = await adminService.deleteChallenge(challengeId)
+      const response = await adminService.deleteChallenge(confirmDeleteId)
       if (response.data.status === 200) {
+        setInfoModal({ open: true, message: 'Челлендж успешно удален.' })
         await loadChallenges()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка удаления челленджа')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка удаления челленджа' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при удалении челленджа')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при удалении челленджа' })
+    } finally {
+      setConfirmDeleteId(null)
+      setSaving(false)
     }
   }
 
@@ -101,10 +112,10 @@ const ChallengeManagement = () => {
       if (response.data.status === 200) {
         await loadChallenges()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка изменения статуса')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка изменения статуса' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при изменении статуса')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при изменении статуса' })
     }
   }
 
@@ -122,10 +133,10 @@ const ChallengeManagement = () => {
         setShowAddModal(false)
         await loadChallenges()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка сохранения челленджа')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка сохранения челленджа' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при сохранении челленджа')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при сохранении челленджа' })
     }
   }
 
@@ -321,6 +332,47 @@ const ChallengeManagement = () => {
           onClose={() => setEditingChallenge(null)}
           featureName="Редактирование челленджей"
         />
+      )}
+
+      {confirmDeleteId && (
+        <Modal
+          isOpen={!!confirmDeleteId}
+          onClose={() => setConfirmDeleteId(null)}
+          title="Удалить челлендж?"
+        >
+          <p>Вы уверены, что хотите удалить этот челлендж?</p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 16 }}>
+            <button
+              className="admin-btn"
+              onClick={() => setConfirmDeleteId(null)}
+              disabled={saving}
+            >
+              Отмена
+            </button>
+            <button
+              className="admin-btn admin-btn--danger"
+              onClick={confirmDelete}
+              disabled={saving}
+            >
+              {saving ? 'Удаление...' : 'Удалить'}
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {infoModal.open && (
+        <Modal
+          isOpen={infoModal.open}
+          onClose={() => setInfoModal({ open: false, message: '' })}
+          title="Сообщение"
+        >
+          <p>{infoModal.message}</p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+            <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>
+              Ок
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   )

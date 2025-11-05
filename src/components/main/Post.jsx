@@ -15,6 +15,8 @@ import SendFilled from '@assets/icons/sendFilled.svg'
 import Comment from '@components/main/Comment.jsx'
 import CommentDrawer from '@components/main/CommentDrawer.jsx'
 import { ImageModal } from '@components/modals/index.js'
+import { SafeName } from '@shared/components/SafeText'
+import logger from '@shared/utils/logger'
 
 ReactDOM.findDOMNode = () => {}
 ReactDOM.createPortal = () => {}
@@ -91,7 +93,7 @@ const Post = ({ post }) => {
               setIsLiked(false)
               setLikeCount(likeCount - 1)
             },
-            (error) => console.error('Error unliking post:', error),
+            (error) => logger.error('Error unliking post:', error),
           ),
         )
         .catch((error) => handleApiError(error))
@@ -104,7 +106,7 @@ const Post = ({ post }) => {
               setIsLiked(true)
               setLikeCount(likeCount + 1)
             },
-            (error) => console.error('Error liking post:', error),
+            (error) => logger.error('Error liking post:', error),
           ),
         )
         .catch((error) => handleApiError(error))
@@ -121,10 +123,10 @@ const Post = ({ post }) => {
         )
         setCommentCount(commentCount - 1)
       } else {
-        console.error('Error deleting comment:', response.data.message)
+        logger.error('Error deleting comment:', response.data.message)
       }
     } catch (error) {
-      console.error('Error deleting comment:', error)
+      logger.error('Error deleting comment:', error)
     }
   }
 
@@ -135,7 +137,7 @@ const Post = ({ post }) => {
         .then(
           createApiHandler(
             (data) => setComments(data.comments),
-            (error) => console.error('Error fetching comments:', error),
+            (error) => logger.error('Error fetching comments:', error),
           ),
         )
         .catch((error) => handleApiError(error))
@@ -153,7 +155,7 @@ const Post = ({ post }) => {
       .then(
         createApiHandler(
           (data) => setComments(data.comments),
-          (error) => console.error('Error fetching comments:', error),
+          (error) => logger.error('Error fetching comments:', error),
         ),
       )
       .catch((error) => handleApiError(error))
@@ -173,7 +175,7 @@ const Post = ({ post }) => {
             setCommentText('')
             setCommentCount(commentCount + 1)
           },
-          (error) => console.error('Error commenting on post:', error),
+          (error) => logger.error('Error commenting on post:', error),
         ),
       )
       .catch((error) => handleApiError(error))
@@ -205,7 +207,9 @@ const Post = ({ post }) => {
         )}
         <div className="post__user-info">
           <div className="post__svg-fire-container">
-            <div className="post__username">{post.username + ' ' + post.name}</div>
+            <div className="post__username">
+              <SafeName name={post.username} /> <SafeName name={post.name} />
+            </div>
             <svg
               width="32"
               height="32"

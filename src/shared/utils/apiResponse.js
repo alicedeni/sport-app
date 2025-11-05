@@ -1,3 +1,5 @@
+import logger from './logger'
+
 /**
  * Проверяет успешность API ответа
  * @param {Object} response - ответ от API
@@ -21,7 +23,7 @@ export const handleApiResponse = (response, onSuccess, onError) => {
     if (onError) {
       onError(errorMessage)
     } else {
-      console.error('API Error:', errorMessage)
+      logger.error('API Error:', errorMessage)
     }
   }
 }
@@ -36,7 +38,7 @@ export const handleApiError = (error, onError) => {
   if (onError) {
     onError(errorMessage)
   } else {
-    console.error('API Error:', errorMessage)
+    logger.error('API Error:', errorMessage)
   }
 }
 

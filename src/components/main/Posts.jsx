@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react'
 import Select from 'react-select'
 import Post from '@components/main/Post.jsx'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const ACTIVITY_OPTIONS = [
   { label: 'Ходьба', value: 'walk' },
@@ -30,7 +31,7 @@ const Posts = ({ posts, filters, setFilters }) => {
           setUserId(data.profile.id)
         }
       })
-      .catch(console.error)
+      .catch((err) => logger.error(err))
 
     return () => {
       isMounted.current = false

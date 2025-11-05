@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { ButtonEnter, ButtonActivity } from '@components/Buttons.jsx'
+import SafeIcon from '@shared/components/SafeIcon'
 
 const GoalBlock = () => {
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(0)
   const [isImageLoaded, setIsImageLoaded] = useState(false)
 
@@ -14,7 +17,7 @@ const GoalBlock = () => {
   }
 
   const handleGoToMain = () => {
-    window.location.href = '/main'
+    navigate('/main')
   }
 
   const pages = [
@@ -174,7 +177,7 @@ const GoalBlock = () => {
               <ul className="goal-block__task-list">
                 {pages[currentPage].listItems.map((item, index) => (
                   <li key={index} className="goal-block__task-list__item">
-                    <span dangerouslySetInnerHTML={{ __html: item.svgIcon }} />
+                    {item.svgIcon && <SafeIcon svgHtml={item.svgIcon} />}
                     {item.text}
                   </li>
                 ))}

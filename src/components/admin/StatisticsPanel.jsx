@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { adminService } from '@shared/services/adminService'
+import Modal from '@shared/ui/Modal'
+import logger from '@shared/utils/logger'
 
 const StatisticsPanel = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('all')
@@ -10,6 +12,9 @@ const StatisticsPanel = () => {
   const [exportScope, setExportScope] = useState('overview')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [confirmModal, setConfirmModal] = useState({ open: false, action: null, message: '', title: '' })
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
+  const [saving, setSaving] = useState(false)
 
   const loadStats = async () => {
     setLoading(true)
@@ -48,7 +53,7 @@ const StatisticsPanel = () => {
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Ошибка загрузки статистики')
-      console.error('Ошибка загрузки статистики:', err)
+      logger.error('Ошибка загрузки статистики:', err)
     } finally {
       setLoading(false)
     }
@@ -226,7 +231,7 @@ const StatisticsPanel = () => {
                 document.body.removeChild(link)
                 window.URL.revokeObjectURL(url)
               } catch (err) {
-                alert(err.response?.data?.error || err.message || 'Ошибка экспорта')
+                setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка экспорта' })
               }
             }}
           >
@@ -234,42 +239,107 @@ const StatisticsPanel = () => {
           </button>
           <button
             className="admin-btn admin-btn--secondary"
-            onClick={async () => {
-              if (window.confirm('Вы уверены, что хотите пересчитать статистику?')) {
-                try {
-                  const response = await adminService.recalculateStats({ scope: 'all' })
-                  if (response.data.status === 200) {
-                    alert('Статистика пересчитана успешно')
-                    await loadStats()
+            onClick={() => {
+              setConfirmModal({
+                open: true,
+                title: 'Пересчитать статистику?',
+                message: 'Вы уверены, что хотите пересчитать статистику?',
+                action: async () => {
+                  setSaving(true)
+                  try {
+                    const response = await adminService.recalculateStats({ scope: 'all' })
+                    if (response.data.status === 200) {
+                      setInfoModal({ open: true, message: 'Статистика пересчитана успешно' })
+                      await loadStats()
+                    } else {
+                      setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка пересчета статистики' })
+                    }
+                  } catch (err) {
+                    setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка пересчета статистики' })
+                  } finally {
+                    setSaving(false)
+                    setConfirmModal({ open: false, action: null, message: '', title: '' })
                   }
-                } catch (err) {
-                  alert(err.response?.data?.error || err.message || 'Ошибка пересчета статистики')
-                }
-              }
+                },
+              })
             }}
+            disabled={saving}
           >
-            Пересчитать статистику
+            {saving ? 'Пересчет...' : 'Пересчитать статистику'}
           </button>
           <button
             className="admin-btn admin-btn--secondary"
-            onClick={async () => {
-              if (window.confirm('Пересчитать лиги для всех пользователей?')) {
-                try {
-                  const response = await adminService.recalculateLeagues()
-                  if (response.data.status === 200) {
-                    alert('Лиги пересчитаны успешно')
-                    await loadStats()
+            onClick={() => {
+              setConfirmModal({
+                open: true,
+                title: 'Пересчитать лиги?',
+                message: 'Пересчитать лиги для всех пользователей?',
+                action: async () => {
+                  setSaving(true)
+                  try {
+                    const response = await adminService.recalculateLeagues()
+                    if (response.data.status === 200) {
+                      setInfoModal({ open: true, message: 'Лиги пересчитаны успешно' })
+                      await loadStats()
+                    } else {
+                      setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка пересчета лиг' })
+                    }
+                  } catch (err) {
+                    setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка пересчета лиг' })
+                  } finally {
+                    setSaving(false)
+                    setConfirmModal({ open: false, action: null, message: '', title: '' })
                   }
-                } catch (err) {
-                  alert(err.response?.data?.error || err.message || 'Ошибка пересчета лиг')
-                }
-              }
+                },
+              })
             }}
+            disabled={saving}
           >
-            Пересчитать лиги
+            {saving ? 'Пересчет...' : 'Пересчитать лиги'}
           </button>
         </div>
       </div>
+
+      {confirmModal.open && (
+        <Modal
+          isOpen={confirmModal.open}
+          onClose={() => setConfirmModal({ open: false, action: null, message: '', title: '' })}
+          title={confirmModal.title}
+        >
+          <p>{confirmModal.message}</p>
+          <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end', marginTop: 16 }}>
+            <button
+              className="admin-btn"
+              onClick={() => setConfirmModal({ open: false, action: null, message: '', title: '' })}
+              disabled={saving}
+            >
+              Отмена
+            </button>
+            <button
+              className="admin-btn admin-btn--primary"
+              onClick={confirmModal.action}
+              disabled={saving}
+            >
+              {saving ? 'Выполняется...' : 'Подтвердить'}
+            </button>
+          </div>
+        </Modal>
+      )}
+
+      {infoModal.open && (
+        <Modal
+          isOpen={infoModal.open}
+          onClose={() => setInfoModal({ open: false, message: '' })}
+          title="Сообщение"
+        >
+          <p>{infoModal.message}</p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+            <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>
+              Ок
+            </button>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

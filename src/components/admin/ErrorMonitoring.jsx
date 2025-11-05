@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { adminService } from '@shared/services/adminService'
+import Modal from '@shared/ui/Modal'
+import SafeText from '@shared/components/SafeText'
+import logger from '@shared/utils/logger'
 
 const ErrorMonitoring = () => {
   const [selectedLevel, setSelectedLevel] = useState('all')
@@ -8,6 +11,7 @@ const ErrorMonitoring = () => {
   const [pagination, setPagination] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [infoModal, setInfoModal] = useState({ open: false, message: '' })
 
   const getTimeframeDates = () => {
     const now = new Date()
@@ -58,7 +62,7 @@ const ErrorMonitoring = () => {
       }
     } catch (err) {
       setError(err.response?.data?.error || err.message || 'Ошибка при загрузке ошибок')
-      console.error('Ошибка загрузки ошибок:', err)
+      logger.error('Ошибка загрузки ошибок:', err)
     } finally {
       setLoading(false)
     }
@@ -112,10 +116,10 @@ const ErrorMonitoring = () => {
       if (response.data.status === 200) {
         await loadErrors()
       } else {
-        alert(response.data.error || response.data.message || 'Ошибка обновления статуса')
+        setInfoModal({ open: true, message: response.data.error || response.data.message || 'Ошибка обновления статуса' })
       }
     } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при обновлении статуса')
+      setInfoModal({ open: true, message: err.response?.data?.error || err.message || 'Ошибка при обновлении статуса' })
     }
   }
 
@@ -196,7 +200,9 @@ const ErrorMonitoring = () => {
                 </div>
 
                 <div className="admin-error-item__body">
-                  <div className="admin-error-item__message">{error.message}</div>
+                  <div className="admin-error-item__message">
+                    <SafeText text={error.message} preserveLineBreaks={true} />
+                  </div>
                   <div className="admin-error-item__source">
                     Сервис: {error.service || error.source || 'N/A'}
                   </div>
@@ -239,6 +245,21 @@ const ErrorMonitoring = () => {
           Дополнительные действия (экспорт, очистка, уведомления) находятся в разработке
         </div>
       </div>
+
+      {infoModal.open && (
+        <Modal
+          isOpen={infoModal.open}
+          onClose={() => setInfoModal({ open: false, message: '' })}
+          title="Сообщение"
+        >
+          <p>{infoModal.message}</p>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
+            <button className="admin-btn" onClick={() => setInfoModal({ open: false, message: '' })}>
+              Ок
+            </button>
+          </div>
+        </Modal>
+      )}
     </div>
   )
 }

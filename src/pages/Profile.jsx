@@ -6,6 +6,7 @@ import MobileFooter from '@components/mobile/MobileFooter'
 import { useResponsive, useAppHeight, useUser } from '@shared/hooks'
 import { createApiHandler, handleApiError } from '@shared/utils'
 import api from '@shared/services/api'
+import logger from '@shared/utils/logger'
 
 const Profile = () => {
   const isMobile = useResponsive()
@@ -31,7 +32,7 @@ const Profile = () => {
             setLoadingUser(false)
           },
           (error) => {
-            console.error('Error loading profile:', error)
+            logger.error('Error loading profile:', error)
             setLoadingUser(false)
           },
         ),
