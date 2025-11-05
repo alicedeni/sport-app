@@ -5,7 +5,6 @@ import PlaceholderModal from '@components/admin/PlaceholderModal.jsx'
 const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [roleFilter, setRoleFilter] = useState('')
-  const [statusFilter, setStatusFilter] = useState('')
   const [page, setPage] = useState(1)
   const [limit] = useState(20)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -36,7 +35,6 @@ const UserManagement = () => {
         limit,
         ...(searchTerm && { query: searchTerm }),
         ...(roleFilter && { role: roleFilter }),
-        ...(statusFilter && { status: statusFilter }),
       }
 
       const response = await adminService.getUsers(params)
@@ -56,7 +54,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     loadUsers()
-  }, [page, roleFilter, statusFilter])
+  }, [page, roleFilter])
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -77,7 +75,6 @@ const UserManagement = () => {
       name: user.firstName || user.name || '',
       email: user.email || '',
       role: user.role || 'user',
-      is_active: Boolean(user.isActive ?? user.status === 'active'),
       password: undefined,
     })
   }
@@ -96,29 +93,6 @@ const UserManagement = () => {
       }
     } catch (err) {
       alert(err.response?.data?.error || err.message || 'Ошибка при удалении пользователя')
-    }
-  }
-
-  const handleToggleStatus = async (userId) => {
-    const user = users.find((u) => u.id === userId)
-    if (!user) return
-
-    const newStatus = user.status === 'active' ? 'inactive' : 'active'
-    const isActive = newStatus === 'active'
-    const bannedUntil = isActive ? null : null
-
-    try {
-      const response = await adminService.updateUserStatus(userId, {
-        isActive,
-        bannedUntil,
-      })
-      if (response.data.status === 200) {
-        await loadUsers()
-      } else {
-        alert(response.data.error || response.data.message || 'Ошибка изменения статуса')
-      }
-    } catch (err) {
-      alert(err.response?.data?.error || err.message || 'Ошибка при изменении статуса')
     }
   }
 
@@ -194,19 +168,6 @@ const UserManagement = () => {
     } finally {
       setSaving(false)
     }
-  }
-
-  const getStatusBadge = (status, isActive, bannedUntil) => {
-    const isBanned = bannedUntil && new Date(bannedUntil) > new Date()
-    const statusValue = isBanned ? 'banned' : isActive ? 'active' : 'inactive'
-
-    const statusConfig = {
-      active: { text: 'Активен', class: 'admin-user-status--active' },
-      inactive: { text: 'Неактивен', class: 'admin-user-status--inactive' },
-      banned: { text: 'Забанен', class: 'admin-user-status--banned' },
-    }
-    const config = statusConfig[statusValue] || statusConfig.active
-    return <span className={`admin-user-status ${config.class}`}>{config.text}</span>
   }
 
   const getLeagueName = (league) => {
@@ -398,14 +359,6 @@ const UserManagement = () => {
                       <option value="admin">Администратор</option>
                     </select>
                   </label>
-                  <label className="admin-setting__checkbox">
-                    <input
-                      type="checkbox"
-                      checked={newUser.is_active}
-                      onChange={(e) => setNewUser({ ...newUser, is_active: e.target.checked })}
-                    />{' '}
-                    Активен
-                  </label>
                 </div>
                 <div
                   style={{ display: 'flex', gap: 12, marginTop: 16, justifyContent: 'flex-end' }}
@@ -482,16 +435,6 @@ const UserManagement = () => {
                       <option value="moderator">Модератор</option>
                       <option value="admin">Администратор</option>
                     </select>
-                  </label>
-                  <label className="admin-setting__checkbox">
-                    <input
-                      type="checkbox"
-                      checked={editUserForm.is_active}
-                      onChange={(e) =>
-                        setEditUserForm({ ...editUserForm, is_active: e.target.checked })
-                      }
-                    />{' '}
-                    Активен
                   </label>
                 </div>
                 <div

@@ -547,6 +547,12 @@
   font-size: 16px;
 }
 
+@media (max-width: 1350px) {
+  .post__comment-input-btn {
+    left: 93.5%;
+  }
+}
+
 
 @media (max-width: 820px) {
   .posts__filters {

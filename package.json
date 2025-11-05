@@ -1,7 +1,7 @@
 {
   "name": "sport",
-  "version": "1.1.1",
-  "description": "fix admin panel",
+  "version": "1.1.2",
+  "description": "add post moderation",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

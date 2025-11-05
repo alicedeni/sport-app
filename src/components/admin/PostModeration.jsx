@@ -9,9 +9,18 @@ const PostModeration = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [editingPost, setEditingPost] = useState(null)
   const [editForm, setEditForm] = useState({
+    activity_id: '',
+    distance: '',
+    duration: '',
+    steps: '',
+    calories: '',
     points: '',
+    description: '',
+    time_beginning: '',
+    activity_date: '',
   })
   const [formErrors, setFormErrors] = useState({})
+  const [editInitial, setEditInitial] = useState(null)
   const [saving, setSaving] = useState(false)
   const [filters, setFilters] = useState({
     authorId: '',
@@ -100,17 +109,36 @@ const PostModeration = () => {
   const openEdit = (post) => {
     setEditingPost(post)
     setFormErrors({})
-    setEditForm({
+    const nextForm = {
+      activity_id: post.activityId ?? '',
+      distance: post.distance ?? '',
+      duration: post.duration ?? '',
+      steps: post.steps ?? '',
+      calories: post.calories ?? '',
       points: post.points ?? '',
-    })
+      description: post.description ?? '',
+      time_beginning: post.timeBeginning || '',
+      activity_date: post.activityDate || '',
+    }
+    setEditForm(nextForm)
+    setEditInitial(nextForm)
   }
 
   const closeEdit = () => {
     setEditingPost(null)
     setFormErrors({})
     setEditForm({
+      activity_id: '',
+      distance: '',
+      duration: '',
+      steps: '',
+      calories: '',
       points: '',
+      description: '',
+      time_beginning: '',
+      activity_date: '',
     })
+    setEditInitial(null)
   }
 
   const onEditChange = (e) => {
@@ -120,9 +148,19 @@ const PostModeration = () => {
 
   const validateEdit = () => {
     const errs = {}
-    const isNumIn = (v, min, max) =>
-      v === '' || (Number.isFinite(Number(v)) && Number(v) >= min && Number(v) <= max)
+    const isNumIn = (v, min, max) => v === '' || (Number.isFinite(Number(v)) && Number(v) >= min && Number(v) <= max)
+    const isTime = (v) => !v || /^\d{1,2}:(?:[0-5]\d)$/.test(v)
+    const isDate = (v) => !v || /^\d{4}-\d{2}-\d{2}$/.test(v)
+
+    if (editForm.activity_id !== '' && !isNumIn(editForm.activity_id, 0, 100)) errs.activity_id = '0-100'
+    if (!isNumIn(editForm.distance, 0, 10000)) errs.distance = '0-10000'
+    if (editForm.duration && !/^\d{1,3}:(?:[0-5]\d)$/.test(editForm.duration)) errs.duration = 'HH:MM'
+    if (!isNumIn(editForm.steps, 0, 100000)) errs.steps = '0-100000'
+    if (!isNumIn(editForm.calories, 0, 100000)) errs.calories = '0-100000'
     if (!isNumIn(editForm.points, 0, 100000)) errs.points = '0-100000'
+    if (editForm.description && editForm.description.length > 500) errs.description = '≤ 500'
+    if (!isTime(editForm.time_beginning)) errs.time_beginning = 'HH:MM'
+    if (!isDate(editForm.activity_date)) errs.activity_date = 'YYYY-MM-DD'
 
     setFormErrors(errs)
     return Object.keys(errs).length === 0
@@ -134,7 +172,27 @@ const PostModeration = () => {
     if (!validateEdit()) return
     setSaving(true)
     try {
-      const dataToSend = { points: Number(editForm.points) }
+      const dataToSend = {}
+      ;[
+        'activity_id',
+        'distance',
+        'duration',
+        'steps',
+        'calories',
+        'points',
+        'description',
+        'time_beginning',
+        'activity_date',
+      ].forEach((k) => {
+        const v = editForm[k]
+        const initV = editInitial ? editInitial[k] : undefined
+        const changed = String(v) !== String(initV)
+        if (changed && v !== '' && v !== undefined) {
+          if (k === 'activity_id') dataToSend[k] = Number(v)
+          else if (['distance', 'calories', 'points'].includes(k)) dataToSend[k] = Number(v)
+          else dataToSend[k] = v
+        }
+      })
       const res = await adminService.updatePost(editingPost.id, dataToSend)
       if (res.data.status === 200) {
         closeEdit()
@@ -311,6 +369,67 @@ const PostModeration = () => {
               <form onSubmit={handleSaveEdit}>
                 <div className="admin-form-grid">
                   <div>
+                    <label className="admin-setting__label">Активность (ID)</label>
+                    <input
+                      className="admin-input"
+                      name="activity_id"
+                      type="number"
+                      value={editForm.activity_id}
+                      onChange={onEditChange}
+                      placeholder="0-100"
+                    />
+                    {formErrors.activity_id && <div className="admin-field-error">{formErrors.activity_id}</div>}
+                  </div>
+                  <div>
+                    <label className="admin-setting__label">Дистанция (км)</label>
+                    <input
+                      className="admin-input"
+                      name="distance"
+                      type="number"
+                      step="0.01"
+                      value={editForm.distance}
+                      onChange={onEditChange}
+                      placeholder="0-10000"
+                    />
+                    {formErrors.distance && <div className="admin-field-error">{formErrors.distance}</div>}
+                  </div>
+                  <div>
+                    <label className="admin-setting__label">Длительность (HH:MM)</label>
+                    <input
+                      className="admin-input"
+                      name="duration"
+                      type="text"
+                      value={editForm.duration}
+                      onChange={onEditChange}
+                      placeholder="например 01:30"
+                    />
+                    {formErrors.duration && <div className="admin-field-error">{formErrors.duration}</div>}
+                  </div>
+                  <div>
+                    <label className="admin-setting__label">Шаги</label>
+                    <input
+                      className="admin-input"
+                      name="steps"
+                      type="number"
+                      value={editForm.steps}
+                      onChange={onEditChange}
+                      placeholder="0-100000"
+                    />
+                    {formErrors.steps && <div className="admin-field-error">{formErrors.steps}</div>}
+                  </div>
+                  <div>
+                    <label className="admin-setting__label">Калории</label>
+                    <input
+                      className="admin-input"
+                      name="calories"
+                      type="number"
+                      value={editForm.calories}
+                      onChange={onEditChange}
+                      placeholder="0-100000"
+                    />
+                    {formErrors.calories && <div className="admin-field-error">{formErrors.calories}</div>}
+                  </div>
+                  <div>
                     <label className="admin-setting__label">Баллы</label>
                     <input
                       className="admin-input"
@@ -320,9 +439,43 @@ const PostModeration = () => {
                       onChange={onEditChange}
                       placeholder="0-100000"
                     />
-                    {formErrors.points && (
-                      <div className="admin-field-error">{formErrors.points}</div>
-                    )}
+                    {formErrors.points && <div className="admin-field-error">{formErrors.points}</div>}
+                  </div>
+                  <div style={{ gridColumn: '1 / -1' }}>
+                    <label className="admin-setting__label">Описание</label>
+                    <textarea
+                      className="admin-input"
+                      name="description"
+                      maxLength={500}
+                      rows={3}
+                      value={editForm.description}
+                      onChange={onEditChange}
+                      placeholder="Макс. 500 символов"
+                    />
+                    {formErrors.description && <div className="admin-field-error">{formErrors.description}</div>}
+                  </div>
+                  <div>
+                    <label className="admin-setting__label">Время начала (HH:MM)</label>
+                    <input
+                      className="admin-input"
+                      name="time_beginning"
+                      type="text"
+                      value={editForm.time_beginning}
+                      onChange={onEditChange}
+                      placeholder="07:00"
+                    />
+                    {formErrors.time_beginning && <div className="admin-field-error">{formErrors.time_beginning}</div>}
+                  </div>
+                  <div>
+                    <label className="admin-setting__label">Дата активности (YYYY-MM-DD)</label>
+                    <input
+                      className="admin-input"
+                      name="activity_date"
+                      type="date"
+                      value={editForm.activity_date}
+                      onChange={onEditChange}
+                    />
+                    {formErrors.activity_date && <div className="admin-field-error">{formErrors.activity_date}</div>}
                   </div>
                 </div>
                 <div

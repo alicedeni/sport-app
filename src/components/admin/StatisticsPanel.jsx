@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { adminService } from '@shared/services/adminService'
 
 const StatisticsPanel = () => {
-  const [selectedPeriod, setSelectedPeriod] = useState('week')
+  const [selectedPeriod, setSelectedPeriod] = useState('all')
   const [overviewStats, setOverviewStats] = useState(null)
   const [participantsRating, setParticipantsRating] = useState([])
   const [teamsRating, setTeamsRating] = useState([])
@@ -16,7 +16,8 @@ const StatisticsPanel = () => {
     setError(null)
     try {
       const overviewResponse = await adminService.getStatsOverview({
-        ...(selectedPeriod !== 'day' && {
+        interval: selectedPeriod,
+        ...(selectedPeriod !== 'all' && {
           from: getPeriodStartDate(selectedPeriod),
           to: new Date().toISOString().split('T')[0],
         }),
@@ -36,7 +37,8 @@ const StatisticsPanel = () => {
       }
 
       const metricsResponse = await adminService.getMetrics({
-        ...(selectedPeriod !== 'day' && {
+        interval: selectedPeriod,
+        ...(selectedPeriod !== 'all' && {
           from: getPeriodStartDate(selectedPeriod),
           to: new Date().toISOString().split('T')[0],
         }),
@@ -78,10 +80,10 @@ const StatisticsPanel = () => {
   }, [selectedPeriod])
 
   const periodOptions = [
+    { value: 'all', label: 'За всё время' },
     { value: 'day', label: 'День' },
     { value: 'week', label: 'Неделя' },
     { value: 'month', label: 'Месяц' },
-    { value: 'year', label: 'Год' },
   ]
 
   return (
@@ -207,7 +209,8 @@ const StatisticsPanel = () => {
                   scope: exportScope,
                   format: 'csv',
                 }
-                if (selectedPeriod !== 'day') {
+                params.interval = selectedPeriod
+                if (selectedPeriod !== 'all') {
                   params.from = getPeriodStartDate(selectedPeriod)
                   params.to = new Date().toISOString().split('T')[0]
                 }
