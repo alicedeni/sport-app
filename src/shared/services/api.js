@@ -11,6 +11,7 @@ const api = axios.create({
 })
 
 let isRefreshing = false
+let refreshAttempts = 0
 let failedQueue = []
 
 const processQueue = (error, token = null) => {
@@ -39,6 +40,19 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
 
+    if (error.response?.status === 401) {
+      const url = originalRequest?.url || ''
+      if (url.includes('/auth/refresh') || originalRequest?._retry === true) {
+        try {
+          const current = window.location.pathname + window.location.search + window.location.hash
+          sessionStorage.setItem('intended_path', current)
+        } catch {}
+        localStorage.removeItem('token')
+        window.location.replace('/')
+        return Promise.reject(error)
+      }
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
@@ -56,7 +70,14 @@ api.interceptors.response.use(
       isRefreshing = true
 
       try {
-        const refreshResponse = await api.post('/auth/refresh', {}, { useBearerToken: false })
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+
+        const attemptRefresh = async () => {
+          return await api.post('/auth/refresh', {}, { useBearerToken: false })
+        }
+
+        let refreshResponse = await attemptRefresh()
+
         if (refreshResponse.data.status === 200) {
           const newToken = refreshResponse.data.token
           if (newToken) {
@@ -64,13 +85,35 @@ api.interceptors.response.use(
           }
           processQueue(null, newToken)
           isRefreshing = false
+          refreshAttempts = 0
           return api(originalRequest)
+        } else if (refreshResponse.data.status === 401 || refreshResponse.status === 401) {
+          throw new Error('Refresh unauthorized')
         } else {
+          if (refreshAttempts < 1) {
+            refreshAttempts += 1
+            await sleep(300)
+            refreshResponse = await attemptRefresh()
+            if (refreshResponse.data.status === 200) {
+              const newToken = refreshResponse.data.token
+              if (newToken) {
+                localStorage.setItem('token', newToken)
+              }
+              processQueue(null, newToken)
+              isRefreshing = false
+              refreshAttempts = 0
+              return api(originalRequest)
+            }
+          }
           throw new Error('Refresh failed')
         }
       } catch (refreshError) {
         processQueue(refreshError, null)
         isRefreshing = false
+        refreshAttempts = 0
+        if (typeof navigator !== 'undefined' && navigator && navigator.onLine === false) {
+          return Promise.reject(refreshError)
+        }
         try {
           const current = window.location.pathname + window.location.search + window.location.hash
           sessionStorage.setItem('intended_path', current)

@@ -50,7 +50,7 @@ const FeedMobile = () => {
         } else {
           setPosts((prev) => [...prev, ...newPosts])
         }
-        setHasMore(newPosts.length === LIMIT)
+        setHasMore(newPosts.length > 0)
         setOffset(currentOffset + newPosts.length)
       }
     } catch (error) {
@@ -123,13 +123,9 @@ const FeedMobile = () => {
       >
         {isMobile && <MobileHeader />}
         <Posts posts={posts} filters={filters} setFilters={setFilters} />
-        {loading && (
-          <div className="loading-message">Загрузка...</div>
-        )}
+        {loading && <div className="loading-message">Загрузка...</div>}
         {!hasMore && !loading && posts.length > 0 && (
-          <div className="no-more-posts">
-            Больше постов нет
-          </div>
+          <div className="no-more-posts">Больше постов нет</div>
         )}
       </div>
       {isMobile && <MobileFooter />}

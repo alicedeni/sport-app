@@ -1,17 +1,35 @@
 @use '../../base/variables' as vars;
 
 .participating-status {
+  margin-top: 30px;
+  color: vars.$green;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
   &.blue-text {
     color: #2196f3;
   }
 }
 
-.challenges{
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin: 50px;
-    padding: 0px 100px;
+.challenges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 50px;
+  padding: 0px 100px;
+
+  &-loading,
+  &-empty {
+    text-align: center;
+    padding: 20px;
+  }
+
+  &-error {
+    color: red;
+    padding: 10px;
+  }
 }
 
 .select_pt {
@@ -70,6 +88,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        justify-content: space-between;
       }
     }
     &-item {
@@ -94,6 +113,21 @@
         flex-direction: row;
         gap: 20px;
         align-items: center;
+        width: 100%;
+        justify-content: space-between;
+
+        &__left {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          min-width: 0;
+        }
+
+        &-name {
+          font-size: 32px;
+          margin: 0;
+        }
+
         &-points {
           height: 28px;
           border-radius: 14px;
@@ -102,9 +136,36 @@
           font-size: 12px;
           font-weight: bold;
           padding: 5px 10px;
+          white-space: nowrap;
         }
-        &-name {
-          font-size: 32px;
+
+        &-meta {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+
+        &-deadline {
+          white-space: nowrap;
+          color: vars.$grey1;
+          font-size: 12px;
+        }
+
+        &-participants {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          &-icon {
+            width: 16px;
+            height: 16px;
+          }
+
+          &-count {
+            font-size: 12px;
+            color: vars.$black;
+            font-weight: bold;
+          }
         }
       }
     }
@@ -116,23 +177,45 @@
     }
   }
 
-  .progress-bar {
+  .challenge-item-progress-wrapper {
+    margin-top: 8px;
+    position: relative;
     width: 100%;
-        background-color: vars.$white2;
-    border: 2px solid vars.$blue;
-    border-radius: 24px;
-    height: 48px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    padding: 0px 8px;
 
-  }
+    .progress-bar {
+      width: 100%;
+      background-color: vars.$white2;
+      border: 2px solid vars.$blue;
+      border-radius: 24px;
+      height: 48px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 0px 8px;
 
-  .progress {
-    height: 32px;
-    background-color: vars.$blue;
-    border-radius: 16px;
+      &-margin-top {
+        margin-top: 0;
+      }
+
+      .progress {
+        height: 32px;
+        background-color: vars.$blue;
+        border-radius: 16px;
+      }
+    }
+
+    .progress-percentage {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #fff;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+      pointer-events: none;
+    }
   }
 
 
@@ -166,7 +249,7 @@
   font-size: 20px;
 }
 .participating-status {
-  margin-top: 30px;
+  margin-top: 10px;
   color: vars.$green;
   font-size: 20px;
   display: flex;
@@ -336,7 +419,7 @@
 
   .challenge-item-description {
     font-size: 16px !important;
-    text-align: center !important;
+    text-align: left !important;
   }
 
   .challenge-item-st {
@@ -352,6 +435,11 @@
     border-radius: 20px;
     margin-top: 5px;
     padding: 0 18px;
+  }
+
+  .challenge-item-text-meta {
+    width: 100%;
+    padding: 10px 0;
   }
 
   .participating-status {

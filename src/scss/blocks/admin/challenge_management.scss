@@ -25,9 +25,9 @@
 }
 
 .admin-challenge-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 24px;
+  /* Мейсонри-раскладка для устранения пустых мест между карточками */
+  column-count: 3;
+  column-gap: 24px;
 }
 
 .admin-challenge-card {
@@ -36,6 +36,9 @@
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 24px;
 
   &:hover {
     transform: translateY(-2px);
@@ -171,7 +174,7 @@
   }
 
   .admin-challenge-grid {
-    grid-template-columns: 1fr;
+    column-count: 1;
   }
 
   .admin-challenge-card {

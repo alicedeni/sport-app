@@ -1,153 +1,189 @@
-import React, { useState, useEffect } from 'react'
-import api from '@shared/services/api'
+import React, { useState, useEffect, useMemo, useRef } from 'react'
+import { challengeService } from '@shared/services/challengeService'
 import logger from '@shared/utils/logger'
+import SafeText from '@shared/components/SafeText'
 
-const Checkmark = () => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="#4CAF50"
-    strokeWidth="3"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <polyline points="20 6 9 17 4 12" />
-  </svg>
-)
+const metricLabel = (m) => (m === 'distance' ? 'км' : m === 'calories' ? 'калорий' : 'баллов')
+const formatDeadline = (endAt) => {
+  if (!endAt) return '-'
+  const end = new Date(endAt)
+  const now = new Date()
+  const days = Math.ceil((end.getTime() - now.getTime()) / (1000 * 60 * 60 * 24))
+  if (days < 0) return 'Завершён'
+  if (days === 0) return 'Заканчивается сегодня!'
+  if (days === 1) return 'Остался 1 день'
+  return `Осталось ${days} дней`
+}
 
 const Challenges = () => {
-  const [selectedSide, setSelectedSide] = useState('current')
-  const [currentChallenges, setCurrentChallenges] = useState([])
-  const [completedChallenges, setCompletedChallenges] = useState([])
-  const [incompletedChallenges, setIncompletedChallenges] = useState([])
-  const [selectedChallengeId, setSelectedChallengeId] = useState(null)
-  const [selectedChallengeIndex, setSelectedChallengeIndex] = useState(null)
-  const [statuses, setStatuses] = useState({})
-  const [user, setUser] = useState(null)
-  const challengesData = [
-    {
-      id: 1,
-      name: 'Скороход',
-      points: 300,
-      description: 'Пройди 75000 шагов за 5 дней',
-      image: 'https://storage.yandexcloud.net/team2go/users/base/challenge-personal-walk.png',
-    },
-    {
-      id: 2,
-      name: 'Командный LooC-бег',
-      points: 1000,
-      description: 'Проведите совместную пробежку в формате видеоконференции (30 мин минимум)',
-      image: 'https://storage.yandexcloud.net/team2go/users/base/challenge-team-run.png',
-    },
-    {
-      id: 3,
-      name: 'Творческая команда',
-      points: 1000,
-      description: 'Сделайте командный видеоролик о здоровом образе жизни',
-      image: 'https://storage.yandexcloud.net/team2go/users/base/challeng-team-creative.png',
-    },
-  ]
-  const [participating, setParticipating] = useState({})
+  const [status, setStatus] = useState('active')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [challenges, setChallenges] = useState([])
+  const [joiningId, setJoiningId] = useState(null)
+  const abortRef = useRef(null)
 
-  const handleParticipate = async (challengeId) => {
-    if (!user) return
-
+  const load = async () => {
+    setLoading(true)
+    setError('')
     try {
-      const response = await api.post('/api/user_challenge_statuses/participate', {
-        user_id: user.id,
-        challenge_id: challengeId,
-      })
-
-      if (response.data.status === 200) {
-        setStatuses((prev) => ({
-          ...prev,
-          [challengeId]: 'участвует',
-        }))
+      if (abortRef.current) abortRef.current.abort()
+      const controller = new AbortController()
+      abortRef.current = controller
+      let res
+      if (status === 'completed') {
+        res = await challengeService.getMyChallenges({ status: 'completed' })
+      } else {
+        const params = { status, page: 1, limit: 50 }
+        res = await challengeService.getChallenges(params)
       }
-    } catch (error) {
-      logger.error('Ошибка при участии в челлендже', error)
+      if (res.data.status === 200) {
+        const payload = res.data?.data || res.data
+        setChallenges(payload.challenges || [])
+      } else {
+        setError(res.data.error || res.data.message || 'Ошибка загрузки челленджей')
+      }
+    } catch (err) {
+      if (err.name !== 'CanceledError' && err.name !== 'AbortError') {
+        setError(err.response?.data?.error || err.message || 'Ошибка при загрузке челленджей')
+        logger.error('Ошибка загрузки челленджей:', err)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    api
-      .get('/profile')
-      .then((res) => {
-        if (res.data && res.data.profile) {
-          setUser(res.data.profile)
-        }
-      })
-      .catch(logger.error)
-  }, [])
+    load()
+    return () => abortRef.current?.abort()
+  }, [status])
 
-  useEffect(() => {
-    if (!user) return
-
-    api
-      .get('/api/user_challenge_statuses', {
-        params: { user_id: user.id },
-      })
-      .then((res) => {
-        if (res.data.status === 200 && res.data.data) {
-          const arr = res.data.data
-          setStatuses({
-            1: arr[0],
-            2: arr[1],
-            3: arr[2],
-          })
-        }
-      })
-      .catch(logger.error)
-  }, [user])
-
-  const renderStatus = (status, challengeId) => {
-    switch (status) {
-      case 'участвует':
-        return (
-          <div className="participating-status blue-text">
-            Участвую!
-          </div>
-        )
-      case 'выполнено':
-        return (
-          <div className="participating-status">
-            Выполнено <Checkmark />
-          </div>
-        )
-      default:
-        return (
-          <button className="participate-button" onClick={() => handleParticipate(challengeId)}>
-            Участвовать
-          </button>
-        )
+  const onJoin = async (id) => {
+    if (joiningId) return
+    setJoiningId(id)
+    try {
+      const res = await challengeService.joinChallenge(id)
+      if (res.data.status === 200) {
+        await load()
+      }
+    } catch (e) {
+    } finally {
+      setJoiningId(null)
     }
   }
+
+  const handleParticipate = onJoin
+
+  const Checkmark = () => (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#0a6b3e"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  )
+
+  const renderStatus = (joined, completed, challengeId) => {
+    if (completed) {
+      return (
+        <div className="participating-status">
+          Выполнено <Checkmark />
+        </div>
+      )
+    }
+    if (joined) {
+      return <div className="participating-status blue-text">Участвую!</div>
+    }
+    return (
+      <button
+        className="participate-button"
+        disabled={joiningId === challengeId}
+        onClick={() => handleParticipate(challengeId)}
+      >
+        {joiningId === challengeId ? '...' : 'Участвовать'}
+      </button>
+    )
+  }
+
+  const list = useMemo(() => challenges || [], [challenges])
 
   return (
-    <div className="challenges empty-state">
-      <div className="current-challenges">
-        {challengesData.map((challenge) => (
-          <div key={challenge.id} className="challenge-item__current">
-            <div className="challenge-items">
-              <div className="challenge-items__left">
-                <img className="challenge-items-image" src={challenge.image} alt={challenge.name} />
-              </div>
-              <div className="challenge-items__right">
-                <div className="challenge-item-text">
-                  <h3 className="challenge-item-text-name">{challenge.name}</h3>
-                  <div className="challenge-item-text-points">{challenge.points} баллов</div>
+    <div className="challenges">
+      {loading && <div className="challenges-loading">Загрузка...</div>}
+      {error && !loading && <div className="challenges-error">{error}</div>}
+      {!loading && !error && (
+        <div className="current-challenges">
+          {list.length === 0 ? (
+            <div className="challenges-empty">Нет челленджей</div>
+          ) : (
+            list.map((ch) => {
+              const joined = ch.my_progress?.joined === true
+              const completed = ch.my_progress?.completed === true
+              const percentage = Math.min(
+                100,
+                Math.max(0, Math.round(ch.my_progress?.percentage || 0)),
+              )
+              return (
+                <div key={ch.id} className="challenge-item__current">
+                  <div className="challenge-items">
+                    <div className="challenge-items__left">
+                      {ch.cover_image && (
+                        <img className="challenge-items-image" src={ch.cover_image} alt={ch.name} />
+                      )}
+                    </div>
+                    <div className="challenge-items__right">
+                      <div className="challenge-item-text">
+                        <div className="challenge-item-text__left">
+                          <h3 className="challenge-item-text-name">{ch.name}</h3>
+                          <div className="challenge-item-text-points">
+                            {ch.reward_points || 0} баллов
+                          </div>
+                        </div>
+                        <div className="challenge-item-text-meta">
+                          <div className="challenge-item-text-deadline">
+                            {formatDeadline(ch.end_at || ch.endAt)}
+                          </div>
+                          {ch.participants_count != null && (
+                            <div className="challenge-item-text-participants">
+                              <img
+                                src="https://storage.yandexcloud.net/team2go/users/base/iconPerson.png"
+                                alt="participants"
+                                className="challenge-item-text-participants-icon"
+                              />
+                              <span className="challenge-item-text-participants-count">
+                                {ch.participants_count}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      {ch.description && (
+                        <div className="challenge-item-description">
+                          <SafeText text={ch.description} />
+                        </div>
+                      )}
+                      {renderStatus(joined, completed, ch.id)}
+                      {(joined || completed) && (
+                        <div className="challenge-item-progress-wrapper">
+                          <div className="progress-bar progress-bar-margin-top">
+                            <div className="progress" style={{ width: `${percentage}%` }}></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </div>
-                <p className="challenge-item-description">{challenge.description}</p>
-                <div className="challenge-item-st">
-                  {renderStatus(statuses[challenge.id], challenge.id)}
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+              )
+            })
+          )}
+        </div>
+      )}
     </div>
   )
 }

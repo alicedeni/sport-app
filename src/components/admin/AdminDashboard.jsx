@@ -27,7 +27,7 @@ const AdminDashboard = () => {
             },
             {
               title: 'Активные челленджи',
-              value: 'N/A',
+              value: (data.activeChallenges || 0).toLocaleString(),
               change: '-',
               trend: 'neutral',
             },

@@ -1,17 +1,29 @@
 import api from '@shared/services/api.js'
 import { API_ENDPOINTS } from '@constants/api.js'
+import logger from '@shared/utils/logger'
 
 export const challengeService = {
   getChallenges: (params = {}) => api.get(API_ENDPOINTS.CHALLENGES, { params }),
 
   getChallenge: (id) => api.get(`${API_ENDPOINTS.CHALLENGES}/${id}`),
 
-  participateInChallenge: (id) => api.post(`${API_ENDPOINTS.CHALLENGES}/${id}/participate`),
+  joinChallenge: (id) => api.post(`${API_ENDPOINTS.CHALLENGES}/${id}/join`),
 
-  leaveChallenge: (id) => api.delete(`${API_ENDPOINTS.CHALLENGES}/${id}/participate`),
+  leaveChallenge: (id) => api.post(`${API_ENDPOINTS.CHALLENGES}/${id}/leave`),
 
-  getChallengeProgress: (id) => api.get(`${API_ENDPOINTS.CHALLENGES}/${id}/progress`),
+  getLeaderboard: (id, params = {}) =>
+    api.get(`${API_ENDPOINTS.CHALLENGES}/${id}/leaderboard`, { params }),
 
-  updateChallengeProgress: (id, data) =>
-    api.put(`${API_ENDPOINTS.CHALLENGES}/${id}/progress`, data),
+  getMyChallenges: (params = {}) => api.get('/my-challenges', { params }),
+
+  participateInChallenge: (id) => api.post(`${API_ENDPOINTS.CHALLENGES}/${id}/join`),
+
+  getChallengeProgress: (id) => api.get(`${API_ENDPOINTS.CHALLENGES}/${id}`),
+
+  updateChallengeProgress: (id, data) => {
+    logger.warn(
+      'updateChallengeProgress is deprecated. Progress updates automatically on activity creation.',
+    )
+    return Promise.reject(new Error('Progress updates automatically'))
+  },
 }
