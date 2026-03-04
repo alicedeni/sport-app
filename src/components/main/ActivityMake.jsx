@@ -30,9 +30,11 @@ const ActivityMake = () => {
   const [activityCalories, setActivityCalories] = useState('')
   const [activityVerification, setActivityVerification] = useState(null)
   const [activityImage, setActivityImage] = useState(null)
+  const [activityImages, setActivityImages] = useState([])
   const [activityDescription, setActivityDescription] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
   const [uploadError, setUploadError] = useState('')
+  const [isUploadingImages, setIsUploadingImages] = useState(false)
   const [requiredFields, setRequiredFields] = useState({
     activityTag: false,
     activityStartDate: false,
@@ -101,6 +103,13 @@ const ActivityMake = () => {
       setActivityCalories(activityData.calories)
       setActivityVerification(activityData.verification)
       setActivityImage(activityData.image)
+      setActivityImages(
+        activityData.images && activityData.images.length > 0
+          ? activityData.images
+          : activityData.image
+            ? [activityData.image]
+            : []
+      )
       setActivityDescription(activityData.description)
       setOtherActivityTag(activityData.other)
     }
@@ -119,32 +128,79 @@ const ActivityMake = () => {
     navigate(`/activity`, { state: { page: 'activity' } })
   }
 
-  const handleActivityImageChange = async (event) => {
-    const file = event.target.files[0]
-    if (!file) return
+  const handleActivityImagesChange = async (event) => {
+    const files = Array.from(event.target.files || [])
+    if (files.length === 0) return
+    event.target.value = ''
 
     setUploadError('')
+    setIsUploadingImages(true)
 
+    const MAX_IMAGES = 10
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg']
-    if (!allowedTypes.includes(file.type)) {
-      setUploadError('Неверный формат файла. Разрешены только JPG и PNG.')
+    const maxSize = 5 * 1024 * 1024 // 5 МБ
+
+    if (activityImages.length + files.length > MAX_IMAGES) {
+      setUploadError(`Максимальное количество фотографий: ${MAX_IMAGES}`)
+      setIsUploadingImages(false)
       return
     }
 
-    const maxSize = 5 * 1024 * 1024
-    if (file.size > maxSize) {
-      setUploadError('Размер файла превышает 5 МБ.')
+    const validFiles = []
+    const invalidFiles = []
+    for (const file of files) {
+      if (!allowedTypes.includes(file.type)) {
+        invalidFiles.push({ name: file.name, reason: 'неверный формат. Разрешены только JPG и PNG.' })
+        continue
+      }
+      if (file.size > maxSize) {
+        invalidFiles.push({ name: file.name, reason: `размер превышает ${(maxSize / 1024 / 1024).toFixed(0)} МБ.` })
+        continue
+      }
+      validFiles.push(file)
+    }
+
+    if (invalidFiles.length > 0) {
+      const errorMessages = invalidFiles.map(f => `Файл ${f.name}: ${f.reason}`)
+      setUploadError(errorMessages.join(' '))
+    }
+
+    if (validFiles.length === 0) {
+      setIsUploadingImages(false)
       return
     }
 
     try {
-      const uploadedUrl = await uploadToStorage('users/uploads/activity/', file)
-      setActivityImage(uploadedUrl)
-      setUploadError('')
+      const uploadPromises = validFiles.map((file) =>
+        uploadToStorage('users/uploads/activity/', file)
+      )
+      const uploadedUrls = await Promise.all(uploadPromises)
+      setActivityImages((prev) => [...prev, ...uploadedUrls])
+      if (activityImages.length === 0 && uploadedUrls.length > 0) {
+        setActivityImage(uploadedUrls[0])
+      }
+      if (invalidFiles.length > 0 && uploadedUrls.length > 0) {
+        setUploadError(`Загружено ${uploadedUrls.length} из ${files.length} файлов. ${invalidFiles.length} файлов пропущено из-за ошибок.`)
+      } else {
+        setUploadError('')
+      }
     } catch (error) {
-      logger.error('Error uploading image:', error)
-      setUploadError('Ошибка при загрузке изображения. Пожалуйста, попробуйте еще раз.')
+      logger.error('Error uploading images:', error)
+      const errorMessage = error.message?.includes('network') || error.message?.includes('Network')
+        ? 'Ошибка сети. Проверьте подключение к интернету и попробуйте еще раз.'
+        : 'Ошибка при загрузке изображений. Пожалуйста, попробуйте еще раз.'
+      setUploadError(errorMessage)
+    } finally {
+      setIsUploadingImages(false)
     }
+  }
+
+  const handleRemoveImage = (indexToRemove) => {
+    setActivityImages((prev) => {
+      const newImages = prev.filter((_, index) => index !== indexToRemove)
+      setActivityImage(newImages.length > 0 ? newImages[0] : null)
+      return newImages
+    })
   }
 
   const handleActivityDescriptionChange = (description) => {
@@ -226,7 +282,8 @@ const ActivityMake = () => {
       distance: activityDistance,
       calories: activityCalories,
       verification: activityVerification,
-      image: activityImage,
+      image: activityImages.length > 0 ? activityImages[0] : activityImage,
+      images: activityImages.length > 0 ? activityImages : activityImage ? [activityImage] : [],
       description: activityDescription,
       other: otherActivityTag,
     }
@@ -264,10 +321,12 @@ const ActivityMake = () => {
 
         <ActivityMediaUpload
           activityDescription={activityDescription}
-          activityImage={activityImage}
+          activityImages={activityImages}
           onDescriptionChange={handleActivityDescriptionChange}
-          onImageChange={handleActivityImageChange}
+          onImagesChange={handleActivityImagesChange}
+          onRemoveImage={handleRemoveImage}
           uploadError={uploadError}
+          isUploading={isUploadingImages}
         />
 
         <ActivitySubmitButton />

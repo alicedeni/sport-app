@@ -1,5 +1,15 @@
 @use '../../base/variables' as vars;
 
+.admin-required {
+  color: vars.$red;
+}
+
+.admin-form-required-note {
+  font-size: 12px;
+  color: vars.$grey4;
+  margin-bottom: 12px;
+}
+
 .admin-challenge-management {
   &__header {
     display: flex;
@@ -25,8 +35,7 @@
 }
 
 .admin-challenge-grid {
-  /* Мейсонри-раскладка для устранения пустых мест между карточками */
-  column-count: 3;
+  column-count: 2;
   column-gap: 24px;
 }
 
@@ -158,6 +167,11 @@
   &--completed {
     background: #e0e7ff;
     color: #3730a3;
+  }
+
+  &--expired {
+    background: #fee2e2;
+    color: #b91c1c;
   }
 }
 

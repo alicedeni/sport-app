@@ -3,7 +3,54 @@ import { challengeService } from '@shared/services/challengeService'
 import logger from '@shared/utils/logger'
 import SafeText from '@shared/components/SafeText'
 
-const metricLabel = (m) => (m === 'distance' ? 'км' : m === 'calories' ? 'калорий' : 'баллов')
+const metricLabel = (m) => {
+  switch (m) {
+    case 'distance':
+      return 'км'
+    case 'calories':
+      return 'ккал'
+    case 'points':
+      return 'баллов'
+    case 'steps':
+      return 'шагов'
+    case 'duration':
+      return 'ч'
+    default:
+      return ''
+  }
+}
+
+const formatMetricValue = (value, metricType = 'points') => {
+  if (value == null || value === '') {
+    return '-'
+  }
+
+  if (metricType === 'duration') {
+    const numericValue = Number(value)
+    if (Number.isNaN(numericValue)) {
+      return `${value}`
+    }
+    const totalMinutes = Math.round(numericValue * 60)
+    const hours = Math.floor(totalMinutes / 60)
+    const minutes = Math.abs(totalMinutes % 60)
+    return `${hours}ч ${minutes.toString().padStart(2, '0')}м`
+  }
+
+  const numericValue = Number(value)
+  if (Number.isNaN(numericValue)) {
+    return `${value}`
+  }
+
+  if (metricType === 'distance') {
+    return numericValue.toLocaleString('ru-RU', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    })
+  }
+
+  return numericValue.toLocaleString('ru-RU')
+}
+
 const formatDeadline = (endAt) => {
   if (!endAt) return '-'
   const end = new Date(endAt)
@@ -89,7 +136,7 @@ const Challenges = () => {
     </svg>
   )
 
-  const renderStatus = (joined, completed, challengeId) => {
+  const renderStatus = (joined, completed, rewardGranted, challengeId) => {
     if (completed) {
       return (
         <div className="participating-status">
@@ -125,10 +172,23 @@ const Challenges = () => {
             list.map((ch) => {
               const joined = ch.my_progress?.joined === true
               const completed = ch.my_progress?.completed === true
+              const rewardGranted = ch.my_progress?.reward_granted === true
               const percentage = Math.min(
                 100,
                 Math.max(0, Math.round(ch.my_progress?.percentage || 0)),
               )
+              const metricType = ch.metric_type || ch.metricType || 'points'
+              const currentValue = formatMetricValue(
+                ch.my_progress?.current_value ?? ch.my_progress?.currentValue,
+                metricType,
+              )
+              const targetValue = formatMetricValue(
+                ch.target_value ?? ch.targetValue ?? ch.goal_value ?? ch.goalValue,
+                metricType,
+              )
+              const showMetricDetails =
+                metricType && (currentValue !== '-' || targetValue !== '-') && joined
+
               return (
                 <div key={ch.id} className="challenge-item__current">
                   <div className="challenge-items">
@@ -138,37 +198,43 @@ const Challenges = () => {
                       )}
                     </div>
                     <div className="challenge-items__right">
-                      <div className="challenge-item-text">
-                        <div className="challenge-item-text__left">
-                          <h3 className="challenge-item-text-name">{ch.name}</h3>
-                          <div className="challenge-item-text-points">
-                            {ch.reward_points || 0} баллов
-                          </div>
-                        </div>
-                        <div className="challenge-item-text-meta">
-                          <div className="challenge-item-text-deadline">
-                            {formatDeadline(ch.end_at || ch.endAt)}
-                          </div>
-                          {ch.participants_count != null && (
-                            <div className="challenge-item-text-participants">
-                              <img
-                                src="https://storage.yandexcloud.net/team2go/users/base/iconPerson.png"
-                                alt="participants"
-                                className="challenge-item-text-participants-icon"
-                              />
-                              <span className="challenge-item-text-participants-count">
-                                {ch.participants_count}
-                              </span>
+                      <div className="challenge-items__right-topic">
+                        <div className="challenge-item-text">
+                          <div className="challenge-item-text__left">
+                            <h3 className="challenge-item-text-name">{ch.name}</h3>
+                            <div
+                              className={`challenge-item-text-points${
+                                rewardGranted ? ' challenge-item-text-points--rewarded' : ''
+                              }`}
+                            >
+                              {ch.reward_points || 0} баллов
                             </div>
-                          )}
+                          </div>
+                          <div className="challenge-item-text-meta">
+                            <div className="challenge-item-text-deadline">
+                              {formatDeadline(ch.end_at || ch.endAt)}
+                            </div>
+                            {ch.participants_count != null && (
+                              <div className="challenge-item-text-participants">
+                                <img
+                                  src="https://storage.yandexcloud.net/team2go/users/base/iconPerson.png"
+                                  alt="participants"
+                                  className="challenge-item-text-participants-icon"
+                                />
+                                <span className="challenge-item-text-participants-count">
+                                  {ch.participants_count}
+                                </span>
+                              </div>
+                            )}
+                          </div>
                         </div>
+                        {ch.description && (
+                          <div className="challenge-item-description">
+                            <SafeText text={ch.description} />
+                          </div>
+                        )}
                       </div>
-                      {ch.description && (
-                        <div className="challenge-item-description">
-                          <SafeText text={ch.description} />
-                        </div>
-                      )}
-                      {renderStatus(joined, completed, ch.id)}
+                      {renderStatus(joined, completed, rewardGranted, ch.id)}
                       {(joined || completed) && (
                         <div className="challenge-item-progress-wrapper">
                           <div className="progress-bar progress-bar-margin-top">

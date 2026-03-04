@@ -17,6 +17,7 @@ export interface Post {
   userAvatar?: string
   content: string
   image?: string
+  images?: string[]
   activityType: ActivityType
   duration: number
   distance?: number

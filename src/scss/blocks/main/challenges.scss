@@ -1,7 +1,7 @@
 @use '../../base/variables' as vars;
 
 .participating-status {
-  margin-top: 30px;
+  margin-top: 10px;
   color: vars.$green;
   font-size: 20px;
   display: flex;
@@ -10,6 +10,15 @@
 
   &.blue-text {
     color: #2196f3;
+  }
+
+  &__rewarded {
+    background-color: vars.$green-20p;
+    color: vars.$green;
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-size: 14px;
+    font-weight: 600;
   }
 }
 
@@ -78,7 +87,7 @@
       &-image {
         min-width: 250px;
         width: 100%;
-        height: 100%;
+        height: 300px;
         object-fit: cover;
         border-radius: 10px;
       }
@@ -89,6 +98,13 @@
         flex-direction: column;
         align-items: flex-start;
         justify-content: space-between;
+        height: 300px;
+        &-topic {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
       }
     }
     &-item {
@@ -137,6 +153,11 @@
           font-weight: bold;
           padding: 5px 10px;
           white-space: nowrap;
+
+          &--rewarded {
+            background-color: vars.$green-20p;
+            color: vars.$green;
+          }
         }
 
         &-meta {
@@ -215,6 +236,13 @@
       font-weight: 600;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
       pointer-events: none;
+    }
+
+    .challenge-item-progress-details {
+      margin-top: 6px;
+      font-size: 12px;
+      text-align: center;
+      color: vars.$grey4;
     }
   }
 
@@ -398,7 +426,10 @@
     padding: 10px;
     align-items: flex-start;
     gap: 0;
-    justify-content: center;
+    height: 275px;
+    &-topic {
+      gap: 0;
+    }
   }
 
   .challenge-item-text {

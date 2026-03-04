@@ -14,6 +14,9 @@ export const challengeService = {
   getLeaderboard: (id, params = {}) =>
     api.get(`${API_ENDPOINTS.CHALLENGES}/${id}/leaderboard`, { params }),
 
+  getTeamLeaderboard: (id, params = {}) =>
+    api.get(`${API_ENDPOINTS.CHALLENGES}/${id}/team-leaderboard`, { params }),
+
   getMyChallenges: (params = {}) => api.get('/my-challenges', { params }),
 
   participateInChallenge: (id) => api.post(`${API_ENDPOINTS.CHALLENGES}/${id}/join`),

@@ -162,7 +162,7 @@
         &-image {
           background: vars.$grey3;
           width: 20%;
-          height: 210px;
+          min-height: 210px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -171,7 +171,14 @@
           border-radius: 10px;
           cursor: pointer;
           position: relative;
-          overflow: hidden;
+          overflow: visible;
+          padding: 10px;
+
+          &.has-images {
+            max-height: 210px;
+            overflow: hidden;
+            justify-content: flex-start;
+          }
 
           & label {
             color: vars.$grey2;
@@ -199,45 +206,6 @@
           }
         }
 
-        &-verification {
-          background: vars.$grey3;
-          width: 400px;
-          height: 210px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          border-radius: 10px;
-          cursor: pointer;
-          position: relative;
-          overflow: hidden;
-
-          & label {
-            color: vars.$grey2;
-            cursor: pointer;
-            z-index: 1;
-          }
-
-          & input[type="file"] {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            z-index: 1000;
-            cursor: pointer;
-          }
-
-          img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-          }
-        }
         &-item {
           display: flex;
           flex-direction: column;
@@ -280,6 +248,216 @@
         }
       }
     }
+  }
+
+.activity-images-preview-scrollable {
+  width: 100%;
+  max-height: 170px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 5px;
+  margin-top: 5px;
+  flex: 1;
+  min-height: 0;
+  
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: rgba(81, 184, 255, 0.5);
+    border-radius: 3px;
+    
+    &:hover {
+      background: rgba(81, 184, 255, 0.7);
+    }
+  }
+  
+  &::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  
+  scrollbar-width: thin;
+  scrollbar-color: rgba(81, 184, 255, 0.5) rgba(0, 0, 0, 0.05);
+}
+
+.activity-images-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  padding-bottom: 5px;
+}
+
+.activity-image-preview-item {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 2px solid vars.$grey1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.activity-image-remove-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 0, 0, 0.8);
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: rgba(255, 0, 0, 1);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  z-index: 10;
+
+  &:hover {
+    background: rgba(255, 0, 0, 1);
+  }
+}
+
+.activity-add-photo-button {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 8px;
+}
+
+.activity-add-photo-input {
+  display: none;
+}
+
+.activity-add-photo-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(81, 184, 255, 0.6);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s;
+  
+  &:hover:not(.uploading) {
+    background: rgba(81, 184, 255, 0.9);
+  }
+  
+  &.uploading {
+    cursor: wait;
+    opacity: 0.7;
+  }
+}
+
+.activity-add-photo-plus {
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.activity-initial-photo-icon {
+  margin-bottom: 8px;
+  width: 40px;
+}
+
+.activity-initial-photo-label {
+  color: vars.$grey2;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.activity-initial-photo-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1000;
+  cursor: pointer;
+  
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.3;
+  }
+}
+
+.activity-images-limit {
+  color: vars.$grey2;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.activity-upload-error {
+  color: red;
+  font-size: 12px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.activity-upload-spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+  font-size: 24px;
+  color: white;
+  line-height: 1;
+}
+
+.activity-upload-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+  color: vars.$grey2;
+  font-size: 12px;
+  
+  .activity-upload-spinner {
+    font-size: 20px;
+    color: vars.$blue;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 

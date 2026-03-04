@@ -31,9 +31,15 @@ const Post = ({ post }) => {
   const [sendIcon, setSendIcon] = useState('SendDefault')
   const [likeIcon, setLikeIcon] = useState('LikeDefault')
   const [comIcon, setComIcon] = useState('ComDefault')
-  const hasImage = post && post.image
+  const images = post?.images && post.images.length > 0 
+    ? post.images 
+    : (post?.image ? [post.image] : [])
+  const hasImages = images.length > 0
+  const hasMultipleImages = images.length > 1
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [enlargedImageUrl, setEnlargedImageUrl] = useState('')
+  const [enlargedImages, setEnlargedImages] = useState([])
+  const [enlargedImageIndex, setEnlargedImageIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [isButtonHovered, setIsButtonHovered] = useState(false)
   const [tagSize, setTagSize] = useState('L')
@@ -41,6 +47,7 @@ const Post = ({ post }) => {
 
   const imageContainerRef = useRef(null)
   const infoContainerRef = useRef(null)
+  const imageWrapperRef = useRef(null)
 
   const updateImageHeight = () => {
     if (window.innerWidth > 820 && infoContainerRef.current && imageContainerRef.current) {
@@ -82,6 +89,23 @@ const Post = ({ post }) => {
       updateImageHeight()
     }
   }, [post.text, comments.length, commentCount])
+
+  useEffect(() => {
+    if (!hasMultipleImages) return
+
+    const handleKeyPress = (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyPress)
+    return () => window.removeEventListener('keydown', handleKeyPress)
+  }, [hasMultipleImages, images.length])
 
   const handleLikeClick = () => {
     if (isLiked) {
@@ -192,8 +216,19 @@ const Post = ({ post }) => {
     setSendIcon(isHovered ? 'SendFilled' : 'SendDefault')
   }
 
+  const handlePrevImage = (e) => {
+    e?.stopPropagation()
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+  }
+
+  const handleNextImage = (e) => {
+    e?.stopPropagation()
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+  }
+
   const handleImageClick = () => {
-    setEnlargedImageUrl(post.image)
+    setEnlargedImages(images)
+    setEnlargedImageIndex(currentImageIndex)
     setIsModalOpen(true)
   }
 
@@ -248,28 +283,92 @@ const Post = ({ post }) => {
       </div>
       <div className={`post__content`}>
         <div
-          className={`post__image-container ${post.tag} ${!hasImage ? 'no_img' : ''}`}
+          className={`post__image-container ${post.tag} ${!hasImages ? 'no_img' : ''}`}
           ref={imageContainerRef}
         >
-          {/* <img className="post__image" src={post.image} alt="Post image" /> */}
-          {hasImage ? (
-            <div
-              className="post__image-wrapper"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
+          {hasImages ? (
+            <div 
+              ref={imageWrapperRef}
+              className={`post__image-wrapper ${isHovered ? 'show-overlay' : ''}`}
             >
               <img
                 className={`post__image`}
-                src={post.image}
-                alt="Post image"
+                src={images[currentImageIndex]}
+                alt={`Post image ${currentImageIndex + 1} of ${images.length}`}
                 onClick={handleImageClick}
                 onLoad={updateImageHeight}
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={(e) => {
+                  const relatedTarget = e.relatedTarget
+                  if (!relatedTarget || !relatedTarget.closest('.post__zoom-button')) {
+                    setIsHovered(false)
+                  }
+                }}
               />
+              
+              {hasMultipleImages && (
+                <>
+                  <button
+                    className="post__image-nav post__image-nav--prev"
+                    onClick={handlePrevImage}
+                    onMouseEnter={() => setIsHovered(false)}
+                    aria-label="Предыдущее фото"
+                  >
+                    ‹
+                  </button>
+                  <button
+                    className="post__image-nav post__image-nav--next"
+                    onClick={handleNextImage}
+                    onMouseEnter={() => setIsHovered(false)}
+                    aria-label="Следующее фото"
+                  >
+                    ›
+                  </button>
+                  
+                  <div 
+                    className="post__image-indicator"
+                    onMouseEnter={() => setIsHovered(false)}
+                  >
+                    {currentImageIndex + 1} / {images.length}
+                  </div>
+                  
+                  <div 
+                    className="post__image-dots"
+                    onMouseEnter={() => setIsHovered(false)}
+                  >
+                    {images.map((_, index) => (
+                      <button
+                        key={index}
+                        className={`post__image-dot ${
+                          index === currentImageIndex ? 'active' : ''
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          setCurrentImageIndex(index)
+                        }}
+                        aria-label={`Перейти к фото ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+              
               {isHovered && (
                 <div
                   className="post__zoom-button"
-                  onMouseEnter={() => setIsButtonHovered(true)}
-                  onMouseLeave={() => setIsButtonHovered(false)}
+                  onMouseEnter={() => {
+                    setIsButtonHovered(true)
+                    setIsHovered(true)
+                  }}
+                  onMouseLeave={(e) => {
+                    setIsButtonHovered(false)
+                    const relatedTarget = e.relatedTarget
+                    if (!relatedTarget || 
+                        (!imageWrapperRef.current?.contains(relatedTarget) && 
+                         !relatedTarget.closest('.post__image'))) {
+                      setIsHovered(false)
+                    }
+                  }}
                   onClick={handleImageClick}
                 >
                   <img
@@ -285,7 +384,7 @@ const Post = ({ post }) => {
             </div>
           ) : (
             <img
-              className={`post__image ${!hasImage ? 'no_img' : ''}`}
+              className={`post__image ${!hasImages ? 'no_img' : ''}`}
               src={`https://storage.yandexcloud.net/team2go/users/base/${post.tag}${isMobile ? '-mobile' : ''}.svg`}
               alt={`${post.tag} activity`}
             />
@@ -473,7 +572,11 @@ const Post = ({ post }) => {
         </div>
       )}
       {isModalOpen && (
-        <ImageModal imageUrl={enlargedImageUrl} onClose={() => setIsModalOpen(false)} />
+        <ImageModal 
+          images={enlargedImages} 
+          initialIndex={enlargedImageIndex}
+          onClose={() => setIsModalOpen(false)} 
+        />
       )}
     </div>
   )

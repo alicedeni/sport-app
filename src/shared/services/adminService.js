@@ -105,6 +105,10 @@ export const adminService = {
     return api.get(`/admin/challenges/${id}/participants`, { params })
   },
 
+  rewardChallengeParticipant: (challengeId, participantId) => {
+    return api.post(`/admin/challenges/${challengeId}/participants/${participantId}/reward`)
+  },
+
   getTasks: (params = {}) => {
     return api.get('/admin/tasks', { params })
   },

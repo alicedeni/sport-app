@@ -322,13 +322,23 @@ const PostModeration = () => {
                       <span>Лайки: {post.likeCount || 0}</span>
                       <span>Комментарии: {post.commentCount || 0}</span>
                     </div>
-                    {post.image && (
-                      <img
-                        src={post.image}
-                        alt="Post"
-                        style={{ maxWidth: '200px', maxHeight: '200px' }}
-                      />
-                    )}
+                    {(() => {
+                      const images = post.images && post.images.length > 0 
+                        ? post.images 
+                        : (post.image ? [post.image] : [])
+                      return images.length > 0 ? (
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          {images.map((imgUrl, idx) => (
+                            <img
+                              key={idx}
+                              src={imgUrl}
+                              alt={`Post ${idx + 1}`}
+                              style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: '8px' }}
+                            />
+                          ))}
+                        </div>
+                      ) : null
+                    })()}
                   </div>
                   <div className="admin-post-item__actions">
                     <button className="admin-btn admin-btn--small" onClick={() => openEdit(post)}>
